@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/AminManeri/KeyboardGPT/releases/latest">
+  <a href="https://github.com/Eluea/KGPT/releases/latest">
     <img src="https://img.shields.io/badge/Download-APK-D32F2F?style=for-the-badge&logo=android&logoColor=white" alt="Download"/>
   </a>
   <a href="https://t.me/SupKGPT">
