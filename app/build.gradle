@@ -4,23 +4,33 @@ plugins {
 }
 
 android {
-    namespace 'tn.amin.keyboard_gpt'
+    namespace 'tn.eluea.kgpt'
     compileSdk 36
 
     defaultConfig {
-        applicationId "tn.amin.keyboard_gpt"
+        applicationId "tn.eluea.kgpt"
         minSdk 24
         targetSdkVersion 36
-        versionCode 16
-        versionName "2.0.1-dev"
+        versionCode 17
+        versionName "3.0.1-beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("${System.getProperty('user.home')}/.android/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -55,7 +65,7 @@ android {
 
 android.applicationVariants.all { variant ->
     variant.outputs.all { output ->
-        def appName = "KeyboardGPT"
+        def appName = "KGPT"
         def buildType = variant.buildType.name
         def versionName = variant.versionName
         def versionCode = variant.versionCode
@@ -66,8 +76,8 @@ android.applicationVariants.all { variant ->
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.12.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

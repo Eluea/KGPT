@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -14,8 +20,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KeyboardGPT"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31"
         android:multiArch="true">
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KeyboardGPT">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".external.DialogActivity"
             android:theme="@style/Theme.KeyboardGPT.Translucent"
@@ -23,18 +42,36 @@
             android:taskAffinity=""
             android:exported="true">
             <intent-filter>
-                <action android:name="tn.amin.keyboard_gpt.OVERLAY" />
+                <action android:name="tn.eluea.kgpt.OVERLAY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".external.WebSearchActivity"
+            android:theme="@style/Theme.KeyboardGPT.WebSearch"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.lab.LabActivity"
+            android:theme="@style/Theme.KeyboardGPT"
+            android:exported="false" />
 
         <service
             android:name=".external.InternetService"
             android:exported="true">
             <intent-filter>
-                <action android:name="tn.amin.keyboard_gpt.INTERNET_SERVICE" />
+                <action android:name="tn.eluea.kgpt.INTERNET_SERVICE" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name=".provider.ConfigProvider"
+            android:authorities="tn.eluea.kgpt.provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
 
         <meta-data
             android:name="xposedmodule"

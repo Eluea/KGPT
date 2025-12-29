@@ -1,142 +1,136 @@
+<p align="center">
+  <img src="images/app-icon.png" width="140" alt="KGPT"/>
+</p>
 
-# Keyboard GPT
-*Last updated on 14/08/2025*
+<h1 align="center">KGPT</h1>
 
-An **LSPosed Module** that lets you integrate Generative AI like ChatGPT in your favorite keyboard.
+<p align="center">
+  <b>AI in your keyboard. Everywhere. Anytime.</b>
+</p>
 
-- [x] Tested up to Android 16, may work in later versions.
-- [x] Works with Rooted and Unrooted devices.
-- [x] Works in all apps.
-- [x] Works with all keyboards.
+<p align="center">
+  <a href="https://github.com/AminManeri/KeyboardGPT/releases/latest">
+    <img src="https://img.shields.io/badge/Download-APK-D32F2F?style=for-the-badge&logo=android&logoColor=white" alt="Download"/>
+  </a>
+  <a href="https://t.me/SupKGPT">
+    <img src="https://img.shields.io/badge/Support-Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"/>
+  </a>
+</p>
 
-<details>  
-  <summary>Demo Video : Normal Prompt</summary>  
+---
 
+## A Complete Rebirth
 
+This isn't just an update — it's a **total transformation**.
 
-https://github.com/user-attachments/assets/bc054498-7aa6-4834-bf54-41d5e2b785b6
+Every line of code has been rewritten. Every feature has been reimagined. Every pixel has been redesigned.
 
+**KGPT** brings AI to your fingertips with a stunning new interface, powerful new features, and rock-solid architecture built from the ground up.
 
+---
 
-</details>  
+## What Makes KGPT Special
 
-<details>  
-  <summary>Demo Video : Custom Prompts</summary>  
+<table>
+<tr>
+<td width="50%">
 
+**Beautiful Design**<br/>
+A modern, elegant UI that feels native to Android. Light, Dark, and AMOLED themes that look stunning.
 
+**Instant AI Access**<br/>
+Type naturally, add a trigger, get AI responses. No app switching. No copy-paste. Just flow.
 
-https://github.com/user-attachments/assets/ae3a4aff-3744-4b16-a3eb-18da2b5c1f3c
+**Unlimited Commands**<br/>
+Create as many custom AI commands as you need. Your workflow, your rules.
 
+</td>
+<td width="50%">
 
+**Multi-Provider Support**<br/>
+Gemini, ChatGPT, Claude, Groq, OpenRouter — choose your favorite AI.
 
-</details>  
+**Built-in Web Search**<br/>
+Search the web directly from any text field. Knowledge at your fingertips.
 
-<details>  
-  <summary>Demo Video : Text Formatting</summary>  
+**Backup & Restore**<br/>
+Your settings are precious. Save them, restore them, never lose them.
 
+</td>
+</tr>
+</table>
 
-https://github.com/user-attachments/assets/27043163-9920-48e3-bb02-0f68803d0be7
+---
 
+## Screenshots
 
+<p align="center">
+  <img src="images/SS1.png" width="24%" />
+  <img src="images/SS2.png" width="24%" />
+  <img src="images/SS3.png" width="24%" />
+  <img src="images/SS4.png" width="24%" />
+</p>
 
-</details>  
+<p align="center">
+  <img src="images/SS5.png" width="24%" />
+  <img src="images/SS6.png" width="24%" />
+  <img src="images/SS7.png" width="24%" />
+  <img src="images/SS8.png" width="24%" />
+</p>
 
-
-<details>  
-  <summary>Demo Video : Custom Patterns</summary>  
-
-
-https://github.com/user-attachments/assets/80e9abab-7a4b-404e-9777-2d22436ce5e2
-
-
-
-</details>  
-
-<details>  
-  <summary>Demo Video : Web Search</summary>  
-
-
-https://github.com/user-attachments/assets/4cbf9088-0fb2-45d1-9a89-c0c72c1aff6e
-
-
-</details>  
-
-<p align="center">  
-  <img src="demo/icon_border.png" alt="Icon" style="border: 10px solid black;"/>  
-</p>  
-
-## Tested Keyboards
-
-To this date, all tested keyboards are fully compatible with KeyboardGPT
-- [Google Gboard](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin)
-- [Microsoft Swiftkey](https://play.google.com/store/apps/details?id=com.touchtype.swiftkey)
-- [Yandex Keyboard](ru.yandex.androidkeyboard)
-- [Simple Keyboard](https://play.google.com/store/apps/details?id=rkr.simplekeyboard.inputmethod)
-- [Futo Keyboard](https://play.google.com/store/apps/details?id=org.futo.inputmethod.latin.playstore)
-
-PS: If a keyboard is not in this list, it means that it has not been tested yet.
-However, even if your keyboard is not there, there is a very high chance that it's also supported by KeyboardGPT, as I haven't found an unsupported keyboard among those I have tested.
-
-## Features
-
-- AI chat completions (supports normal and custom prompts)
-- Text Formatting (bold, italic, ...)
-- Web Search
-
-## Install Guide
-
-#### Root
-1. Install module apk from [releases](https://github.com/Mino260806/KeyboardGPT/releases/)
-2. Enable module in LSPosed and select your favorite keyboard
-3. Force close the keyboard from settings, or if you don't know how, restart you phone
-
-#### No Root
-1. Install module apk from [releases](https://github.com/Mino260806/KeyboardGPT/releases/)
-2. Patch your favorite keyboard apk in LSPatch Manager and follow the instructions
-
-<details>  
-  <summary>Video : Using LSPatch (No Root)</summary>  
-
-
-https://github.com/user-attachments/assets/ebacb5e4-08fb-45ff-8dcd-4d9b8f9232a0
-
-
-
+<details>
+<summary><b>View More Screenshots</b></summary>
+<p align="center">
+  <img src="images/SS9.png" width="24%" />
+  <img src="images/SS10.png" width="24%" />
+  <img src="images/SS11.png" width="24%" />
+  <img src="images/SS12.png" width="24%" />
+</p>
+<p align="center">
+  <img src="images/SS13.png" width="24%" />
+  <img src="images/SS14.png" width="24%" />
+  <img src="images/SS15.png" width="24%" />
+</p>
 </details>
 
-Note: With *No Root* method, you cannot patch a system app (Mostly Gboard or Samsung Keyboard, depending on your system).
+---
 
-## Usage Guide
+## Installation
 
-- `*#settings#*` open module settings
-- `$<prompt>$` submit a normal prompt
-- `$$` configure API provider (API key, model, ...)
-- `%<prefix> <prompt>%` submit a custom prompt
-- `%%` configure custom promtps
-- `%s <text>%` do a web search
-- `|<text>|` transform your text into *italic* form
-- `@<text>@` transform your text into **bold** form
-- `~<text>~` transform your text into ~~crossout~~ form
-- `_<text>_` transform your text into <u>underline</u> form
+**Rooted (LSPosed)**
+1. Download & install the APK
+2. Enable in LSPosed and select your keyboard
+3. Restart keyboard
 
-See Demo Videos above
+**Non-Rooted (LSPatch)**
+1. Patch your keyboard with LSPatch
+2. Install patched keyboard + KGPT
+3. Configure & enjoy
 
-**<u>Bonus Tip</u>**:  Providers that offer free API access (as of August 2025)
-+ Google (Gemini). [Grab a key](https://aistudio.google.com/app/apikey)
-+ Groq. [Grab a key](https://console.groq.com/keys)
-+ OpenRouter. [Grab a key](https://openrouter.ai/settings/keys)
+---
 
-## Supported Generative AI APIs
+## Supported AI Providers
 
-- Gemini
-- ChatGPT
-- Groq
-- OpenRouter
-- Claude
+| Provider | Free API |
+|:---------|:--------:|
+| Google Gemini | Yes |
+| Groq | Yes |
+| OpenRouter | Yes |
+| OpenAI | No |
+| Claude | No |
 
-More suggestions are welcome !
+---
 
-## Links
-[XDA Link](https://xdaforums.com/t/mod-xposed-integrate-generative-ai-like-chatgpt-in-keyboard.4683421/)
+## Get Support
 
-[Telegram Discussion](https://t.me/keyboard_gpt)
+<p align="center">
+  <a href="https://t.me/SupKGPT">
+    <img src="https://img.shields.io/badge/Join%20Telegram%20Group-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram Group"/>
+  </a>
+</p>
+
+---
+
+<p align="center">
+  <sub>Built with love for the Android community</sub>
+</p>
