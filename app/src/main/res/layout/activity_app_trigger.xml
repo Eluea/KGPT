@@ -27,16 +27,17 @@
             app:tint="@color/text_primary" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KGPT Lab"
+                android:text="App Triggers"
                 android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -48,7 +49,7 @@
                 android:background="@drawable/bg_chip_lab"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
-                android:text="EXPERIMENTAL"
+                android:text="LAB"
                 android:textColor="@color/lab_purple"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -59,32 +60,34 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="8dp"
-        android:text="Experimental features that are still in development. Use with caution."
+        android:text="Open apps quickly by typing their trigger word"
         android:textColor="@color/text_secondary"
         android:textSize="13sp" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
 
-            <!-- App Triggers Feature -->
+            <!-- Feature Toggle Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_app_triggers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/item_card_background"
+                app:cardBackgroundColor="@color/surface_color"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/item_card_border"
+                app:strokeColor="@color/divider_color"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -94,21 +97,12 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <!-- Icon -->
-                    <FrameLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_lab_icon">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_cpu_filled"
+                        app:tint="@color/primary" />
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_cpu_filled"
-                            app:tint="@color/lab_purple" />
-                    </FrameLayout>
-
-                    <!-- Text -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -119,39 +113,94 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="App Triggers"
+                            android:text="Enable App Triggers"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Open apps by typing trigger words"
+                            android:text="Type trigger word to launch apps"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
 
-                    <!-- Arrow -->
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="@color/text_secondary" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_feature_enabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Coming Soon Placeholder -->
-            <TextView
+            <!-- Add Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_trigger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
+                android:text="Add App Trigger"
+                app:backgroundTint="@color/accent"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_add"
+                app:iconGravity="textStart" />
+
+            <!-- Example Usage Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/example_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="How to use"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="monospace"
+                        android:text="• Type the trigger word → App opens automatically\n• Tap on app card to edit or delete"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/tv_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
                 android:gravity="center"
-                android:text="More features coming soon..."
+                android:text="No app triggers added yet.\nTap the button above to add one."
                 android:textColor="@color/text_secondary"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
+
+            <!-- Triggers List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_triggers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

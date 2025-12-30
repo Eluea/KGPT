@@ -17,3 +17,5 @@ local.properties
 /app/debug/
 *.hprof
 *.log
+.kiro/
+ActivityLauncher-master/

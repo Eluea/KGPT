@@ -6,10 +6,10 @@ import java.util.Map;
 
 public enum LanguageModel {
     Gemini("Gemini", "gemini-2.5-flash", "https://generativelanguage.googleapis.com/v1beta"),
-    ChatGPT("ChatGPT", "gpt-4o-mini", "https://api.openai.com/v1"),
+    ChatGPT("ChatGPT", "gpt-4o", "https://api.openai.com/v1"),
     Groq("Groq", "llama-3.3-70b-versatile", "https://api.groq.com/openai/v1"),
     OpenRouter("OpenRouter", "google/gemini-2.0-flash-exp:free", "https://openrouter.ai/api/v1"),
-    Claude("Claude", "claude-3-5-sonnet-20241022", "https://api.anthropic.com/v1"),
+    Claude("Claude", "claude-sonnet-4-5-20250630", "https://api.anthropic.com/v1"),
     Mistral("Mistral", "mistral-small-latest", "https://api.mistral.ai/v1"),
     ;
 

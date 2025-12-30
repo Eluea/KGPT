@@ -475,14 +475,34 @@ public class WebSearchActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+        
+        // Properly cleanup WebView to prevent crashes on re-open
         if (webView != null) {
+            // Stop loading
+            webView.stopLoading();
+            
+            // Clear WebView
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.loadUrl("about:blank");
+            
+            // Remove from parent before destroying
+            ViewGroup parent = (ViewGroup) webView.getParent();
+            if (parent != null) {
+                parent.removeView(webView);
+            }
+            
+            // Destroy WebView
+            webView.removeAllViews();
             webView.destroy();
+            webView = null;
         }
     }
     
+    @SuppressWarnings("deprecation")
     @Override
     public void onBackPressed() {
-        if (urlEditContainer.getVisibility() == View.VISIBLE) {
+        if (urlEditContainer != null && urlEditContainer.getVisibility() == View.VISIBLE) {
             hideUrlEdit();
         } else if (webView != null && webView.canGoBack()) {
             webView.goBack();

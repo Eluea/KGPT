@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -40,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        applyTheme();
+        // Apply AMOLED theme if needed (dark mode is handled by KGPTApplication)
+        applyAmoledThemeIfNeeded();
         super.onCreate(savedInstanceState);
         
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
@@ -88,18 +88,17 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(fragment);
     }
 
-    private void applyTheme() {
+    /**
+     * Apply AMOLED theme if enabled.
+     * Note: Dark mode is handled globally by KGPTApplication.
+     */
+    private void applyAmoledThemeIfNeeded() {
         SharedPreferences prefs = getSharedPreferences("keyboard_gpt_ui", MODE_PRIVATE);
         boolean isDarkMode = prefs.getBoolean(PREF_THEME, false);
         isAmoledMode = prefs.getBoolean(PREF_AMOLED, false);
 
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            if (isAmoledMode) {
-                setTheme(R.style.Theme_KeyboardGPT_AMOLED);
-            }
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        if (isDarkMode && isAmoledMode) {
+            setTheme(R.style.Theme_KeyboardGPT_AMOLED);
         }
     }
 
@@ -237,7 +236,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToAiInvocation() {
-        loadFragment(new AiInvocationFragment());
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+        );
+        transaction.replace(R.id.fragment_container, new AiInvocationFragment());
+        transaction.addToBackStack("ai_invocation");
+        transaction.commit();
         updateNavSelection(-1);
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            // Restore Home selection after going back
+            updateNavSelection(0);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

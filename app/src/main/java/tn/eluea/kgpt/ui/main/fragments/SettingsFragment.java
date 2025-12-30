@@ -19,7 +19,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -31,6 +30,7 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import org.json.JSONException;
 
 import tn.eluea.kgpt.BuildConfig;
+import tn.eluea.kgpt.KGPTApplication;
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.SPManager;
 import tn.eluea.kgpt.backup.BackupManager;
@@ -224,12 +224,8 @@ public class SettingsFragment extends Fragment {
                 uiPrefs.edit().putBoolean(PREF_AMOLED, false).apply();
             }
             
-            // Apply theme change
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
+            // Apply theme change globally
+            KGPTApplication.applyTheme(isChecked);
             
             // Recreate to apply theme
             if (getActivity() != null) {
@@ -337,12 +333,29 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
         
+        // ADD entries - New Models
+        addChangelogEntry(changelogContent, "ADD", "ChatGPT: GPT-5.2, GPT-5.1, GPT-5, GPT-5-mini, GPT-5-nano, GPT-4.1 series");
+        addChangelogEntry(changelogContent, "ADD", "ChatGPT: Reasoning models o3, o3-mini, o3-pro, o4-mini");
+        addChangelogEntry(changelogContent, "ADD", "Claude: Claude 4.5 series (Opus, Sonnet, Haiku)");
+        addChangelogEntry(changelogContent, "ADD", "Claude: Claude 4 series (Opus, Sonnet)");
+        addChangelogEntry(changelogContent, "ADD", "Groq: OpenAI GPT-OSS-120B, GPT-OSS-20B");
+        addChangelogEntry(changelogContent, "ADD", "Groq: Llama 4 Maverick & Scout, Qwen3-32B, Kimi K2");
+        addChangelogEntry(changelogContent, "ADD", "Mistral: Magistral Medium/Small (Reasoning models)");
+        addChangelogEntry(changelogContent, "ADD", "Mistral: Devstral (Coding), Codestral, Ministral 3B/8B");
+        addChangelogEntry(changelogContent, "ADD", "OpenRouter: More free models (Llama 3.3, Qwen 2.5, DeepSeek, Phi-4)");
+        
         // FIX entries
-        addChangelogEntry(changelogContent, "FIX", "Fixed LSPosed recommended scope not appearing in module settings");
-        addChangelogEntry(changelogContent, "FIX", "Fixed sync issues with AI triggers from main app");
+        addChangelogEntry(changelogContent, "FIX", "Major stability improvements: Fixed theme inconsistency, app launch reliability, config sync, and memory leaks");
+        addChangelogEntry(changelogContent, "FIX", "Back gesture now returns to Home instead of closing app from AI Invocation");
+        addChangelogEntry(changelogContent, "FIX", "Web Search no longer crashes when reopened after closing");
+        addChangelogEntry(changelogContent, "FIX", "Settings trigger symbol changes now display correctly in UI");
         
         // IMPROVE entries
-        addChangelogEntry(changelogContent, "IMPROVE", "AI triggers can now be fully edited, disabled, and have no writing limitations");
+        addChangelogEntry(changelogContent, "IMPROVE", "AI trigger no longer activates when typed in empty field");
+        addChangelogEntry(changelogContent, "IMPROVE", "Backup now includes App Triggers settings from Lab");
+        
+        // LAB entries
+        addChangelogEntry(changelogContent, "LAB", "App Triggers: Open or switch to apps by typing custom trigger words");
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());
@@ -376,6 +389,9 @@ public class SettingsFragment extends Fragment {
                 break;
             case "FIX":
                 bgRes = R.drawable.bg_tag_fix;
+                break;
+            case "LAB":
+                bgRes = R.drawable.bg_tag_lab;
                 break;
             default:
                 bgRes = R.drawable.bg_tag_add;

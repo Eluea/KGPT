@@ -16,6 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,10 +65,37 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
         initViews(view);
+        setupKeyboardHandling(view);
         applyAmoledIfNeeded();
         loadGeminiKey();
         setupListeners();
         setupAdditionalKeys();
+    }
+    
+    private void setupKeyboardHandling(View view) {
+        // Handle keyboard insets to scroll content when keyboard appears
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            
+            // Add padding at bottom when keyboard is visible
+            int bottomPadding = Math.max(imeInsets.bottom, systemBars.bottom);
+            
+            // Find the scroll view content and update its padding
+            if (v instanceof NestedScrollView) {
+                View content = ((NestedScrollView) v).getChildAt(0);
+                if (content != null) {
+                    content.setPadding(
+                        content.getPaddingLeft(),
+                        content.getPaddingTop(),
+                        content.getPaddingRight(),
+                        bottomPadding + 110 // 110dp for dock
+                    );
+                }
+            }
+            
+            return windowInsets;
+        });
     }
 
     private void initViews(View view) {
@@ -208,6 +239,7 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         }
 
         adapter = new AdditionalApiKeysAdapter(requireContext(), additionalModels, this);
+        
         rvAdditionalKeys.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvAdditionalKeys.setAdapter(adapter);
     }
@@ -288,5 +320,22 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         additionalModels.remove(position);
         adapter.notifyItemRemoved(position);
         Toast.makeText(requireContext(), model.label + " key removed", Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Clean up references to prevent memory leaks
+        if (rvAdditionalKeys != null) {
+            rvAdditionalKeys.setAdapter(null);
+        }
+        adapter = null;
+        rootView = null;
+        etGeminiKey = null;
+        ivGeminiStatus = null;
+        btnSaveGemini = null;
+        btnAddKey = null;
+        rvAdditionalKeys = null;
+        btnInfo = null;
     }
 }

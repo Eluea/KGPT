@@ -8,19 +8,25 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Client for accessing ConfigProvider from any context (KGPT app or Xposed module).
- * Provides a simple key-value interface with caching and change notifications.
+ * Client for accessing ConfigProvider.
+ * Uses ContentProvider for main app, XSharedPreferences for Xposed module.
+ * Thread-safe implementation using ConcurrentHashMap.
  */
 public class ConfigClient {
     
+    private static final String TAG = "KGPT_ConfigClient";
+    
     private final ContentResolver mResolver;
-    private final Map<String, Object> mCache = new HashMap<>();
-    private final Map<String, OnConfigChangeListener> mListeners = new HashMap<>();
+    private final Context mContext;
+    // Thread-safe cache using ConcurrentHashMap
+    private final Map<String, Object> mCache = new ConcurrentHashMap<>();
+    private final Map<String, OnConfigChangeListener> mListeners = new ConcurrentHashMap<>();
     private ContentObserver mObserver;
     
     public interface OnConfigChangeListener {
@@ -28,6 +34,7 @@ public class ConfigClient {
     }
     
     public ConfigClient(Context context) {
+        mContext = context;
         mResolver = context.getContentResolver();
         setupObserver();
     }
@@ -39,21 +46,17 @@ public class ConfigClient {
                 if (uri != null) {
                     String key = uri.getLastPathSegment();
                     if (key != null && !key.equals("config")) {
-                        // Invalidate cache for this key
                         mCache.remove(key);
-                        // Notify listeners
                         Object newValue = getString(key, null);
                         OnConfigChangeListener listener = mListeners.get(key);
                         if (listener != null) {
                             listener.onConfigChanged(key, newValue);
                         }
-                        // Also notify global listener
                         OnConfigChangeListener globalListener = mListeners.get("*");
                         if (globalListener != null) {
                             globalListener.onConfigChanged(key, newValue);
                         }
                     } else {
-                        // Clear all cache on bulk change
                         mCache.clear();
                     }
                 }
@@ -63,7 +66,7 @@ public class ConfigClient {
         try {
             mResolver.registerContentObserver(ConfigProvider.CONTENT_URI, true, mObserver);
         } catch (Exception e) {
-            // Provider might not be available yet
+            Log.w(TAG, "Failed to register observer", e);
         }
     }
     
@@ -79,13 +82,28 @@ public class ConfigClient {
         mListeners.remove(key);
     }
     
-    // String operations
     public String getString(String key, String defaultValue) {
+        // In Xposed context, ALWAYS try XSharedPreferences first
+        // This is the primary method for reading config in hooked apps
+        if (XposedConfigReader.isAvailable()) {
+            try {
+                String value = XposedConfigReader.getString(key, null);
+                if (value != null) {
+                    mCache.put(key, value);
+                    return value;
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "XSharedPreferences failed for: " + key + " - " + e.getMessage());
+            }
+        }
+        
+        // Check cache
         if (mCache.containsKey(key)) {
             Object cached = mCache.get(key);
             return cached != null ? cached.toString() : defaultValue;
         }
         
+        // Try ContentProvider as fallback (works in app context)
         try {
             Uri uri = Uri.withAppendedPath(ConfigProvider.CONTENT_URI, key);
             Cursor cursor = mResolver.query(uri, null, null, null, null);
@@ -101,8 +119,9 @@ public class ConfigClient {
                 }
             }
         } catch (Exception e) {
-            // Provider not available, return default
+            Log.d(TAG, "Provider query failed for: " + key + " - " + e.getMessage());
         }
+        
         return defaultValue;
     }
     
@@ -117,13 +136,51 @@ public class ConfigClient {
         try {
             mResolver.insert(ConfigProvider.CONTENT_URI, cv);
         } catch (Exception e) {
-            // Provider not available
+            Log.w(TAG, "Provider insert failed for: " + key, e);
         }
     }
     
-    // Boolean operations
     public boolean getBoolean(String key, boolean defaultValue) {
-        String value = getString(key, null);
+        // In Xposed context, try XSharedPreferences directly for boolean
+        if (XposedConfigReader.isAvailable()) {
+            try {
+                return XposedConfigReader.getBoolean(key, defaultValue);
+            } catch (Exception e) {
+                Log.d(TAG, "XSharedPreferences getBoolean failed for: " + key + " - " + e.getMessage());
+            }
+        }
+        
+        // Try to get from cache or ContentProvider as string
+        String value = null;
+        
+        // Check cache first
+        if (mCache.containsKey(key)) {
+            Object cached = mCache.get(key);
+            if (cached instanceof Boolean) {
+                return (Boolean) cached;
+            }
+            value = cached != null ? cached.toString() : null;
+        }
+        
+        // Try ContentProvider
+        if (value == null) {
+            try {
+                Uri uri = Uri.withAppendedPath(ConfigProvider.CONTENT_URI, key);
+                Cursor cursor = mResolver.query(uri, null, null, null, null);
+                if (cursor != null) {
+                    try {
+                        if (cursor.moveToFirst()) {
+                            value = cursor.getString(cursor.getColumnIndexOrThrow(ConfigProvider.COLUMN_VALUE));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "Provider query failed for boolean: " + key);
+            }
+        }
+        
         if (value == null) return defaultValue;
         return Boolean.parseBoolean(value);
     }
@@ -139,12 +196,20 @@ public class ConfigClient {
         try {
             mResolver.insert(ConfigProvider.CONTENT_URI, cv);
         } catch (Exception e) {
-            // Provider not available
+            Log.w(TAG, "Provider insert failed for: " + key, e);
         }
     }
     
-    // Int operations
     public int getInt(String key, int defaultValue) {
+        // In Xposed context, try XSharedPreferences directly for int
+        if (XposedConfigReader.isAvailable()) {
+            try {
+                return XposedConfigReader.getInt(key, defaultValue);
+            } catch (Exception e) {
+                Log.d(TAG, "XSharedPreferences getInt failed for: " + key + " - " + e.getMessage());
+            }
+        }
+        
         String value = getString(key, null);
         if (value == null) return defaultValue;
         try {
@@ -165,21 +230,19 @@ public class ConfigClient {
         try {
             mResolver.insert(ConfigProvider.CONTENT_URI, cv);
         } catch (Exception e) {
-            // Provider not available
+            Log.w(TAG, "Provider insert failed for: " + key, e);
         }
     }
     
-    // Check if key exists
     public boolean contains(String key) {
         return getString(key, null) != null;
     }
     
-    // Clear cache
     public void clearCache() {
         mCache.clear();
+        XposedConfigReader.clearCache();
     }
     
-    // Cleanup
     public void destroy() {
         try {
             mResolver.unregisterContentObserver(mObserver);

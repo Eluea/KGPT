@@ -31,7 +31,10 @@ public class DialogBoxManager {
     public void showDialog(DialogType type) {
         DialogBox box = buildBox(type);
         mCurrentDialogBox = box;
-        box.getDialog().show();
+        // Some dialog boxes (like WebSearch) launch separate activities and return null
+        if (box.getDialog() != null) {
+            box.getDialog().show();
+        }
     }
 
     private DialogBox buildBox(DialogType dialogType) {

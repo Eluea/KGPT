@@ -147,9 +147,8 @@ public class AiInvocationFragment extends Fragment {
             commands = new ArrayList<>(SPManager.getInstance().getGenerativeAICommands());
             patterns = new ArrayList<>(SPManager.getInstance().getParsePatterns());
             
-            // Load saved inline ask prefix
-            SharedPreferences prefs = requireContext().getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
-            String savedPrefix = prefs.getString(PREF_INLINE_ASK_PREFIX, InlineAskCommand.DEFAULT_PREFIX);
+            // Load saved inline ask prefix from ConfigProvider (world-readable)
+            String savedPrefix = SPManager.getInstance().getConfigClient().getString(PREF_INLINE_ASK_PREFIX, InlineAskCommand.DEFAULT_PREFIX);
             InlineAskCommand.setPrefix(savedPrefix);
         }
 
@@ -360,9 +359,11 @@ public class AiInvocationFragment extends Fragment {
             // Update inline ask prefix
             InlineAskCommand.setPrefix(commandName);
             
-            // Save to preferences
-            SharedPreferences prefs = requireContext().getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
-            prefs.edit().putString(PREF_INLINE_ASK_PREFIX, commandName).apply();
+            // Save to ConfigProvider (world-readable) instead of private preferences
+            // This ensures the Xposed module can read the setting
+            if (SPManager.isReady()) {
+                SPManager.getInstance().getConfigClient().putString(PREF_INLINE_ASK_PREFIX, commandName);
+            }
             
             commandsAdapter.notifyDataSetChanged();
             syncConfig();

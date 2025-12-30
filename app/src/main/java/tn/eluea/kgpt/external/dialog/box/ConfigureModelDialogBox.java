@@ -49,37 +49,85 @@ public class ConfigureModelDialogBox extends DialogBox {
         )));
         MODEL_PRESETS.put(LanguageModel.Gemini, new String[]{"gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-flash-preview"});
         
-        // ChatGPT models
+        // ChatGPT/OpenAI models (December 2025)
         VALID_MODELS.put(LanguageModel.ChatGPT, new HashSet<>(Arrays.asList(
-            "gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo",
-            "gpt-4-turbo-preview", "gpt-4-0125-preview", "gpt-4-1106-preview"
+            // GPT-5 series (Latest)
+            "gpt-5.2", "gpt-5.1", "gpt-5", "gpt-5-mini", "gpt-5-nano",
+            "gpt-5.2-pro", "gpt-5-pro",
+            // GPT-4.1 series
+            "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
+            // GPT-4o series
+            "gpt-4o", "gpt-4o-mini",
+            // Reasoning models
+            "o3", "o3-mini", "o3-pro", "o4-mini",
+            // Legacy
+            "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"
         )));
-        MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[]{"gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo"});
+        MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[]{"gpt-4o", "gpt-4o-mini", "gpt-4.1", "o4-mini"});
         
-        // Groq models
+        // Groq models (December 2025)
         VALID_MODELS.put(LanguageModel.Groq, new HashSet<>(Arrays.asList(
-            "llama-3.3-70b-versatile", "llama-3.1-8b-instant", "llama3-70b-8192",
-            "llama3-8b-8192", "mixtral-8x7b-32768", "gemma2-9b-it", "gemma-7b-it"
+            // Production models
+            "llama-3.3-70b-versatile", "llama-3.1-8b-instant",
+            // OpenAI open-weight models
+            "openai/gpt-oss-120b", "openai/gpt-oss-20b",
+            // Llama 4 Preview
+            "meta-llama/llama-4-maverick-17b-128e-instruct",
+            "meta-llama/llama-4-scout-17b-16e-instruct",
+            // Compound systems
+            "groq/compound", "groq/compound-mini",
+            // Qwen
+            "qwen/qwen3-32b",
+            // Kimi
+            "moonshotai/kimi-k2-instruct-0905",
+            // Whisper
+            "whisper-large-v3", "whisper-large-v3-turbo"
         )));
-        MODEL_PRESETS.put(LanguageModel.Groq, new String[]{"llama-3.3-70b-versatile", "llama-3.1-8b-instant"});
+        MODEL_PRESETS.put(LanguageModel.Groq, new String[]{"llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"});
         
-        // OpenRouter - allow any
+        // OpenRouter - allow any model (supports 400+ models including free ones)
         VALID_MODELS.put(LanguageModel.OpenRouter, null);
-        MODEL_PRESETS.put(LanguageModel.OpenRouter, new String[]{"google/gemini-2.0-flash-exp:free"});
+        MODEL_PRESETS.put(LanguageModel.OpenRouter, new String[]{
+            "google/gemini-2.0-flash-exp:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "qwen/qwen-2.5-72b-instruct:free",
+            "deepseek/deepseek-chat-v3-0324:free",
+            "microsoft/phi-4:free"
+        });
         
-        // Claude models
+        // Claude/Anthropic models (December 2025)
         VALID_MODELS.put(LanguageModel.Claude, new HashSet<>(Arrays.asList(
-            "claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
+            // Claude 4.5 series (Latest)
+            "claude-opus-4-5-20250630", "claude-sonnet-4-5-20250630", "claude-haiku-4-5-20250630",
+            // Claude 4 series
+            "claude-opus-4-20250514", "claude-sonnet-4-20250514", "claude-opus-4-1-20250414",
+            // Claude 3.5 series
+            "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
+            // Claude 3 series (Legacy)
             "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307"
         )));
-        MODEL_PRESETS.put(LanguageModel.Claude, new String[]{"claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022"});
+        MODEL_PRESETS.put(LanguageModel.Claude, new String[]{"claude-sonnet-4-5-20250630", "claude-haiku-4-5-20250630", "claude-3-5-sonnet-20241022"});
         
-        // Mistral models
+        // Mistral models (December 2025)
         VALID_MODELS.put(LanguageModel.Mistral, new HashSet<>(Arrays.asList(
-            "mistral-large-latest", "mistral-medium-latest", "mistral-small-latest",
-            "open-mistral-7b", "open-mixtral-8x7b", "open-mixtral-8x22b"
+            // Magistral series (Latest - Reasoning)
+            "magistral-medium-2507", "magistral-small-2507",
+            // Devstral (Coding)
+            "devstral-small-2505",
+            // Mistral Small 3.x
+            "mistral-small-2503", "mistral-small-2501", "mistral-small-latest",
+            // Codestral
+            "codestral-2501", "codestral-latest",
+            // Ministral
+            "ministral-3b-2410", "ministral-8b-2410",
+            // Pixtral (Vision)
+            "pixtral-12b-2409",
+            // OCR
+            "mistral-ocr-2503",
+            // Legacy
+            "mistral-large-latest", "open-mistral-7b", "open-mixtral-8x7b"
         )));
-        MODEL_PRESETS.put(LanguageModel.Mistral, new String[]{"mistral-small-latest", "mistral-large-latest"});
+        MODEL_PRESETS.put(LanguageModel.Mistral, new String[]{"magistral-medium-2507", "mistral-small-latest", "codestral-latest"});
     }
     
     public ConfigureModelDialogBox(DialogBoxManager dialogManager, Activity parent,

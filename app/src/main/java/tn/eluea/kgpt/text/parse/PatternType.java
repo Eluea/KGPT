@@ -3,7 +3,7 @@ package tn.eluea.kgpt.text.parse;
 public enum PatternType {
     Settings("Settings", 0, "\\*#settings#\\*$", true, "*#settings#*", "Settings trigger"),
     CommandAI("AI Trigger", 1, "([^$]*)\\$$", true, "$", "Type text then add $ at end"),
-    CommandCustom("Custom command", 2, "([^%]*)%(?:([^ %]+))?%$", true, "%", "Type text then add %command%"),
+    CommandCustom("Custom command", 2, "([^%]+)%(?:([^ %]+))?%$", true, "%", "Type text then add %command%"),
     FormatItalic("Italic", 1, "([^|]+)\\|$", true, "|", "Type text then add |"),
     FormatBold("Bold", 1, "([^@]+)@$", true, "@", "Type text then add @"),
     FormatCrossout("Crossout", 1, "([^~]+)~$", true, "~", "Type text then add ~"),
@@ -30,6 +30,7 @@ public enum PatternType {
     /**
      * Convert a user-friendly symbol to regex pattern
      * The new logic: text is written normally, symbol at the END triggers AI
+     * IMPORTANT: Requires at least one character before the trigger symbol
      */
     public static String symbolToRegex(String symbol, int groupCount) {
         if (symbol == null || symbol.isEmpty()) {
@@ -42,18 +43,20 @@ public enum PatternType {
             // For Settings-like patterns: exact match of the symbol
             return String.format("%s$", escapedSymbol);
         } else if (groupCount == 1) {
-            // For multi-char symbols like "??", use (.+) to capture any text
-            // For single-char symbols, use negated character class for efficiency
+            // For multi-char symbols like "??", use (.+) to capture any text (at least 1 char)
+            // For single-char symbols, use negated character class with + (at least 1 char)
             if (symbol.length() > 1) {
                 return String.format("(.+)%s$", escapedSymbol);
             } else {
                 String literalSymbol = escapeLiteralForCharClass(symbol);
-                return String.format("([^%s]*)%s$", literalSymbol, escapedSymbol);
+                // Changed from * to + to require at least one character before trigger
+                return String.format("([^%s]+)%s$", literalSymbol, escapedSymbol);
             }
         } else if (groupCount == 2) {
             // Pattern for custom commands: text%command% or text%%
+            // Changed from * to + to require at least one character before trigger
             String literalSymbol = escapeLiteralForCharClass(symbol);
-            return String.format("([^%s]*)%s(?:([^ %s]+))?%s$", literalSymbol, escapedSymbol, literalSymbol, escapedSymbol);
+            return String.format("([^%s]+)%s(?:([^ %s]+))?%s$", literalSymbol, escapedSymbol, literalSymbol, escapedSymbol);
         }
         return null;
     }
@@ -79,8 +82,16 @@ public enum PatternType {
         while (i >= 0) {
             char c = pattern.charAt(i);
             
-            // Stop at regex special constructs
+            // Stop at regex special constructs (but not escaped ones)
             if (c == ')' || c == ']' || c == '+' || c == '*') {
+                // Check if this is an escaped character
+                if (i > 0 && pattern.charAt(i - 1) == '\\') {
+                    // It's escaped, include it in symbol
+                    symbol.insert(0, c);
+                    i -= 2; // Skip the backslash
+                    continue;
+                }
+                // Not escaped, stop here
                 break;
             }
             

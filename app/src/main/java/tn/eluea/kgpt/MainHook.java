@@ -17,6 +17,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import tn.eluea.kgpt.hook.HookManager;
 import tn.eluea.kgpt.hook.MethodHook;
+import tn.eluea.kgpt.provider.XposedConfigReader;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
 
@@ -55,6 +56,11 @@ public class MainHook implements IXposedHookLoadPackage {
         }
 
         MainHook.log("Loading KeyboardGPT for package " + lpparam.packageName);
+        
+        // Log XSharedPreferences status early
+        MainHook.log("XSharedPreferences available: " + XposedConfigReader.isAvailable());
+        MainHook.log(XposedConfigReader.getDebugInfo());
+        
         hookKeyboard(lpparam);
     }
 

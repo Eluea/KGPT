@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="450dp"
     android:background="@drawable/bg_bottom_sheet_floating"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
@@ -48,11 +48,16 @@
     </LinearLayout>
 
     <!-- Changelog Content -->
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="16dp"
-        android:maxHeight="400dp">
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbarSize="4dp">
 
         <LinearLayout
             android:id="@+id/changelog_content"
@@ -60,7 +65,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <!-- Close Button -->
     <com.google.android.material.button.MaterialButton

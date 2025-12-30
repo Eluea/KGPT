@@ -24,6 +24,7 @@ import tn.eluea.kgpt.SPManager;
 import tn.eluea.kgpt.instruction.command.GenerativeAICommand;
 import tn.eluea.kgpt.llm.LanguageModel;
 import tn.eluea.kgpt.llm.LanguageModelField;
+import tn.eluea.kgpt.provider.ConfigClient;
 import tn.eluea.kgpt.settings.OtherSettingsType;
 import tn.eluea.kgpt.text.parse.ParsePattern;
 
@@ -33,7 +34,7 @@ import tn.eluea.kgpt.text.parse.ParsePattern;
  */
 public class BackupManager {
     
-    private static final String BACKUP_VERSION = "1";
+    private static final String BACKUP_VERSION = "2"; // Updated version for App Triggers support
     private static final String KEY_VERSION = "backup_version";
     private static final String KEY_COMMANDS = "commands";
     private static final String KEY_PATTERNS = "patterns";
@@ -45,14 +46,20 @@ public class BackupManager {
     private static final String KEY_ENABLE_LOGS = "enable_logs";
     private static final String KEY_EXTERNAL_INTERNET = "external_internet";
     
+    // App Triggers keys
+    private static final String KEY_APP_TRIGGERS = "app_triggers";
+    private static final String KEY_APP_TRIGGERS_ENABLED = "app_triggers_enabled";
+    
     private final Context context;
     private final SPManager spManager;
     private final SharedPreferences uiPrefs;
+    private final ConfigClient configClient;
     
     public BackupManager(Context context) {
         this.context = context;
         this.spManager = SPManager.getInstance();
         this.uiPrefs = context.getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
+        this.configClient = new ConfigClient(context);
     }
     
     /**
@@ -96,6 +103,13 @@ public class BackupManager {
         // Other settings
         backup.put(KEY_ENABLE_LOGS, spManager.getEnableLogs());
         backup.put(KEY_EXTERNAL_INTERNET, spManager.getEnableExternalInternet());
+        
+        // App Triggers (LAB feature)
+        String appTriggersRaw = configClient.getString("app_triggers", null);
+        if (appTriggersRaw != null) {
+            backup.put(KEY_APP_TRIGGERS, appTriggersRaw);
+        }
+        backup.put(KEY_APP_TRIGGERS_ENABLED, configClient.getBoolean("app_triggers_enabled", false));
         
         return backup.toString(2); // Pretty print
     }
@@ -174,6 +188,17 @@ public class BackupManager {
             
             if (backup.has(KEY_EXTERNAL_INTERNET)) {
                 spManager.setOtherSetting(OtherSettingsType.EnableExternalInternet, backup.getBoolean(KEY_EXTERNAL_INTERNET));
+                restoredCount++;
+            }
+            
+            // Restore App Triggers (LAB feature)
+            if (backup.has(KEY_APP_TRIGGERS)) {
+                configClient.putString("app_triggers", backup.getString(KEY_APP_TRIGGERS));
+                restoredCount++;
+            }
+            
+            if (backup.has(KEY_APP_TRIGGERS_ENABLED)) {
+                configClient.putBoolean("app_triggers_enabled", backup.getBoolean(KEY_APP_TRIGGERS_ENABLED));
                 restoredCount++;
             }
             

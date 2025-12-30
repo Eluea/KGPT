@@ -50,6 +50,7 @@
     <!-- Status Colors -->
     <color name="success">#00B894</color>
     <color name="warning">#FDCB6E</color>
+    <color name="warning_dark">#E67E22</color>
     <color name="error">#E74C3C</color>
     <color name="info">#74B9FF</color>
     
@@ -151,4 +152,5 @@
     <color name="tag_adjust">#F59E0B</color>
     <color name="tag_remove">#EF4444</color>
     <color name="tag_fix">#8B5CF6</color>
+    <color name="tag_lab">#9B59B6</color>
 </resources>

@@ -8,19 +8,24 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * ContentProvider that serves as the single source of truth for all KGPT configuration.
- * Both the main app and Xposed module access data through this provider.
+ * ContentProvider for KGPT configuration.
+ * 
+ * IMPORTANT: Uses MODE_WORLD_READABLE for LSPosed's New XSharedPreferences (API 93+).
+ * This allows the Xposed module running in keyboard process to read our preferences.
  * 
  * URI patterns:
  * - content://tn.eluea.kgpt.provider/config/{key} - Get/Set a single config value
  * - content://tn.eluea.kgpt.provider/config - Get all config values
  */
 public class ConfigProvider extends ContentProvider {
+    
+    private static final String TAG = "KGPT_ConfigProvider";
     
     public static final String AUTHORITY = "tn.eluea.kgpt.provider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/config");
@@ -52,8 +57,44 @@ public class ConfigProvider extends ContentProvider {
     private SharedPreferences mPrefs;
     
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onCreate() {
-        mPrefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "onCreate: context is null");
+            return false;
+        }
+        
+        // Check if device is unlocked before accessing credential-protected storage
+        // This is important for directBootAware providers
+        android.os.UserManager userManager = (android.os.UserManager) context.getSystemService(Context.USER_SERVICE);
+        if (userManager != null && !userManager.isUserUnlocked()) {
+            Log.w(TAG, "onCreate: User not unlocked yet, using device-protected storage");
+            // Use device-protected storage for direct boot
+            try {
+                Context deviceContext = context.createDeviceProtectedStorageContext();
+                mPrefs = deviceContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                Log.d(TAG, "onCreate: Using device-protected SharedPreferences");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to create device-protected storage", e);
+                return false;
+            }
+        } else {
+            // CRITICAL: Use MODE_WORLD_READABLE for LSPosed's New XSharedPreferences
+            // LSPosed hooks ContextImpl.checkMode() to allow this on API 93+
+            // Must use credential-protected storage (default), NOT device-protected
+            try {
+                mPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_WORLD_READABLE);
+                Log.d(TAG, "onCreate: Using MODE_WORLD_READABLE SharedPreferences");
+            } catch (SecurityException e) {
+                // Fallback for non-LSPosed environments
+                Log.w(TAG, "MODE_WORLD_READABLE not available, using MODE_PRIVATE", e);
+                mPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            }
+        }
+        
+        Log.d(TAG, "onCreate: SharedPreferences has " + mPrefs.getAll().size() + " entries");
+        
         return true;
     }
     
@@ -133,11 +174,20 @@ public class ConfigProvider extends ContentProvider {
                 break;
         }
         
-        editor.apply();
+        // CRITICAL: Use commit() instead of apply() to ensure data is written immediately
+        // This is essential for XSharedPreferences to pick up changes
+        // LSPosed Wiki: The hooked app reads from the physical file
+        boolean success = editor.commit();
+        
+        Log.d(TAG, "insert: key=" + key + ", type=" + type + ", success=" + success);
         
         Uri resultUri = Uri.withAppendedPath(CONTENT_URI, key);
-        getContext().getContentResolver().notifyChange(resultUri, null);
-        getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+        
+        // Notify observers about the change
+        if (getContext() != null) {
+            getContext().getContentResolver().notifyChange(resultUri, null);
+            getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+        }
         
         return resultUri;
     }
@@ -145,7 +195,6 @@ public class ConfigProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, 
                       @Nullable String selection, @Nullable String[] selectionArgs) {
-        // Use insert for updates as well
         insert(uri, values);
         return 1;
     }
@@ -155,7 +204,7 @@ public class ConfigProvider extends ContentProvider {
                       @Nullable String[] selectionArgs) {
         if (sUriMatcher.match(uri) == CONFIG_KEY) {
             String key = uri.getLastPathSegment();
-            mPrefs.edit().remove(key).apply();
+            mPrefs.edit().remove(key).commit();
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

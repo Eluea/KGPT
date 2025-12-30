@@ -10,8 +10,10 @@ import tn.eluea.kgpt.listener.DialogDismissListener;
 import tn.eluea.kgpt.listener.GenerativeAIListener;
 import tn.eluea.kgpt.listener.InputEventListener;
 import tn.eluea.kgpt.llm.GenerativeAIController;
+import tn.eluea.kgpt.provider.XposedConfigReader;
 import tn.eluea.kgpt.text.TextParser;
 import tn.eluea.kgpt.text.parse.result.AIParseResult;
+import tn.eluea.kgpt.text.parse.result.AppTriggerParseResult;
 import tn.eluea.kgpt.text.parse.result.CommandParseResult;
 import tn.eluea.kgpt.text.parse.result.FormatParseResult;
 import tn.eluea.kgpt.text.parse.result.InlineAskParseResult;
@@ -21,15 +23,19 @@ import tn.eluea.kgpt.text.parse.result.WebSearchParseResult;
 import tn.eluea.kgpt.text.transform.format.TextUnicodeConverter;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
+import tn.eluea.kgpt.ui.lab.apptrigger.AppTriggerManager;
 
 public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListener, DialogDismissListener {
     private final static String STR_GENERATING_CONTENT = "<Generating Content...>";
     private boolean justPrepared = true;
+    private long lastConfigReload = 0;
+    private static final long CONFIG_RELOAD_INTERVAL = 5000; // Reload config every 5 seconds
 
     private final GenerativeAIController mAIController;
     private final CommandManager mCommandManager;
     private final TextParser mTextParser;
     private final SPUpdater mSPUpdater;
+    private final AppTriggerManager mAppTriggerManager;
 
     public KeyboardGPTBrain(Context context) {
         IMSController.getInstance().addListener(this);
@@ -40,10 +46,51 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
         mCommandManager = new CommandManager();
         mTextParser = new TextParser();
         mSPUpdater = new SPUpdater();
+        
+        // Initialize App Trigger Manager
+        mAppTriggerManager = new AppTriggerManager(context);
+        mTextParser.setAppTriggerManager(mAppTriggerManager);
+        
+        // Load inline ask prefix from config
+        loadInlineAskPrefix();
+        
+        MainHook.log("KeyboardGPTBrain initialized");
+        MainHook.log("XSharedPreferences available: " + XposedConfigReader.isAvailable());
+    }
+    
+    /**
+     * Load inline ask prefix from XSharedPreferences
+     */
+    private void loadInlineAskPrefix() {
+        String prefix = XposedConfigReader.getString("inline_ask_prefix", 
+                tn.eluea.kgpt.instruction.command.InlineAskCommand.DEFAULT_PREFIX);
+        tn.eluea.kgpt.instruction.command.InlineAskCommand.setPrefix(prefix);
+        MainHook.log("Loaded inline_ask_prefix: " + prefix);
+    }
+    
+    /**
+     * Periodically reload config from XSharedPreferences to pick up changes
+     */
+    private void reloadConfigIfNeeded() {
+        long now = System.currentTimeMillis();
+        if (now - lastConfigReload > CONFIG_RELOAD_INTERVAL) {
+            lastConfigReload = now;
+            // Force XSharedPreferences to reload
+            XposedConfigReader.forceReload();
+            // Reload app triggers
+            if (mAppTriggerManager != null) {
+                mAppTriggerManager.reloadTriggers();
+            }
+            // Reload inline ask prefix
+            loadInlineAskPrefix();
+        }
     }
 
     @Override
     public void onTextUpdate(String text, int cursor) {
+        // Periodically reload config to pick up changes from KGPT app
+        reloadConfigIfNeeded();
+        
         IMSController imsController = UiInteractor.getInstance().getIMSController();
         ParseResult result = mTextParser.parse(text, cursor);
         if (result != null) {
@@ -95,11 +142,33 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
             Context context = MainHook.getApplicationContext();
             String url = SPManager.getSearchUrlFromKGPT(context, webSearchResult.query);
             UiInteractor.getInstance().showWebSearchDialog("Web Search", url);
+        } else if (parseResult instanceof AppTriggerParseResult) {
+            AppTriggerParseResult appTriggerResult = (AppTriggerParseResult) parseResult;
+            MainHook.log("AppTrigger detected: trigger='" + appTriggerResult.trigger + 
+                    "', package='" + appTriggerResult.packageName + 
+                    "', activity='" + appTriggerResult.activityName +
+                    "', app='" + appTriggerResult.appName + "'");
+            
+            // Launch on main thread to ensure proper context
+            UiInteractor.getInstance().post(() -> {
+                boolean launched = UiInteractor.getInstance().launchApp(
+                        appTriggerResult.packageName, 
+                        appTriggerResult.activityName);
+                if (!launched) {
+                    MainHook.log("Failed to launch app: " + appTriggerResult.packageName);
+                    UiInteractor.getInstance().toastShort("Failed to launch " + appTriggerResult.appName);
+                }
+            });
         }
     }
 
     private void generateResponse(String prompt, String systemMessage) {
-        if (prompt.isEmpty() || mAIController.needModelClient()) {
+        // If prompt is empty, don't trigger anything - treat as normal text
+        if (prompt == null || prompt.trim().isEmpty()) {
+            return;
+        }
+        
+        if (mAIController.needModelClient()) {
             if (UiInteractor.getInstance().showChoseModelDialog()) {
                 UiInteractor.getInstance().toastLong("Chose and configure your language model");
             }

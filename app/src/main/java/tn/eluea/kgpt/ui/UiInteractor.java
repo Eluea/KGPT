@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.os.Handler;
@@ -280,5 +282,84 @@ public class UiInteractor {
 
     public InputMethodService getIMS() {
         return mInputMethodService;
+    }
+
+    /**
+     * Launch an app using ComponentName for reliable launching.
+     * Uses the same approach as ActivityLauncher for maximum compatibility.
+     * 
+     * @param packageName The package name of the app
+     * @param activityName The activity class name (can be null for fallback)
+     */
+    public boolean launchApp(String packageName, String activityName) {
+        android.util.Log.d("KGPT_AppTrigger", "launchApp() called with: " + packageName + "/" + activityName);
+        
+        if (packageName == null || packageName.isEmpty()) {
+            android.util.Log.e("KGPT_AppTrigger", "launchApp: packageName is null or empty");
+            MainHook.log("launchApp: packageName is null or empty");
+            return false;
+        }
+        
+        android.util.Log.d("KGPT_AppTrigger", "launchApp: Attempting to launch " + packageName);
+        MainHook.log("launchApp: Attempting to launch " + packageName + "/" + activityName);
+        
+        try {
+            // Method 1: Use ComponentName directly (ActivityLauncher approach)
+            if (activityName != null && !activityName.isEmpty()) {
+                android.util.Log.d("KGPT_AppTrigger", "Trying ComponentName: " + packageName + "/" + activityName);
+                Intent intent = new Intent();
+                intent.setComponent(new android.content.ComponentName(packageName, activityName));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mContext.startActivity(intent);
+                android.util.Log.d("KGPT_AppTrigger", "SUCCESS via ComponentName");
+                MainHook.log("launchApp: Success via ComponentName");
+                return true;
+            }
+        } catch (Exception e1) {
+            android.util.Log.d("KGPT_AppTrigger", "ComponentName failed: " + e1.getMessage());
+            MainHook.log("launchApp: ComponentName failed: " + e1.getMessage());
+        }
+        
+        try {
+            // Method 2: Try getLaunchIntentForPackage
+            android.util.Log.d("KGPT_AppTrigger", "Trying getLaunchIntentForPackage");
+            PackageManager pm = mContext.getPackageManager();
+            Intent defaultIntent = pm.getLaunchIntentForPackage(packageName);
+            
+            if (defaultIntent != null) {
+                defaultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mContext.startActivity(defaultIntent);
+                android.util.Log.d("KGPT_AppTrigger", "SUCCESS via getLaunchIntentForPackage");
+                MainHook.log("launchApp: Success via getLaunchIntentForPackage");
+                return true;
+            }
+        } catch (Exception e2) {
+            android.util.Log.e("KGPT_AppTrigger", "getLaunchIntentForPackage failed: " + e2.getMessage());
+        }
+        
+        try {
+            // Method 3: Try direct intent with ACTION_MAIN and CATEGORY_LAUNCHER
+            android.util.Log.d("KGPT_AppTrigger", "Trying ACTION_MAIN intent");
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setPackage(packageName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mContext.startActivity(intent);
+            android.util.Log.d("KGPT_AppTrigger", "SUCCESS via ACTION_MAIN");
+            MainHook.log("launchApp: Success via ACTION_MAIN");
+            return true;
+        } catch (Exception e3) {
+            android.util.Log.e("KGPT_AppTrigger", "ACTION_MAIN failed: " + e3.getMessage());
+        }
+        
+        android.util.Log.e("KGPT_AppTrigger", "All methods failed for " + packageName);
+        return false;
+    }
+    
+    /**
+     * Launch an app by package name only (legacy method for backward compatibility)
+     */
+    public boolean launchApp(String packageName) {
+        return launchApp(packageName, null);
     }
 }
