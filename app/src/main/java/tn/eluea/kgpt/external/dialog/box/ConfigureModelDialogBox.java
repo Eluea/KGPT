@@ -1,3 +1,14 @@
+﻿/*
+ * Copyright (c) 2025 Amr Aldeeb @Eluea
+ * GitHub: https://github.com/Eluea
+ * Telegram: https://t.me/Eluea
+ *
+ * This file is part of KGPT.
+ * Based on original code from KeyboardGPT by Mino260806.
+ * Original: https://github.com/Mino260806/KeyboardGPT
+ *
+ * Licensed under the GPLv3.
+ */
 package tn.eluea.kgpt.external.dialog.box;
 
 import android.app.Activity;
@@ -63,7 +74,7 @@ public class ConfigureModelDialogBox extends DialogBox {
             // Legacy
             "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"
         )));
-        MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[]{"gpt-4o", "gpt-4o-mini", "gpt-4.1", "o4-mini"});
+        MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[]{"gpt-5", "gpt-4o", "gpt-4.1", "o3-mini", "o4-mini"});
         
         // Groq models (December 2025)
         VALID_MODELS.put(LanguageModel.Groq, new HashSet<>(Arrays.asList(
@@ -83,7 +94,7 @@ public class ConfigureModelDialogBox extends DialogBox {
             // Whisper
             "whisper-large-v3", "whisper-large-v3-turbo"
         )));
-        MODEL_PRESETS.put(LanguageModel.Groq, new String[]{"llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b"});
+        MODEL_PRESETS.put(LanguageModel.Groq, new String[]{"llama-3.3-70b-versatile", "meta-llama/llama-4-maverick-17b-128e-instruct", "groq/compound"});
         
         // OpenRouter - allow any model (supports 400+ models including free ones)
         VALID_MODELS.put(LanguageModel.OpenRouter, null);
@@ -106,7 +117,7 @@ public class ConfigureModelDialogBox extends DialogBox {
             // Claude 3 series (Legacy)
             "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307"
         )));
-        MODEL_PRESETS.put(LanguageModel.Claude, new String[]{"claude-sonnet-4-5-20250630", "claude-haiku-4-5-20250630", "claude-3-5-sonnet-20241022"});
+        MODEL_PRESETS.put(LanguageModel.Claude, new String[]{"claude-opus-4-5-20250630", "claude-sonnet-4-5-20250630", "claude-haiku-4-5-20250630"});
         
         // Mistral models (December 2025)
         VALID_MODELS.put(LanguageModel.Mistral, new HashSet<>(Arrays.asList(
@@ -127,7 +138,7 @@ public class ConfigureModelDialogBox extends DialogBox {
             // Legacy
             "mistral-large-latest", "open-mistral-7b", "open-mixtral-8x7b"
         )));
-        MODEL_PRESETS.put(LanguageModel.Mistral, new String[]{"magistral-medium-2507", "mistral-small-latest", "codestral-latest"});
+        MODEL_PRESETS.put(LanguageModel.Mistral, new String[]{"magistral-medium-2507", "mistral-small-latest", "devstral-small-2505", "codestral-latest"});
     }
     
     public ConfigureModelDialogBox(DialogBoxManager dialogManager, Activity parent,

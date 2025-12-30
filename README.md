@@ -15,6 +15,9 @@
   <a href="https://t.me/SupKGPT">
     <img src="https://img.shields.io/badge/Support-Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"/>
   </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-GPL%20v3-blue?style=for-the-badge" alt="License"/>
+  </a>
 </p>
 
 ---
@@ -121,6 +124,38 @@ Your settings are precious. Save them, restore them, never lose them.
 
 ---
 
+## Credits
+
+This project is a fork of [KeyboardGPT](https://github.com/Mino260806/KeyboardGPT) by **Mino260806**.
+
+Special thanks to the original developer for creating the foundation that made this project possible.
+
+---
+
+## License
+
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+```
+KGPT - AI in your keyboard
+Copyright (C) 2023 Mino260806 (Original Author - KeyboardGPT)
+Copyright (C) 2024-2025 Amr Aldeeb @Eluea (Fork Maintainer & Contributor)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+```
+
+See the [LICENSE](LICENSE) file for the full license text.
+
+---
+
 ## Get Support
 
 <p align="center">
@@ -132,5 +167,5 @@ Your settings are precious. Save them, restore them, never lose them.
 ---
 
 <p align="center">
-  <sub>Built with love for the Android community</sub>
+  <sub>Built with ❤️ for the Android community</sub>
 </p>

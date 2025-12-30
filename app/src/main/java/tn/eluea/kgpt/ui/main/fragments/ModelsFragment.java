@@ -1,3 +1,16 @@
+﻿/*
+ * Copyright (C) 2024-2025 Amr Aldeeb @Eluea
+ * 
+ * This file is part of KGPT - a fork of KeyboardGPT.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GitHub: https://github.com/Eluea
+ * Telegram: https://t.me/Eluea
+ */
 package tn.eluea.kgpt.ui.main.fragments;
 
 import android.content.Context;
@@ -80,11 +93,11 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         
         // ChatGPT models
         SUB_MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[]{
+            "gpt-5",
             "gpt-4o",
-            "gpt-4o-mini",
-            "gpt-4-turbo",
-            "gpt-4",
-            "gpt-3.5-turbo"
+            "gpt-4.1",
+            "o3-mini",
+            "o4-mini"
         });
         VALID_MODELS.put(LanguageModel.ChatGPT, new java.util.HashSet<>(java.util.Arrays.asList(
             "gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo",
@@ -94,10 +107,8 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         // Groq models
         SUB_MODEL_PRESETS.put(LanguageModel.Groq, new String[]{
             "llama-3.3-70b-versatile",
-            "llama-3.1-8b-instant",
-            "llama3-70b-8192",
-            "mixtral-8x7b-32768",
-            "gemma2-9b-it"
+            "meta-llama/llama-4-maverick-17b-128e-instruct",
+            "groq/compound"
         });
         VALID_MODELS.put(LanguageModel.Groq, new java.util.HashSet<>(java.util.Arrays.asList(
             "llama-3.3-70b-versatile", "llama-3.1-8b-instant", "llama3-70b-8192",
@@ -115,10 +126,9 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         
         // Claude models
         SUB_MODEL_PRESETS.put(LanguageModel.Claude, new String[]{
-            "claude-sonnet-4-20250514",
-            "claude-3-5-sonnet-20241022",
-            "claude-3-5-haiku-20241022",
-            "claude-3-opus-20240229"
+            "claude-opus-4-5-20250630",
+            "claude-sonnet-4-5-20250630",
+            "claude-haiku-4-5-20250630"
         });
         VALID_MODELS.put(LanguageModel.Claude, new java.util.HashSet<>(java.util.Arrays.asList(
             "claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
@@ -127,11 +137,10 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         
         // Mistral models
         SUB_MODEL_PRESETS.put(LanguageModel.Mistral, new String[]{
-            "mistral-large-latest",
-            "mistral-medium-latest",
+            "magistral-medium-2507",
             "mistral-small-latest",
-            "open-mistral-7b",
-            "open-mixtral-8x7b"
+            "devstral-small-2505",
+            "codestral-latest"
         });
         VALID_MODELS.put(LanguageModel.Mistral, new java.util.HashSet<>(java.util.Arrays.asList(
             "mistral-large-latest", "mistral-medium-latest", "mistral-small-latest",
