@@ -337,31 +337,12 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
         
-        // ADD entries
-        addChangelogEntry(changelogContent, "ADD", "Added /ask command for inline AI queries");
-        addChangelogEntry(changelogContent, "ADD", "Added Lab section for experimental features");
-        addChangelogEntry(changelogContent, "ADD", "Added Telegram Support Group button");
-        addChangelogEntry(changelogContent, "ADD", "Added Changelog button in Settings");
-        addChangelogEntry(changelogContent, "ADD", "Added Backup & Restore (API keys not saved for security)");
-        addChangelogEntry(changelogContent, "ADD", "Added ContentProvider for unified config sync");
-        addChangelogEntry(changelogContent, "ADD", "Added unlimited custom commands");
+        // FIX entries
+        addChangelogEntry(changelogContent, "FIX", "Fixed LSPosed recommended scope not appearing in module settings");
+        addChangelogEntry(changelogContent, "FIX", "Fixed sync issues with AI triggers from main app");
         
         // IMPROVE entries
-        addChangelogEntry(changelogContent, "IMPROVE", "Improved trigger and command cards design");
-        addChangelogEntry(changelogContent, "IMPROVE", "Improved examples to be dynamic based on settings");
-        addChangelogEntry(changelogContent, "IMPROVE", "Improved Quick Guide with icons");
-        addChangelogEntry(changelogContent, "IMPROVE", "Improved config sync architecture");
-        addChangelogEntry(changelogContent, "IMPROVE", "Improved dialog button styles");
-        
-        // ADJUST entries
-        addChangelogEntry(changelogContent, "ADJUST", "Changed package name to tn.eluea.kgpt");
-        
-        // REMOVE entries
-        addChangelogEntry(changelogContent, "REMOVE", "Removed Reset buttons from pattern items");
-        
-        // FIX entries
-        addChangelogEntry(changelogContent, "FIX", "Fixed dock crash when switching theme");
-        addChangelogEntry(changelogContent, "FIX", "Fixed config sync between app and dialogs");
+        addChangelogEntry(changelogContent, "IMPROVE", "AI triggers can now be fully edited, disabled, and have no writing limitations");
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());

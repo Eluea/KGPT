@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import tn.eluea.kgpt.MainHook;
 
 public class ParsePattern {
+    private static final String EXTRA_ENABLED = "_enabled";
+    
     private final PatternType mType;
     private final Pattern mPattern;
     private Map<String, String> mExtras = null;
@@ -41,6 +43,31 @@ public class ParsePattern {
 
     public Map<String, String> getExtras() {
         return mExtras;
+    }
+    
+    /**
+     * Check if this pattern is enabled
+     * Default is false (disabled) for all patterns
+     */
+    public boolean isEnabled() {
+        String enabled = getExtra(EXTRA_ENABLED);
+        return "true".equals(enabled);
+    }
+    
+    /**
+     * Set whether this pattern is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        putExtra(EXTRA_ENABLED, String.valueOf(enabled));
+    }
+    
+    /**
+     * Create a copy of this pattern with enabled state changed
+     */
+    public ParsePattern withEnabled(boolean enabled) {
+        Map<String, String> newExtras = mExtras != null ? new HashMap<>(mExtras) : new HashMap<>();
+        newExtras.put(EXTRA_ENABLED, String.valueOf(enabled));
+        return new ParsePattern(mType, mPattern.pattern(), newExtras);
     }
 
     public PatternType getType() {

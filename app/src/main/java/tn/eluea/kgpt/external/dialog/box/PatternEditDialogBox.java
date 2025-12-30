@@ -44,6 +44,7 @@ public class PatternEditDialogBox extends DialogBox {
         TextView tvTitle = layout.findViewById(R.id.tv_title);
         TextView tvDescription = layout.findViewById(R.id.tv_description);
         TextView tvExample = layout.findViewById(R.id.tv_example);
+        com.google.android.material.materialswitch.MaterialSwitch switchEnabled = layout.findViewById(R.id.switch_enabled);
         MaterialButton btnCancel = layout.findViewById(R.id.btn_cancel);
         MaterialButton btnSave = layout.findViewById(R.id.btn_save);
         MaterialButton btnReset = layout.findViewById(R.id.btn_reset);
@@ -57,6 +58,9 @@ public class PatternEditDialogBox extends DialogBox {
         
         tvTitle.setText("Edit " + pattern.getType().title);
         tvDescription.setText(pattern.getType().description);
+        
+        // Set enabled state
+        switchEnabled.setChecked(pattern.isEnabled());
         
         // Extract current symbol from regex
         String currentSymbol = PatternType.regexToSymbol(pattern.getPattern().pattern());
@@ -73,6 +77,7 @@ public class PatternEditDialogBox extends DialogBox {
             inputLayout.setEnabled(false);
             btnSave.setEnabled(false);
             btnReset.setVisibility(View.GONE);
+            switchEnabled.setEnabled(false);
         } else {
             // Listen for symbol changes
             symbolEditText.addTextChangedListener(new TextWatcher() {
@@ -104,14 +109,10 @@ public class PatternEditDialogBox extends DialogBox {
         
         btnSave.setOnClickListener(v -> {
             String symbol = symbolEditText.getText().toString();
+            boolean isEnabled = switchEnabled.isChecked();
             
             if (symbol.isEmpty()) {
                 Toast.makeText(getContext(), "Symbol cannot be empty", Toast.LENGTH_LONG).show();
-                return;
-            }
-            
-            if (symbol.length() > 2) {
-                Toast.makeText(getContext(), "Symbol should be 1-2 characters", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -144,10 +145,24 @@ public class PatternEditDialogBox extends DialogBox {
                 return;
             }
 
+            // Create new pattern with enabled state
+            ParsePattern newPattern = new ParsePattern(pattern.getType(), newRegex, pattern.getExtras());
+            newPattern.setEnabled(isEnabled);
+            
             getConfig().patterns.remove(patternIndex);
-            getConfig().patterns.add(patternIndex, new ParsePattern(pattern.getType(), newRegex));
+            getConfig().patterns.add(patternIndex, newPattern);
 
-            Toast.makeText(getContext(), "Trigger symbol updated to \"" + symbol + "\"", Toast.LENGTH_SHORT).show();
+            // Save immediately to ContentProvider and notify listeners
+            getConfig().saveToProvider();
+            
+            // Send broadcast to notify TextParser of the change
+            android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_PATTERN_LIST, 
+                tn.eluea.kgpt.text.parse.ParsePattern.encode(getConfig().patterns));
+            getContext().sendBroadcast(broadcastIntent);
+
+            String statusMsg = isEnabled ? "enabled" : "disabled";
+            Toast.makeText(getContext(), "Trigger \"" + symbol + "\" " + statusMsg, Toast.LENGTH_SHORT).show();
             
             // Go back to pattern list instead of closing
             switchToDialog(DialogType.EditPatternList);
@@ -163,6 +178,9 @@ public class PatternEditDialogBox extends DialogBox {
         
         String example;
         switch (type) {
+            case Settings:
+                example = "\"" + symbol + "\" → Opens settings";
+                break;
             case CommandAI:
                 example = "\"Hello, how are you?" + symbol + "\" → AI responds";
                 break;

@@ -21,6 +21,7 @@ import tn.eluea.kgpt.ui.UiInteractor;
 public class TextParser implements ConfigChangeListener {
     private final List<ParseDirective> directives = new ArrayList<>();
     private String currentTriggerSymbol = "$";
+    private boolean aiTriggerEnabled = false;
 
     public TextParser() {
         UiInteractor.getInstance().registerConfigChangeListener(this);
@@ -30,15 +31,22 @@ public class TextParser implements ConfigChangeListener {
 
     private void updatePatterns(List<ParsePattern> parsePatterns) {
         directives.clear();
+        aiTriggerEnabled = false;
+        
         for (ParsePattern parsePattern: parsePatterns) {
-            directives.add(new ParseDirective(parsePattern.getPattern(),
-                    ParseResultFactory.of(parsePattern.getType())));
+            // Only add enabled patterns
+            if (parsePattern.isEnabled()) {
+                directives.add(new ParseDirective(parsePattern.getPattern(),
+                        ParseResultFactory.of(parsePattern.getType())));
+            }
             
+            // Track AI trigger symbol and enabled state
             if (parsePattern.getType() == PatternType.CommandAI) {
                 String symbol = PatternType.regexToSymbol(parsePattern.getPattern().pattern());
                 if (symbol != null && !symbol.isEmpty()) {
                     currentTriggerSymbol = symbol;
                 }
+                aiTriggerEnabled = parsePattern.isEnabled();
             }
         }
     }
@@ -46,10 +54,13 @@ public class TextParser implements ConfigChangeListener {
     public ParseResult parse(String text, int cursor) {
         String textBeforeCursor = text.substring(0, cursor);
         
-        InlineAskParseResult inlineAskResult = InlineAskParseResultFactory.parse(
-            textBeforeCursor, currentTriggerSymbol);
-        if (inlineAskResult != null) {
-            return inlineAskResult;
+        // Only check inline ask if AI trigger is enabled
+        if (aiTriggerEnabled) {
+            InlineAskParseResult inlineAskResult = InlineAskParseResultFactory.parse(
+                textBeforeCursor, currentTriggerSymbol);
+            if (inlineAskResult != null) {
+                return inlineAskResult;
+            }
         }
 
         for (ParseDirective directive: directives) {

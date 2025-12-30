@@ -75,6 +75,14 @@ public class OtherSettingsDialogBox extends DialogBox {
         });
         
         btnSave.setOnClickListener(v -> {
+            // Save immediately to ContentProvider and notify listeners
+            getConfig().saveToProvider();
+            
+            // Send broadcast to notify listeners of the change
+            android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_OTHER_SETTINGS, getConfig().otherExtras);
+            getContext().sendBroadcast(broadcastIntent);
+            
             // Go back to settings instead of closing
             switchToDialog(DialogType.Settings);
         });

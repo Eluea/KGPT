@@ -85,12 +85,31 @@ public class CommandEditDialogBox extends DialogBox {
 
             getConfig().commands.add(commandPos, new SimpleGenerativeAICommand(prefix, message));
             
+            // Save immediately to ContentProvider and notify listeners
+            getConfig().saveToProvider();
+            
+            // Send broadcast to notify CommandManager of the change
+            android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_COMMAND_LIST, 
+                tn.eluea.kgpt.instruction.command.Commands.encodeCommands(getConfig().commands));
+            getContext().sendBroadcast(broadcastIntent);
+            
             // Go back to command list instead of closing
             switchToDialog(DialogType.EditCommandsList);
         });
         
         btnDelete.setOnClickListener(v -> {
             getConfig().commands.remove(commandIndex);
+            
+            // Save immediately to ContentProvider and notify listeners
+            getConfig().saveToProvider();
+            
+            // Send broadcast to notify CommandManager of the change
+            android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_COMMAND_LIST, 
+                tn.eluea.kgpt.instruction.command.Commands.encodeCommands(getConfig().commands));
+            getContext().sendBroadcast(broadcastIntent);
+            
             dialog.dismiss();
             switchToDialog(DialogType.EditCommandsList);
         });

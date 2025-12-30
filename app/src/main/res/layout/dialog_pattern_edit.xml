@@ -56,20 +56,57 @@
         android:layout_marginVertical="16dp"
         android:background="@color/divider_color" />
 
+    <!-- Enable/Disable Switch -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:background="@drawable/bg_switch_container">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable Trigger"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Turn on to activate this trigger"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switch_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <!-- Symbol Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_symbol"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="Trigger Symbol"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
         app:boxStrokeColor="@color/primary"
-        app:counterEnabled="true"
-        app:counterMaxLength="2"
         app:hintTextColor="@color/primary">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +115,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:inputType="text"
-            android:maxLength="2"
             android:textColor="@color/text_primary"
             android:textSize="24sp"
             android:textStyle="bold" />

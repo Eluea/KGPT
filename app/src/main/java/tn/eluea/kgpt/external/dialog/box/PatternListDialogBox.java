@@ -58,7 +58,12 @@ public class PatternListDialogBox extends DialogBox {
                 ImageView itemIcon = itemView.findViewById(R.id.iv_icon);
                 ImageView arrowIcon = itemView.findViewById(R.id.iv_arrow);
                 
-                tvName.setText(pattern.getType().title);
+                // Show enabled/disabled status in title
+                String title = pattern.getType().title;
+                if (!pattern.isEnabled()) {
+                    title += " (Disabled)";
+                }
+                tvName.setText(title);
                 
                 // Show user-friendly symbol instead of regex
                 String symbol = getDisplaySymbol(pattern);
@@ -71,15 +76,16 @@ public class PatternListDialogBox extends DialogBox {
                 itemIcon.setColorFilter(iconColor);
                 if (arrowIcon != null) arrowIcon.setColorFilter(iconColor);
                 
-                // Only allow editing for editable patterns
+                // Set alpha based on enabled state
+                itemView.setAlpha(pattern.isEnabled() ? 1.0f : 0.5f);
+                
+                // Allow editing for all editable patterns
                 if (pattern.getType().editable) {
                     final int index = i;
                     itemView.setOnClickListener(v -> {
                         getConfig().focusPatternIndex = index;
                         switchToDialog(DialogType.EditPattern);
                     });
-                } else {
-                    itemView.setAlpha(0.6f);
                 }
                 
                 itemsContainer.addView(itemView);

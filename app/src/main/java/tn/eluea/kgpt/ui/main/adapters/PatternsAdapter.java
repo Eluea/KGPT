@@ -83,7 +83,12 @@ public class PatternsAdapter extends RecyclerView.Adapter<PatternsAdapter.Patter
         }
 
         void bind(ParsePattern pattern, int position) {
-            tvPatternName.setText(pattern.getType().title);
+            // Show enabled/disabled status in title
+            String title = pattern.getType().title;
+            if (!pattern.isEnabled()) {
+                title += " (Disabled)";
+            }
+            tvPatternName.setText(title);
             
             // Show user-friendly symbol instead of raw regex
             String displaySymbol = getDisplaySymbol(pattern);
@@ -106,13 +111,13 @@ public class PatternsAdapter extends RecyclerView.Adapter<PatternsAdapter.Patter
                 }
             }
 
-            // Show arrow only for editable patterns
+            // Show arrow for all editable patterns
             if (ivArrow != null) {
                 ivArrow.setVisibility(pattern.getType().editable ? View.VISIBLE : View.INVISIBLE);
             }
             
-            // Set alpha for non-editable patterns
-            itemView.setAlpha(pattern.getType().editable ? 1.0f : 0.6f);
+            // Set alpha based on enabled state
+            itemView.setAlpha(pattern.isEnabled() ? 1.0f : 0.5f);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null && pattern.getType().editable) {

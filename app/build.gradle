@@ -11,8 +11,8 @@ android {
         applicationId "tn.eluea.kgpt"
         minSdk 24
         targetSdkVersion 36
-        versionCode 17
-        versionName "3.0.1-beta"
+        versionCode 18
+        versionName "3.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

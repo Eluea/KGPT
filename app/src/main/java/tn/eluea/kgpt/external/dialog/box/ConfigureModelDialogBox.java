@@ -197,11 +197,31 @@ public class ConfigureModelDialogBox extends DialogBox {
                             finalSubModelEditText.setText(suggested);
                         }
                         modelConfig.putAll(tempModelConfig);
+                        
+                        // Save immediately to ContentProvider and notify listeners
+                        getConfig().saveToProvider();
+                        
+                        // Send broadcast to notify listeners of the change
+                        android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+                        broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_SELECTED_MODEL, getConfig().selectedModel.name());
+                        broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_LANGUAGE_MODEL, getConfig().languageModelsConfig);
+                        getContext().sendBroadcast(broadcastIntent);
+                        
                         // Go back to model selection instead of closing
                         switchToDialog(DialogType.ChoseModel);
                     })
                     .setNegativeButton("Use Anyway", (d, w) -> {
                         modelConfig.putAll(tempModelConfig);
+                        
+                        // Save immediately to ContentProvider and notify listeners
+                        getConfig().saveToProvider();
+                        
+                        // Send broadcast to notify listeners of the change
+                        android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+                        broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_SELECTED_MODEL, getConfig().selectedModel.name());
+                        broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_LANGUAGE_MODEL, getConfig().languageModelsConfig);
+                        getContext().sendBroadcast(broadcastIntent);
+                        
                         // Go back to model selection instead of closing
                         switchToDialog(DialogType.ChoseModel);
                     })
@@ -211,6 +231,16 @@ public class ConfigureModelDialogBox extends DialogBox {
             }
             
             modelConfig.putAll(tempModelConfig);
+            
+            // Save immediately to ContentProvider and notify listeners
+            getConfig().saveToProvider();
+            
+            // Send broadcast to notify listeners of the change
+            android.content.Intent broadcastIntent = new android.content.Intent(tn.eluea.kgpt.ui.UiInteractor.ACTION_DIALOG_RESULT);
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_SELECTED_MODEL, getConfig().selectedModel.name());
+            broadcastIntent.putExtra(tn.eluea.kgpt.ui.UiInteractor.EXTRA_CONFIG_LANGUAGE_MODEL, getConfig().languageModelsConfig);
+            getContext().sendBroadcast(broadcastIntent);
+            
             // Go back to model selection instead of closing
             switchToDialog(DialogType.ChoseModel);
         });

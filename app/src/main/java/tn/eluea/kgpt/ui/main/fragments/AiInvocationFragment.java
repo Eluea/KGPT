@@ -46,7 +46,9 @@ public class AiInvocationFragment extends Fragment {
 
     private static final String PREF_AMOLED = "amoled_mode";
     private static final String PREF_THEME = "theme_mode";
-    private static final String ACTION_SYNC_CONFIG = "tn.eluea.kgpt.SYNC_CONFIG";
+    private static final String ACTION_DIALOG_RESULT = "tn.eluea.kgpt.DIALOG_RESULT";
+    private static final String EXTRA_PATTERN_LIST = "tn.eluea.kgpt.pattern.LIST";
+    private static final String EXTRA_COMMAND_LIST = "tn.eluea.kgpt.command.LIST";
     private static final String PREF_INLINE_ASK_PREFIX = "inline_ask_prefix";
     
     // Maximum limits
@@ -414,6 +416,7 @@ public class AiInvocationFragment extends Fragment {
         TextInputEditText etSymbol = dialogView.findViewById(R.id.et_symbol);
         TextInputLayout inputLayout = dialogView.findViewById(R.id.input_layout_symbol);
         TextView tvExample = dialogView.findViewById(R.id.tv_example);
+        com.google.android.material.materialswitch.MaterialSwitch switchEnabled = dialogView.findViewById(R.id.switch_enabled);
         MaterialButton btnReset = dialogView.findViewById(R.id.btn_reset);
         MaterialButton btnCancel = dialogView.findViewById(R.id.btn_cancel);
         MaterialButton btnSave = dialogView.findViewById(R.id.btn_save);
@@ -421,6 +424,9 @@ public class AiInvocationFragment extends Fragment {
         // Set values
         tvPatternType.setText(pattern.getType().title);
         tvDescription.setText(pattern.getType().description);
+        
+        // Set enabled state
+        switchEnabled.setChecked(pattern.isEnabled());
         
         // Extract current symbol from regex
         String currentSymbol = PatternType.regexToSymbol(pattern.getPattern().pattern());
@@ -454,14 +460,10 @@ public class AiInvocationFragment extends Fragment {
 
         btnSave.setOnClickListener(v -> {
             String symbol = etSymbol.getText().toString();
+            boolean isEnabled = switchEnabled.isChecked();
 
             if (symbol.isEmpty()) {
                 Toast.makeText(requireContext(), "Symbol cannot be empty", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            
-            if (symbol.length() > 2) {
-                Toast.makeText(requireContext(), "Symbol should be 1-2 characters", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -486,12 +488,16 @@ public class AiInvocationFragment extends Fragment {
                 return;
             }
 
-            // Update pattern
-            patterns.set(position, new ParsePattern(pattern.getType(), newRegex, pattern.getExtras()));
+            // Update pattern with enabled state
+            ParsePattern newPattern = new ParsePattern(pattern.getType(), newRegex, pattern.getExtras());
+            newPattern.setEnabled(isEnabled);
+            patterns.set(position, newPattern);
             savePatterns();
             patternsAdapter.updatePatterns(patterns);
             dialog.dismiss();
-            Toast.makeText(requireContext(), "Trigger symbol updated to \"" + symbol + "\"", Toast.LENGTH_SHORT).show();
+            
+            String statusMsg = isEnabled ? "enabled" : "disabled";
+            Toast.makeText(requireContext(), "Trigger \"" + symbol + "\" " + statusMsg, Toast.LENGTH_SHORT).show();
         });
 
         dialog.show();
@@ -504,6 +510,9 @@ public class AiInvocationFragment extends Fragment {
         
         String example;
         switch (type) {
+            case Settings:
+                example = "Example: \"" + symbol + "\" → Opens settings";
+                break;
             case CommandAI:
                 example = "Example: \"Hello, how are you?" + symbol + "\" → AI responds";
                 break;
@@ -574,8 +583,17 @@ public class AiInvocationFragment extends Fragment {
     }
 
     private void syncConfig() {
-        // Send broadcast to sync with Xposed module
-        Intent intent = new Intent(ACTION_SYNC_CONFIG);
+        // Send broadcast to sync with Xposed module using the same action it listens to
+        Intent intent = new Intent(ACTION_DIALOG_RESULT);
+        
+        // Include patterns data (get raw from SPManager after saving)
+        String patternsRaw = SPManager.getInstance().getParsePatternsRaw();
+        intent.putExtra(EXTRA_PATTERN_LIST, patternsRaw);
+        
+        // Include commands data
+        String commandsRaw = SPManager.getInstance().getGenerativeAICommandsRaw();
+        intent.putExtra(EXTRA_COMMAND_LIST, commandsRaw);
+        
         requireContext().sendBroadcast(intent);
     }
 

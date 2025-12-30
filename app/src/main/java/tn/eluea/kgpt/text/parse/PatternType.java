@@ -1,7 +1,7 @@
 package tn.eluea.kgpt.text.parse;
 
 public enum PatternType {
-    Settings("Settings", 0, "\\*#settings#\\*$", false, "*#settings#*", "Settings trigger"),
+    Settings("Settings", 0, "\\*#settings#\\*$", true, "*#settings#*", "Settings trigger"),
     CommandAI("AI Trigger", 1, "([^$]*)\\$$", true, "$", "Type text then add $ at end"),
     CommandCustom("Custom command", 2, "([^%]*)%(?:([^ %]+))?%$", true, "%", "Type text then add %command%"),
     FormatItalic("Italic", 1, "([^|]+)\\|$", true, "|", "Type text then add |"),
@@ -38,7 +38,10 @@ public enum PatternType {
         
         String escapedSymbol = escapeRegex(symbol);
         
-        if (groupCount == 1) {
+        if (groupCount == 0) {
+            // For Settings-like patterns: exact match of the symbol
+            return String.format("%s$", escapedSymbol);
+        } else if (groupCount == 1) {
             // For multi-char symbols like "??", use (.+) to capture any text
             // For single-char symbols, use negated character class for efficiency
             if (symbol.length() > 1) {
@@ -94,7 +97,7 @@ public enum PatternType {
             }
             
             // Limit symbol length to prevent infinite loops
-            if (symbol.length() > 10) {
+            if (symbol.length() > 20) {
                 break;
             }
         }
