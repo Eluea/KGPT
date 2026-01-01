@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2024-2025 Amr Aldeeb @Eluea
  * 
  * This file is part of KGPT - a fork of KeyboardGPT.
@@ -47,6 +47,7 @@ import tn.eluea.kgpt.KGPTApplication;
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.SPManager;
 import tn.eluea.kgpt.backup.BackupManager;
+import tn.eluea.kgpt.backup.LogExporter;
 import tn.eluea.kgpt.settings.OtherSettingsType;
 import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.FloatingBottomSheet;
@@ -57,7 +58,7 @@ public class SettingsFragment extends Fragment {
     private static final String PREF_AMOLED = "amoled_mode";
 
     private MaterialSwitch switchDarkMode, switchAmoled, switchLogs, switchExternalInternet;
-    private LinearLayout amoledContainer, btnBackup, btnRestore;
+    private LinearLayout amoledContainer, btnBackup, btnRestore, btnExportLogs;
     private TextView tvAboutVersion;
     private FrameLayout btnInfo;
     private MaterialButton btnTelegramSupport, btnChangelog;
@@ -65,10 +66,12 @@ public class SettingsFragment extends Fragment {
 
     private SharedPreferences uiPrefs;
     private BackupManager backupManager;
+    private LogExporter logExporter;
     
     // Activity result launchers for file picker
     private ActivityResultLauncher<Intent> backupLauncher;
     private ActivityResultLauncher<Intent> restoreLauncher;
+    private ActivityResultLauncher<Intent> exportLogsLauncher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +102,19 @@ public class SettingsFragment extends Fragment {
                 }
             }
         );
+        
+        // Initialize export logs launcher
+        exportLogsLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        performExportLogs(uri);
+                    }
+                }
+            }
+        );
     }
 
     @Nullable
@@ -113,6 +129,7 @@ public class SettingsFragment extends Fragment {
         rootView = view;
         uiPrefs = requireContext().getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
         backupManager = new BackupManager(requireContext());
+        logExporter = new LogExporter(requireContext());
         initViews(view);
         applyAmoledIfNeeded();
         applyThemeColors();
@@ -132,6 +149,7 @@ public class SettingsFragment extends Fragment {
         btnChangelog = view.findViewById(R.id.btn_changelog);
         btnBackup = view.findViewById(R.id.btn_backup);
         btnRestore = view.findViewById(R.id.btn_restore);
+        btnExportLogs = view.findViewById(R.id.btn_export_logs);
     }
 
     private void applyThemeColors() {
@@ -279,6 +297,7 @@ public class SettingsFragment extends Fragment {
 
         btnBackup.setOnClickListener(v -> startBackup());
         btnRestore.setOnClickListener(v -> startRestore());
+        btnExportLogs.setOnClickListener(v -> startExportLogs());
     }
 
     private void startBackup() {
@@ -294,6 +313,118 @@ public class SettingsFragment extends Fragment {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/json");
         restoreLauncher.launch(intent);
+    }
+
+    private void startExportLogs() {
+        // Check if logging is enabled
+        boolean loggingEnabled = SPManager.isReady() && SPManager.getInstance().getEnableLogs();
+        
+        if (!loggingEnabled) {
+            showLoggingWarningBottomSheet();
+            return;
+        }
+        
+        // Request root access first
+        Toast.makeText(requireContext(), "Requesting root access...", Toast.LENGTH_SHORT).show();
+        
+        new Thread(() -> {
+            boolean hasRoot = logExporter.requestRootAccess();
+            
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (hasRoot) {
+                        Toast.makeText(requireContext(), "Root access granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Root access denied - some logs may be limited", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    // Proceed to file picker
+                    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("application/zip");
+                    intent.putExtra(Intent.EXTRA_TITLE, LogExporter.generateExportFilename());
+                    exportLogsLauncher.launch(intent);
+                });
+            }
+        }).start();
+    }
+
+    private void showLoggingWarningBottomSheet() {
+        View sheetView = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_logging_warning, null);
+
+        // Apply theme
+        BottomSheetHelper.applyTheme(requireContext(), sheetView);
+
+        FloatingBottomSheet dialog = new FloatingBottomSheet(requireContext());
+        dialog.setContentView(sheetView);
+
+        MaterialButton btnEnableLogging = sheetView.findViewById(R.id.btn_enable_logging);
+        MaterialButton btnCancel = sheetView.findViewById(R.id.btn_cancel);
+
+        btnEnableLogging.setOnClickListener(v -> {
+            // Enable logging
+            if (SPManager.isReady()) {
+                SPManager.getInstance().setOtherSetting(OtherSettingsType.EnableLogs, true);
+                switchLogs.setChecked(true);
+            }
+            dialog.dismiss();
+            Toast.makeText(requireContext(), "Logging enabled. You can now export logs.", Toast.LENGTH_SHORT).show();
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void performExportLogs(Uri uri) {
+        Toast.makeText(requireContext(), "Exporting logs...", Toast.LENGTH_SHORT).show();
+        
+        new Thread(() -> {
+            LogExporter.ExportResult result = logExporter.exportLogs(uri);
+            
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (result.success) {
+                        showExportSuccessBottomSheet(result);
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to export logs: " + result.errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void showExportSuccessBottomSheet(LogExporter.ExportResult result) {
+        View sheetView = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_export_success, null);
+
+        // Apply theme
+        BottomSheetHelper.applyTheme(requireContext(), sheetView);
+
+        FloatingBottomSheet dialog = new FloatingBottomSheet(requireContext());
+        dialog.setContentView(sheetView);
+
+        // Update root status
+        LinearLayout rootStatusContainer = sheetView.findViewById(R.id.root_status_container);
+        TextView tvRootStatus = sheetView.findViewById(R.id.tv_root_status);
+        TextView tvBootLogs = sheetView.findViewById(R.id.tv_boot_logs);
+        TextView tvRootExplanation = sheetView.findViewById(R.id.tv_root_explanation);
+
+        if (result.hasRootAccess) {
+            rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_success);
+            tvRootStatus.setText("Root Access Granted");
+            tvBootLogs.setText("• Boot/Kernel Logs (dmesg) ✓");
+            tvRootExplanation.setText("Root access was used to collect kernel logs (dmesg) and ANR traces which require elevated permissions on Android.");
+        } else {
+            rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_warning);
+            tvRootStatus.setText("No Root Access");
+            tvBootLogs.setText("• Boot/Kernel Logs (limited)");
+            tvRootExplanation.setText("Without root access, kernel logs (dmesg) and ANR traces could not be fully collected. Basic boot events from logcat are included.");
+        }
+
+        MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void performBackup(Uri uri) {

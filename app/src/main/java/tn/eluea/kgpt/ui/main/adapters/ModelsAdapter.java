@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2024-2025 Amr Aldeeb @Eluea
  * 
  * This file is part of KGPT - a fork of KeyboardGPT.
