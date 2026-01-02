@@ -30,8 +30,12 @@ import tn.eluea.kgpt.text.parse.result.FormatParseResult;
 import tn.eluea.kgpt.text.parse.result.InlineAskParseResult;
 import tn.eluea.kgpt.text.parse.result.ParseResult;
 import tn.eluea.kgpt.text.parse.result.SettingsParseResult;
+import tn.eluea.kgpt.text.parse.result.TextActionParseResult;
 import tn.eluea.kgpt.text.parse.result.WebSearchParseResult;
 import tn.eluea.kgpt.text.transform.format.TextUnicodeConverter;
+import tn.eluea.kgpt.textactions.SelectionHandler;
+import tn.eluea.kgpt.textactions.TextAction;
+import tn.eluea.kgpt.textactions.TextActionPrompts;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
 import tn.eluea.kgpt.ui.lab.apptrigger.AppTriggerManager;
@@ -47,6 +51,11 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
     private final TextParser mTextParser;
     private final SPUpdater mSPUpdater;
     private final AppTriggerManager mAppTriggerManager;
+    private final SelectionHandler mSelectionHandler;
+    
+    // Track if we're processing a text action (to replace selected text)
+    private boolean isTextActionMode = false;
+    private String pendingSelectedText = null;
 
     public KeyboardGPTBrain(Context context) {
         IMSController.getInstance().addListener(this);
@@ -61,6 +70,9 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
         // Initialize App Trigger Manager
         mAppTriggerManager = new AppTriggerManager(context);
         mTextParser.setAppTriggerManager(mAppTriggerManager);
+        
+        // Initialize Selection Handler for Text Actions
+        mSelectionHandler = new SelectionHandler(context, this::onTextActionRequested);
         
         // Load inline ask prefix from config
         loadInlineAskPrefix();
@@ -170,6 +182,28 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
                     UiInteractor.getInstance().toastShort("Failed to launch " + appTriggerResult.appName);
                 }
             });
+        } else if (parseResult instanceof TextActionParseResult) {
+            // Handle text action commands like "$rephrase", "$fix", etc.
+            TextActionParseResult textActionResult = (TextActionParseResult) parseResult;
+            MainHook.log("TextAction detected: action=" + textActionResult.action.name() + 
+                    ", text='" + textActionResult.text + "'");
+            
+            // Get the system message for this action
+            String systemMessage = TextActionPrompts.getSystemMessage(textActionResult.action);
+            String prompt = TextActionPrompts.buildPrompt(textActionResult.action, textActionResult.text);
+            
+            // First, commit the original text back (since we deleted the command)
+            imsController.stopNotifyInput();
+            imsController.commit(textActionResult.text);
+            imsController.startNotifyInput();
+            
+            // Then delete it and generate the response
+            imsController.stopNotifyInput();
+            imsController.delete(textActionResult.text.length());
+            imsController.startNotifyInput();
+            
+            // Generate the AI response
+            generateResponse(prompt, systemMessage);
         }
     }
 
@@ -199,7 +233,15 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
 
     @Override
     public void onAIPrepare() {
-        IMSController.getInstance().flush();
+        // In text action mode, delete the selected text first
+        if (isTextActionMode && pendingSelectedText != null) {
+            // The selected text should already be selected, so we just need to delete it
+            // and the AI response will replace it
+            IMSController.getInstance().flush();
+        } else {
+            IMSController.getInstance().flush();
+        }
+        
         IMSController.getInstance().commit(STR_GENERATING_CONTENT);
         IMSController.getInstance().stopNotifyInput();
         IMSController.getInstance().startInputLock();
@@ -237,6 +279,10 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
         IMSController.getInstance().flush();
         IMSController.getInstance().commit(displayError);
         IMSController.getInstance().startNotifyInput();
+        
+        // Reset text action mode
+        isTextActionMode = false;
+        pendingSelectedText = null;
     }
 
     @Override
@@ -244,6 +290,10 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
         IMSController.getInstance().endInputLock();
         clearGeneratingContent();
         IMSController.getInstance().startNotifyInput();
+        
+        // Reset text action mode
+        isTextActionMode = false;
+        pendingSelectedText = null;
     }
 
     @Override
@@ -262,5 +312,30 @@ public class KeyboardGPTBrain implements InputEventListener, GenerativeAIListene
                 UiInteractor.getInstance().toastShort("New Pattern Saved");
             });
         }
+    }
+    
+    /**
+     * Called when a text action is requested from the floating menu.
+     */
+    private void onTextActionRequested(TextAction action, String selectedText) {
+        MainHook.log("Text action requested: " + action.name());
+        
+        // Set text action mode to replace selected text with result
+        isTextActionMode = true;
+        pendingSelectedText = selectedText;
+        
+        // Get the system message for this action
+        String systemMessage = TextActionPrompts.getSystemMessage(action);
+        String prompt = TextActionPrompts.buildPrompt(action, selectedText);
+        
+        // Generate response
+        generateResponse(prompt, systemMessage);
+    }
+    
+    /**
+     * Get the selection handler for external access.
+     */
+    public SelectionHandler getSelectionHandler() {
+        return mSelectionHandler;
     }
 }

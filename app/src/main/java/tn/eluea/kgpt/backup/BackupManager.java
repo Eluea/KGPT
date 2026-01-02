@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +40,8 @@ import tn.eluea.kgpt.llm.LanguageModelField;
 import tn.eluea.kgpt.provider.ConfigClient;
 import tn.eluea.kgpt.settings.OtherSettingsType;
 import tn.eluea.kgpt.text.parse.ParsePattern;
+import tn.eluea.kgpt.textactions.TextAction;
+import tn.eluea.kgpt.textactions.TextActionManager;
 
 /**
  * Manages backup and restore of KGPT settings.
@@ -61,6 +64,12 @@ public class BackupManager {
     // App Triggers keys
     private static final String KEY_APP_TRIGGERS = "app_triggers";
     private static final String KEY_APP_TRIGGERS_ENABLED = "app_triggers_enabled";
+    
+    // Text Actions keys
+    private static final String KEY_TEXT_ACTIONS_ENABLED = "text_actions_enabled";
+    private static final String KEY_TEXT_ACTIONS_LIST = "text_actions_list";
+    private static final String KEY_TEXT_ACTIONS_SHOW_LABELS = "text_actions_show_labels";
+    private static final String KEY_TEXT_ACTION_PROMPTS = "text_action_prompts";
     
     private final Context context;
     private final SPManager spManager;
@@ -122,6 +131,28 @@ public class BackupManager {
             backup.put(KEY_APP_TRIGGERS, appTriggersRaw);
         }
         backup.put(KEY_APP_TRIGGERS_ENABLED, configClient.getBoolean("app_triggers_enabled", false));
+        
+        // Text Actions (LAB feature)
+        backup.put(KEY_TEXT_ACTIONS_ENABLED, configClient.getBoolean("text_actions_enabled", false));
+        String textActionsList = configClient.getString("text_actions_list", null);
+        if (textActionsList != null) {
+            backup.put(KEY_TEXT_ACTIONS_LIST, textActionsList);
+        }
+        backup.put(KEY_TEXT_ACTIONS_SHOW_LABELS, configClient.getBoolean("text_actions_show_labels", true));
+        
+        // Text Action Prompts
+        JSONObject actionPrompts = new JSONObject();
+        SharedPreferences mainPrefs = context.getSharedPreferences("keyboard_gpt", Context.MODE_PRIVATE);
+        for (TextAction action : TextAction.values()) {
+            String key = "text_action_prompt_" + action.name();
+            String prompt = mainPrefs.getString(key, null);
+            if (prompt != null) {
+                actionPrompts.put(action.name(), prompt);
+            }
+        }
+        if (actionPrompts.length() > 0) {
+            backup.put(KEY_TEXT_ACTION_PROMPTS, actionPrompts);
+        }
         
         return backup.toString(2); // Pretty print
     }
@@ -211,6 +242,37 @@ public class BackupManager {
             
             if (backup.has(KEY_APP_TRIGGERS_ENABLED)) {
                 configClient.putBoolean("app_triggers_enabled", backup.getBoolean(KEY_APP_TRIGGERS_ENABLED));
+                restoredCount++;
+            }
+            
+            // Restore Text Actions
+            if (backup.has(KEY_TEXT_ACTIONS_ENABLED)) {
+                configClient.putBoolean("text_actions_enabled", backup.getBoolean(KEY_TEXT_ACTIONS_ENABLED));
+                restoredCount++;
+            }
+            
+            if (backup.has(KEY_TEXT_ACTIONS_LIST)) {
+                configClient.putString("text_actions_list", backup.getString(KEY_TEXT_ACTIONS_LIST));
+                restoredCount++;
+            }
+            
+            if (backup.has(KEY_TEXT_ACTIONS_SHOW_LABELS)) {
+                configClient.putBoolean("text_actions_show_labels", backup.getBoolean(KEY_TEXT_ACTIONS_SHOW_LABELS));
+                restoredCount++;
+            }
+            
+            if (backup.has(KEY_TEXT_ACTION_PROMPTS)) {
+                JSONObject prompts = backup.getJSONObject(KEY_TEXT_ACTION_PROMPTS);
+                SharedPreferences mainPrefs = context.getSharedPreferences("keyboard_gpt", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mainPrefs.edit();
+                
+                Iterator<String> keys = prompts.keys();
+                while(keys.hasNext()) {
+                    String actionName = keys.next();
+                    String prompt = prompts.getString(actionName);
+                    editor.putString("text_action_prompt_" + actionName, prompt);
+                }
+                editor.apply();
                 restoredCount++;
             }
             

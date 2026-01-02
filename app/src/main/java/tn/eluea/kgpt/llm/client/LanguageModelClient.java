@@ -21,7 +21,8 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import tn.eluea.kgpt.MainHook;
+import android.util.Log;
+
 import tn.eluea.kgpt.llm.LanguageModel;
 import tn.eluea.kgpt.llm.LanguageModelField;
 import tn.eluea.kgpt.llm.internet.InternetProvider;
@@ -29,6 +30,7 @@ import tn.eluea.kgpt.llm.internet.SimpleInternetProvider;
 import tn.eluea.kgpt.llm.service.InternetRequestListener;
 
 public abstract class LanguageModelClient {
+    private static final String TAG = "KGPT_LMClient";
     private Map<LanguageModelField, String> mFields = new HashMap<>();
 
     private InternetProvider mInternetProvider = new SimpleInternetProvider();
@@ -52,7 +54,7 @@ public abstract class LanguageModelClient {
                 return Double.parseDouble(doubleStr);
             }
         } catch (NumberFormatException | NullPointerException e) {
-            MainHook.log(e);
+            Log.e(TAG, "Error parsing double field", e);
         }
         return Double.parseDouble(getLanguageModel().getDefault(field));
     }
@@ -64,7 +66,7 @@ public abstract class LanguageModelClient {
                 return Integer.parseInt(intStr);
             }
         } catch (NumberFormatException | NullPointerException e) {
-            MainHook.log(e);
+            Log.e(TAG, "Error parsing int field", e);
         }
         return Integer.parseInt(getLanguageModel().getDefault(field));
     }

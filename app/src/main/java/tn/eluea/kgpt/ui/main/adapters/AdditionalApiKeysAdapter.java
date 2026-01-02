@@ -103,11 +103,10 @@ public class AdditionalApiKeysAdapter extends RecyclerView.Adapter<AdditionalApi
                 if (hasFocus) {
                     // Post delayed to allow keyboard to appear first
                     v.postDelayed(() -> {
-                        // Request parent to scroll to make this view visible
-                        v.getParent().requestChildFocus(v, v);
-                        // Also scroll the item into view
-                        itemView.getParent().requestChildFocus(itemView, itemView);
-                    }, 200);
+                        // Request rectangle on screen to force scroll
+                        android.graphics.Rect rect = new android.graphics.Rect(0, 0, v.getWidth(), v.getHeight());
+                        v.requestRectangleOnScreen(rect, true);
+                    }, 300);
                 }
             });
 

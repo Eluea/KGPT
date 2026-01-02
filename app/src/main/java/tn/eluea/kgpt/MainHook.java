@@ -28,6 +28,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import tn.eluea.kgpt.hook.HookManager;
 import tn.eluea.kgpt.hook.MethodHook;
+import tn.eluea.kgpt.hook.TextSelectionHook;
 import tn.eluea.kgpt.provider.XposedConfigReader;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
@@ -71,6 +72,9 @@ public class MainHook implements IXposedHookLoadPackage {
         // Log XSharedPreferences status early
         MainHook.log("XSharedPreferences available: " + XposedConfigReader.isAvailable());
         MainHook.log(XposedConfigReader.getDebugInfo());
+        
+        // Hook text selection for AI actions (works in any app)
+        TextSelectionHook.hook(lpparam);
         
         hookKeyboard(lpparam);
     }
@@ -134,18 +138,32 @@ public class MainHook implements IXposedHookLoadPackage {
         hookManager.hook(inputMethodServiceClass, "onUpdateSelection",
                 new Class<?>[]{ int.class, int.class, int.class, int.class, int.class, int.class },
                 MethodHook.after(param -> {
-                    String packageName = UiInteractor.getInstance().getIMS().getCurrentInputEditorInfo().packageName;
+                    InputMethodService ims = (InputMethodService) param.thisObject;
+                    String packageName = ims.getCurrentInputEditorInfo().packageName;
                     if (BuildConfig.APPLICATION_ID.equals(packageName)) {
                         return;
                     }
+                    
+                    int oldSelStart = (int) param.args[0];
+                    int oldSelEnd = (int) param.args[1];
+                    int newSelStart = (int) param.args[2];
+                    int newSelEnd = (int) param.args[3];
+                    
+                    // Notify IMSController for text parsing
                     IMSController.getInstance().onUpdateSelection(
-                            (int) param.args[0],
-                            (int) param.args[1],
-                            (int) param.args[2],
-                            (int) param.args[3],
+                            oldSelStart,
+                            oldSelEnd,
+                            newSelStart,
+                            newSelEnd,
                             (int) param.args[4],
                             (int) param.args[5]
                     );
+                    
+                    // Notify SelectionHandler for text actions
+                    if (brain != null && brain.getSelectionHandler() != null) {
+                        brain.getSelectionHandler().onSelectionChanged(
+                                ims, oldSelStart, oldSelEnd, newSelStart, newSelEnd);
+                    }
                 }));
 
         hookManager.hook(inputMethodServiceClass, "onStartInput",
@@ -207,17 +225,44 @@ public class MainHook implements IXposedHookLoadPackage {
         return applicationContext;
     }
 
+    // Flag to check if we're in Xposed context
+    private static final boolean IS_XPOSED_CONTEXT;
+    static {
+        boolean xposedAvailable = false;
+        try {
+            Class.forName("de.robv.android.xposed.XposedBridge");
+            xposedAvailable = true;
+        } catch (ClassNotFoundException e) {
+            xposedAvailable = false;
+        }
+        IS_XPOSED_CONTEXT = xposedAvailable;
+    }
+
     public static void logST() {
         log(Log.getStackTraceString(new Throwable()));
     }
 
     public static void log(String message) {
+        // In app context, use Android Log
+        if (!IS_XPOSED_CONTEXT) {
+            Log.d("KGPT", message);
+            return;
+        }
+        
+        // In Xposed context, use XposedBridge.log
         if (!SPManager.isReady() || SPManager.getInstance().getEnableLogs()) {
             XposedBridge.log("(KeyboardGPT) " + message);
         }
     }
 
     public static void log(Throwable t) {
+        // In app context, use Android Log
+        if (!IS_XPOSED_CONTEXT) {
+            Log.e("KGPT", "Error", t);
+            return;
+        }
+        
+        // In Xposed context, use XposedBridge.log
         XposedBridge.log(t);
 
         UiInteractor.getInstance().post(() ->

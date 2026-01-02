@@ -91,8 +91,14 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
             Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
             Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             
+            // Calculate base padding in pixels (110dp)
+            float density = view.getContext().getResources().getDisplayMetrics().density;
+            int basePaddingPx = (int) (110 * density);
+            
             // Add padding at bottom when keyboard is visible
-            int bottomPadding = Math.max(imeInsets.bottom, systemBars.bottom);
+            // We use max of IME and system bars to ensure we cover navigation bar
+            // and add the base padding (dock space) on top of that.
+            int bottomInset = Math.max(imeInsets.bottom, systemBars.bottom);
             
             // Find the scroll view content and update its padding
             if (v instanceof NestedScrollView) {
@@ -102,7 +108,7 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
                         content.getPaddingLeft(),
                         content.getPaddingTop(),
                         content.getPaddingRight(),
-                        bottomPadding + 110 // 110dp for dock
+                        basePaddingPx + bottomInset
                     );
                 }
             }

@@ -23,11 +23,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import tn.eluea.kgpt.MainHook;
+import android.util.Log;
+
 import tn.eluea.kgpt.llm.service.InternetRequestListener;
 
 public class InternetRequestPublisher implements
         Publisher<String>, InternetRequestListener {
+    private static final String TAG = "KGPT_InternetPub";
     private final AtomicInteger mStatusCode = new AtomicInteger(-1);
     private final Object mLock = new Object();
     private final Callback mOnStatusCodeSuccess;
@@ -52,7 +54,7 @@ public class InternetRequestPublisher implements
 
                 synchronized (mLock) {
                     while (mStatusCode.get() == -1) {
-                        MainHook.log("Waiting for status code");
+                        Log.d(TAG, "Waiting for status code");
                         try {
                             mLock.wait();
                         } catch (InterruptedException e) {
@@ -60,7 +62,7 @@ public class InternetRequestPublisher implements
                     }
                 }
 
-                MainHook.log("Received status code " + mStatusCode);
+                Log.d(TAG, "Received status code " + mStatusCode);
                 boolean hasError = false;
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(mInputStream));
@@ -72,7 +74,7 @@ public class InternetRequestPublisher implements
                     reader.close();
                     mInputStream.close();
                 } catch (Throwable t) {
-                    MainHook.log(t);
+                    Log.e(TAG, "Error", t);
                     hasError = true;
                     subscriber.onError(t);
                 }

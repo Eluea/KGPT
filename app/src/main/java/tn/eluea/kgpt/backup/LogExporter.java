@@ -14,8 +14,13 @@
 package tn.eluea.kgpt.backup;
 
 import android.content.Context;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -102,6 +107,14 @@ public class LogExporter {
             // Add crash logs
             addCrashLogs(zos);
             result.crashLogs = true;
+
+            // Add hooked keyboard info
+            addHookedKeyboardInfo(zos);
+            result.hookedKeyboardInfo = true;
+
+            // Add settings dump (excluding API keys)
+            addSettingsDump(zos);
+            result.settingsDump = true;
 
             result.success = true;
             result.hasRootAccess = hasRootAccess;
@@ -301,6 +314,52 @@ public class LogExporter {
         addZipEntry(zos, "crash_logs.txt", logs.toString());
     }
 
+    private void addHookedKeyboardInfo(ZipOutputStream zos) throws IOException {
+        StringBuilder info = new StringBuilder();
+        info.append("=== Hooked Keyboard Info ===\n");
+        
+        try {
+            String defaultIme = Settings.Secure.getString(
+                context.getContentResolver(), 
+                Settings.Secure.DEFAULT_INPUT_METHOD
+            );
+            
+            info.append("Current Default IME ID: ").append(defaultIme).append("\n");
+            
+            if (defaultIme != null && !defaultIme.isEmpty()) {
+                // Determine package name. IME ID is usually "com.package.name/.ClassName"
+                String packageName = defaultIme.split("/")[0];
+                info.append("Target Package: ").append(packageName).append("\n");
+                
+                PackageManager pm = context.getPackageManager();
+                try {
+                    PackageInfo pi = pm.getPackageInfo(packageName, 0);
+                    info.append("App Name: ").append(pm.getApplicationLabel(pi.applicationInfo)).append("\n");
+                    info.append("Version Name: ").append(pi.versionName).append("\n");
+                    info.append("Version Code: ").append(pi.versionCode).append("\n");
+                    info.append("Target SDK: ").append(pi.applicationInfo.targetSdkVersion).append("\n");
+                } catch (Exception e) {
+                    info.append("Could not get package info: ").append(e.getMessage()).append("\n");
+                }
+            }
+        } catch (Exception e) {
+            info.append("Error retrieving IME info: ").append(e.getMessage()).append("\n");
+        }
+        
+        addZipEntry(zos, "hooked_keyboard_info.txt", info.toString());
+    }
+
+    private void addSettingsDump(ZipOutputStream zos) throws IOException {
+        try {
+            BackupManager bm = new BackupManager(context);
+            // reused log, createBackup() already dumps everything except API keys
+            String json = bm.createBackup();
+            addZipEntry(zos, "settings_backup.json", json);
+        } catch (Exception e) {
+             addZipEntry(zos, "settings_backup_error.txt", "Error dumping settings: " + e.getMessage());
+        }
+    }
+
     private void addZipEntry(ZipOutputStream zos, String filename, String content) throws IOException {
         ZipEntry entry = new ZipEntry(filename);
         zos.putNextEntry(entry);
@@ -360,6 +419,8 @@ public class LogExporter {
         public boolean bootLogs = false;
         public boolean systemLogs = false;
         public boolean crashLogs = false;
+        public boolean hookedKeyboardInfo = false;
+        public boolean settingsDump = false;
         public String errorMessage = null;
     }
 }

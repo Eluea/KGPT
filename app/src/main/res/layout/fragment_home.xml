@@ -62,7 +62,8 @@
                         android:text="BETA"
                         android:textColor="@color/warning"
                         android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 

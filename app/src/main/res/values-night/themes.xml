@@ -155,4 +155,19 @@
         <item name="colorOnSurface">@color/text_primary_dark</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary_dark</item>
     </style>
+
+    <!-- Text Actions Menu Activity Theme (Floating Transparent) Dark -->
+    <style name="Theme.KeyboardGPT.TextActionsMenu" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowAnimationStyle">@style/NoAnimation</item>
+    </style>
 </resources>

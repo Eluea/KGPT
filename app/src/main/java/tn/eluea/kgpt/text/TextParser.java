@@ -29,6 +29,8 @@ import tn.eluea.kgpt.text.parse.result.InlineAskParseResultFactory;
 import tn.eluea.kgpt.text.parse.result.ParseResultFactory;
 import tn.eluea.kgpt.text.parse.ParseDirective;
 import tn.eluea.kgpt.text.parse.result.ParseResult;
+import tn.eluea.kgpt.text.parse.result.TextActionParseResult;
+import tn.eluea.kgpt.textactions.TextActionCommands;
 import tn.eluea.kgpt.ui.UiInteractor;
 import tn.eluea.kgpt.ui.lab.apptrigger.AppTrigger;
 import tn.eluea.kgpt.ui.lab.apptrigger.AppTriggerManager;
@@ -37,6 +39,7 @@ public class TextParser implements ConfigChangeListener {
     private final List<ParseDirective> directives = new ArrayList<>();
     private String currentTriggerSymbol = "$";
     private boolean aiTriggerEnabled = false;
+    private boolean textActionsEnabled = false;
     private AppTriggerManager appTriggerManager = null;
 
     public TextParser() {
@@ -47,6 +50,13 @@ public class TextParser implements ConfigChangeListener {
 
     public void setAppTriggerManager(AppTriggerManager manager) {
         this.appTriggerManager = manager;
+    }
+    
+    /**
+     * Set whether text actions are enabled.
+     */
+    public void setTextActionsEnabled(boolean enabled) {
+        this.textActionsEnabled = enabled;
     }
 
     private void updatePatterns(List<ParsePattern> parsePatterns) {
@@ -86,6 +96,12 @@ public class TextParser implements ConfigChangeListener {
         if (appTriggerResult != null) {
             android.util.Log.d("KGPT_AppTrigger", "Found trigger: " + appTriggerResult.trigger + " -> " + appTriggerResult.packageName);
             return appTriggerResult;
+        }
+        
+        // Check for text action commands (e.g., "text $rephrase")
+        TextActionParseResult textActionResult = checkTextAction(textBeforeCursor);
+        if (textActionResult != null) {
+            return textActionResult;
         }
         
         // Only check inline ask if AI trigger is enabled
@@ -185,6 +201,30 @@ public class TextParser implements ConfigChangeListener {
         }
         
         android.util.Log.d("KGPT_AppTrigger", "No match found");
+        return null;
+    }
+    
+    /**
+     * Check if the text ends with a text action command
+     */
+    private TextActionParseResult checkTextAction(String text) {
+        if (text == null || text.isEmpty()) {
+            return null;
+        }
+        
+        // Parse the text for action commands
+        TextActionCommands.ParseResult result = TextActionCommands.parse(text);
+        if (result != null) {
+            android.util.Log.d("KGPT_TextAction", "Found action: " + result.action.name() + " for text: " + result.text);
+            return new TextActionParseResult(
+                    Collections.singletonList(result.text),
+                    result.startIndex,
+                    result.endIndex,
+                    result.text,
+                    result.action
+            );
+        }
+        
         return null;
     }
 

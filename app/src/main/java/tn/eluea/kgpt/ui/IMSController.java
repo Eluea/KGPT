@@ -61,6 +61,7 @@ public class IMSController {
         if (inputNotify) {
             return;
         }
+        if (ims == null) return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
             ExtractedText extractedText = ic.getExtractedText(new ExtractedTextRequest(), 0);
@@ -95,6 +96,7 @@ public class IMSController {
     }
 
     public void delete(int count) {
+        if (ims == null) return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
             ic.deleteSurroundingText(count, 0);
@@ -102,6 +104,7 @@ public class IMSController {
     }
 
     public void commit(String text) {
+        if (ims == null) return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
             ic.commitText(text, 1);
@@ -117,6 +120,7 @@ public class IMSController {
     }
 
     public void flush() {
+        if (ims == null) return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
             ic.finishComposingText();

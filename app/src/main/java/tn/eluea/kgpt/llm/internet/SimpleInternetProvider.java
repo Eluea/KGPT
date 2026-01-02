@@ -23,15 +23,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import tn.eluea.kgpt.MainHook;
+import android.util.Log;
+
 import tn.eluea.kgpt.llm.service.InternetRequestListener;
 
 public class SimpleInternetProvider implements InternetProvider {
+    private static final String TAG = "KGPT_SimpleInternet";
     ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Override
     public InputStream sendRequest(HttpURLConnection con, String body, InternetRequestListener irl) throws IOException {
-        MainHook.log("SimpleInternetProvider: Sending request to " + con.getURL());
+        Log.d(TAG, "Sending request to " + con.getURL());
         
         con.setDoOutput(true);
         con.setConnectTimeout(30000);
@@ -43,7 +45,7 @@ public class SimpleInternetProvider implements InternetProvider {
         }
 
         int responseCode = con.getResponseCode();
-        MainHook.log("SimpleInternetProvider: Response code = " + responseCode);
+        Log.d(TAG, "Response code = " + responseCode);
         irl.onRequestStatusCode(responseCode);
 
         PipedInputStream inputStream = new PipedInputStream();
@@ -63,7 +65,7 @@ public class SimpleInternetProvider implements InternetProvider {
                 }
                 outputStream.close();
             } catch (IOException e) {
-                MainHook.log("SimpleInternetProvider error: " + e.getMessage());
+                Log.e(TAG, "Error: " + e.getMessage());
                 try {
                     outputStream.close();
                 } catch (IOException ignored) {}

@@ -41,6 +41,19 @@ public class ConfigClient {
     private final Map<String, OnConfigChangeListener> mListeners = new ConcurrentHashMap<>();
     private ContentObserver mObserver;
     
+    // Flag to check if we're in Xposed context (XSharedPreferences class is available)
+    private static final boolean IS_XPOSED_CONTEXT;
+    static {
+        boolean xposedAvailable = false;
+        try {
+            Class.forName("de.robv.android.xposed.XSharedPreferences");
+            xposedAvailable = true;
+        } catch (ClassNotFoundException e) {
+            xposedAvailable = false;
+        }
+        IS_XPOSED_CONTEXT = xposedAvailable;
+    }
+    
     public interface OnConfigChangeListener {
         void onConfigChanged(String key, Object newValue);
     }
@@ -97,7 +110,8 @@ public class ConfigClient {
     public String getString(String key, String defaultValue) {
         // In Xposed context, ALWAYS try XSharedPreferences first
         // This is the primary method for reading config in hooked apps
-        if (XposedConfigReader.isAvailable()) {
+        // Only try if XSharedPreferences class is available (Xposed context)
+        if (IS_XPOSED_CONTEXT && XposedConfigReader.isAvailable()) {
             try {
                 String value = XposedConfigReader.getString(key, null);
                 if (value != null) {
@@ -154,7 +168,8 @@ public class ConfigClient {
     
     public boolean getBoolean(String key, boolean defaultValue) {
         // In Xposed context, try XSharedPreferences directly for boolean
-        if (XposedConfigReader.isAvailable()) {
+        // Only try if XSharedPreferences class is available (Xposed context)
+        if (IS_XPOSED_CONTEXT && XposedConfigReader.isAvailable()) {
             try {
                 return XposedConfigReader.getBoolean(key, defaultValue);
             } catch (Exception e) {
@@ -214,7 +229,8 @@ public class ConfigClient {
     
     public int getInt(String key, int defaultValue) {
         // In Xposed context, try XSharedPreferences directly for int
-        if (XposedConfigReader.isAvailable()) {
+        // Only try if XSharedPreferences class is available (Xposed context)
+        if (IS_XPOSED_CONTEXT && XposedConfigReader.isAvailable()) {
             try {
                 return XposedConfigReader.getInt(key, defaultValue);
             } catch (Exception e) {
@@ -252,7 +268,14 @@ public class ConfigClient {
     
     public void clearCache() {
         mCache.clear();
-        XposedConfigReader.clearCache();
+        // Only call XposedConfigReader if in Xposed context
+        if (IS_XPOSED_CONTEXT) {
+            try {
+                XposedConfigReader.clearCache();
+            } catch (Exception e) {
+                // Ignore - not in Xposed context
+            }
+        }
     }
     
     public void destroy() {

@@ -67,7 +67,7 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences uiPrefs;
     private BackupManager backupManager;
     private LogExporter logExporter;
-    
+
     // Activity result launchers for file picker
     private ActivityResultLauncher<Intent> backupLauncher;
     private ActivityResultLauncher<Intent> restoreLauncher;
@@ -76,50 +76,48 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // Initialize backup launcher
         backupLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri uri = result.getData().getData();
-                    if (uri != null) {
-                        performBackup(uri);
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) {
+                            performBackup(uri);
+                        }
                     }
-                }
-            }
-        );
-        
+                });
+
         // Initialize restore launcher
         restoreLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri uri = result.getData().getData();
-                    if (uri != null) {
-                        performRestore(uri);
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) {
+                            performRestore(uri);
+                        }
                     }
-                }
-            }
-        );
-        
+                });
+
         // Initialize export logs launcher
         exportLogsLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri uri = result.getData().getData();
-                    if (uri != null) {
-                        performExportLogs(uri);
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) {
+                            performExportLogs(uri);
+                        }
                     }
-                }
-            }
-        );
+                });
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
@@ -159,34 +157,37 @@ public class SettingsFragment extends Fragment {
         int trackUncheckedColor = ContextCompat.getColor(requireContext(), R.color.switch_track_unchecked);
         int thumbCheckedColor = ContextCompat.getColor(requireContext(), R.color.switch_thumb_checked);
         int thumbUncheckedColor = ContextCompat.getColor(requireContext(), R.color.switch_thumb_unchecked);
-        
-        applySwitchColors(switchDarkMode, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
+
+        applySwitchColors(switchDarkMode, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor,
+                trackUncheckedColor);
         applySwitchColors(switchAmoled, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
         applySwitchColors(switchLogs, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
-        applySwitchColors(switchExternalInternet, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
+        applySwitchColors(switchExternalInternet, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor,
+                trackUncheckedColor);
     }
 
-    private void applySwitchColors(MaterialSwitch switchView, int thumbChecked, int thumbUnchecked, int trackChecked, int trackUnchecked) {
+    private void applySwitchColors(MaterialSwitch switchView, int thumbChecked, int thumbUnchecked, int trackChecked,
+            int trackUnchecked) {
         int[][] states = new int[][] {
-            new int[] { android.R.attr.state_checked },
-            new int[] { -android.R.attr.state_checked }
+                new int[] { android.R.attr.state_checked },
+                new int[] { -android.R.attr.state_checked }
         };
-        
+
         int[] thumbColors = new int[] { thumbChecked, thumbUnchecked };
         int[] trackColors = new int[] { trackChecked, trackUnchecked };
-        
+
         switchView.setThumbTintList(new ColorStateList(states, thumbColors));
         switchView.setTrackTintList(new ColorStateList(states, trackColors));
     }
 
     private ColorStateList createSwitchThumbColorStateList(int checkedColor) {
         int[][] states = new int[][] {
-            new int[] { android.R.attr.state_checked },
-            new int[] { -android.R.attr.state_checked }
+                new int[] { android.R.attr.state_checked },
+                new int[] { -android.R.attr.state_checked }
         };
         int[] colors = new int[] {
-            checkedColor,
-            ContextCompat.getColor(requireContext(), R.color.text_secondary)
+                checkedColor,
+                ContextCompat.getColor(requireContext(), R.color.text_secondary)
         };
         return new ColorStateList(states, colors);
     }
@@ -194,11 +195,11 @@ public class SettingsFragment extends Fragment {
     private void applyAmoledIfNeeded() {
         boolean isAmoled = uiPrefs.getBoolean(PREF_AMOLED, false);
         boolean isDarkMode = uiPrefs.getBoolean(PREF_THEME, false);
-        
+
         if (isDarkMode && isAmoled) {
             // Apply AMOLED colors
             rootView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.background_amoled));
-            
+
             // Update all cards to AMOLED surface color
             applyAmoledToCards(rootView);
         }
@@ -207,11 +208,9 @@ public class SettingsFragment extends Fragment {
     private void applyAmoledToCards(View view) {
         if (view instanceof MaterialCardView) {
             ((MaterialCardView) view).setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.surface_amoled)
-            );
+                    ContextCompat.getColor(requireContext(), R.color.surface_amoled));
             ((MaterialCardView) view).setStrokeColor(
-                ContextCompat.getColor(requireContext(), R.color.divider_dark)
-            );
+                    ContextCompat.getColor(requireContext(), R.color.divider_dark));
         } else if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {
@@ -224,10 +223,10 @@ public class SettingsFragment extends Fragment {
         // UI Settings
         boolean isDarkMode = uiPrefs.getBoolean(PREF_THEME, false);
         boolean isAmoled = uiPrefs.getBoolean(PREF_AMOLED, false);
-        
+
         switchDarkMode.setChecked(isDarkMode);
         switchAmoled.setChecked(isAmoled);
-        
+
         // AMOLED option only available when dark mode is enabled
         amoledContainer.setAlpha(isDarkMode ? 1.0f : 0.5f);
         switchAmoled.setEnabled(isDarkMode);
@@ -245,19 +244,19 @@ public class SettingsFragment extends Fragment {
     private void setupListeners() {
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             uiPrefs.edit().putBoolean(PREF_THEME, isChecked).apply();
-            
+
             // Update AMOLED option availability
             amoledContainer.setAlpha(isChecked ? 1.0f : 0.5f);
             switchAmoled.setEnabled(isChecked);
-            
+
             if (!isChecked && switchAmoled.isChecked()) {
                 switchAmoled.setChecked(false);
                 uiPrefs.edit().putBoolean(PREF_AMOLED, false).apply();
             }
-            
+
             // Apply theme change globally
             KGPTApplication.applyTheme(isChecked);
-            
+
             // Recreate to apply theme
             if (getActivity() != null) {
                 getActivity().recreate();
@@ -265,8 +264,9 @@ public class SettingsFragment extends Fragment {
         });
 
         switchAmoled.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!switchAmoled.isEnabled()) return;
-            
+            if (!switchAmoled.isEnabled())
+                return;
+
             uiPrefs.edit().putBoolean(PREF_AMOLED, isChecked).apply();
             // Recreate activity to apply AMOLED theme
             if (getActivity() != null) {
@@ -318,26 +318,27 @@ public class SettingsFragment extends Fragment {
     private void startExportLogs() {
         // Check if logging is enabled
         boolean loggingEnabled = SPManager.isReady() && SPManager.getInstance().getEnableLogs();
-        
+
         if (!loggingEnabled) {
             showLoggingWarningBottomSheet();
             return;
         }
-        
+
         // Request root access first
         Toast.makeText(requireContext(), "Requesting root access...", Toast.LENGTH_SHORT).show();
-        
+
         new Thread(() -> {
             boolean hasRoot = logExporter.requestRootAccess();
-            
+
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (hasRoot) {
                         Toast.makeText(requireContext(), "Root access granted", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(requireContext(), "Root access denied - some logs may be limited", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Root access denied - some logs may be limited",
+                                Toast.LENGTH_SHORT).show();
                     }
-                    
+
                     // Proceed to file picker
                     Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -378,16 +379,17 @@ public class SettingsFragment extends Fragment {
 
     private void performExportLogs(Uri uri) {
         Toast.makeText(requireContext(), "Exporting logs...", Toast.LENGTH_SHORT).show();
-        
+
         new Thread(() -> {
             LogExporter.ExportResult result = logExporter.exportLogs(uri);
-            
+
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (result.success) {
                         showExportSuccessBottomSheet(result);
                     } else {
-                        Toast.makeText(requireContext(), "Failed to export logs: " + result.errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Failed to export logs: " + result.errorMessage,
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -413,12 +415,14 @@ public class SettingsFragment extends Fragment {
             rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_success);
             tvRootStatus.setText("Root Access Granted");
             tvBootLogs.setText("• Boot/Kernel Logs (dmesg) ✓");
-            tvRootExplanation.setText("Root access was used to collect kernel logs (dmesg) and ANR traces which require elevated permissions on Android.");
+            tvRootExplanation.setText(
+                    "Root access was used to collect kernel logs (dmesg) and ANR traces which require elevated permissions on Android.");
         } else {
             rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_warning);
             tvRootStatus.setText("No Root Access");
             tvBootLogs.setText("• Boot/Kernel Logs (limited)");
-            tvRootExplanation.setText("Without root access, kernel logs (dmesg) and ANR traces could not be fully collected. Basic boot events from logcat are included.");
+            tvRootExplanation.setText(
+                    "Without root access, kernel logs (dmesg) and ANR traces could not be fully collected. Basic boot events from logcat are included.");
         }
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
@@ -431,7 +435,7 @@ public class SettingsFragment extends Fragment {
         try {
             String backupJson = backupManager.createBackup();
             boolean success = backupManager.saveToFile(uri, backupJson);
-            
+
             if (success) {
                 Toast.makeText(requireContext(), "Backup saved successfully", Toast.LENGTH_SHORT).show();
             } else {
@@ -444,16 +448,18 @@ public class SettingsFragment extends Fragment {
 
     private void performRestore(Uri uri) {
         String backupJson = backupManager.readFromFile(uri);
-        
+
         if (backupJson == null) {
             Toast.makeText(requireContext(), "Failed to read backup file", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         BackupManager.RestoreResult result = backupManager.restoreBackup(backupJson);
-        
+
         if (result.success) {
-            Toast.makeText(requireContext(), "Restored " + result.itemsRestored + " settings. Restart app to apply theme changes.", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(),
+                    "Restored " + result.itemsRestored + " settings. Restart app to apply theme changes.",
+                    Toast.LENGTH_LONG).show();
             // Reload settings
             loadSettings();
         } else {
@@ -476,30 +482,25 @@ public class SettingsFragment extends Fragment {
 
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
-        
-        // ADD entries - New Models
-        addChangelogEntry(changelogContent, "ADD", "ChatGPT: GPT-5.2, GPT-5.1, GPT-5, GPT-5-mini, GPT-5-nano, GPT-4.1 series");
-        addChangelogEntry(changelogContent, "ADD", "ChatGPT: Reasoning models o3, o3-mini, o3-pro, o4-mini");
-        addChangelogEntry(changelogContent, "ADD", "Claude: Claude 4.5 series (Opus, Sonnet, Haiku)");
-        addChangelogEntry(changelogContent, "ADD", "Claude: Claude 4 series (Opus, Sonnet)");
-        addChangelogEntry(changelogContent, "ADD", "Groq: OpenAI GPT-OSS-120B, GPT-OSS-20B");
-        addChangelogEntry(changelogContent, "ADD", "Groq: Llama 4 Maverick & Scout, Qwen3-32B, Kimi K2");
-        addChangelogEntry(changelogContent, "ADD", "Mistral: Magistral Medium/Small (Reasoning models)");
-        addChangelogEntry(changelogContent, "ADD", "Mistral: Devstral (Coding), Codestral, Ministral 3B/8B");
-        addChangelogEntry(changelogContent, "ADD", "OpenRouter: More free models (Llama 3.3, Qwen 2.5, DeepSeek, Phi-4)");
-        
-        // FIX entries
-        addChangelogEntry(changelogContent, "FIX", "Major stability improvements: Fixed theme inconsistency, app launch reliability, config sync, and memory leaks");
-        addChangelogEntry(changelogContent, "FIX", "Back gesture now returns to Home instead of closing app from AI Invocation");
-        addChangelogEntry(changelogContent, "FIX", "Web Search no longer crashes when reopened after closing");
-        addChangelogEntry(changelogContent, "FIX", "Settings trigger symbol changes now display correctly in UI");
-        
+
         // IMPROVE entries
-        addChangelogEntry(changelogContent, "IMPROVE", "AI trigger no longer activates when typed in empty field");
-        addChangelogEntry(changelogContent, "IMPROVE", "Backup now includes App Triggers settings from Lab");
-        
-        // LAB entries
-        addChangelogEntry(changelogContent, "LAB", "App Triggers: Open or switch to apps by typing custom trigger words");
+        addChangelogEntry(changelogContent, "IMPROVE", "Overall app stability improvements");
+
+        // LAB entries - New Features
+        addChangelogEntry(changelogContent, "LAB", "AI Text Actions: New feature for quick AI text processing");
+
+        // IMPROVE entries - Backup
+        addChangelogEntry(changelogContent, "IMPROVE", "Backup export/import now includes AI Text Action settings");
+
+        // IMPROVE entries - Icons
+        addChangelogEntry(changelogContent, "IMPROVE",
+                "Updated some icons to match the overall design (backup export/import icons)");
+
+        // IMPROVE entries - Export Logs
+        addChangelogEntry(changelogContent, "IMPROVE",
+                "Enhanced export logs with additional details: app settings, keyboard type & version, and more");
+        addChangelogEntry(changelogContent, "ALERT",
+                "Privacy Notice: When sharing exported logs, please share them privately with the developer to avoid leaking any sensitive data that may appear in the logs. This helps resolve issues faster");
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());
@@ -509,13 +510,13 @@ public class SettingsFragment extends Fragment {
 
     private void addChangelogEntry(LinearLayout container, String tag, String text) {
         View entryView = LayoutInflater.from(requireContext()).inflate(R.layout.item_changelog_entry, container, false);
-        
+
         TextView tvTag = entryView.findViewById(R.id.tv_tag);
         TextView tvText = entryView.findViewById(R.id.tv_text);
-        
+
         tvTag.setText(tag);
         tvText.setText(text);
-        
+
         // Set tag background based on type
         int bgRes;
         switch (tag) {
@@ -537,11 +538,14 @@ public class SettingsFragment extends Fragment {
             case "LAB":
                 bgRes = R.drawable.bg_tag_lab;
                 break;
+            case "ALERT":
+                bgRes = R.drawable.bg_tag_alert;
+                break;
             default:
                 bgRes = R.drawable.bg_tag_add;
         }
         tvTag.setBackgroundResource(bgRes);
-        
+
         container.addView(entryView);
     }
 
@@ -557,7 +561,7 @@ public class SettingsFragment extends Fragment {
         // Set content
         TextView tvTitle = sheetView.findViewById(R.id.tv_info_title);
         TextView tvDescription = sheetView.findViewById(R.id.tv_info_description);
-        
+
         tvTitle.setText("About Settings");
         tvDescription.setText("Customize your KGPT experience.\n\n" +
                 "• Dark Mode: Enable dark theme for comfortable viewing at night.\n\n" +

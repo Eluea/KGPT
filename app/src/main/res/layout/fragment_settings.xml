@@ -325,7 +325,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_export_filled"
+                        android:src="@drawable/ic_cloud_backup_filled"
                         app:tint="@color/primary" />
 
                     <LinearLayout
@@ -376,7 +376,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_import_filled"
+                        android:src="@drawable/ic_cloud_restore_filled"
                         app:tint="@color/primary" />
 
                     <LinearLayout

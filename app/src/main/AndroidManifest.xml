@@ -70,6 +70,32 @@
             android:theme="@style/Theme.KeyboardGPT"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.lab.textactions.TextActionsActivity"
+            android:theme="@style/Theme.KeyboardGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".external.TextActionsMenuActivity"
+            android:theme="@style/Theme.KeyboardGPT.TextActionsMenu"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+
+        <!-- PROCESS_TEXT Activity - Shows AI actions in text selection menu -->
+        <activity
+            android:name=".external.ProcessTextActivity"
+            android:theme="@style/Theme.KeyboardGPT.Translucent"
+            android:excludeFromRecents="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="KGPT AI"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".external.InternetService"
             android:exported="true">
@@ -93,6 +119,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.TextActionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="tn.eluea.kgpt.TEXT_ACTION_REQUEST" />
             </intent-filter>
         </receiver>
 
