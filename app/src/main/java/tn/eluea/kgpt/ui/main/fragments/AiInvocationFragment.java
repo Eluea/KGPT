@@ -63,7 +63,7 @@ public class AiInvocationFragment extends Fragment {
     private static final String EXTRA_PATTERN_LIST = "tn.eluea.kgpt.pattern.LIST";
     private static final String EXTRA_COMMAND_LIST = "tn.eluea.kgpt.command.LIST";
     private static final String PREF_INLINE_ASK_PREFIX = "inline_ask_prefix";
-    
+
     // Maximum limits
     private static final int MAX_TRIGGERS = 3;
 
@@ -79,7 +79,8 @@ public class AiInvocationFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ai_invocation, container, false);
     }
 
@@ -120,16 +121,13 @@ public class AiInvocationFragment extends Fragment {
             if (cornerRadius >= 18) {
                 // Container card (20dp radius)
                 card.setCardBackgroundColor(
-                    ContextCompat.getColor(requireContext(), R.color.container_background_amoled)
-                );
+                        ContextCompat.getColor(requireContext(), R.color.container_background_amoled));
             } else {
                 // Item card (12dp radius)
                 card.setCardBackgroundColor(
-                    ContextCompat.getColor(requireContext(), R.color.item_card_background_amoled)
-                );
+                        ContextCompat.getColor(requireContext(), R.color.item_card_background_amoled));
                 card.setStrokeColor(
-                    ContextCompat.getColor(requireContext(), R.color.item_card_border_amoled)
-                );
+                        ContextCompat.getColor(requireContext(), R.color.item_card_border_amoled));
             }
             // Apply AMOLED to children of card (iterate children directly)
             for (int i = 0; i < card.getChildCount(); i++) {
@@ -159,9 +157,10 @@ public class AiInvocationFragment extends Fragment {
         if (SPManager.isReady()) {
             commands = new ArrayList<>(SPManager.getInstance().getGenerativeAICommands());
             patterns = new ArrayList<>(SPManager.getInstance().getParsePatterns());
-            
+
             // Load saved inline ask prefix from ConfigProvider (world-readable)
-            String savedPrefix = SPManager.getInstance().getConfigClient().getString(PREF_INLINE_ASK_PREFIX, InlineAskCommand.DEFAULT_PREFIX);
+            String savedPrefix = SPManager.getInstance().getConfigClient().getString(PREF_INLINE_ASK_PREFIX,
+                    InlineAskCommand.DEFAULT_PREFIX);
             InlineAskCommand.setPrefix(savedPrefix);
         }
 
@@ -236,7 +235,7 @@ public class AiInvocationFragment extends Fragment {
                     return;
                 }
             }
-            
+
             // Check for built-in command names
             if (InlineAskCommand.isInlineAskCommand(commandName) || commandName.equalsIgnoreCase("s")) {
                 Toast.makeText(requireContext(), "Cannot use built-in command name", Toast.LENGTH_SHORT).show();
@@ -296,7 +295,7 @@ public class AiInvocationFragment extends Fragment {
                     return;
                 }
             }
-            
+
             // Check for built-in command names
             if (InlineAskCommand.isInlineAskCommand(commandName) || commandName.equalsIgnoreCase("s")) {
                 Toast.makeText(requireContext(), "Cannot use built-in command name", Toast.LENGTH_SHORT).show();
@@ -313,7 +312,7 @@ public class AiInvocationFragment extends Fragment {
 
         dialog.show();
     }
-    
+
     private void showEditInlineAskDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_command, null);
@@ -332,7 +331,7 @@ public class AiInvocationFragment extends Fragment {
         EditText etSystemMessage = dialogView.findViewById(R.id.et_system_message);
         MaterialButton btnCancel = dialogView.findViewById(R.id.btn_cancel);
         MaterialButton btnSave = dialogView.findViewById(R.id.btn_save);
-        
+
         // Hide system message for built-in command
         // Find the parent TextInputLayout of etSystemMessage
         if (etSystemMessage != null && etSystemMessage.getParent() != null) {
@@ -362,7 +361,7 @@ public class AiInvocationFragment extends Fragment {
                     return;
                 }
             }
-            
+
             // Check for other built-in command names
             if (commandName.equalsIgnoreCase("s")) {
                 Toast.makeText(requireContext(), "Cannot use built-in command name", Toast.LENGTH_SHORT).show();
@@ -371,17 +370,18 @@ public class AiInvocationFragment extends Fragment {
 
             // Update inline ask prefix
             InlineAskCommand.setPrefix(commandName);
-            
+
             // Save to ConfigProvider (world-readable) instead of private preferences
             // This ensures the Xposed module can read the setting
             if (SPManager.isReady()) {
                 SPManager.getInstance().getConfigClient().putString(PREF_INLINE_ASK_PREFIX, commandName);
             }
-            
+
             commandsAdapter.notifyDataSetChanged();
             syncConfig();
             dialog.dismiss();
-            Toast.makeText(requireContext(), "Inline Ask command updated to /" + commandName, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Inline Ask command updated to /" + commandName, Toast.LENGTH_SHORT)
+                    .show();
         });
 
         dialog.show();
@@ -389,7 +389,7 @@ public class AiInvocationFragment extends Fragment {
 
     private void showDeleteCommandConfirmation(GenerativeAICommand command, int position) {
         View sheetView = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_delete_confirm, null);
-        
+
         // Apply theme
         BottomSheetHelper.applyTheme(requireContext(), sheetView);
 
@@ -430,7 +430,8 @@ public class AiInvocationFragment extends Fragment {
         TextInputEditText etSymbol = dialogView.findViewById(R.id.et_symbol);
         TextInputLayout inputLayout = dialogView.findViewById(R.id.input_layout_symbol);
         TextView tvExample = dialogView.findViewById(R.id.tv_example);
-        com.google.android.material.materialswitch.MaterialSwitch switchEnabled = dialogView.findViewById(R.id.switch_enabled);
+        com.google.android.material.materialswitch.MaterialSwitch switchEnabled = dialogView
+                .findViewById(R.id.switch_enabled);
         MaterialButton btnReset = dialogView.findViewById(R.id.btn_reset);
         MaterialButton btnCancel = dialogView.findViewById(R.id.btn_cancel);
         MaterialButton btnSave = dialogView.findViewById(R.id.btn_save);
@@ -438,32 +439,34 @@ public class AiInvocationFragment extends Fragment {
         // Set values
         tvPatternType.setText(pattern.getType().title);
         tvDescription.setText(pattern.getType().description);
-        
+
         // Set enabled state
         switchEnabled.setChecked(pattern.isEnabled());
-        
+
         // Extract current symbol from regex
         String currentSymbol = PatternType.regexToSymbol(pattern.getPattern().pattern());
         if (currentSymbol == null || currentSymbol.isEmpty()) {
             currentSymbol = pattern.getType().defaultSymbol;
         }
         etSymbol.setText(currentSymbol);
-        
+
         // Update example based on symbol
         updateExample(tvExample, currentSymbol, pattern.getType());
-        
+
         // Listen for symbol changes to update example
         etSymbol.addTextChangedListener(new android.text.TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateExample(tvExample, s.toString(), pattern.getType());
             }
-            
+
             @Override
-            public void afterTextChanged(android.text.Editable s) {}
+            public void afterTextChanged(android.text.Editable s) {
+            }
         });
 
         btnReset.setOnClickListener(v -> {
@@ -509,19 +512,19 @@ public class AiInvocationFragment extends Fragment {
             savePatterns();
             patternsAdapter.updatePatterns(patterns);
             dialog.dismiss();
-            
+
             String statusMsg = isEnabled ? "enabled" : "disabled";
             Toast.makeText(requireContext(), "Trigger \"" + symbol + "\" " + statusMsg, Toast.LENGTH_SHORT).show();
         });
 
         dialog.show();
     }
-    
+
     private void updateExample(TextView tvExample, String symbol, PatternType type) {
         if (symbol == null || symbol.isEmpty()) {
             symbol = type.defaultSymbol;
         }
-        
+
         String example;
         switch (type) {
             case Settings:
@@ -531,7 +534,7 @@ public class AiInvocationFragment extends Fragment {
                 example = "Example: \"Hello, how are you?" + symbol + "\" → AI responds";
                 break;
             case CommandCustom:
-                example = "Example: \"Hello" + symbol + "translate" + symbol + "\" → Translates";
+                example = "Example: \"Hello" + symbol + "translate\" → Translates";
                 break;
             case FormatItalic:
                 example = "Example: \"text" + symbol + "\" → italic text";
@@ -553,7 +556,7 @@ public class AiInvocationFragment extends Fragment {
 
     private void showResetPatternConfirmation(ParsePattern pattern, int position) {
         View sheetView = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_delete_confirm, null);
-        
+
         // Apply theme
         BottomSheetHelper.applyTheme(requireContext(), sheetView);
 
@@ -566,7 +569,8 @@ public class AiInvocationFragment extends Fragment {
         MaterialButton btnDelete = sheetView.findViewById(R.id.btn_delete);
 
         tvTitle.setText("Reset Pattern");
-        tvMessage.setText("Reset '" + pattern.getType().title + "' to default symbol \"" + pattern.getType().defaultSymbol + "\"?");
+        tvMessage.setText("Reset '" + pattern.getType().title + "' to default symbol \""
+                + pattern.getType().defaultSymbol + "\"?");
         btnDelete.setText("Reset");
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -599,22 +603,22 @@ public class AiInvocationFragment extends Fragment {
     private void syncConfig() {
         // Send broadcast to sync with Xposed module using the same action it listens to
         Intent intent = new Intent(ACTION_DIALOG_RESULT);
-        
+
         // Include patterns data (get raw from SPManager after saving)
         String patternsRaw = SPManager.getInstance().getParsePatternsRaw();
         intent.putExtra(EXTRA_PATTERN_LIST, patternsRaw);
-        
+
         // Include commands data
         String commandsRaw = SPManager.getInstance().getGenerativeAICommandsRaw();
         intent.putExtra(EXTRA_COMMAND_LIST, commandsRaw);
-        
+
         requireContext().sendBroadcast(intent);
     }
 
     private void showInfoBottomSheet() {
         View sheetView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.bottom_sheet_ai_usage, null);
-        
+
         // Apply theme
         BottomSheetHelper.applyTheme(requireContext(), sheetView);
 
@@ -624,11 +628,12 @@ public class AiInvocationFragment extends Fragment {
         String boldSymbol = "@";
         String crossoutSymbol = "~";
         String underlineSymbol = "_";
-        
+
         for (ParsePattern pattern : patterns) {
             String symbol = PatternType.regexToSymbol(pattern.getPattern().pattern());
-            if (symbol == null) symbol = pattern.getType().defaultSymbol;
-            
+            if (symbol == null)
+                symbol = pattern.getType().defaultSymbol;
+
             switch (pattern.getType()) {
                 case CommandAI:
                     aiTriggerSymbol = symbol;
@@ -647,26 +652,27 @@ public class AiInvocationFragment extends Fragment {
                     break;
             }
         }
-        
+
         // Get first command name (if exists)
         String commandName = "translate";
         if (commands != null && !commands.isEmpty()) {
             commandName = commands.get(0).getCommandPrefix();
         }
-        
+
         // Get /ask prefix
         String askPrefix = InlineAskCommand.getInstance().getCommandPrefix();
-        
+
         // Update examples dynamically
         TextView tvAiExample = sheetView.findViewById(R.id.tv_ai_trigger_example);
         TextView tvAskExample = sheetView.findViewById(R.id.tv_ask_example);
         TextView tvCommandExample = sheetView.findViewById(R.id.tv_command_example);
         TextView tvFormatExample = sheetView.findViewById(R.id.tv_format_example);
-        
+
         tvAiExample.setText("What is AI?" + aiTriggerSymbol);
         tvAskExample.setText("Note. /" + askPrefix + " time?" + aiTriggerSymbol + " → keeps Note.");
         tvCommandExample.setText("Hello /" + commandName + aiTriggerSymbol);
-        tvFormatExample.setText("text" + italicSymbol + " text" + boldSymbol + " text" + crossoutSymbol + " text" + underlineSymbol);
+        tvFormatExample.setText(
+                "text" + italicSymbol + " text" + boldSymbol + " text" + crossoutSymbol + " text" + underlineSymbol);
 
         FloatingBottomSheet dialog = new FloatingBottomSheet(requireContext());
         dialog.setContentView(sheetView);

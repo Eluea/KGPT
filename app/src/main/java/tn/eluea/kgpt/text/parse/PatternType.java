@@ -29,7 +29,8 @@ public enum PatternType {
     public final String defaultSymbol;
     public final String description;
 
-    PatternType(String title, int groupCount, String defaultPattern, boolean editable, String defaultSymbol, String description) {
+    PatternType(String title, int groupCount, String defaultPattern, boolean editable, String defaultSymbol,
+            String description) {
         this.title = title;
         this.groupCount = groupCount;
         this.defaultPattern = defaultPattern;
@@ -37,7 +38,7 @@ public enum PatternType {
         this.defaultSymbol = defaultSymbol;
         this.description = description;
     }
-    
+
     /**
      * Convert a user-friendly symbol to regex pattern
      * The new logic: text is written normally, symbol at the END triggers AI
@@ -47,14 +48,15 @@ public enum PatternType {
         if (symbol == null || symbol.isEmpty()) {
             return null;
         }
-        
+
         String escapedSymbol = escapeRegex(symbol);
-        
+
         if (groupCount == 0) {
             // For Settings-like patterns: exact match of the symbol
             return String.format("%s$", escapedSymbol);
         } else if (groupCount == 1) {
-            // For multi-char symbols like "??", use (.+) to capture any text (at least 1 char)
+            // For multi-char symbols like "??", use (.+) to capture any text (at least 1
+            // char)
             // For single-char symbols, use negated character class with + (at least 1 char)
             if (symbol.length() > 1) {
                 return String.format("(.+)%s$", escapedSymbol);
@@ -67,11 +69,12 @@ public enum PatternType {
             // Pattern for custom commands: text%command% or text%%
             // Changed from * to + to require at least one character before trigger
             String literalSymbol = escapeLiteralForCharClass(symbol);
-            return String.format("([^%s]+)%s(?:([^ %s]+))?%s$", literalSymbol, escapedSymbol, literalSymbol, escapedSymbol);
+            return String.format("([^%s]+)%s(?:([^ %s]+))?%s$", literalSymbol, escapedSymbol, literalSymbol,
+                    escapedSymbol);
         }
         return null;
     }
-    
+
     /**
      * Extract the trigger symbol from a regex pattern
      */
@@ -79,22 +82,44 @@ public enum PatternType {
         if (regex == null || regex.isEmpty()) {
             return null;
         }
-        
-        // Try to find the symbol at the end (before $)
+
+        // For CommandCustom pattern: ([^%]+)%(?:([^ %]+))?%$ - extract the % symbol
+        // Look for pattern like ([^X]+)X where X is the symbol
+        java.util.regex.Pattern charClassPattern = java.util.regex.Pattern.compile("\\[\\^([^\\]]+)\\]");
+        java.util.regex.Matcher matcher = charClassPattern.matcher(regex);
+        if (matcher.find()) {
+            String charClass = matcher.group(1);
+            if (charClass.length() > 0) {
+                // Check if it starts with escaped char
+                if (charClass.startsWith("\\") && charClass.length() > 1) {
+                    return String.valueOf(charClass.charAt(1));
+                } else {
+                    // Get first character that's not a backslash or space
+                    for (int j = 0; j < charClass.length(); j++) {
+                        char c = charClass.charAt(j);
+                        if (c != ' ' && c != '\\') {
+                            return String.valueOf(c);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: Try to find the symbol at the end (before $)
         String pattern = regex;
         if (pattern.endsWith("$")) {
             pattern = pattern.substring(0, pattern.length() - 1);
         }
-        
+
         // Build the symbol by reading escaped characters from the end
         StringBuilder symbol = new StringBuilder();
         int i = pattern.length() - 1;
-        
+
         while (i >= 0) {
             char c = pattern.charAt(i);
-            
+
             // Stop at regex special constructs (but not escaped ones)
-            if (c == ')' || c == ']' || c == '+' || c == '*') {
+            if (c == ')' || c == ']' || c == '+' || c == '*' || c == '?') {
                 // Check if this is an escaped character
                 if (i > 0 && pattern.charAt(i - 1) == '\\') {
                     // It's escaped, include it in symbol
@@ -105,7 +130,7 @@ public enum PatternType {
                 // Not escaped, stop here
                 break;
             }
-            
+
             // Check for escaped character
             if (i > 0 && pattern.charAt(i - 1) == '\\') {
                 symbol.insert(0, c);
@@ -117,16 +142,16 @@ public enum PatternType {
                 symbol.insert(0, c);
                 i--;
             }
-            
+
             // Limit symbol length to prevent infinite loops
             if (symbol.length() > 20) {
                 break;
             }
         }
-        
+
         return symbol.length() > 0 ? symbol.toString() : null;
     }
-    
+
     private static String escapeRegex(String symbol) {
         // Characters that need escaping in regex
         String specialChars = "\\^$.|?*+()[]{}";
@@ -139,7 +164,7 @@ public enum PatternType {
         }
         return escaped.toString();
     }
-    
+
     private static String escapeLiteralForCharClass(String symbol) {
         // Characters that need escaping inside character class [...]
         String specialChars = "\\^-]";
