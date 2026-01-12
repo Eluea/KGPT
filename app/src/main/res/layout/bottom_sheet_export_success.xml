@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_floating"
+    android:backgroundTint="?attr/colorSurfaceContainer"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_sheet_handle"
+        android:backgroundTint="@color/divider_color" />
+
+    <!-- Success Icon -->
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_icon_glow_success"
+        android:backgroundTint="?attr/colorTertiaryContainer">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check"
+            app:tint="?attr/colorTertiary" />
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Logs Exported Successfully"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Root Status -->
+    <LinearLayout
+        android:id="@+id/root_status_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_chip_success"
+        android:backgroundTint="?attr/colorTertiary"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_root_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_shield_tick_filled"
+            app:tint="?attr/colorOnTertiary" />
+
+        <TextView
+            android:id="@+id/tv_root_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Root Access Granted"
+            android:textColor="?attr/colorOnTertiary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Description -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="The following logs have been exported:"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="15sp" />
+
+    <!-- Logs List -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_logs_list"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="• Device Information"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• Xposed/LSPosed Logs"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• KGPT Module Logs"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_boot_logs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• Boot/Kernel Logs (dmesg)"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• System Logs (logcat)"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• Crash &amp; ANR Logs"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Root Explanation -->
+    <TextView
+        android:id="@+id/tv_root_explanation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="Root access was used to collect kernel logs (dmesg) which require elevated permissions on Android."
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp" />
+
+    <!-- Close Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="14dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="20dp"
+        app:iconTint="?attr/colorOnPrimary" />
+
+</LinearLayout>

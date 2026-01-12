@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet_dialog"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <!-- Header Icon (Freestanding) -->
+    <ImageView
+        android:id="@+id/iv_header_icon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_update_rocket_filled"
+        app:tint="?attr/colorPrimary" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Available"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A new version of KGPT is available."
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Version Comparison Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_version_comparison"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="18dp"
+            android:paddingHorizontal="16dp"
+            android:baselineAligned="false">
+
+            <!-- Current Version -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CURRENT"
+                    android:letterSpacing="0.08"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_current_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="v1.0.0"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+            </LinearLayout>
+
+            <!-- Arrow -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_right_filled"
+                app:tint="?attr/colorOutline" />
+
+            <!-- New Version -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NEW UPDATE"
+                    android:letterSpacing="0.08"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_new_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="v4.1.0"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Changelog ScrollView (Fixed Height) -->
+    <androidx.core.widget.NestedScrollView
+         android:id="@+id/scroll_changelog"
+         android:layout_width="match_parent"
+         android:layout_height="160dp"
+         android:layout_marginBottom="24dp"
+         android:background="@drawable/bg_rounded_surface"
+         android:backgroundTint="?attr/colorSurfaceContainer"
+         android:clipToPadding="false">
+
+         <TextView
+            android:id="@+id/tv_changelog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Bug fixes and improvements..."
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:lineSpacingExtra="5dp"
+            android:padding="16dp" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Downloading Container - New Design with Wavy Circle -->
+    <LinearLayout
+        android:id="@+id/container_downloading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp">
+
+        <!-- Download Title -->
+        <TextView
+            android:id="@+id/tv_download_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Downloading Update"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Progress Circle Container -->
+        <FrameLayout
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <!-- Circular Progress Indicator -->
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_circular"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                app:indicatorSize="160dp"
+                app:trackThickness="16dp"
+                app:indicatorColor="?attr/colorPrimary"
+                app:trackColor="?attr/colorSurfaceContainerHighest"
+                app:trackCornerRadius="8dp"
+                android:max="1000"
+                android:progress="0" />
+
+            <!-- Hourglass Icon (shown during download, rotates) -->
+            <ImageView
+                android:id="@+id/iv_hourglass_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_hourglass_filled"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary" />
+
+            <!-- Success Icon (shown when complete) -->
+            <ImageView
+                android:id="@+id/iv_success_icon"
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_check_circle_success"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary" />
+
+        </FrameLayout>
+
+        <!-- Download Status Text -->
+        <TextView
+            android:id="@+id/tv_download_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Downloading..."
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:gravity="center"
+            android:layout_marginBottom="6dp" />
+
+        <!-- Download Details (size) -->
+        <TextView
+            android:id="@+id/tv_download_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 KB / 0 MB"
+            android:textSize="13sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Cancel Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Cancel Download"
+            android:textColor="?attr/colorError" />
+
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:id="@+id/container_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_download"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Download Update"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="26dp"
+            app:icon="@drawable/ic_download_filled"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_later"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Remind me later"
+            android:textSize="16sp"
+            android:backgroundTint="?attr/colorSurfaceContainerHigh"
+            android:textColor="?attr/colorOnSurface"
+            app:cornerRadius="26dp" />
+
+    </LinearLayout>
+
+    <!-- Install Container -->
+    <LinearLayout
+        android:id="@+id/container_install"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_install"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Install Update"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="26dp"
+            app:icon="@drawable/ic_install"
+            app:iconGravity="textStart" />
+
+    </LinearLayout>
+
+</LinearLayout>

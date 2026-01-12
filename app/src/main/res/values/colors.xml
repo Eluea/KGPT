@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - default for Light Mode (Refined Blue #4285F4 based) -->
+    <!-- Avoiding Purple #6750A4 -->
+    <color name="primary">#4285F4</color>
+    <color name="surface_dark_amoled">#000000</color>
+    <color name="primary_dark">#0b57d0</color>
+    <color name="primary_light">#D2E3FC</color>
+    
+    <!-- Accent Colors -->
+    <color name="accent">#1967D2</color>
+    <color name="accent_dark">#8AB4F8</color>
+    
+    <!-- Switch Colors -->
+    <color name="switch_thumb_checked">#FFFFFF</color>
+    <color name="switch_thumb_unchecked">#FAFAFA</color>
+    <color name="switch_track_checked">#4285F4</color>
+    <color name="switch_track_unchecked">#E1E3E1</color>
+    
+    <!-- Background Colors - Light Mode -->
+    <color name="background_light">#F8F9FA</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="card_light">#FFFFFF</color>
+    
+    <!-- Background Colors - Dark Mode -->
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="card_dark">#2B2D31</color>
+    
+    <!-- AMOLED Dark Mode -->
+    <color name="background_amoled">#000000</color>
+    <color name="surface_amoled">#0D0D0D</color>
+    <color name="card_amoled">#0D0D0D</color>
+    <color name="dock_amoled">#0D0D0D</color>
+    
+    <!-- Text Colors - Light -->
+    <color name="text_primary_light">#2D3436</color>
+    <color name="text_secondary_light">#636E72</color>
+    
+    <!-- Text Colors - Dark -->
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B2BEC3</color>
+    
+    <!-- Bottom Sheet Colors -->
+    <color name="bottom_sheet_background">@color/surface_light</color>
+    <color name="sheet_handle_color">#E0E0E0</color>
+    
+    <!-- Surface Color -->
+    <color name="surface_color">@color/surface_light</color>
+    
+    
+    <!-- Status Colors -->
+    <color name="success">#00B894</color>
+    <color name="warning">#FDCB6E</color>
+    <color name="warning_dark">#E67E22</color>
+    <color name="error">#E74C3C</color>
+    <color name="errorContainer">#FFDAD6</color>
+    <color name="onErrorContainer">#410002</color>
+    <color name="info">#74B9FF</color>
+    
+    <!-- Dock Colors -->
+    <color name="dock_background">#FFFFFF</color>
+    <color name="dock_background_dark">#1E1E1E</color>
+    <color name="dock_item_active">#6C5CE7</color>
+    <color name="dock_item_inactive">#636E72</color>
+    
+    <!-- Divider -->
+    <color name="divider_light">#E0E0E0</color>
+    <color name="divider_dark">#2D2D2D</color>
+    
+    <!-- Switch Colors -->
+    <color name="switch_thumb_color">@color/primary</color>
+    <color name="switch_track_color">#E0E0E0</color>
+    
+    <!-- Option Icon Background -->
+    <color name="option_icon_bg">#1A6C5CE7</color>
+    
+    <!-- Chip Colors -->
+    <color name="chip_bg_default">#F0F0F0</color>
+    
+    <!-- Surface Variant -->
+    <color name="surface_variant">#F0F0F0</color>
+    <color name="surface_variant_dark">#2D2D2D</color>
+    
+    <!-- Container Colors for Cards -->
+    <color name="container_background_light">#F8F9FA</color>
+    <color name="container_background_dark">#121212</color>
+    <color name="container_background_amoled">#0A0A0A</color>
+    <color name="container_background">@color/container_background_light</color>
+    
+    <!-- Item Card Colors (inside containers) -->
+    <color name="item_card_background">#FFFFFF</color>
+    <color name="item_card_background_dark">#2A2A2A</color>
+    <color name="item_card_background_amoled">#141414</color>
+    
+    <!-- Item Card Border -->
+    <color name="item_card_border">#E8E8E8</color>
+    <color name="item_card_border_dark">#3A3A3A</color>
+    <color name="item_card_border_amoled">#1F1F1F</color>
+    
+    <!-- Launcher Icon Background -->
+    <color name="ic_launcher_background">#D32F2F</color>
+    
+    <!-- Legacy colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Text Colors (aliases) -->
+    <color name="text_primary">@color/text_primary_light</color>
+    <color name="text_secondary">@color/text_secondary_light</color>
+    
+    <!-- Divider Color -->
+    <color name="divider_color">@color/divider_light</color>
+    
+    <!-- Lab Colors -->
+    <color name="lab_purple">#9B59B6</color>
+    <color name="lab_purple_light">#E8DAEF</color>
+    <color name="lab_purple_dark">#7D3C98</color>
+    
+    <!-- Terminal Colors -->
+    <color name="terminal_green">#00D26A</color>
+    <color name="terminal_green_light">#E8F8F0</color>
+    <color name="terminal_green_dark">#00A854</color>
+    
+    <!-- Telegram Color -->
+    <color name="telegram_blue">#24A1DE</color>
+    
+    <!-- Translation Colors -->
+    <color name="translation_blue">#3498DB</color>
+    <color name="translation_blue_light">#EBF5FB</color>
+    <color name="translation_blue_dark">#2980B9</color>
+    
+    <!-- Button Colors -->
+    <color name="btn_secondary">#78909C</color>
+    <color name="btn_secondary_dark">#546E7A</color>
+    <color name="btn_secondary_text">#FFFFFF</color>
+    
+    <color name="btn_outline">#90A4AE</color>
+    <color name="btn_outline_dark">#607D8B</color>
+    
+    <!-- Example Chip Background -->
+    <color name="example_chip_background">#F0F4F8</color>
+    <color name="example_chip_background_dark">#2A2F35</color>
+    <color name="example_chip_background_amoled">#1A1D20</color>
+    
+    <!-- Changelog Colors -->
+    <color name="changelog_green">#10B981</color>
+    
+    <!-- Changelog Tag Colors -->
+    <color name="tag_add">#10B981</color>
+    <color name="tag_improve">#3B82F6</color>
+    <color name="tag_adjust">#F59E0B</color>
+    <color name="tag_remove">#EF4444</color>
+    <color name="tag_fix">#8B5CF6</color>
+    <color name="tag_lab">#9B59B6</color>
+    
+    <!-- ============================================ -->
+    <!-- Candy Color System (when Material You is OFF) -->
+    <!-- ============================================ -->
+    
+    <!-- Settings Icon Colors -->
+    <color name="candy_dark_mode">#9B59B6</color>        <!-- Purple - Dark Mode -->
+    <color name="candy_amoled">#34495E</color>           <!-- Slate - AMOLED -->
+    <color name="candy_blur">#3498DB</color>             <!-- Blue - Blur Control -->
+    <color name="candy_material_you">#E74C3C</color>     <!-- Red - Material You -->
+    <color name="candy_logging">#E67E22</color>          <!-- Orange - Logging -->
+    <color name="candy_internet">#27AE60</color>         <!-- Green - Internet Service -->
+    <color name="candy_export">#1ABC9C</color>           <!-- Teal - Export Logs -->
+    <color name="candy_backup">#5C6BC0</color>           <!-- Indigo - Backup -->
+    <color name="candy_restore">#EC407A</color>          <!-- Pink - Restore -->
+    
+    <!-- Quick Actions Colors -->
+    <color name="candy_model">#3498DB</color>            <!-- Blue - Current Model -->
+    <color name="candy_invocation">#E67E22</color>       <!-- Orange - AI Invocation -->
+    <color name="candy_web_search">#27AE60</color>       <!-- Green - Web Search -->
+    <color name="candy_lab">#9B59B6</color>              <!-- Purple - KGPT Lab -->
+    
+    <!-- Home Page Colors -->
+    <color name="candy_module_active">#27AE60</color>    <!-- Green - Module Active -->
+    <color name="candy_module_inactive">#E74C3C</color>  <!-- Red - Module Inactive -->
+    <color name="candy_how_to_use">#3498DB</color>       <!-- Blue - How to Use -->
+    
+    <!-- Light variants for containers -->
+    <color name="candy_purple_light">#F5EEF8</color>
+    <color name="candy_blue_light">#EBF5FB</color>
+    <color name="candy_green_light">#E9F7EF</color>
+    <color name="candy_orange_light">#FEF5E7</color>
+    <color name="candy_red_light">#FDEDEC</color>
+    <color name="candy_teal_light">#E8F8F5</color>
+    <color name="candy_pink_light">#FCE4EC</color>
+    <color name="candy_indigo_light">#E8EAF6</color>
+    <color name="candy_slate_light">#EBEDEF</color>
+</resources>

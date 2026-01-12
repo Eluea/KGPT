@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false" />
+
+    <!-- Floating Dock Navigation -->
+    <LinearLayout
+        android:id="@+id/floating_dock"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_dock"
+        android:backgroundTint="?attr/colorSurfaceContainer"
+        android:elevation="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <!-- Navigation Items Container -->
+        <LinearLayout
+            android:id="@+id/nav_items_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Home -->
+            <FrameLayout
+                android:id="@+id/nav_home"
+                android:layout_width="56dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_dock_item"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/nav_home_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_home_filled"
+                    app:tint="@color/dock_item_inactive" />
+            </FrameLayout>
+
+            <!-- Models -->
+            <FrameLayout
+                android:id="@+id/nav_models"
+                android:layout_width="56dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_dock_item"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/nav_models_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_cpu_setting_filled"
+                    app:tint="@color/dock_item_inactive" />
+            </FrameLayout>
+
+            <!-- Lab -->
+            <FrameLayout
+                android:id="@+id/nav_lab"
+                android:layout_width="56dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_dock_item"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/nav_lab_icon"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_flask_science_filled"
+                    app:tint="@color/dock_item_inactive" />
+            </FrameLayout>
+
+            <!-- Settings -->
+            <FrameLayout
+                android:id="@+id/nav_settings"
+                android:layout_width="56dp"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_dock_item"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/nav_settings_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_settings_filled"
+                    app:tint="@color/dock_item_inactive" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Dock Action Container (Hidden by default) -->
+        <LinearLayout
+            android:id="@+id/dock_action_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingHorizontal="12dp">
+
+            <ImageView
+                android:id="@+id/dock_action_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_add"
+                app:tint="?attr/colorOnPrimaryContainer" />
+
+            <TextView
+                android:id="@+id/dock_action_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Action"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File paths for FileProvider (used for APK installation) -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- External storage public directories -->
+    <external-path
+        name="external_root"
+        path="." />
+    
+    <!-- External storage downloads folder -->
+    <external-path
+        name="downloads"
+        path="Download/" />
+    
+    <!-- Cache directory -->
+    <cache-path
+        name="cache"
+        path="." />
+    
+    <!-- External cache -->
+    <external-cache-path
+        name="external_cache"
+        path="." />
+    
+    <!-- Files directory -->
+    <files-path
+        name="files"
+        path="." />
+    
+    <!-- External files directory -->
+    <external-files-path
+        name="external_files"
+        path="." />
+</paths>

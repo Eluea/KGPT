@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  KGPT - AI in your keyboard
+  Copyright (C) 2024-2025 Amr Aldeeb @Eluea
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_floating"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_sheet_handle" />
+
+    <!-- Status Icon with Glow -->
+    <FrameLayout
+        android:id="@+id/icon_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_icon_glow_primary"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_shield_tick_filled"
+            app:tint="?attr/colorOnPrimaryContainer" />
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Status Title"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Message -->
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="Status message goes here."
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="15sp" />
+
+    <!-- Primary Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_primary"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="28dp"
+        android:text="Primary Action"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="14dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="20dp"
+        app:iconTint="?attr/colorOnPrimary" />
+
+    <!-- Secondary Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_secondary"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="Secondary"
+        android:textAllCaps="false"
+        android:visibility="gone" />
+
+</LinearLayout>

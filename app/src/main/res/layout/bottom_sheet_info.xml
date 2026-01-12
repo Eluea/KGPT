@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_floating"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_sheet_handle" />
+
+    <!-- Icon with Glow -->
+    <FrameLayout
+        android:id="@+id/icon_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_icon_glow_primary"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <ImageView
+            android:id="@+id/iv_info_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_info_circle_filled"
+            app:tint="?attr/colorOnPrimaryContainer" />
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="About This Page"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Info Chip (optional) -->
+    <LinearLayout
+        android:id="@+id/chip_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_chip_dark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_chip_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_info_circle_filled"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:id="@+id/tv_chip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Info"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/tv_info_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="Information about this page."
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="15sp" />
+
+    <!-- Close Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="28dp"
+        android:text="Got it"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="14dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="20dp"
+        app:iconTint="?attr/colorOnPrimary" />
+
+</LinearLayout>

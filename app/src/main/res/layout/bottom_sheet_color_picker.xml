@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="32dp">
+
+    <!-- Drag Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_drag_handle"
+        android:backgroundTint="@color/divider_color" />
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Color"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Saturation/Value Box -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
+
+        <tn.eluea.kgpt.ui.settings.colorpicker.SaturationValueView
+            android:id="@+id/sv_view"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Sliders Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <!-- Hue Slider -->
+        <tn.eluea.kgpt.ui.settings.colorpicker.HueSliderView
+            android:id="@+id/hue_slider"
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+<!-- Alpha Slider removed -->
+            
+    </LinearLayout>
+
+    <!-- Hex Input -->
+    <LinearLayout
+        android:id="@+id/ll_hex_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_input_field"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="COLOR CODE"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_hex_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-medium"
+            android:hint="FF5733"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="8"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="24dp"
+        android:text="Save Color"
+        android:textSize="16sp"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconTint="?attr/colorOnPrimary" />
+
+    <!-- Hidden compatibility views to avoid crash if referenced -->
+    <tn.eluea.kgpt.ui.settings.ColorWheelView
+        android:id="@+id/color_wheel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+    <View
+        android:id="@+id/color_preview_large"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+    <android.widget.TextView
+		    android:id="@+id/tv_saturation_value"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:visibility="gone"/>
+    <android.widget.TextView
+		    android:id="@+id/tv_value_value"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:visibility="gone"/>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_saturation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_value"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+    <View
+        android:id="@+id/saturation_gradient_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+    <View
+        android:id="@+id/brightness_gradient_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+</LinearLayout>

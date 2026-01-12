@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/option_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    android:background="@drawable/bg_selectable_rounded"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="14dp">
+
+    <TextView
+        android:id="@+id/tv_option_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Search Engine"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurface" />
+
+    <ImageView
+        android:id="@+id/check_mark"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_check"
+        android:visibility="invisible"
+        app:tint="?attr/colorOnPrimaryContainer" />
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Override colors for dark mode -->
+    <color name="dock_background">#80000000</color>
+    <color name="divider_light">@color/divider_dark</color>
+    
+    <!-- Primary - Enforcing Google Blue for Dark Mode -->
+    <color name="primary">#A8C7FA</color>
+    <color name="primary_light">#A8C7FA</color>
+    
+    <!-- Backgrounds - Enforcing Dark Blue-Grey #1C2026 for Dark Mode -->
+    <color name="background_dark">#1C2026</color>
+    <color name="surface_dark">#1C2026</color>
+    <color name="card_dark">#2B2D31</color>
+    
+    <!-- Container Background which is used by Dialogs -->
+    <color name="container_background_dark">#1C2026</color>
+    <color name="container_background">@color/container_background_dark</color>
+
+    <!-- Switch Colors Override -->
+    <color name="switch_track_checked">#A8C7FA</color>
+    <color name="switch_thumb_unchecked">#E0E0E0</color>
+    <color name="switch_track_unchecked">#505050</color>
+    
+    
+    <!-- Bottom Sheet Colors for Dark Mode -->
+    <color name="bottom_sheet_background">@color/surface_dark</color>
+    <color name="sheet_handle_color">#3D3D3D</color>
+    
+    <!-- Surface Color for Dark Mode -->
+    <color name="surface_color">@color/surface_dark</color>
+    
+    <!-- Option Icon Background for Dark Mode - more visible -->
+    <color name="option_icon_bg">#33FF6B35</color>
+    
+    <!-- Surface Variant for Dark Mode -->
+    <color name="surface_variant">@color/surface_variant_dark</color>
+    
+    <!-- Chip Colors for Dark Mode -->
+    <color name="chip_bg_default">@color/card_dark</color>
+    
+    <!-- Text Colors (aliases) for Dark Mode -->
+    <color name="text_primary">@color/text_primary_dark</color>
+    <color name="text_secondary">@color/text_secondary_dark</color>
+    
+    <!-- Divider Color for Dark Mode -->
+    <color name="divider_color">@color/divider_dark</color>
+    
+    <!-- Lab Colors for Dark Mode -->
+    <color name="lab_purple_light">#2D1F3D</color>
+    
+    <!-- Item Card Colors for Dark Mode -->
+    <color name="item_card_background">@color/item_card_background_dark</color>
+    <color name="item_card_border">@color/item_card_border_dark</color>
+    
+    <!-- Example Chip Background for Dark Mode -->
+    <color name="example_chip_background">@color/example_chip_background_dark</color>
+</resources>
