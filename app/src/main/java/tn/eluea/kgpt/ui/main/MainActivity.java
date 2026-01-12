@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private int currentNavIndex = 0;
     private boolean isAmoledMode = false;
 
+    private tn.eluea.kgpt.ui.view.SnowfallView snowfallView;
+    private static final String PREF_WINTER_MODE = "winter_mode";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Theme is handled globally by KGPTApplication and MaterialYouManager
@@ -68,13 +71,10 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
         setupWindowInsets();
         setupBackStackListener();
-        // applyAmoledColors() removed - handled by Theme.KGPT.AMOLED
 
-        // setupBackStackListener(); // This was calling showDockNavigation() which
-        // handles dock visibility.
-        // We will keep setupBackStackListener logic but moved to callback if needed.
-        // Actually setupBackStackListener handles when stack changes.
-        setupBackStackListener();
+        // Initialize Winter Mode
+        snowfallView = findViewById(R.id.snowfall_view);
+        applyWinterMode();
 
         // Handle Back Press
         getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
@@ -106,6 +106,21 @@ public class MainActivity extends AppCompatActivity {
 
             // Check for updates on first launch
             checkForUpdates();
+        }
+    }
+
+    public void applyWinterMode() {
+        if (snowfallView == null)
+            return;
+
+        SharedPreferences prefs = getSharedPreferences("keyboard_gpt_ui", android.content.Context.MODE_PRIVATE);
+        boolean isWinterMode = prefs.getBoolean(PREF_WINTER_MODE, false);
+
+        if (isWinterMode) {
+            snowfallView.setVisibility(View.VISIBLE);
+            snowfallView.bringToFront();
+        } else {
+            snowfallView.setVisibility(View.GONE);
         }
     }
 
@@ -237,6 +252,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
+        // Reset snow obstacles for smooth transition
+        if (snowfallView != null) {
+            snowfallView.shakeOff();
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(
                 android.R.anim.fade_in,
@@ -564,5 +584,28 @@ public class MainActivity extends AppCompatActivity {
         // Actually items capture clicks. floating_dock layout click is irrelevant if
         // children handle it.
         // But setting null is safer.
+    }
+
+    public void updateSnowObstacles(java.util.List<android.graphics.Rect> obstacles) {
+        if (snowfallView != null) {
+            snowfallView.updateObstacles(obstacles);
+        }
+    }
+
+    public void onContentScrolled() {
+        if (snowfallView != null) {
+            snowfallView.shakeOff();
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent ev) {
+        if (snowfallView != null && snowfallView.getVisibility() == View.VISIBLE) {
+            int action = ev.getAction();
+            boolean active = (action == android.view.MotionEvent.ACTION_DOWN
+                    || action == android.view.MotionEvent.ACTION_MOVE);
+            snowfallView.updateFinger(ev.getX(), ev.getY(), active);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

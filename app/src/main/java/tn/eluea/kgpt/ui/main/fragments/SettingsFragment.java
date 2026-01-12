@@ -58,8 +58,10 @@ public class SettingsFragment extends Fragment {
 
     private static final String PREF_THEME = "theme_mode";
     private static final String PREF_AMOLED = "amoled_mode";
+    private static final String PREF_WINTER_MODE = "winter_mode";
 
-    private MaterialSwitch switchDarkMode, switchAmoled, switchLogs, switchExternalInternet;
+    private MaterialSwitch switchDarkMode, switchAmoled, switchWinterMode, switchLogs, switchExternalInternet;
+
     private LinearLayout amoledContainer, btnBackup, btnRestore, btnExportLogs, btnBlurControl;
     private TextView tvAboutVersion;
     private FrameLayout btnInfo;
@@ -148,11 +150,79 @@ public class SettingsFragment extends Fragment {
         // applyCandyColorsIfNeeded(); // Removed
         loadSettings();
         setupListeners();
+        setupScrollListener();
+    }
+
+    private void setupScrollListener() {
+        // We will check if rootView is NestedScrollView since it is often the root in
+        // settings fragments.
+
+        if (rootView instanceof androidx.core.widget.NestedScrollView) {
+
+            androidx.core.widget.NestedScrollView nestedScrollView = (androidx.core.widget.NestedScrollView) rootView;
+
+            nestedScrollView
+                    .setOnScrollChangeListener((androidx.core.widget.NestedScrollView.OnScrollChangeListener) (v,
+                            scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+                        if (getActivity() instanceof tn.eluea.kgpt.ui.main.MainActivity) {
+                            tn.eluea.kgpt.ui.main.MainActivity activity = (tn.eluea.kgpt.ui.main.MainActivity) getActivity();
+                            activity.onContentScrolled();
+
+                            // Debounce obstacle update
+                            v.removeCallbacks(updateObstaclesRunnable);
+                            v.postDelayed(updateObstaclesRunnable, 200);
+                        }
+                    });
+        }
+    }
+
+    private final Runnable updateObstaclesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!isAdded() || getActivity() == null)
+                return;
+
+            // Find obstacles (Cards)
+            java.util.List<android.graphics.Rect> obstacles = new java.util.ArrayList<>();
+            findObstaclesRecursively(rootView, obstacles);
+
+            if (getActivity() instanceof tn.eluea.kgpt.ui.main.MainActivity) {
+                ((tn.eluea.kgpt.ui.main.MainActivity) getActivity()).updateSnowObstacles(obstacles);
+            }
+        }
+    };
+
+    private void findObstaclesRecursively(View view, java.util.List<android.graphics.Rect> obstacles) {
+        if (view instanceof com.google.android.material.card.MaterialCardView) {
+            if (view.getVisibility() == View.VISIBLE) {
+                android.graphics.Rect rect = new android.graphics.Rect();
+                view.getGlobalVisibleRect(rect);
+
+                // Adjust for SnowfallView coordinate system (usually location on screen)
+                // If SnowfallView covers the whole window, global rect is fine.
+                // However, we might want to subtract the top inset/status bar if SnowfallView
+                // starts below it.
+                // But SnowfallView in ActivityMain is match_parent/match_parent with
+                // fitsSystemWindows=true?
+                // Let's assume Global Rect is close enough, we can fine tune.
+                // Actually, SnowfallView might be offset.
+                // Let's just pass global rects for now.
+
+                obstacles.add(rect);
+            }
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                findObstaclesRecursively(group.getChildAt(i), obstacles);
+            }
+        }
     }
 
     private void initViews(View view) {
         switchDarkMode = view.findViewById(R.id.switch_dark_mode);
         switchAmoled = view.findViewById(R.id.switch_amoled);
+        switchWinterMode = view.findViewById(R.id.switch_winter_mode);
         btnBlurControl = view.findViewById(R.id.btn_blur_control);
         switchLogs = view.findViewById(R.id.switch_logs);
         switchExternalInternet = view.findViewById(R.id.switch_external_internet);
@@ -201,6 +271,8 @@ public class SettingsFragment extends Fragment {
         applySwitchColors(switchDarkMode, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor,
                 trackUncheckedColor);
         applySwitchColors(switchAmoled, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
+        applySwitchColors(switchWinterMode, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor,
+                trackUncheckedColor);
         applySwitchColors(switchLogs, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor, trackUncheckedColor);
         applySwitchColors(switchExternalInternet, thumbCheckedColor, thumbUncheckedColor, trackCheckedColor,
                 trackUncheckedColor);
@@ -275,6 +347,12 @@ public class SettingsFragment extends Fragment {
         switchDarkMode.setChecked(isDarkMode);
         switchAmoled.setChecked(isAmoled);
 
+        // Winter Mode
+        boolean isWinterMode = uiPrefs.getBoolean(PREF_WINTER_MODE, false);
+        if (switchWinterMode != null) {
+            switchWinterMode.setChecked(isWinterMode);
+        }
+
         // AMOLED option only available when dark mode is enabled
         amoledContainer.setAlpha(isDarkMode ? 1.0f : 0.5f);
         switchAmoled.setEnabled(isDarkMode);
@@ -310,6 +388,17 @@ public class SettingsFragment extends Fragment {
                 getActivity().recreate();
             }
         });
+
+        if (switchWinterMode != null) {
+            switchWinterMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                uiPrefs.edit().putBoolean(PREF_WINTER_MODE, isChecked).apply();
+
+                // Notify MainActivity to update visibility immediately
+                if (getActivity() instanceof tn.eluea.kgpt.ui.main.MainActivity) {
+                    ((tn.eluea.kgpt.ui.main.MainActivity) getActivity()).applyWinterMode();
+                }
+            });
+        }
 
         if (rootView != null) {
             View btnMaterialYou = rootView.findViewById(R.id.btn_material_you);
@@ -644,17 +733,13 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
 
-        // Version 4.0.3 Changes
-        addChangelogEntry(changelogContent, "FIX",
-                "Fixed internal update system malfunction",
-                colorSecondary, colorOnSecondary);
-        
-        addChangelogEntry(changelogContent, "ADD",
-                "Added option to choose update download path",
+        // Version 4.0.4 Changes
+        addChangelogEntry(changelogContent, "CHANGE",
+                "Changed animation of the version card in the updates page",
                 colorPrimary, colorOnPrimary);
-        
+
         addChangelogEntry(changelogContent, "ADD",
-                "Added animation to version card in update settings page",
+                "Added Winter Mode",
                 colorPrimary, colorOnPrimary);
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);

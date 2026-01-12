@@ -191,11 +191,11 @@ public class UpdateBottomSheet {
                 if (downloadedApk != null && downloader != null) {
                     // Clear cached update first
                     UpdateWorker.clearCachedUpdate(context);
-                    
+
                     // Launch installation - don't dismiss dialog immediately
                     // The system install dialog will appear on top
                     downloader.installApk(downloadedApk);
-                    
+
                     // Dismiss after a short delay to ensure install intent is launched
                     mainHandler.postDelayed(() -> {
                         if (dialog != null) {
@@ -277,43 +277,55 @@ public class UpdateBottomSheet {
                 if (ivHeaderIcon != null) {
                     ivHeaderIcon.setImageResource(R.drawable.ic_update_rocket_filled);
                 }
-                if (tvTitle != null) tvTitle.setText("Update Available");
+                if (tvTitle != null)
+                    tvTitle.setText("Update Available");
                 if (tvSubtitle != null) {
                     tvSubtitle.setText("A new version of KGPT is available.");
                     tvSubtitle.setVisibility(View.VISIBLE);
                 }
-                if (actionsContainer != null) actionsContainer.setVisibility(View.VISIBLE);
-                if (downloadingContainer != null) downloadingContainer.setVisibility(View.GONE);
-                if (installContainer != null) installContainer.setVisibility(View.GONE);
+                if (actionsContainer != null)
+                    actionsContainer.setVisibility(View.VISIBLE);
+                if (downloadingContainer != null)
+                    downloadingContainer.setVisibility(View.GONE);
+                if (installContainer != null)
+                    installContainer.setVisibility(View.GONE);
                 break;
 
             case DOWNLOADING:
                 // Begin smooth transition
                 TransitionHelper.beginTransition(rootContainer, TransitionHelper.DURATION_NORMAL);
-                
+
                 // Hide header icon and title during download
-                if (ivHeaderIcon != null) ivHeaderIcon.setVisibility(View.GONE);
-                if (tvTitle != null) tvTitle.setVisibility(View.GONE);
-                if (tvSubtitle != null) tvSubtitle.setVisibility(View.GONE);
-                
+                if (ivHeaderIcon != null)
+                    ivHeaderIcon.setVisibility(View.GONE);
+                if (tvTitle != null)
+                    tvTitle.setVisibility(View.GONE);
+                if (tvSubtitle != null)
+                    tvSubtitle.setVisibility(View.GONE);
+
                 // Hide version and changelog containers
-                if (cardVersionComparison != null) cardVersionComparison.setVisibility(View.GONE);
-                if (scrollChangelog != null) scrollChangelog.setVisibility(View.GONE);
-                
+                if (cardVersionComparison != null)
+                    cardVersionComparison.setVisibility(View.GONE);
+                if (scrollChangelog != null)
+                    scrollChangelog.setVisibility(View.GONE);
+
                 // Set download title
-                if (tvDownloadTitle != null) tvDownloadTitle.setText("Downloading Update");
-                if (actionsContainer != null) actionsContainer.setVisibility(View.GONE);
+                if (tvDownloadTitle != null)
+                    tvDownloadTitle.setText("Downloading Update");
+                if (actionsContainer != null)
+                    actionsContainer.setVisibility(View.GONE);
                 if (downloadingContainer != null) {
                     downloadingContainer.setVisibility(View.VISIBLE);
                 }
-                if (installContainer != null) installContainer.setVisibility(View.GONE);
-                
+                if (installContainer != null)
+                    installContainer.setVisibility(View.GONE);
+
                 // Reset progress UI
                 if (progressCircular != null) {
                     progressCircular.setProgress(0);
                     progressCircular.setMax(1000); // Higher precision
                     progressCircular.setVisibility(View.VISIBLE);
-                    
+
                     // Enable wavy effect (Material 1.13.0+)
                     // Adjusted for 16dp track thickness
                     try {
@@ -327,35 +339,45 @@ public class UpdateBottomSheet {
                 if (ivHourglassIcon != null) {
                     ivHourglassIcon.setVisibility(View.VISIBLE);
                 }
-                if (ivSuccessIcon != null) ivSuccessIcon.setVisibility(View.GONE);
-                if (tvDownloadStatus != null) tvDownloadStatus.setText("Starting download...");
-                if (tvDownloadDetails != null) tvDownloadDetails.setText("");
-                if (btnCancel != null) btnCancel.setVisibility(View.VISIBLE);
-                
+                if (ivSuccessIcon != null)
+                    ivSuccessIcon.setVisibility(View.GONE);
+                if (tvDownloadStatus != null)
+                    tvDownloadStatus.setText("Starting download...");
+                if (tvDownloadDetails != null)
+                    tvDownloadDetails.setText("");
+                if (btnCancel != null)
+                    btnCancel.setVisibility(View.VISIBLE);
+
                 // Start hourglass rotation animation
                 startHourglassAnimation();
                 break;
 
             case COMPLETE:
                 // Hide header icon and title
-                if (ivHeaderIcon != null) ivHeaderIcon.setVisibility(View.GONE);
-                if (tvTitle != null) tvTitle.setVisibility(View.GONE);
-                if (tvSubtitle != null) tvSubtitle.setVisibility(View.GONE);
-                
+                if (ivHeaderIcon != null)
+                    ivHeaderIcon.setVisibility(View.GONE);
+                if (tvTitle != null)
+                    tvTitle.setVisibility(View.GONE);
+                if (tvSubtitle != null)
+                    tvSubtitle.setVisibility(View.GONE);
+
                 // Set complete title
-                if (tvDownloadTitle != null) tvDownloadTitle.setText("Download Complete");
-                
+                if (tvDownloadTitle != null)
+                    tvDownloadTitle.setText("Download Complete");
+
                 // Show success state with animation
                 showDownloadCompleteAnimation();
-                
-                if (tvDownloadStatus != null) tvDownloadStatus.setText("Ready to install!");
+
+                if (tvDownloadStatus != null)
+                    tvDownloadStatus.setText("Ready to install!");
                 // Show accurate final size
                 if (tvDownloadDetails != null && lastTotalBytes > 0) {
                     String totalSize = formatBytes(lastTotalBytes);
                     tvDownloadDetails.setText(totalSize + " / " + totalSize);
                 }
-                if (btnCancel != null) btnCancel.setVisibility(View.GONE);
-                
+                if (btnCancel != null)
+                    btnCancel.setVisibility(View.GONE);
+
                 // Show install button with smooth transition
                 if (installContainer != null) {
                     installContainer.setVisibility(View.VISIBLE);
@@ -366,8 +388,9 @@ public class UpdateBottomSheet {
     }
 
     private void startHourglassAnimation() {
-        if (ivHourglassIcon == null) return;
-        
+        if (ivHourglassIcon == null)
+            return;
+
         // Create rotation animation - 360 degrees every 1.4 seconds
         hourglassRotationAnimator = ObjectAnimator.ofFloat(ivHourglassIcon, "rotation", 0f, 360f);
         hourglassRotationAnimator.setDuration(1400);
@@ -388,11 +411,12 @@ public class UpdateBottomSheet {
     }
 
     private void showDownloadCompleteAnimation() {
-        if (progressCircular == null || ivSuccessIcon == null || ivHourglassIcon == null) return;
+        if (progressCircular == null || ivSuccessIcon == null || ivHourglassIcon == null)
+            return;
 
         // Animate progress to 100% (1000 for high precision)
         progressCircular.setProgress(1000);
-        
+
         // Hide hourglass icon with fade out
         ivHourglassIcon.animate()
                 .alpha(0f)
