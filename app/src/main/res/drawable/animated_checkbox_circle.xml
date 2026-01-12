@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked state -->
+    <item
+        android:drawable="@drawable/ic_check_circle_filled"
+        android:state_checked="true" />
+    
+    <!-- Unchecked state -->
+    <item
+        android:drawable="@drawable/shape_checkbox_rounded_square" />
+</selector>

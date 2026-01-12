@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Recommended scope for LSPosed - these keyboards will be shown as recommended -->
+    <string-array name="xposedscope">
+        <!-- Google Gboard -->
+        <item>com.google.android.inputmethod.latin</item>
+        <!-- Microsoft SwiftKey -->
+        <item>com.touchtype.swiftkey</item>
+        <!-- Fleksy Keyboard -->
+        <item>com.syntellia.fleksy.keyboard</item>
+        <!-- Samsung Keyboard -->
+        <item>com.samsung.android.honeyboard</item>
+        <!-- Yandex Keyboard -->
+        <item>ru.yandex.androidkeyboard</item>
+        <!-- Grammarly Keyboard -->
+        <item>com.grammarly.android.keyboard</item>
+        <!-- Chrooma Keyboard -->
+        <item>com.gamelounge.chroomakeyboard</item>
+        <!-- AnySoftKeyboard -->
+        <item>com.menny.android.anysoftkeyboard</item>
+        <!-- Simple Keyboard -->
+        <item>rkr.simplekeyboard.inputmethod</item>
+        <!-- OpenBoard -->
+        <item>org.dslul.openboard.inputmethod.latin</item>
+        <!-- FlorisBoard -->
+        <item>dev.patrickgold.florisboard</item>
+    </string-array>
+</resources>

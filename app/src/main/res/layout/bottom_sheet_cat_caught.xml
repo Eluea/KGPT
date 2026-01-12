@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_floating"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp"
+    android:gravity="center_horizontal"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_sheet_handle" />
+
+    <!-- GitHub Icon -->
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_icon_glow_primary"
+        android:backgroundTint="?attr/colorPrimaryContainer">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_github"
+            app:tint="?attr/colorOnPrimaryContainer" />
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Meow! You caught me!"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Message -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:paddingHorizontal="16dp"
+        android:text="Hey there! I'm the KGPT cat.\n\nIf you're enjoying the app, would you mind giving us a star on GitHub?\nIt really helps!"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+    <!-- Star Button with Sparkle Effect -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <tn.eluea.kgpt.ui.view.SparkleView
+            android:id="@+id/sparkle_view"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="-16dp"
+            android:layout_marginBottom="-16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_star_github"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Star on GitHub"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_star_filled"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconSize="20dp"
+            app:iconTint="?attr/colorOnPrimary" />
+    </FrameLayout>
+
+    <!-- Maybe Later -->
+    <TextView
+        android:id="@+id/tv_maybe_later"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:text="Maybe later"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+</LinearLayout>

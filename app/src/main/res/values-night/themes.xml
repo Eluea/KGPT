@@ -1,0 +1,191 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme - Dark -->
+    <style name="Theme.KGPT" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryContainer">@color/primary_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryContainer">@color/accent_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/background_dark</item>
+        <item name="colorSurface">@color/surface_dark</item>
+        <item name="colorOnSurface">@color/text_primary_dark</item>
+        <item name="colorSurfaceVariant">@color/card_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        
+        <!-- Switch colors -->
+        <item name="colorPrimaryInverse">@color/primary</item>
+    </style>
+
+    <!-- AMOLED Dark Theme - Material You (Pure Black) -->
+    <style name="Theme.KGPT.AMOLED" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- AMOLED Overrides: Pure Black -->
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorSurfaceContainerLowest">@android:color/black</item>
+        <item name="colorSurfaceContainerLow">@android:color/black</item>
+        <item name="colorSurfaceContainer">@android:color/black</item>
+        
+        <!-- Keep High Container slightly visible or black? User wants strict AMOLED. 
+             Theme.KGPT uses @color/surface_dark. AMOLED should be black.
+             But cards need visibility. Let's use @color/card_amoled or surface_dark_amoled if available, 
+             or just black with stroke.
+             The previous XML had colorSurfaceVariant = @color/card_dark.
+             Let's use @color/card_amoled for SurfaceVariant if it exists, roughly mimicking Dark Mode structure.
+        -->
+        <item name="colorSurfaceContainerHigh">@color/surface_dark_amoled</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_dark_amoled</item>
+        <item name="colorSurfaceVariant">@color/card_amoled</item>
+
+        <item name="colorOnSurface">@color/text_primary_dark</item>
+        
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <!-- AMOLED Overlay - For use on top of Dynamic Colors -->
+    <style name="ThemeOverlay.KGPT.AMOLED" parent="">
+        <item name="android:colorBackground">@android:color/black</item>
+        <!-- Removed windowBackground to preserve transparency/dim -->
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorSurfaceContainerLowest">@android:color/black</item>
+        <item name="colorSurfaceContainerLow">@android:color/black</item>
+        <item name="colorSurfaceContainer">@android:color/black</item>
+        <item name="colorSurfaceContainerHigh">@color/surface_dark_amoled</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_dark_amoled</item>
+        <item name="colorSurfaceVariant">@color/card_amoled</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style>
+
+    <style name="Theme.KGPT.Translucent" parent="Theme.KGPT">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/NoAnimation</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="NoAnimation">
+        <item name="android:windowEnterAnimation">@anim/animation_none</item>
+        <item name="android:windowExitAnimation">@anim/animation_none</item>
+    </style>
+
+    <!-- Card Style Dark -->
+    <style name="CardStyle" parent="">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/card_dark</item>
+    </style>
+
+    <!-- Text Styles Dark -->
+    <style name="TextHeadline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextBody" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <style name="TextCaption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <!-- Bottom Sheet Theme Dark -->
+    <style name="BottomSheetDialogTheme" parent="Theme.Material3.Dark.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorSurface">@color/surface_dark</item>
+        <item name="colorOnSurface">@color/text_primary_dark</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="shapeAppearance">@null</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+    </style>
+
+    <!-- Custom Dialog Theme Dark -->
+    <style name="CustomDialogTheme" parent="Theme.Material3.Dark.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
+    <!-- Alert Dialog Theme Dark -->
+    <style name="AlertDialogTheme" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
+    <!-- Floating Bottom Sheet Theme Dark -->
+    <style name="FloatingBottomSheetTheme" parent="Theme.KGPT">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Web Search Dialog Theme (Full Screen AlertDialog) Dark -->
+    <style name="WebSearchDialogTheme" parent="Theme.Material3.Dark.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <!-- Web Search Activity Theme (Floating Bottom Sheet) Dark -->
+    <style name="Theme.KGPT.WebSearch" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Text Actions Menu Activity Theme (Floating Transparent) Dark -->
+    <style name="Theme.KGPT.TextActionsMenu" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowAnimationStyle">@style/NoAnimation</item>
+    </style>
+</resources>

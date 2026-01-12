@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer glow -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#20E74C3C" />
+            <size android:width="80dp" android:height="80dp" />
+        </shape>
+    </item>
+    <!-- Inner circle -->
+    <item
+        android:left="12dp"
+        android:top="12dp"
+        android:right="12dp"
+        android:bottom="12dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/error" />
+        </shape>
+    </item>
+</layer-list>

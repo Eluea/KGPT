@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <!-- Required to query all installed apps on Android 11+ -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <!-- Required for installing updates -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:name=".KGPTApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.KGPT"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="31"
+        android:multiArch="true">
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KGPT"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".core.ui.DialogActivity"
+            android:theme="@style/Theme.KGPT.Translucent"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:exported="true">
+            <intent-filter>
+                <action android:name="tn.eluea.kgpt.OVERLAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".features.websearch.WebSearchActivity"
+            android:theme="@style/Theme.KGPT.WebSearch"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.lab.LabActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.lab.apptrigger.AppTriggerActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.lab.textactions.TextActionsActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.BlurControlActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.MaterialYouSettingsActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.UpdateSettingsActivity"
+            android:theme="@style/Theme.KGPT"
+            android:exported="false" />
+
+
+
+        <activity
+            android:name=".features.textactions.ui.TextActionsMenuActivity"
+            android:theme="@style/Theme.KGPT.TextActionsMenu"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+
+        <!-- PROCESS_TEXT Activity - Shows AI actions in text selection menu -->
+        <activity
+            android:name=".features.textactions.ui.ProcessTextActivity"
+            android:theme="@style/Theme.KGPT.Translucent"
+            android:excludeFromRecents="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="KGPT AI"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".core.network.InternetService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="tn.eluea.kgpt.INTERNET_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name=".provider.ConfigProvider"
+            android:authorities="tn.eluea.kgpt.provider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:directBootAware="true" />
+
+        <!-- FileProvider for APK installation -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver
+            android:name=".provider.BootReceiver"
+            android:directBootAware="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.TextActionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="tn.eluea.kgpt.TEXT_ACTION_REQUEST" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Integrate Generative AI like ChatGPT in keyboard." />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="93" />
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/xposedscope" />
+    </application>
+
+</manifest>

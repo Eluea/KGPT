@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2025 Amr Aldeeb @Eluea
+ * GitHub: https://github.com/Eluea
+ * Telegram: https://t.me/Eluea
+ *
+ * This file is part of KGPT.
+ * Based on original code from KeyboardGPT by Mino260806.
+ * Original: https://github.com/Mino260806/KeyboardGPT
+ *
+ * Licensed under the GPLv3.
+ */
+package tn.eluea.kgpt.text.transform.format;
+
+import java.nio.charset.StandardCharsets;
+
+public abstract class ConversionMethod {
+    public static final ConversionMethod BOLD = new ShiftConversionMethod( 0x1D5EE);
+    public static final ConversionMethod ITALIC = new ShiftConversionMethod( 0x1D622);
+    public static final ConversionMethod CROSSOUT = new AddConversionMethod( 0x336);
+    public static final ConversionMethod UNDERLINE = new AddConversionMethod( 0x35F).withFilter(Character::isLetterOrDigit);
+
+    private CharacterFilter filter = null;
+
+    public ConversionMethod withFilter(CharacterFilter filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public abstract String doConvert(char c);
+
+    public final String convert(char c) {
+        if (filter == null || filter.filterCharacter(c)) {
+            return doConvert(c);
+        }
+        return String.valueOf(c);
+    }
+
+    static boolean isAscii(char c) {
+        return (StandardCharsets.US_ASCII.newEncoder().canEncode(c)) &&
+                Character.isLetter(c);
+    }
+}
