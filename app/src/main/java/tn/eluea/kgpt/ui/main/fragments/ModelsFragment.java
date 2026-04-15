@@ -63,6 +63,8 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
     private static final String PREF_THEME = "theme_mode";
 
     private RecyclerView rvModels;
+    private MaterialCardView cardChatgptBaseUrl;
+    private TextInputEditText etChatgptBaseUrl;
     private ChipGroup chipGroupSubmodels;
     private TextInputEditText etSubModel;
     private MaterialButton btnSave;
@@ -254,6 +256,8 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
 
     private void initViews(View view) {
         rvModels = view.findViewById(R.id.rv_models);
+        cardChatgptBaseUrl = view.findViewById(R.id.card_chatgpt_base_url);
+        etChatgptBaseUrl = view.findViewById(R.id.et_chatgpt_base_url);
         chipGroupSubmodels = view.findViewById(R.id.chip_group_submodels);
         etSubModel = view.findViewById(R.id.et_sub_model);
         btnSave = view.findViewById(R.id.btn_save);
@@ -387,9 +391,14 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
     }
 
     private void loadModelSettings(LanguageModel model) {
+        boolean isChatGpt = model == LanguageModel.ChatGPT;
+        cardChatgptBaseUrl.setVisibility(isChatGpt ? View.VISIBLE : View.GONE);
         setupSubModelChips(model);
 
         if (!SPManager.isReady()) {
+            if (isChatGpt) {
+                etChatgptBaseUrl.setText(model.getDefault(LanguageModelField.BaseUrl));
+            }
             etSubModel.setText(model.getDefault(LanguageModelField.SubModel));
             return;
         }
@@ -401,6 +410,14 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
             subModel = model.getDefault(LanguageModelField.SubModel);
         }
         etSubModel.setText(subModel);
+
+        if (isChatGpt) {
+            String baseUrl = sp.getBaseUrl(model);
+            if (baseUrl == null || baseUrl.trim().isEmpty()) {
+                baseUrl = model.getDefault(LanguageModelField.BaseUrl);
+            }
+            etChatgptBaseUrl.setText(baseUrl);
+        }
     }
 
     @Override
@@ -446,6 +463,7 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
                     .setPositiveButton("Use Suggested", (dialog, which) -> {
                         etSubModel.setText(suggested);
                         sp.setSubModel(selectedModel, suggested);
+                        saveChatGptBaseUrlIfNeeded(sp);
                         sendConfigBroadcast();
                         Toast.makeText(requireContext(), getString(R.string.msg_config_saved_with) + suggested,
                                 Toast.LENGTH_SHORT)
@@ -453,6 +471,7 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
                     })
                     .setNegativeButton("Use Anyway", (dialog, which) -> {
                         sp.setSubModel(selectedModel, finalSubModel);
+                        saveChatGptBaseUrlIfNeeded(sp);
                         sendConfigBroadcast();
                         Toast.makeText(requireContext(), R.string.msg_config_saved_warning, Toast.LENGTH_SHORT)
                                 .show();
@@ -463,6 +482,7 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         }
 
         sp.setSubModel(selectedModel, finalSubModel);
+        saveChatGptBaseUrlIfNeeded(sp);
 
         // Send broadcast to Xposed module to sync settings
         sendConfigBroadcast();
@@ -488,5 +508,34 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
         broadcastIntent.putExtra("tn.eluea.kgpt.config.model", sp.getConfigBundle());
 
         requireContext().sendBroadcast(broadcastIntent);
+    }
+
+    private String normalizeBaseUrl(String baseUrl) {
+        if (baseUrl == null) {
+            return "";
+        }
+
+        String normalized = baseUrl.trim();
+        while (normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized;
+    }
+
+    private void saveChatGptBaseUrlIfNeeded(SPManager sp) {
+        if (selectedModel != LanguageModel.ChatGPT) {
+            return;
+        }
+
+        String enteredBaseUrl = etChatgptBaseUrl.getText() != null
+                ? etChatgptBaseUrl.getText().toString().trim()
+                : "";
+        String normalizedBaseUrl = normalizeBaseUrl(enteredBaseUrl);
+        if (normalizedBaseUrl.isEmpty()) {
+            normalizedBaseUrl = selectedModel.getDefault(LanguageModelField.BaseUrl);
+        }
+
+        sp.setBaseUrl(selectedModel, normalizedBaseUrl);
+        etChatgptBaseUrl.setText(normalizedBaseUrl);
     }
 }

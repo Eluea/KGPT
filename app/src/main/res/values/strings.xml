@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
   ~ GitHub: https://github.com/Eluea
   ~ Telegram: https://t.me/Eluea
@@ -33,6 +33,9 @@
     <string name="model_config">Model Configuration</string>
     <string name="sub_model">Sub Model</string>
     <string name="base_url">Base URL</string>
+    <string name="custom_openai_base_url">Custom OpenAI Base URL</string>
+    <string name="custom_openai_base_url_desc">Use a compatible OpenAI endpoint (for proxy or self-hosted gateway).</string>
+    <string name="hint_chatgpt_base_url">https://api.openai.com/v1</string>
     <string name="advanced_settings">Advanced Settings</string>
     <string name="max_tokens">Max Tokens</string>
     <string name="temperature">Temperature</string>
