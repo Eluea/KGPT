@@ -739,11 +739,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Imekarabatiwa kuanguka kwa programu wakati wa kubadilisha lugha na kujaribu kuingia kwenye sehemu ya Ualikaji wa AI</string>
-    <string name="changelog_4_0_8_item2">Imeboreshwa muundo wa kuonekana kwa tahadhari katika kumbukumbu ya mabadiliko ndani ya programu</string>
-    <string name="changelog_4_0_8_item3">Imeongezwa msaada kwa mifano ya GLM iliyotolewa na ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Imekarabatiwa tatizo la nafasi inayokosekana wakati wa kutumia amri za uumbizaji wa maandishi</string>
-    <string name="changelog_4_0_8_item5">Imerekebisha tatizo la maandishi kupotea unapotumia kichochezi kisichosajiliwa au kutopokea majibu kutoka kwa AI</string>
+        <string name="changelog_4_0_8_item1">Imehamishwa kutoka LSPosed API 82 hadi API 102 ya kisasa</string>
+    <string name="changelog_4_0_8_item2">Maboresho makubwa ya utendaji na kupunguza matumizi ya betri</string>
+    <string name="changelog_4_0_8_item3">Kurekebisha hali mbalimbali za programu kukwama na kuganda</string>
+    <string name="changelog_4_0_8_item4">Kimeongezwa kichochezi kipya cha kibodi: Kichochezi cha Kupakua Midia</string>
+    <string name="changelog_4_0_8_item5">Kimeongezwa kitendo kipya cha uteuzi wa maandishi: Kupakua Midia</string>
+    <string name="changelog_4_0_8_item6">Kimeongezwa kipengele kipya cha Maabara: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Kimeongezwa kipengele cha kutafuta YouTube na video moja kwa moja</string>
+    <string name="changelog_4_0_8_item8">Kupakua Video na Sauti na ubinafsishaji wa ubora, muundo na ukataji wa vipande</string>
+    <string name="changelog_4_0_8_item9">Kuwezesha kunakili amri ya Universal ili kupakua kwenye kifaa chochote</string>
     <string name="changelog_note_4_0_8">Tafadhali kuwa na subira kwani matatizo zaidi yameripotiwa kwa msanidi programu, lakini yatatuliwa kwa makundi ya sasisho kwani huu ni mradi wa mtu mmoja. Asante kwa uelewa wako.</string>
     <string name="msg_ai_no_response_error">Hakuna jibu lililopokelewa. AI ilirudisha maudhui tupu.\nDokezo: Huenda unatumia kichochezi/amri isiyosajiliwa.</string>
 </resources>

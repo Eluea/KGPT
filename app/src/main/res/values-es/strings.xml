@@ -617,11 +617,15 @@
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-    <string name="changelog_4_0_8_item1">Se corrigió el bloqueo al cambiar el idioma e ingresar a la sección de Invocación de IA</string>
-    <string name="changelog_4_0_8_item2">Se mejoró el diseño de la alerta en el registro de cambios</string>
-    <string name="changelog_4_0_8_item3">Se agregó soporte para modelos GLM de ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Se corrigió el problema de falta de espacio en comandos de formato de texto</string>
-    <string name="changelog_4_0_8_item5">Solucionado el problema de desaparición del texto al usar un activador no registrado o al no recibir respuesta de la IA</string>
+        <string name="changelog_4_0_8_item1">Migración de LSPosed API 82 a la API 102 moderna</string>
+    <string name="changelog_4_0_8_item2">Grandes optimizaciones de rendimiento y reducción del consumo de batería</string>
+    <string name="changelog_4_0_8_item3">Corrección de varios escenarios de bloqueo y congelamiento</string>
+    <string name="changelog_4_0_8_item4">Nuevo disparador de teclado añadido: Disparador del Descargador de Medios</string>
+    <string name="changelog_4_0_8_item5">Nueva acción de selección de texto añadida: Descargador de Medios</string>
+    <string name="changelog_4_0_8_item6">Nueva función de Laboratorio: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Búsqueda en vivo de YouTube y vídeos añadida</string>
+    <string name="changelog_4_0_8_item8">Descarga de vídeo y audio con formatos, calidad y recorte personalizados</string>
+    <string name="changelog_4_0_8_item9">Generador de comandos universales independientes para descargar en cualquier dispositivo</string>
     <string name="changelog_note_4_0_8">Tenga paciencia, ya que se han informado más problemas, pero se resolverán en lotes de actualizaciones al ser un proyecto de una sola persona. Gracias por su comprensión.</string>
     <string name="msg_ai_no_response_error">No se recibió respuesta. La IA devolvió contenido vacío.\nPista: Es posible que esté utilizando un activador/comando no registrado.</string>
 </resources>

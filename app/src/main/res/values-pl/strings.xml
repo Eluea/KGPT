@@ -739,11 +739,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Naprawiono awarię aplikacji przy zmianie języka i próbie wejścia do sekcji Wywołanie AI</string>
-    <string name="changelog_4_0_8_item2">Poprawiono wygląd ostrzeżenia w dzienniku zmian w aplikacji</string>
-    <string name="changelog_4_0_8_item3">Dodano obsługę modeli GLM dostarczanych przez ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Naprawiono problem z brakiem spacji podczas używania poleceń formatowania tekstu</string>
-    <string name="changelog_4_0_8_item5">Naprawiono problem znikania tekstu przy użyciu niezarejestrowanego wyzwalacza lub braku odpowiedzi od AI</string>
+        <string name="changelog_4_0_8_item1">Migracja z LSPosed API 82 do nowoczesnego API 102</string>
+    <string name="changelog_4_0_8_item2">Znacząca optymalizacja wydajności i zmniejszenie zużycia baterii</string>
+    <string name="changelog_4_0_8_item3">Naprawiono różne scenariusze zawieszania się aplikacji</string>
+    <string name="changelog_4_0_8_item4">Dodano nowy wyzwalacz klawiatury: Wyzwalacz pobierania mediów</string>
+    <string name="changelog_4_0_8_item5">Dodano nową akcję zaznaczania tekstu: Pobieranie mediów</string>
+    <string name="changelog_4_0_8_item6">Dodano nową funkcję Laboratorium: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Dodano funkcję wyszukiwania wideo i YouTube na żywo</string>
+    <string name="changelog_4_0_8_item8">Pobieranie wideo i audio z wyborem formatu, jakości i przycinaniem</string>
+    <string name="changelog_4_0_8_item9">Dodano generowanie uniwersalnego polecenia do pobierania na dowolnym urządzeniu</string>
     <string name="changelog_note_4_0_8">Prosimy o cierpliwość, ponieważ zgłoszono więcej problemów deweloperowi, ale zostaną one rozwiązane w partiach aktualizacji, ponieważ jest to projekt jednoosobowy. Dziękujemy za wyrozumiałość.</string>
     <string name="msg_ai_no_response_error">Nie otrzymano odpowiedzi. AI zwróciło pustą zawartość.\nWskazówka: Być może używasz niezarejestrowanego wyzwalacza/polecenia.</string>
 </resources>

@@ -598,11 +598,15 @@
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-    <string name="changelog_4_0_8_item1">Исправлен вылет приложения при смене языка и входе в раздел Вызова ИИ</string>
-    <string name="changelog_4_0_8_item2">Улучшен дизайн уведомления в списке изменений</string>
-    <string name="changelog_4_0_8_item3">Добавлена поддержка моделей GLM от ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Исправлена проблема с отсутствующим пробелом при использовании команд форматирования текста</string>
-    <string name="changelog_4_0_8_item5">Исправлена проблема с исчезновением текста при использовании незарегистрированного триггера или отсутствии ответа от ИИ</string>
+        <string name="changelog_4_0_8_item1">Переход с LSPosed API 82 на современный API 102</string>
+    <string name="changelog_4_0_8_item2">Значительная оптимизация производительности и снижение расхода батареи</string>
+    <string name="changelog_4_0_8_item3">Исправлены различные сценарии зависания и задержек</string>
+    <string name="changelog_4_0_8_item4">Добавлен новый триггер клавиатуры: Триггер загрузчика медиа</string>
+    <string name="changelog_4_0_8_item5">Добавлено новое действие выделения текста: Загрузчик медиа</string>
+    <string name="changelog_4_0_8_item6">Добавлена новая функция Лаборатории: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Добавлен прямой поиск видео и YouTube</string>
+    <string name="changelog_4_0_8_item8">Загрузка видео и аудио с настройкой качества, формата и обрезкой</string>
+    <string name="changelog_4_0_8_item9">Добавлена генерация универсальной автономной команды для скачивания на любом устройстве</string>
     <string name="changelog_note_4_0_8">Пожалуйста, наберитесь терпения, так как разработчику было сообщено о других проблемах, но они будут решаться пакетами обновлений, так как это проект одного человека. Спасибо за понимание.</string>
     <string name="msg_ai_no_response_error">Ответ не получен. ИИ вернул пустой контент.\nПодсказка: возможно, вы используете незарегистрированный триггер/команду.</string>
 </resources>

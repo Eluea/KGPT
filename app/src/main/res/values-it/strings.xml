@@ -598,11 +598,15 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Risolto il crash dell\u0027app durante il cambio della lingua e il tentativo di accedere alla sezione Invocazione AI</string>
-    <string name="changelog_4_0_8_item2">Migliorato il design dell\u0027avviso nel registro delle modifiche in-app</string>
-    <string name="changelog_4_0_8_item3">Aggiunto il supporto per i modelli GLM forniti da ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Risolto il problema dello spazio mancante quando si utilizzano i comandi di formattazione del testo</string>
-    <string name="changelog_4_0_8_item5">Risolto il problema della scomparsa del testo quando si utilizza un trigger non registrato o non si riceve risposta dall\u0027IA</string>
+        <string name="changelog_4_0_8_item1">Migrazione da LSPosed API 82 a API 102 moderna</string>
+    <string name="changelog_4_0_8_item2">Grandi ottimizzazioni delle prestazioni e riduzione del consumo energetico</string>
+    <string name="changelog_4_0_8_item3">Risolti vari scenari di blocco e arresto anomalo</string>
+    <string name="changelog_4_0_8_item4">Aggiunto nuovo trigger della tastiera: Trigger Scaricatore Media</string>
+    <string name="changelog_4_0_8_item5">Aggiunta nuova azione di selezione testo: Scaricatore Media</string>
+    <string name="changelog_4_0_8_item6">Aggiunta nuova funzionalità del Laboratorio: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Aggiunta funzionalità di ricerca live di YouTube e video</string>
+    <string name="changelog_4_0_8_item8">Download di video e audio con formati, qualità e ritaglio personalizzati</string>
+    <string name="changelog_4_0_8_item9">Generatore di comandi standalone universali per scaricare su qualsiasi dispositivo</string>
     <string name="changelog_note_4_0_8">Si prega di pazientare poiché sono stati segnalati ulteriori problemi allo sviluppatore, ma verranno risolti in lotti di aggiornamenti poiché si tratta di un progetto di una sola persona. Grazie per la vostra comprensione.</string>
     <string name="msg_ai_no_response_error">Nessuna risposta ricevuta. L\u0027IA ha restituito un contenuto vuoto.\nSuggerimento: potresti utilizzare un trigger/comando non registrato.</string>
 </resources>

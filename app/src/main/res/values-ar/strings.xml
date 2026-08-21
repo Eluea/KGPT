@@ -650,12 +650,15 @@
     <string name="changelog_1_0_0_item7">تم إضافة موديل جديد Perplexity ودعم Perplexity API</string>
     <string name="changelog_1_0_0_item8">تم إلغاء التقييد باستخدام علامة \"/\" فيما يخص استخدام الأوامر</string>
     <string name="changelog_1_0_0_note">برجاء التحلي بالصبر حيث تم إعلام المطور بالمزيد من المشكلات ولكن سيتم حلها على دفعات من التحديثات حيث أنه شخص واحد فقط يقف وراء تطوير كل هذا. شكراً لتفهمكم.</string>
-
-    <string name="changelog_4_0_8_item1">تم اصلاح تحطم التطبيق عند تغيير اللغة ومحاولة دخول قسم AI Invocation</string>
-    <string name="changelog_4_0_8_item2">تم تحسين تصميم ظهور التنبيه فى سجل التغيرات داخل التطبيق</string>
-    <string name="changelog_4_0_8_item3">تم اضافة الدعم لاستخدام مودلات GLM المقدمة من ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">تم اصلاح مشكلة عدم وجود مسافة عند استخدام اوامر تشكيل النص</string>
-    <string name="changelog_4_0_8_item5">تم إصلاح مشكلة اختفاء النص عند استخدام تريجر غير مسجل أو عند عدم تلقي رد من الذكاء الاصطناعي</string>
+        <string name="changelog_4_0_8_item1">الانتقال من LSPosed API 82 إلى API 102 الحديث</string>
+    <string name="changelog_4_0_8_item2">إصلاحات كبيرة في الأداء وخفض استهلاك البطارية والطاقة</string>
+    <string name="changelog_4_0_8_item3">إصلاح العديد من سيناريوهات التجمد والتعليق</string>
+    <string name="changelog_4_0_8_item4">إضافة تريجر جديد في الكيبورد (تريجر الدونلودر)</string>
+    <string name="changelog_4_0_8_item5">إضافة ميزة تحديد النص الجديدة (تنزيل الوسائط)</string>
+    <string name="changelog_4_0_8_item6">إضافة ميزة جديدة في المعمل KGPT Downloader</string>
+    <string name="changelog_4_0_8_item7">إضافة ميزة البحث المباشر في يوتيوب</string>
+    <string name="changelog_4_0_8_item8">تنزيل الفيديو والصوتيات وتخصيص الجودة والصيغ واقتطاع المقاطع</string>
+    <string name="changelog_4_0_8_item9">إمكانية نسخ أمر التنزيل الشامل (Universal Command) لتنزيله على أي جهاز</string>
     <string name="changelog_note_4_0_8">برجاء التحلي بالصبر حيث تم إعلام المطور بالمزيد من المشكلات ولكن سيتم حلها على دفعات من التحديثات حيث أنه شخص واحد فقط يقف وراء تطوير كل هذا. شكراً لتفهمكم.</string>
     
     <!-- Language Selection -->

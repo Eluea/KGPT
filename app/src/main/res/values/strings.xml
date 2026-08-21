@@ -645,12 +645,15 @@
     <string name="changelog_1_0_0_item7">Added new Perplexity model and Perplexity API support</string>
     <string name="changelog_1_0_0_item8">Removed "/" restriction for using commands</string>
     <string name="changelog_1_0_0_note">Please be patient as more issues have been reported to the developer, but they will be resolved in batches of updates as this is a one-person project. Thank you for your understanding.</string>
-
-    <string name="changelog_4_0_8_item1">Fixed app crash when changing language and attempting to enter AI Invocation section</string>
-    <string name="changelog_4_0_8_item2">Improved design of the alert appearance in the in-app changelog</string>
-    <string name="changelog_4_0_8_item3">Added support for GLM models provided by ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Fixed missing space issue when using text formatting commands</string>
-    <string name="changelog_4_0_8_item5">Fixed the issue where text disappears when using an unregistered trigger or receiving no response from AI</string>
+        <string name="changelog_4_0_8_item1">Migrated from LSPosed API 82 to modern API 102</string>
+    <string name="changelog_4_0_8_item2">Major performance optimizations and reduced battery consumption</string>
+    <string name="changelog_4_0_8_item3">Fixed various freeze, hang, and ANR scenarios</string>
+    <string name="changelog_4_0_8_item4">Added new keyboard trigger: Media Downloader Trigger</string>
+    <string name="changelog_4_0_8_item5">Added new Text Selection action: Media Downloader</string>
+    <string name="changelog_4_0_8_item6">Added new Lab feature: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Added live YouTube and video search feature</string>
+    <string name="changelog_4_0_8_item8">Added Video &amp; Audio downloading with custom formats, quality, and trimming</string>
+    <string name="changelog_4_0_8_item9">Added Universal Standalone Command generator to download on any device</string>
     <string name="changelog_note_4_0_8">Please be patient as more issues have been reported to the developer, but they will be resolved in batches of updates as this is a one-person project. Thank you for your understanding.</string>
     <string name="msg_ai_no_response_error">No response received. The AI returned empty content.\nHint: You might be using an unregistered trigger/command.</string>
     

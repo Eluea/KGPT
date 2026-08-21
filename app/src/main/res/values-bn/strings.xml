@@ -739,11 +739,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">ভাষা পরিবর্তন এবং AI আমন্ত্রণ বিভাগে প্রবেশ করার সময় অ্যাপ ক্র্যাশ ঠিক করা হয়েছে</string>
-    <string name="changelog_4_0_8_item2">ইন-অ্যাপ চেঞ্জলগে সতর্কতা উপস্থিতির ডিজাইন উন্নত করা হয়েছে</string>
-    <string name="changelog_4_0_8_item3">ZhipuAI দ্বারা প্রদত্ত GLM মডেলগুলির জন্য সমর্থন যোগ করা হয়েছে</string>
-    <string name="changelog_4_0_8_item4">টেক্সট ফরম্যাটিং কমান্ড ব্যবহার করার সময় অনুপস্থিত স্পেস সমস্যা ঠিক করা হয়েছে</string>
-    <string name="changelog_4_0_8_item5">অনিবন্ধিত ট্রিগার ব্যবহার করলে বা AI থেকে কোনো সাড়া না পেলে টেক্সট অদৃশ্য হয়ে যাওয়ার সমস্যাটি সমাধান করা হয়েছে</string>
+        <string name="changelog_4_0_8_item1">LSPosed API 82 থেকে আধুনিক API 102-এ স্থানান্তর</string>
+    <string name="changelog_4_0_8_item2">কর্মক্ষমতায় বড় ধরনের অপ্টিমাইজেশন এবং ব্যাটারি খরচ হ্রাস</string>
+    <string name="changelog_4_0_8_item3">অ্যাপ ফ্রিজ এবং আটকে যাওয়ার বিভিন্ন সমস্যা সমাধান করা হয়েছে</string>
+    <string name="changelog_4_0_8_item4">নতুন কীবোর্ড ট্রিগার যুক্ত হয়েছে: মিডিয়া ডাউনলোডার ট্রিগার</string>
+    <string name="changelog_4_0_8_item5">নতুন টেক্সট সিলেকশন অ্যাকশন যুক্ত হয়েছে: মিডিয়া ডাউনলোডার</string>
+    <string name="changelog_4_0_8_item6">নতুন ল্যাব ফিচার যুক্ত হয়েছে: KGPT মিডিয়া ডাউনলোডার</string>
+    <string name="changelog_4_0_8_item7">লাইভ ইউটিউব এবং ভিডিও সার্চ সুবিধা যুক্ত হয়েছে</string>
+    <string name="changelog_4_0_8_item8">কাস্টম ফরম্যাট, কোয়ালিটি ও ট্রিমসহ ভিডিও এবং অডিও ডাউনলোড সুবিধা</string>
+    <string name="changelog_4_0_8_item9">যেকোনো ডিভাইসে ডাউনলোডের জন্য ইউনিভার্সাল কমান্ড জেনারেটর যুক্ত হয়েছে</string>
     <string name="changelog_note_4_0_8">অনুগ্রহ করে ধৈর্য ধরুন কারণ বিকাশকারীকে আরও সমস্যা রিপোর্ট করা হয়েছে, তবে এটি একটি এক-ব্যক্তির প্রকল্প হওয়ায় আপডেটগুলির ব্যাচে সমাধান করা হবে। বোঝার জন্য আপনাকে ধন্যবাদ।</string>
     <string name="msg_ai_no_response_error">কোনো সাড়া পাওয়া যায়নি। AI খালি কন্টেন্ট ফেরত দিয়েছে।\nইঙ্গিত: আপনি সম্ভবত একটি অনিবন্ধিত ট্রিগার/কमांड ব্যবহার করছেন।</string>
 </resources>

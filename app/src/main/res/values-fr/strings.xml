@@ -635,11 +635,15 @@
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-    <string name="changelog_4_0_8_item1">Correction du plantage de l\'application lors du changement de langue et tentative d\'accès à la section Invocation IA</string>
-    <string name="changelog_4_0_8_item2">Amélioration de la conception de l\'alerte dans le journal des modifications</string>
-    <string name="changelog_4_0_8_item3">Ajout de la prise en charge des modèles GLM fournis par ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Correction du problème d\'espace manquant lors de l\'utilisation de commandes de formatage de texte</string>
-    <string name="changelog_4_0_8_item5">Correction du problème de disparition du texte lors de l\'utilisation d\'un déclencheur non enregistré ou d\'une absence de réponse de l\'IA</string>
+        <string name="changelog_4_0_8_item1">Migration de LSPosed API 82 vers l\'API 102 moderne</string>
+    <string name="changelog_4_0_8_item2">Optimisations majeures des performances et réduction de la consommation de batterie</string>
+    <string name="changelog_4_0_8_item3">Correction de divers scénarios de gel et de blocage</string>
+    <string name="changelog_4_0_8_item4">Nouveau déclencheur clavier ajouté : Déclencheur Téléchargeur Média</string>
+    <string name="changelog_4_0_8_item5">Nouvelle action de sélection de texte ajoutée : Téléchargeur Média</string>
+    <string name="changelog_4_0_8_item6">Nouvelle fonctionnalité du Lab ajoutée : KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Recherche en direct de vidéos et YouTube ajoutée</string>
+    <string name="changelog_4_0_8_item8">Téléchargement vidéo et audio avec personnalisation des formats, de la qualité et découpage</string>
+    <string name="changelog_4_0_8_item9">Génération de commande autonome universelle pour télécharger sur n\'importe quel appareil</string>
     <string name="changelog_note_4_0_8">Veuillez faire preuve de patience car davantage de problèmes ont été signalés au développeur, mais ils seront résolus par lots mises à jour car il s\'agit d\'un projet d\'une seule personne. Merci de votre compréhension.</string>
     <string name="msg_ai_no_response_error">Aucune réponse reçue. L\'IA a renvoyé un contenu vide.\nIndice : Vous utilisez peut-être un déclencheur/commande non enregistré.</string>
 

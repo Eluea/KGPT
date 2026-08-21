@@ -598,11 +598,15 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">भाषा बदलते समय और AI आह्वान अनुभाग में प्रवेश करने का प्रयास करते समय ऐप क्रैश को ठीक किया गया</string>
-    <string name="changelog_4_0_8_item2">इन-ऐप चेंजलॉग में चेतावनी उपस्थिति के डिज़ाइन में सुधार किया गया</string>
-    <string name="changelog_4_0_8_item3">ZhipuAI द्वारा प्रदान किए गए GLM मॉडल के लिए समर्थन जोड़ा गया</string>
-    <string name="changelog_4_0_8_item4">टेक्स्ट फ़ॉर्मेटिंग कमांड का उपयोग करते समय गायब स्पेस की समस्या को ठीक किया गया</string>
-    <string name="changelog_4_0_8_item5">अनрегистриड ट्रिगर का उपयोग करने या AI से कोई प्रतिक्रिया न मिलने पर टेक्स्ट गायब होने की समस्या को ठीक किया गया</string>
+        <string name="changelog_4_0_8_item1">LSPosed API 82 से आधुनिक API 102 में अपग्रेड किया गया</string>
+    <string name="changelog_4_0_8_item2">प्रदर्शन में भारी सुधार और बैटरी की खपत में कमी</string>
+    <string name="changelog_4_0_8_item3">ऐप फ्रीज और हैंग होने की विभिन्न समस्याओं का समाधान</string>
+    <string name="changelog_4_0_8_item4">नया कीबोर्ड ट्रिगर जोड़ा गया: मीडिया डाउनलोडर ट्रिगर</string>
+    <string name="changelog_4_0_8_item5">नया टेक्स्ट चयन एक्शन जोड़ा गया: मीडिया डाउनलोडर</string>
+    <string name="changelog_4_0_8_item6">नया लैब फीचर जोड़ा गया: KGPT मीडिया डाउनलोडर</string>
+    <string name="changelog_4_0_8_item7">लाइव YouTube और वीडियो खोज फीचर जोड़ा गया</string>
+    <string name="changelog_4_0_8_item8">कस्टम फॉर्मेट, गुणवत्ता और ट्रिमिंग के साथ वीडियो और ऑडियो डाउनलोडिंग</string>
+    <string name="changelog_4_0_8_item9">किसी भी डिवाइस पर डाउनलोड करने के लिए यूनिवर्सल कमांड कॉपी करने की सुविधा</string>
     <string name="changelog_note_4_0_8">कृपया धैर्य रखें क्योंकि डेवलपर को अधिक समस्याओं की सूचना दी गई है, लेकिन उन्हें अपडेट के बैचों में हल किया जाएगा क्योंकि यह एक-व्यक्ति परियोजना है। आपकी समझ के लिए धन्यवाद।</string>
     <string name="msg_ai_no_response_error">कोई प्रतिक्रिया प्राप्त नहीं हुई। AI ने खाली सामग्री लौटाई।\nसंकेत: आप एक अनрегистриड ट्रिगर/कमांड का उपयोग कर रहे होंगे।</string>
 </resources>

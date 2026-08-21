@@ -598,11 +598,15 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">言語を変更してAI呼び出しセクションに入ろうとしたときのアプリのクラッシュを修正しました</string>
-    <string name="changelog_4_0_8_item2">アプリ内の変更履歴における警告表示のデザインを改善しました</string>
-    <string name="changelog_4_0_8_item3">ZhipuAIが提供するGLMモデルのサポートを追加しました</string>
-    <string name="changelog_4_0_8_item4">テキスト書式設定コマンドを使用する際のスペース欠落の問題を修正しました</string>
-    <string name="changelog_4_0_8_item5">未登録のトリガーを使用した場合やAIからの応答がない場合にテキストが消える問題を修正しました</string>
+        <string name="changelog_4_0_8_item1">LSPosed API 82から最新のAPI 102へ移行</string>
+    <string name="changelog_4_0_8_item2">大幅なパフォーマンス最適化とバッテリー消費の低減</string>
+    <string name="changelog_4_0_8_item3">さまざまなフリーズおよび動作停止の問題を修正</string>
+    <string name="changelog_4_0_8_item4">新しいキーボードトリガーを追加：メディアダウンローダートリガー</string>
+    <string name="changelog_4_0_8_item5">新しいテキスト選択アクションを追加：メディアダウンローダー</string>
+    <string name="changelog_4_0_8_item6">新しいラボ機能を追加：KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">YouTubeおよび動画のリアルタイム検索機能を追加</string>
+    <string name="changelog_4_0_8_item8">画質・形式のカスタマイズやトリミングに対応した動画・音声ダウンロード</string>
+    <string name="changelog_4_0_8_item9">他のデバイスでもダウンロード可能なユニバーサル単独コマンド生成機能を追加</string>
     <string name="changelog_note_4_0_8">開発者には多くの問題が報告されていますが、個人のプロジェクトであるため、更新のバッチで解決されます。ご理解のほどよろしくお願いいたします。</string>
     <string name="msg_ai_no_response_error">応答がありません。AIは空のコンテンツを返しました。\nヒント：未登録のトリガー/コマンドを使用している可能性があります。</string>
 </resources>

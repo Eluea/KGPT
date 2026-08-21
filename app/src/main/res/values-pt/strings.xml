@@ -598,11 +598,15 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Corrigida falha no aplicativo ao alterar o idioma e tentar entrar na seção de Invocação de IA</string>
-    <string name="changelog_4_0_8_item2">Melhorado o design do alerta no registro de alterações</string>
-    <string name="changelog_4_0_8_item3">Adicionado suporte para modelos GLM fornecidos pela ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Corrigido problema de espaço ausente ao usar comandos de formatação de texto</string>
-    <string name="changelog_4_0_8_item5">Corrigido o problema de desaparecimento do texto ao usar um gatilho não registrado ou não receber resposta da IA</string>
+        <string name="changelog_4_0_8_item1">Migrado do LSPosed API 82 para a API 102 moderna</string>
+    <string name="changelog_4_0_8_item2">Grandes otimizações de desempenho e menor consumo de bateria</string>
+    <string name="changelog_4_0_8_item3">Correção de vários cenários de travamento e congelamento</string>
+    <string name="changelog_4_0_8_item4">Novo gatilho de teclado adicionado: Gatilho do Baixador de Mídia</string>
+    <string name="changelog_4_0_8_item5">Nova ação de seleção de texto adicionada: Baixador de Mídia</string>
+    <string name="changelog_4_0_8_item6">Novo recurso do Laboratório: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Adicionada pesquisa ao vivo no YouTube e vídeos</string>
+    <string name="changelog_4_0_8_item8">Download de vídeo e áudio com personalização de formatos, qualidade e recorte</string>
+    <string name="changelog_4_0_8_item9">Criação de comando universal independente para download em qualquer dispositivo</string>
     <string name="changelog_note_4_0_8">Por favor, tenha paciência, pois mais problemas foram relatados ao desenvolvedor, mas eles serão resolvidos em lotes de atualizações, já que este é um projeto de uma pessoa. Obrigado pela sua compreensão.</string>
     <string name="msg_ai_no_response_error">Nenhuma resposta recebida. A IA retornou conteúdo vazio.\nDica: Você pode estar usando um gatilho/comando não registrado.</string>
 </resources>

@@ -598,11 +598,15 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Memperbaiki kerusakan aplikasi saat mengubah bahasa dan mencoba masuk ke bagian Pemanggilan AI</string>
-    <string name="changelog_4_0_8_item2">Meningkatkan desain tampilan peringatan di log perubahan dalam aplikasi</string>
-    <string name="changelog_4_0_8_item3">Menambahkan dukungan untuk model GLM yang disediakan oleh ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Memperbaiki masalah spasi yang hilang saat menggunakan perintah pemformatan teks</string>
-    <string name="changelog_4_0_8_item5">Memperbaiki masalah teks menghilang saat menggunakan pemicu yang tidak terdaftar atau tidak menerima respons dari AI</string>
+        <string name="changelog_4_0_8_item1">Migrasi dari LSPosed API 82 ke API 102 modern</string>
+    <string name="changelog_4_0_8_item2">Optimalisasi kinerja besar dan pengurangan konsumsi daya baterai</string>
+    <string name="changelog_4_0_8_item3">Memperbaiki berbagai masalah aplikasi macet dan freeze</string>
+    <string name="changelog_4_0_8_item4">Menambahkan pemicu keyboard baru: Pemicu Pengunduh Media</string>
+    <string name="changelog_4_0_8_item5">Menambahkan tindakan pilihan teks baru: Pengunduh Media</string>
+    <string name="changelog_4_0_8_item6">Menambahkan fitur Lab baru: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Menambahkan fitur pencarian video dan YouTube langsung</string>
+    <string name="changelog_4_0_8_item8">Pengunduhan Video &amp; Audio dengan format, kualitas, dan pemotongan kustom</string>
+    <string name="changelog_4_0_8_item9">Menambahkan pembuatan perintah standalone universal untuk mengunduh di perangkat lain</string>
     <string name="changelog_note_4_0_8">Harap bersabar karena lebih banyak masalah telah dilaporkan ke pengembang, tetapi masalah tersebut akan diselesaikan dalam kumpulan pembaruan karena ini adalah proyek satu orang. Terima kasih atas pengertian Anda.</string>
     <string name="msg_ai_no_response_error">Tidak ada respons diterima. AI mengembalikan konten kosong.\nPetunjuk: Anda mungkin menggunakan pemicu/perintah yang tidak terdaftar.</string>
 </resources>

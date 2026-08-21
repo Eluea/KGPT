@@ -598,11 +598,15 @@
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-    <string name="changelog_4_0_8_item1">Absturz beim Ändern der Sprache und Betreten des KI-Aufruf-Bereichs behoben</string>
-    <string name="changelog_4_0_8_item2">Design der Warnmeldung im Änderungsprotokoll verbessert</string>
-    <string name="changelog_4_0_8_item3">Unterstützung für GLM-Modelle von ZhipuAI hinzugefügt</string>
-    <string name="changelog_4_0_8_item4">Problem mit fehlendem Leerzeichen bei Textformatierungsbefehlen behoben</string>
-    <string name="changelog_4_0_8_item5">Problem behoben, bei dem Text verschwindet, wenn ein nicht registrierter Auslöser verwendet wird oder keine Antwort von der KI kommt</string>
+        <string name="changelog_4_0_8_item1">Migration von LSPosed API 82 auf moderne API 102</string>
+    <string name="changelog_4_0_8_item2">Große Leistungsoptimierungen und reduzierter Akkuverbrauch</string>
+    <string name="changelog_4_0_8_item3">Behebung verschiedener Einfrier- und Hängeprobleme</string>
+    <string name="changelog_4_0_8_item4">Neuer Tastatur-Trigger hinzugefügt: Medien-Downloader-Trigger</string>
+    <string name="changelog_4_0_8_item5">Neue Textauswahl-Aktion hinzugefügt: Medien-Downloader</string>
+    <string name="changelog_4_0_8_item6">Neues Lab-Feature hinzugefügt: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Direkte YouTube- und Videosuche hinzugefügt</string>
+    <string name="changelog_4_0_8_item8">Video- und Audio-Download mit benutzerdefinierten Formaten, Qualität und Zuschnitt</string>
+    <string name="changelog_4_0_8_item9">Erstellung universeller Standalone-Befehle zum Herunterladen auf jedem Gerät</string>
     <string name="changelog_note_4_0_8">Bitte haben Sie Geduld, da weitere Probleme gemeldet wurden. Diese werden in Update-Chargen behoben, da es sich um ein Ein-Personen-Projekt handelt. Danke für Ihr Verständnis.</string>
     <string name="msg_ai_no_response_error">Keine Antwort erhalten. Die KI hat leeren Inhalt zurückgegeben.\nHinweis: Sie verwenden möglicherweise einen nicht registrierten Auslöser/Befehl.</string>
 </resources>

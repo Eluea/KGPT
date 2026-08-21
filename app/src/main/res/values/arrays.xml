@@ -12,6 +12,8 @@
     <string-array name="xposedscope">
         <!-- Android System Framework -->
         <item>android</item>
+        <item>system</item>
+        <item>com.android.systemui</item>
         <!-- Google Gboard -->
         <item>com.google.android.inputmethod.latin</item>
         <!-- Microsoft SwiftKey -->

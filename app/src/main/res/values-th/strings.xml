@@ -601,11 +601,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">แก้ไขแอปขัดข้องเมื่อเปลี่ยนภาษาและพยายามเข้าสู่ส่วน AI Invocation</string>
-    <string name="changelog_4_0_8_item2">ปรับปรุงการออกแบบลักษณะการแจ้งเตือนในบันทึกการเปลี่ยนแปลงในแอป</string>
-    <string name="changelog_4_0_8_item3">เพิ่มการรองรับโมเดล GLM ที่ให้บริการโดย ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">แก้ไขปัญหาเว้นวรรคหายไปเมื่อใช้คำสั่งจัดรูปแบบข้อความ</string>
-    <string name="changelog_4_0_8_item5">แก้ไขปัญหาข้อความหายไปเมื่อใช้ทริกเกอร์ที่ไม่ได้ลงทะเบียนหรือไม่ได้รับการตอบกลับจาก AI</string>
+        <string name="changelog_4_0_8_item1">เปลี่ยนจาก LSPosed API 82 เป็น API 102 ที่ทันสมัย</string>
+    <string name="changelog_4_0_8_item2">ปรับปรุงประสิทธิภาพครั้งใหญ่และลดการใช้พลังงานแบตเตอรี่</string>
+    <string name="changelog_4_0_8_item3">แก้ไขปัญหาแอปค้างและหยุดทำงานในหลายสถานการณ์</string>
+    <string name="changelog_4_0_8_item4">เพิ่มทริกเกอร์แป้นพิมพ์ใหม่: ทริกเกอร์ดาวน์โหลดสื่อ</string>
+    <string name="changelog_4_0_8_item5">เพิ่มการดำเนินการเลือกข้อความใหม่: ดาวน์โหลดสื่อ</string>
+    <string name="changelog_4_0_8_item6">เพิ่มฟีเจอร์ทดลองใหม่: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">เพิ่มฟีเจอร์ค้นหาวิดีโอและ YouTube โดยตรง</string>
+    <string name="changelog_4_0_8_item8">รองรับการดาวน์โหลดวิดีโอและเสียง พร้อมปรับแต่งคุณภาพ รูปแบบ และตัดช่วงคลิป</string>
+    <string name="changelog_4_0_8_item9">เพิ่มตัวสร้างคำสั่งสแตนด์อโลนสากลเพื่อดาวน์โหลดบนอุปกรณ์อื่นได้ทุกเครื่อง</string>
     <string name="changelog_note_4_0_8">โปรดอดใจรอเนื่องจากมีการรายงานปัญหาเพิ่มเติมไปยังนักพัฒนา แต่ปัญหาเหล่านั้นจะได้รับการแก้ไขในการอัปเดตเป็นชุดเนื่องจากเป็นโครงการที่ทำเพียงคนเดียว ขอบคุณที่เข้าใจ</string>
     <string name="msg_ai_no_response_error">ไม่ได้รับการตอบกลับ AI ส่งคืนเนื้อหาว่างเปล่า\nคำแนะนำ: คุณอาจกำลังใช้ทริกเกอร์/คำสั่งที่ไม่ได้ลงทะเบียน</string>
 </resources>

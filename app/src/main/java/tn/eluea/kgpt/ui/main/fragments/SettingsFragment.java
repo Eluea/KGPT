@@ -756,8 +756,8 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
 
-        // Version 4.0.8 Changes
-        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+        // Version 4.0.8 Changes (All 9 items)
+        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
                 getString(R.string.changelog_4_0_8_item1),
                 colorPrimary, colorOnPrimary);
 
@@ -765,12 +765,32 @@ public class SettingsFragment extends Fragment {
                 getString(R.string.changelog_4_0_8_item2),
                 colorPrimary, colorOnPrimary);
 
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
                 getString(R.string.changelog_4_0_8_item3),
                 colorPrimary, colorOnPrimary);
 
-        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
                 getString(R.string.changelog_4_0_8_item4),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_0_8_item5),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_0_8_item6),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_0_8_item7),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_0_8_item8),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_0_8_item9),
                 colorPrimary, colorOnPrimary);
 
         // Add note at the end using the new info card style

@@ -738,11 +738,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">زبان تبدیل کرتے وقت اور AI انووکیشن سیکشن میں داخل ہونے کی کوشش کرتے وقت ایپ کے کریش کو ٹھیک کیا گیا</string>
-    <string name="changelog_4_0_8_item2">ان-ایپ چینج لاگ میں الرٹ کے ظاہری شکل کے ڈیزائن کو بہتر بنایا گیا</string>
-    <string name="changelog_4_0_8_item3">ZhipuAI کے ذریعہ فراہم کردہ GLM ماڈلز کے لئے سپورٹ شامل کی گئی</string>
-    <string name="changelog_4_0_8_item4">ٹیکسٹ فارمیٹنگ کمانڈز استعمال کرتے وقت غائب جگہ کے مسئلے کو ٹھیک کیا گیا</string>
-    <string name="changelog_4_0_8_item5">غیر رجسٹرڈ ٹرگر استعمال کرنے یا AI سے کوئی جواب موصول نہ ہونے پر متن غائب ہونے کا مسئلہ حل کر دیا گیا</string>
+        <string name="changelog_4_0_8_item1">LSPosed API 82 سے جدید API 102 میں منتقلی</string>
+    <string name="changelog_4_0_8_item2">کارکردگی میں بڑی بہتری اور بیٹری کے استعمال میں نمایاں کمی</string>
+    <string name="changelog_4_0_8_item3">ایپ فریز ہونے اور ہینگ ہونے کے مختلف مسائل کا حل</string>
+    <string name="changelog_4_0_8_item4">کی بورڈ میں نیا ٹرگر شامل کیا گیا (میڈیا ڈاؤنلوڈر ٹرگر)</string>
+    <string name="changelog_4_0_8_item5">متن کے انتخاب کا نیا فیچر شامل کیا گیا (میڈیا ڈاؤنلوڈر)</string>
+    <string name="changelog_4_0_8_item6">لیب کا نیا فیچر شامل کیا گیا: KGPT میڈیا ڈاؤنلوڈر</string>
+    <string name="changelog_4_0_8_item7">یوٹیوب اور ویڈیو سرچ کا فیچر شامل کیا گیا</string>
+    <string name="changelog_4_0_8_item8">ویڈیو اور آڈیو ڈاؤن لوڈنگ، حسب ضرورت فارمیٹس، کوالٹی اور ٹرمنگ کے ساتھ</string>
+    <string name="changelog_4_0_8_item9">کسی بھی دوسرے ڈیوائس پر ڈاؤن لوڈ کے لیے یونیورسل کمانڈ کاپی کرنے کی سہولت</string>
     <string name="changelog_note_4_0_8">براہ کرم صبر کریں کیونکہ ڈویلپر کو مزید مسائل کی اطلاع دی گئی ہے، لیکن انہیں اپ ڈیट्स کے بیچز میں حل کیا جائے گا کیونکہ یہ ایک فرد کا پروجెక్ٹ ہے۔ آپ کی سمجھ کے لئے شکریہ۔</string>
     <string name="msg_ai_no_response_error">کوئی جواب موصول نہیں ہوا۔ AI نے خالی مواد واپس کیا۔\nاشارہ: ہو سکتا ہے آپ غیر رجسٹرڈ ٹرگر/کمانڈ استعمال کر رہے ہوں۔</string>
 </resources>

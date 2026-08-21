@@ -600,11 +600,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">Đã sửa lỗi ứng dụng bị treo khi thay đổi ngôn ngữ và cố gắng vào phần Gọi AI</string>
-    <string name="changelog_4_0_8_item2">Cải thiện thiết kế hiển thị cảnh báo trong nhật ký thay đổi trong ứng dụng</string>
-    <string name="changelog_4_0_8_item3">Thêm hỗ trợ cho các mô hình GLM do ZhipuAI cung cấp</string>
-    <string name="changelog_4_0_8_item4">Đã sửa lỗi thiếu khoảng trắng khi sử dụng các lệnh định dạng văn bản</string>
-    <string name="changelog_4_0_8_item5">Đã khắc phục sự cố văn bản biến mất khi sử dụng trình kích hoạt chưa đăng ký hoặc không nhận được phản hồi từ AI</string>
+        <string name="changelog_4_0_8_item1">Đã chuyển từ LSPosed API 82 sang API 102 hiện đại</string>
+    <string name="changelog_4_0_8_item2">Tối ưu hóa hiệu suất lớn và giảm mức tiêu thụ pin</string>
+    <string name="changelog_4_0_8_item3">Đã sửa nhiều tình huống ứng dụng bị treo và đóng băng</string>
+    <string name="changelog_4_0_8_item4">Đã thêm trình kích hoạt bàn phím mới: Trình tải xuống phương tiện</string>
+    <string name="changelog_4_0_8_item5">Đã thêm tác vụ chọn văn bản mới: Trình tải xuống phương tiện</string>
+    <string name="changelog_4_0_8_item6">Đã thêm tính năng Lab mới: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Đã thêm tính năng tìm kiếm video và YouTube trực tiếp</string>
+    <string name="changelog_4_0_8_item8">Hỗ trợ tải xuống Video &amp; Âm thanh với tùy chỉnh chất lượng, định dạng và cắt đoạn</string>
+    <string name="changelog_4_0_8_item9">Đã thêm trình tạo lệnh độc lập đa nền tảng để tải xuống trên bất kỳ thiết bị nào</string>
     <string name="changelog_note_4_0_8">Xin hãy kiên nhẫn vì nhiều vấn đề hơn đã được báo cáo cho nhà phát triển, nhưng chúng sẽ được giải quyết theo từng đợt cập nhật vì đây là dự án của một người. Cảm ơn sự thông cảm của bạn.</string>
     <string name="msg_ai_no_response_error">Không nhận được phản hồi. AI trả về nội dung trống.\nGợi ý: Bạn có thể đang sử dụng trình kích hoạt/lệnh chưa đăng ký.</string>
 </resources>

@@ -1,5 +1,7 @@
 [
     "android",
+    "system",
+    "com.android.systemui",
     "com.google.android.inputmethod.latin",
     "com.samsung.android.honeyboard",
     "com.touchtype.swiftkey",
@@ -7,6 +9,7 @@
     "org.futo.inputmethod.latin",
     "org.futo.voiceinput",
     "com.fleksy.keyboard",
+    "com.syntellia.fleksy.keyboard",
     "com.anysoftkeyboard.languagepack.english",
     "com.menny.android.anysoftkeyboard",
     "com.cootek.smartinputv5",
@@ -26,12 +29,14 @@
     "com.xiaomi.inputmethod.miui",
     "com.meizu.flyme.input",
     "com.grammarly.android.keyboard",
+    "com.gamelounge.chroomakeyboard",
     "com.ai.type.keyboard",
     "com.kika.keyboard",
     "com.facemoji.lite.xiaomi",
     "com.facemoji.keyboard",
     "dev.patrickgold.florisboard",
     "rkr.simplekeyboard.inputmethod",
+    "org.dslul.openboard.inputmethod.latin",
     "juloo.keyboard2",
     "helium314.keyboard",
     "com.blackberry.keyboard",
@@ -42,5 +47,6 @@
     "com.motorola.inputmethod",
     "com.sony.inputmethod",
     "com.hisense.inputmethod",
-    "com.tcl.inputmethod"
+    "com.tcl.inputmethod",
+    "tn.eluea.kgpt"
 ]

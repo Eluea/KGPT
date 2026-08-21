@@ -740,11 +740,15 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-    <string name="changelog_4_0_8_item1">App-crash opgelost bij het wijzigen van de taal en poging tot toegang tot de AI-aanroepsectie</string>
-    <string name="changelog_4_0_8_item2">Verbeterd ontwerp van de waarschuwingsweergave in de in-app changelog</string>
-    <string name="changelog_4_0_8_item3">Ondersteuning toegevoegd voor GLM-modellen aangeboden door ZhipuAI</string>
-    <string name="changelog_4_0_8_item4">Probleem met ontbrekende spatie opgelost bij gebruik van tekstopmaakopdrachten</string>
-    <string name="changelog_4_0_8_item5">Probleem opgelost waarbij tekst verdwijnt bij gebruik van een niet-geregistreerde trigger of geen reactie van AI</string>
+        <string name="changelog_4_0_8_item1">Gemigreerd van LSPosed API 82 naar moderne API 102</string>
+    <string name="changelog_4_0_8_item2">Grote prestatieoptimalisaties en lager batterijverbruik</string>
+    <string name="changelog_4_0_8_item3">Verschillende vastloop- en bevriezingsscenario\'s opgelost</string>
+    <string name="changelog_4_0_8_item4">Nieuwe toetsenbordtrigger toegevoegd: Media Downloader-trigger</string>
+    <string name="changelog_4_0_8_item5">Nieuwe tekstselectie-actie toegevoegd: Media Downloader</string>
+    <string name="changelog_4_0_8_item6">Nieuwe Lab-functie toegevoegd: KGPT Media Downloader</string>
+    <string name="changelog_4_0_8_item7">Live YouTube- en videozoekfunctie toegevoegd</string>
+    <string name="changelog_4_0_8_item8">Video en audio downloaden met aangepaste formaten, kwaliteit en bijknippen</string>
+    <string name="changelog_4_0_8_item9">Universele standalone-opdracht genereren om op elk apparaat te downloaden</string>
     <string name="changelog_note_4_0_8">Wees geduldig aangezien er meer problemen aan de ontwikkelaar zijn gemeld, maar deze zullen in batches updates worden opgelost aangezien dit een eenmansproject is. Bedankt voor uw begrip.</string>
     <string name="msg_ai_no_response_error">Geen reactie ontvangen. De AI gaf lege inhoud terug.\nTip: U gebruikt mogelijk een niet-geregistreerde trigger/opdracht.</string>
 </resources>
