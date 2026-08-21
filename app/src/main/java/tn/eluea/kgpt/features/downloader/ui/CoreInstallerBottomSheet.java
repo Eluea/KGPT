@@ -55,8 +55,11 @@ public class CoreInstallerBottomSheet {
 
     private static final String TAG = "KGPT_CoreInstaller";
 
-    // High-speed global CDN mirrors + Fallback mirrors
-    private static final String[] REMOTE_BASE_URLS = new String[]{
+    // Direct GitHub Release URL format (Single Full Bundle)
+    private static final String RELEASE_DOWNLOAD_URL = "https://github.com/Eluea/KGPT/releases/download/v4.0.8-downloader-core/kgpt-core-";
+
+    // Fast CDN fallback mirrors for chunked download
+    private static final String[] CDN_MIRRORS = new String[]{
             "https://cdn.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
             "https://fastly.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
             "https://gcore.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
@@ -207,16 +210,11 @@ public class CoreInstallerBottomSheet {
 
         if (containerDownloading != null) containerDownloading.setVisibility(View.VISIBLE);
 
-        executor.execute(this::performChunkedDownloadAndExtract);
+        executor.execute(this::performDownloadAndInstallation);
     }
 
-    private void performChunkedDownloadAndExtract() {
+    private void performDownloadAndInstallation() {
         String abi = getPrimaryAbi();
-        File chunksDir = new File(context.getCacheDir(), "chunks_" + abi);
-        if (!chunksDir.exists()) chunksDir.mkdirs();
-
-        File localDeviceDir = findLocalChunksDir(abi);
-
         File finalZip = new File(context.getCacheDir(), "kgpt-core-" + abi + ".zip");
         File destCoreDir = new File(context.getFilesDir(), "youtubedl-core");
         File destNoBackupDir = new File(context.getNoBackupFilesDir(), "youtubedl-android");
@@ -224,84 +222,47 @@ public class CoreInstallerBottomSheet {
         if (!destNoBackupDir.exists()) destNoBackupDir.mkdirs();
 
         try {
-            // 1. Get or build chunk list
-            List<ChunkInfo> chunks = loadManifestChunks(abi, localDeviceDir);
-            long totalExpectedSize = 0;
-            for (ChunkInfo c : chunks) totalExpectedSize += c.size;
-            final long totalSize = totalExpectedSize > 0 ? totalExpectedSize : 48 * 1024 * 1024L;
+            boolean downloadSuccess = false;
 
-            AtomicLong bytesDownloaded = new AtomicLong(0);
-
-            // 2. Multi-threaded parallel chunk download with CDN mirror fallback
-            int workerCount = Math.min(4, chunks.size());
-            ExecutorService chunkPool = Executors.newFixedThreadPool(workerCount);
-            CountDownLatch latch = new CountDownLatch(chunks.size());
-            boolean[] downloadFailed = new boolean[]{false};
-            String[] failureReason = new String[]{null};
-
-            for (ChunkInfo chunk : chunks) {
-                chunkPool.execute(() -> {
-                    if (isCancelled || downloadFailed[0]) {
-                        latch.countDown();
-                        return;
-                    }
-                    try {
-                        File targetChunkFile = new File(chunksDir, chunk.name);
-
-                        // Check if chunk is already downloaded and intact (Resume capability)
-                        if (targetChunkFile.exists() && targetChunkFile.length() == chunk.size) {
-                            bytesDownloaded.addAndGet(chunk.size);
-                            mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
-                            latch.countDown();
-                            return;
-                        }
-
-                        // Check if local device storage has it
-                        if (localDeviceDir != null) {
-                            File localChunk = new File(localDeviceDir, chunk.name);
-                            if (localChunk.exists() && localChunk.length() == chunk.size) {
-                                copyFile(localChunk, targetChunkFile);
-                                bytesDownloaded.addAndGet(chunk.size);
-                                mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
-                                latch.countDown();
-                                return;
-                            }
-                        }
-
-                        // Download from ultra-fast CDN mirrors with automatic fallback
-                        downloadChunkWithMirrorFallback(abi, chunk, targetChunkFile, bytesDownloaded, totalSize);
-                        latch.countDown();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage(), e);
-                        downloadFailed[0] = true;
-                        failureReason[0] = e.getMessage();
-                        latch.countDown();
-                    }
-                });
+            // 1. First check local device storage (Instant setup if present)
+            File localZip = findLocalBundleZip(abi);
+            if (localZip != null && localZip.exists() && localZip.length() > 1024 * 1024) {
+                Log.d(TAG, "Using local bundle zip: " + localZip.getAbsolutePath());
+                copyFile(localZip, finalZip);
+                downloadSuccess = true;
             }
 
-            latch.await();
-            chunkPool.shutdown();
+            // 2. Primary: Download directly from GitHub Releases (Single file, high speed)
+            if (!downloadSuccess) {
+                String releaseUrl = RELEASE_DOWNLOAD_URL + abi + ".zip";
+                try {
+                    Log.d(TAG, "Downloading full release bundle: " + releaseUrl);
+                    downloadSingleFile(releaseUrl, finalZip);
+                    downloadSuccess = true;
+                } catch (Exception e) {
+                    Log.w(TAG, "Release download failed (" + e.getMessage() + "), falling back to chunked CDN...");
+                }
+            }
+
+            // 3. Fallback: Multi-threaded parallel chunk download via global CDNs
+            if (!downloadSuccess) {
+                performChunkedDownload(abi, finalZip);
+                downloadSuccess = true;
+            }
 
             if (isCancelled) return;
-            if (downloadFailed[0]) {
-                throw new Exception("Chunk download failed: " + (failureReason[0] != null ? failureReason[0] : "Network timeout"));
-            }
 
-            // 3. Assemble all chunks into final ZIP
+            // 4. Extraction Phase
             mainHandler.post(() -> {
                 if (tvDownloadStatus != null) tvDownloadStatus.setText(context.getString(R.string.status_installing_plugin));
+                if (tvDownloadDetails != null) tvDownloadDetails.setText("Extracting core binaries...");
             });
 
-            assembleChunks(chunks, chunksDir, finalZip);
-
-            // 4. Extract ZIP into youtubedl-core and youtubedl-android
             extractZip(finalZip, destCoreDir);
             extractZip(finalZip, destNoBackupDir);
 
-            // Delete temporary assembly files
+            // Clean up temporary ZIP
             finalZip.delete();
-            deleteDirectory(chunksDir);
 
             // Initialize the engine
             DownloaderEngine.getInstance().init(context);
@@ -310,10 +271,11 @@ public class CoreInstallerBottomSheet {
                 if (lottieProgress != null) lottieProgress.setVisibility(View.GONE);
                 if (ivSuccessIcon != null) ivSuccessIcon.setVisibility(View.VISIBLE);
                 if (tvDownloadStatus != null) tvDownloadStatus.setText(context.getString(R.string.toast_engine_updated));
+                if (tvDownloadDetails != null) tvDownloadDetails.setText("Ready to download media");
 
                 mainHandler.postDelayed(() -> {
                     if (dialog != null && dialog.isShowing()) {
-                        // Clear dismiss listener before dismiss to avoid triggering finish()
+                        // Clear dismiss listener before dismiss to avoid triggering finish() on host activity
                         dialog.setOnDismissListener(null);
                         dialog.dismiss();
                     }
@@ -327,29 +289,141 @@ public class CoreInstallerBottomSheet {
             Log.e(TAG, "Install failed: " + e.getMessage(), e);
             mainHandler.post(() -> {
                 if (lottieProgress != null) lottieProgress.setVisibility(View.GONE);
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Installation failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 if (dialog != null) dialog.dismiss();
             });
         }
     }
 
+    private void downloadSingleFile(String urlStr, File destFile) throws Exception {
+        HttpURLConnection conn = openConnectionWithRedirects(urlStr);
+        long totalSize = conn.getContentLength();
+        if (totalSize <= 0) {
+            totalSize = 48 * 1024 * 1024L;
+        }
+
+        try (InputStream in = conn.getInputStream();
+             FileOutputStream out = new FileOutputStream(destFile)) {
+            byte[] buffer = new byte[32768];
+            int read;
+            long totalDownloaded = 0;
+            while ((read = in.read(buffer)) != -1) {
+                if (isCancelled) return;
+                out.write(buffer, 0, read);
+                totalDownloaded += read;
+                final long curr = totalDownloaded;
+                final long tot = totalSize;
+                mainHandler.post(() -> updateProgressUi(curr, tot));
+            }
+            out.flush();
+        } finally {
+            conn.disconnect();
+        }
+    }
+
+    private void performChunkedDownload(String abi, File finalZip) throws Exception {
+        File chunksDir = new File(context.getCacheDir(), "chunks_" + abi);
+        if (!chunksDir.exists()) chunksDir.mkdirs();
+
+        File localDeviceDir = findLocalChunksDir(abi);
+        List<ChunkInfo> chunks = loadManifestChunks(abi, localDeviceDir);
+        long totalExpectedSize = 0;
+        for (ChunkInfo c : chunks) totalExpectedSize += c.size;
+        final long totalSize = totalExpectedSize > 0 ? totalExpectedSize : 48 * 1024 * 1024L;
+
+        AtomicLong bytesDownloaded = new AtomicLong(0);
+
+        int workerCount = Math.min(4, chunks.size());
+        ExecutorService chunkPool = Executors.newFixedThreadPool(workerCount);
+        CountDownLatch latch = new CountDownLatch(chunks.size());
+        boolean[] downloadFailed = new boolean[]{false};
+        String[] failureReason = new String[]{null};
+
+        for (ChunkInfo chunk : chunks) {
+            chunkPool.execute(() -> {
+                if (isCancelled || downloadFailed[0]) {
+                    latch.countDown();
+                    return;
+                }
+                try {
+                    File targetChunkFile = new File(chunksDir, chunk.name);
+
+                    // Resume check
+                    if (targetChunkFile.exists() && targetChunkFile.length() == chunk.size) {
+                        bytesDownloaded.addAndGet(chunk.size);
+                        mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
+                        latch.countDown();
+                        return;
+                    }
+
+                    // Local check
+                    if (localDeviceDir != null) {
+                        File localChunk = new File(localDeviceDir, chunk.name);
+                        if (localChunk.exists() && localChunk.length() == chunk.size) {
+                            copyFile(localChunk, targetChunkFile);
+                            bytesDownloaded.addAndGet(chunk.size);
+                            mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
+                            latch.countDown();
+                            return;
+                        }
+                    }
+
+                    // Download chunk with CDN mirror fallback
+                    downloadChunkWithMirrorFallback(abi, chunk, targetChunkFile, bytesDownloaded, totalSize);
+                    latch.countDown();
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage(), e);
+                    downloadFailed[0] = true;
+                    failureReason[0] = e.getMessage();
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        chunkPool.shutdown();
+
+        if (isCancelled) return;
+        if (downloadFailed[0]) {
+            throw new Exception("Chunk download failed: " + (failureReason[0] != null ? failureReason[0] : "Network timeout"));
+        }
+
+        assembleChunks(chunks, chunksDir, finalZip);
+        deleteDirectory(chunksDir);
+    }
+
     private void downloadChunkWithMirrorFallback(String abi, ChunkInfo chunk, File targetChunkFile, AtomicLong totalDownloaded, long totalSize) throws Exception {
         Exception lastException = null;
-        for (String baseUrl : REMOTE_BASE_URLS) {
+        for (String baseUrl : CDN_MIRRORS) {
             if (isCancelled) return;
             try {
                 String chunkUrl = baseUrl + abi + "/" + chunk.name;
                 downloadChunkFromUrl(chunkUrl, targetChunkFile, chunk.size, totalDownloaded, totalSize);
-                return; // Download succeeded!
+                return;
             } catch (Exception e) {
-                Log.w(TAG, "Mirror " + baseUrl + " failed for chunk " + chunk.name + ": " + e.getMessage() + ", trying next mirror...");
                 lastException = e;
                 if (targetChunkFile.exists()) {
-                    targetChunkFile.delete(); // Clean up partial download before retrying next mirror
+                    targetChunkFile.delete();
                 }
             }
         }
         throw (lastException != null ? lastException : new Exception("All mirrors failed for " + chunk.name));
+    }
+
+    private File findLocalBundleZip(String abi) {
+        String[] possiblePaths = new String[]{
+                "/sdcard/kgpt-core-" + abi + ".zip",
+                "/storage/emulated/0/kgpt-core-" + abi + ".zip",
+                new File(Environment.getExternalStorageDirectory(), "kgpt-core-" + abi + ".zip").getAbsolutePath(),
+                new File(context.getExternalFilesDir(null), "kgpt-core-" + abi + ".zip").getAbsolutePath()
+        };
+        for (String path : possiblePaths) {
+            File file = new File(path);
+            if (file.exists() && file.isFile() && file.length() > 1024 * 1024) {
+                return file;
+            }
+        }
+        return null;
     }
 
     private File findLocalChunksDir(String abi) {
@@ -378,12 +452,17 @@ public class CoreInstallerBottomSheet {
                 }
             }
             if (manifestJsonStr == null || manifestJsonStr.trim().isEmpty()) {
-                manifestJsonStr = downloadStringWithMirrorFallback(abi, "manifest.json");
+                for (String baseUrl : CDN_MIRRORS) {
+                    try {
+                        String url = baseUrl + abi + "/manifest.json";
+                        manifestJsonStr = downloadString(url);
+                        if (manifestJsonStr != null && !manifestJsonStr.trim().isEmpty()) break;
+                    } catch (Exception ignored) {}
+                }
             }
 
             if (manifestJsonStr != null) {
                 manifestJsonStr = manifestJsonStr.trim();
-                // Strip UTF-8 BOM if present
                 if (manifestJsonStr.startsWith("\uFEFF")) {
                     manifestJsonStr = manifestJsonStr.substring(1);
                 }
@@ -405,7 +484,6 @@ public class CoreInstallerBottomSheet {
             Log.w(TAG, "Could not load remote manifest, using default chunk scheme: " + e.getMessage());
         }
 
-        // Fallback standard chunks if manifest is unavailable
         if (chunks.isEmpty()) {
             int chunkCount = abi.contains("v7a") ? 9 : (abi.contains("x86_64") ? 11 : 10);
             for (int i = 0; i < chunkCount; i++) {
@@ -417,19 +495,6 @@ public class CoreInstallerBottomSheet {
             }
         }
         return chunks;
-    }
-
-    private static String downloadStringWithMirrorFallback(String abi, String filename) {
-        for (String baseUrl : REMOTE_BASE_URLS) {
-            try {
-                String url = baseUrl + abi + "/" + filename;
-                String result = downloadString(url);
-                if (result != null && !result.trim().isEmpty()) {
-                    return result;
-                }
-            } catch (Exception ignored) {}
-        }
-        return null;
     }
 
     private static HttpURLConnection openConnectionWithRedirects(String urlStr) throws Exception {
