@@ -137,6 +137,23 @@ public class MediaDownloaderBottomSheet {
     }
 
     public void show() {
+        if (!DownloaderEngine.getInstance().isCoreInstalled(context)) {
+            CoreInstallerBottomSheet installer = new CoreInstallerBottomSheet(context, () -> {
+                MediaDownloaderBottomSheet newSheet = new MediaDownloaderBottomSheet(context, mediaUrl);
+                if (onDismissCallback != null) {
+                    newSheet.setOnDismissListener(d -> onDismissCallback.run());
+                }
+                newSheet.show();
+            });
+            installer.setOnDismissListener(d -> {
+                if (onDismissCallback != null) {
+                    onDismissCallback.run();
+                }
+            });
+            installer.show();
+            return;
+        }
+
         dialog = new FloatingBottomSheet(context);
         rootView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_media_downloader, null);
         BottomSheetHelper.applyTheme(context, rootView);
@@ -501,7 +518,10 @@ public class MediaDownloaderBottomSheet {
 
     private void loadMediaDetails() {
         if (!DownloaderEngine.getInstance().isCoreInstalled(context)) {
-            dialog.dismissInstant();
+            if (dialog != null) {
+                dialog.setOnDismissListener(null);
+                dialog.dismissInstant();
+            }
             CoreInstallerBottomSheet installer = new CoreInstallerBottomSheet(context, () -> {
                 MediaDownloaderBottomSheet newSheet = new MediaDownloaderBottomSheet(context, mediaUrl);
                 if (onDismissCallback != null) {
