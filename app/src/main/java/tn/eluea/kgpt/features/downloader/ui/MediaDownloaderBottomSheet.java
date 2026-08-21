@@ -53,6 +53,7 @@ import tn.eluea.kgpt.features.downloader.core.DownloadOptions;
 import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
 import tn.eluea.kgpt.features.downloader.core.DownloaderPrefs;
 import tn.eluea.kgpt.features.downloader.core.MediaUtils;
+import tn.eluea.kgpt.features.downloader.core.ThumbnailLoader;
 import tn.eluea.kgpt.features.downloader.service.MediaDownloadService;
 import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.FloatingBottomSheet;
@@ -148,7 +149,6 @@ public class MediaDownloaderBottomSheet {
 
         dialog.setOnDismissListener(d -> {
             MediaDownloadService.setDownloadEventListener(null);
-            imageExecutor.shutdown();
             if (onDismissCallback != null) {
                 onDismissCallback.run();
             }
@@ -559,17 +559,7 @@ public class MediaDownloaderBottomSheet {
         updateModeUi();
 
         if (info.getThumbnail() != null && !info.getThumbnail().isEmpty()) {
-            imageExecutor.execute(() -> {
-                try {
-                    InputStream in = new URL(info.getThumbnail()).openStream();
-                    Bitmap bmp = BitmapFactory.decodeStream(in);
-                    mainHandler.post(() -> {
-                        if (ivThumbnail != null && bmp != null) {
-                            ivThumbnail.setImageBitmap(bmp);
-                        }
-                    });
-                } catch (Exception ignored) {}
-            });
+            ThumbnailLoader.getInstance().load(info.getThumbnail(), ivThumbnail, R.drawable.ic_movie_outline);
         }
     }
 

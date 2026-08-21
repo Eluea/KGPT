@@ -187,8 +187,7 @@
             android:name=".features.downloader.ui.MediaShareActivity"
             android:theme="@style/Theme.KGPT.Translucent"
             android:label="@string/nav_media_download"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
+            android:launchMode="singleTop"
             android:excludeFromRecents="true"
             android:taskAffinity=""
             android:exported="true">

@@ -9,6 +9,7 @@ package tn.eluea.kgpt.features.downloader.ui;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -35,7 +36,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -208,7 +208,7 @@ public class CoreInstallerBottomSheet {
         File chunksDir = new File(context.getCacheDir(), "chunks_" + abi);
         if (!chunksDir.exists()) chunksDir.mkdirs();
 
-        File localDeviceDir = new File("/sdcard/kgpt_core/" + abi);
+        File localDeviceDir = findLocalChunksDir(abi);
 
         File finalZip = new File(context.getCacheDir(), "kgpt-core-" + abi + ".zip");
         File destCoreDir = new File(context.getFilesDir(), "youtubedl-core");
@@ -230,6 +230,7 @@ public class CoreInstallerBottomSheet {
             ExecutorService chunkPool = Executors.newFixedThreadPool(workerCount);
             CountDownLatch latch = new CountDownLatch(chunks.size());
             boolean[] downloadFailed = new boolean[]{false};
+            String[] failureReason = new String[]{null};
 
             for (ChunkInfo chunk : chunks) {
                 chunkPool.execute(() -> {
@@ -239,7 +240,7 @@ public class CoreInstallerBottomSheet {
                     }
                     try {
                         File targetChunkFile = new File(chunksDir, chunk.name);
-                        
+
                         // Check if chunk is already downloaded and intact (Resume capability)
                         if (targetChunkFile.exists() && targetChunkFile.length() == chunk.size) {
                             bytesDownloaded.addAndGet(chunk.size);
@@ -249,22 +250,25 @@ public class CoreInstallerBottomSheet {
                         }
 
                         // Check if local device storage has it
-                        File localChunk = new File(localDeviceDir, chunk.name);
-                        if (localChunk.exists() && localChunk.length() == chunk.size) {
-                            copyFile(localChunk, targetChunkFile);
-                            bytesDownloaded.addAndGet(chunk.size);
-                            mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
-                            latch.countDown();
-                            return;
+                        if (localDeviceDir != null) {
+                            File localChunk = new File(localDeviceDir, chunk.name);
+                            if (localChunk.exists() && localChunk.length() == chunk.size) {
+                                copyFile(localChunk, targetChunkFile);
+                                bytesDownloaded.addAndGet(chunk.size);
+                                mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
+                                latch.countDown();
+                                return;
+                            }
                         }
 
-                        // Download from remote server
+                        // Download from remote server with full redirect & UA support
                         String chunkUrl = REMOTE_BASE_URL + abi + "/" + chunk.name;
                         downloadChunkFromUrl(chunkUrl, targetChunkFile, chunk.size, bytesDownloaded, totalSize);
                         latch.countDown();
                     } catch (Exception e) {
-                        Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage());
+                        Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage(), e);
                         downloadFailed[0] = true;
+                        failureReason[0] = e.getMessage();
                         latch.countDown();
                     }
                 });
@@ -275,7 +279,7 @@ public class CoreInstallerBottomSheet {
 
             if (isCancelled) return;
             if (downloadFailed[0]) {
-                throw new Exception("One or more chunks failed to download. Please check your internet connection.");
+                throw new Exception("Chunk download failed: " + (failureReason[0] != null ? failureReason[0] : "Network timeout"));
             }
 
             // 3. Assemble all chunks into final ZIP
@@ -285,7 +289,7 @@ public class CoreInstallerBottomSheet {
 
             assembleChunks(chunks, chunksDir, finalZip);
 
-            // 4. Extract ZIP into youtubedl-core and initialize
+            // 4. Extract ZIP into youtubedl-core and youtubedl-android
             extractZip(finalZip, destCoreDir);
             extractZip(finalZip, destNoBackupDir);
 
@@ -303,6 +307,8 @@ public class CoreInstallerBottomSheet {
 
                 mainHandler.postDelayed(() -> {
                     if (dialog != null && dialog.isShowing()) {
+                        // Clear dismiss listener before dismiss to avoid triggering finish()
+                        dialog.setOnDismissListener(null);
                         dialog.dismiss();
                     }
                     if (listener != null) {
@@ -321,19 +327,42 @@ public class CoreInstallerBottomSheet {
         }
     }
 
+    private File findLocalChunksDir(String abi) {
+        String[] possiblePaths = new String[]{
+                "/sdcard/kgpt_core/" + abi,
+                "/storage/emulated/0/kgpt_core/" + abi,
+                new File(Environment.getExternalStorageDirectory(), "kgpt_core/" + abi).getAbsolutePath()
+        };
+        for (String path : possiblePaths) {
+            File dir = new File(path);
+            if (dir.exists() && dir.isDirectory()) {
+                return dir;
+            }
+        }
+        return null;
+    }
+
     private List<ChunkInfo> loadManifestChunks(String abi, File localDeviceDir) {
         List<ChunkInfo> chunks = new ArrayList<>();
         try {
             String manifestJsonStr = null;
-            File localManifest = new File(localDeviceDir, "manifest.json");
-            if (localManifest.exists()) {
-                manifestJsonStr = readFileToString(localManifest);
-            } else {
+            if (localDeviceDir != null) {
+                File localManifest = new File(localDeviceDir, "manifest.json");
+                if (localManifest.exists()) {
+                    manifestJsonStr = readFileToString(localManifest);
+                }
+            }
+            if (manifestJsonStr == null || manifestJsonStr.trim().isEmpty()) {
                 String manifestUrl = REMOTE_BASE_URL + abi + "/manifest.json";
                 manifestJsonStr = downloadString(manifestUrl);
             }
 
-            if (manifestJsonStr != null && !manifestJsonStr.trim().isEmpty()) {
+            if (manifestJsonStr != null) {
+                manifestJsonStr = manifestJsonStr.trim();
+                // Strip UTF-8 BOM if present
+                if (manifestJsonStr.startsWith("\uFEFF")) {
+                    manifestJsonStr = manifestJsonStr.substring(1);
+                }
                 JSONObject obj = new JSONObject(manifestJsonStr);
                 JSONArray chunkArr = obj.optJSONArray("chunks");
                 if (chunkArr != null) {
@@ -354,7 +383,7 @@ public class CoreInstallerBottomSheet {
 
         // Fallback standard chunks if manifest is unavailable
         if (chunks.isEmpty()) {
-            int chunkCount = abi.contains("v7a") ? 9 : 10;
+            int chunkCount = abi.contains("v7a") ? 9 : (abi.contains("x86_64") ? 11 : 10);
             for (int i = 0; i < chunkCount; i++) {
                 ChunkInfo info = new ChunkInfo();
                 info.index = i;
@@ -366,20 +395,42 @@ public class CoreInstallerBottomSheet {
         return chunks;
     }
 
-    private void downloadChunkFromUrl(String urlStr, File destFile, long expectedSize, AtomicLong totalDownloaded, long totalSize) throws Exception {
-        HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
-        conn.setConnectTimeout(15000);
-        conn.setReadTimeout(30000);
-        conn.connect();
+    private static HttpURLConnection openConnectionWithRedirects(String urlStr) throws Exception {
+        String currentUrl = urlStr;
+        for (int redirects = 0; redirects < 5; redirects++) {
+            URL url = new URL(currentUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(30000);
+            conn.setInstanceFollowRedirects(true);
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14; KGPT) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
+            conn.setRequestProperty("Accept", "*/*");
+            conn.connect();
 
-        int responseCode = conn.getResponseCode();
-        if (responseCode != HttpURLConnection.HTTP_OK) {
-            throw new Exception("HTTP " + responseCode + " for chunk " + urlStr);
+            int code = conn.getResponseCode();
+            if (code == HttpURLConnection.HTTP_MOVED_PERM || code == HttpURLConnection.HTTP_MOVED_TEMP || code == 307 || code == 308) {
+                String location = conn.getHeaderField("Location");
+                conn.disconnect();
+                if (location != null && !location.isEmpty()) {
+                    currentUrl = location;
+                    continue;
+                }
+            }
+            if (code != HttpURLConnection.HTTP_OK) {
+                conn.disconnect();
+                throw new Exception("HTTP " + code + " for " + urlStr);
+            }
+            return conn;
         }
+        throw new Exception("Too many redirects for " + urlStr);
+    }
+
+    private void downloadChunkFromUrl(String urlStr, File destFile, long expectedSize, AtomicLong totalDownloaded, long totalSize) throws Exception {
+        HttpURLConnection conn = openConnectionWithRedirects(urlStr);
 
         try (InputStream in = conn.getInputStream();
              FileOutputStream out = new FileOutputStream(destFile)) {
-            byte[] buffer = new byte[16384];
+            byte[] buffer = new byte[32768];
             int read;
             while ((read = in.read(buffer)) != -1) {
                 if (isCancelled) return;
@@ -388,12 +439,14 @@ public class CoreInstallerBottomSheet {
                 mainHandler.post(() -> updateProgressUi(current, totalSize));
             }
             out.flush();
+        } finally {
+            conn.disconnect();
         }
     }
 
     private void assembleChunks(List<ChunkInfo> chunks, File chunksDir, File finalZip) throws Exception {
         try (FileOutputStream fos = new FileOutputStream(finalZip)) {
-            byte[] buffer = new byte[32768];
+            byte[] buffer = new byte[65536];
             for (ChunkInfo chunk : chunks) {
                 File chunkFile = new File(chunksDir, chunk.name);
                 if (!chunkFile.exists()) {
@@ -411,7 +464,7 @@ public class CoreInstallerBottomSheet {
     }
 
     private void extractZip(File zipFile, File targetDir) throws Exception {
-        byte[] buffer = new byte[16384];
+        byte[] buffer = new byte[32768];
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
@@ -456,20 +509,19 @@ public class CoreInstallerBottomSheet {
 
     private static String downloadString(String urlStr) {
         try {
-            HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
-            conn.setConnectTimeout(8000);
-            conn.setReadTimeout(12000);
-            conn.connect();
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                try (InputStream is = conn.getInputStream();
-                     java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(is, StandardCharsets.UTF_8))) {
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) sb.append(line);
-                    return sb.toString();
-                }
+            HttpURLConnection conn = openConnectionWithRedirects(urlStr);
+            try (InputStream is = conn.getInputStream();
+                 java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(is, StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) sb.append(line);
+                return sb.toString();
+            } finally {
+                conn.disconnect();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            Log.w(TAG, "Failed downloading string from " + urlStr + ": " + e.getMessage());
+        }
         return null;
     }
 
@@ -487,7 +539,7 @@ public class CoreInstallerBottomSheet {
     private static void copyFile(File src, File dst) throws Exception {
         try (InputStream in = new FileInputStream(src);
              OutputStream out = new FileOutputStream(dst)) {
-            byte[] buf = new byte[16384];
+            byte[] buf = new byte[32768];
             int len;
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
