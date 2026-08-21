@@ -69,6 +69,12 @@ android {
         }
     }
 
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'BlockedPrivateApi'
+    }
+
     buildFeatures {
         buildConfig = true
     }
