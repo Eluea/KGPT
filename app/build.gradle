@@ -57,14 +57,8 @@ android {
         jniLibs {
             useLegacyPackaging = true
             excludes += [
-                '**/*.so',
-                'lib/**',
-                'lib/*/**',
-                '**/libpython*.so',
-                '**/libffmpeg*.so',
-                '**/libffprobe*.so',
-                '**/libyoutubedl*.so',
-                '**/libqjs*.so'
+                '**/libpython.zip.so',
+                '**/libffmpeg.zip.so'
             ]
         }
         resources {

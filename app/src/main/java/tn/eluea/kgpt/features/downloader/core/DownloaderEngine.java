@@ -66,6 +66,7 @@ public class DownloaderEngine {
         Context appContext = context.getApplicationContext();
 
         try {
+            File nativeDir = new File(appContext.getApplicationInfo().nativeLibraryDir);
             File coreDir = new File(appContext.getFilesDir(), "youtubedl-core");
             File ytdlDir = new File(appContext.getNoBackupFilesDir(), "youtubedl-android");
             File packagesDir = new File(ytdlDir, "packages");
@@ -73,7 +74,6 @@ public class DownloaderEngine {
             File ffmpegDir = new File(packagesDir, "ffmpeg");
             File ytdlpDir = new File(ytdlDir, "yt-dlp");
 
-            if (!coreDir.exists()) coreDir.mkdirs();
             if (!ytdlDir.exists()) ytdlDir.mkdirs();
             if (!packagesDir.exists()) packagesDir.mkdirs();
             if (!pythonDir.exists()) pythonDir.mkdirs();
@@ -99,27 +99,29 @@ public class DownloaderEngine {
                 }
             }
 
-            // Grant executable permissions on all binaries
-            setPermissionsRecursively(coreDir);
-            setPermissionsRecursively(ytdlDir);
+            // Grant executable permissions
+            setPermissionsRecursively(pythonDir);
+            setPermissionsRecursively(ffmpegDir);
 
-            // Configure YoutubeDL paths via reflection to point to on-demand coreDir
+            // Use nativeLibraryDir as binDir if libpython.so exists there (OS executable), otherwise coreDir
+            File binDir = (new File(nativeDir, "libpython.so").exists()) ? nativeDir : coreDir;
+
             try {
                 Field binDirField = YoutubeDL.class.getDeclaredField("binDir");
                 binDirField.setAccessible(true);
-                binDirField.set(null, coreDir);
+                binDirField.set(null, binDir);
 
                 Field pythonPathField = YoutubeDL.class.getDeclaredField("pythonPath");
                 pythonPathField.setAccessible(true);
-                pythonPathField.set(null, new File(coreDir, "libpython.so"));
+                pythonPathField.set(null, new File(binDir, "libpython.so"));
 
                 Field ffmpegPathField = YoutubeDL.class.getDeclaredField("ffmpegPath");
                 ffmpegPathField.setAccessible(true);
-                ffmpegPathField.set(null, new File(coreDir, "libffmpeg.so"));
+                ffmpegPathField.set(null, new File(binDir, "libffmpeg.so"));
 
                 Field qjsField = YoutubeDL.class.getDeclaredField("quickJsPath");
                 qjsField.setAccessible(true);
-                qjsField.set(null, new File(coreDir, "libqjs.so"));
+                qjsField.set(null, new File(binDir, "libqjs.so"));
 
                 Field ytdlpField = YoutubeDL.class.getDeclaredField("ytdlpPath");
                 ytdlpField.setAccessible(true);
@@ -127,7 +129,7 @@ public class DownloaderEngine {
 
                 Field ldPathField = YoutubeDL.class.getDeclaredField("ENV_LD_LIBRARY_PATH");
                 ldPathField.setAccessible(true);
-                String ldPath = pythonDir.getAbsolutePath() + "/usr/lib:" + ffmpegDir.getAbsolutePath() + "/usr/lib:" + coreDir.getAbsolutePath();
+                String ldPath = pythonDir.getAbsolutePath() + "/usr/lib:" + ffmpegDir.getAbsolutePath() + "/usr/lib:" + binDir.getAbsolutePath();
                 ldPathField.set(null, ldPath);
 
                 Field sslCertField = YoutubeDL.class.getDeclaredField("ENV_SSL_CERT_FILE");
@@ -163,11 +165,10 @@ public class DownloaderEngine {
                 } catch (Throwable ignored) {}
             }
 
-            // Configure FFmpeg paths via reflection
             try {
                 Field binDirField = FFmpeg.class.getDeclaredField("binDir");
                 binDirField.setAccessible(true);
-                binDirField.set(null, coreDir);
+                binDirField.set(null, binDir);
 
                 Field initField = FFmpeg.class.getDeclaredField("initialized");
                 initField.setAccessible(true);
