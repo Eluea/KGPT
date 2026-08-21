@@ -99,6 +99,10 @@ public class DownloaderEngine {
                 }
             }
 
+            // Resolve ELF symlinks in python and ffmpeg packages (e.g. libz.so.1 -> libz.so.1.3.1)
+            resolveSymlinksRecursively(pythonDir);
+            resolveSymlinksRecursively(ffmpegDir);
+
             // Grant executable permissions
             setPermissionsRecursively(pythonDir);
             setPermissionsRecursively(ffmpegDir);
@@ -189,6 +193,47 @@ public class DownloaderEngine {
         }
     }
 
+    public void resolveSymlinksRecursively(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory()) return;
+        File[] files = dir.listFiles();
+        if (files == null) return;
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                resolveSymlinksRecursively(file);
+            } else if (file.isFile() && file.length() > 0 && file.length() < 256) {
+                try {
+                    byte[] bytes = new byte[(int) file.length()];
+                    try (FileInputStream fis = new FileInputStream(file)) {
+                        int read = fis.read(bytes);
+                        if (read <= 0) continue;
+                    }
+                    String targetName = new String(bytes, "UTF-8").trim();
+                    if (targetName.contains("\n") || targetName.contains("\r") || targetName.length() > 100) {
+                        continue;
+                    }
+                    File targetFile = new File(file.getParentFile(), targetName);
+                    if (targetFile.exists() && targetFile.isFile() && targetFile.length() > 256) {
+                        Log.d(TAG, "Resolving symlink: " + file.getName() + " -> " + targetName);
+                        file.delete();
+                        try {
+                            android.system.Os.symlink(targetName, file.getAbsolutePath());
+                        } catch (Throwable t) {
+                            try (FileInputStream in = new FileInputStream(targetFile);
+                                 FileOutputStream out = new FileOutputStream(file)) {
+                                byte[] buf = new byte[32768];
+                                int len;
+                                while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
+                            }
+                        }
+                        file.setReadable(true, false);
+                        file.setExecutable(true, false);
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
+    }
+
     private void extractZip(File zipFile, File targetDir) throws Exception {
         byte[] buffer = new byte[32768];
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
@@ -211,6 +256,7 @@ public class DownloaderEngine {
                 zis.closeEntry();
             }
         }
+        resolveSymlinksRecursively(targetDir);
     }
 
     private void setPermissionsRecursively(File file) {
@@ -280,7 +326,6 @@ public class DownloaderEngine {
             } catch (Exception e) {
                 Log.w(TAG, "Initial fetch failed, checking yt-dlp update: " + e.getMessage());
                 try {
-                    // Update yt-dlp to latest upstream release and retry
                     YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), YoutubeDL.UpdateChannel._STABLE);
                     YoutubeDLRequest retryReq = new YoutubeDLRequest(url);
                     retryReq.addOption("--no-playlist");

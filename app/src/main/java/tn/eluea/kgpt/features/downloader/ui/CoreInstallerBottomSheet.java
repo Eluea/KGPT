@@ -286,6 +286,10 @@ public class CoreInstallerBottomSheet {
                 }
             }
 
+            // Resolve ELF symlinks
+            DownloaderEngine.getInstance().resolveSymlinksRecursively(pythonDir);
+            DownloaderEngine.getInstance().resolveSymlinksRecursively(ffmpegDir);
+
             // Clean up temporary ZIP
             finalZip.delete();
 
