@@ -77,6 +77,60 @@ public class BottomSheetHelper {
                 container.setBackgroundResource(R.drawable.bg_bottom_sheet_floating);
             }
         }
+
+        // Automatically tint all Lottie animations in the bottom sheet to match the theme
+        tintLottieViewsInHierarchy(context, sheetView);
+    }
+
+    private static void tintLottieViewsInHierarchy(Context context, View root) {
+        if (root == null) return;
+
+        int primaryColor = com.google.android.material.color.MaterialColors.getColor(context,
+                androidx.appcompat.R.attr.colorPrimary, Color.WHITE);
+        int errorColor = com.google.android.material.color.MaterialColors.getColor(context,
+                androidx.appcompat.R.attr.colorError, Color.RED);
+
+        tintLottieRecursive(root, primaryColor, errorColor);
+    }
+
+    private static void tintLottieRecursive(View view, int primaryColor, int errorColor) {
+        if (view instanceof com.airbnb.lottie.LottieAnimationView) {
+            com.airbnb.lottie.LottieAnimationView lottieView = (com.airbnb.lottie.LottieAnimationView) view;
+            
+            // Skip success lottie which manages its own contrasting colors
+            if (lottieView.getId() == R.id.lottie_success || "no_auto_tint".equals(lottieView.getTag())) {
+                return;
+            }
+
+            // Check if this Lottie is inside an error/delete container
+            boolean isError = isUnderErrorContainer(lottieView);
+            int tintColor = isError ? errorColor : primaryColor;
+            tn.eluea.kgpt.util.LottieHelper.tint(lottieView, tintColor);
+            return;
+        }
+
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                tintLottieRecursive(group.getChildAt(i), primaryColor, errorColor);
+            }
+        }
+    }
+
+    private static boolean isUnderErrorContainer(View view) {
+        android.view.ViewParent parent = view.getParent();
+        while (parent instanceof View) {
+            View parentView = (View) parent;
+            int id = parentView.getId();
+            if (id == R.id.btn_delete) {
+                return true;
+            }
+            if (parentView.getBackground() != null && parentView.getBackground().toString().contains("error")) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     /**
@@ -316,26 +370,62 @@ public class BottomSheetHelper {
     }
 
     /**
-     * Apply blur effect to dialog based on preferences
+     * Apply blur effect to any window based on user preferences.
      */
-    public static void applyBlur(android.app.Dialog dialog) {
-        Context context = dialog.getContext();
+    public static void applyBlurToWindow(Window window, Context context) {
+        if (window == null || context == null) return;
+
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true);
         int blurIntensity = prefs.getInt("blur_intensity", 25);
+        boolean materialYouBlur = prefs.getBoolean("material_you_blur", false);
+        int blurTintColor = prefs.getInt("blur_tint_color", Color.TRANSPARENT);
 
-        Window window = dialog.getWindow();
-        if (window != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            android.view.WindowManager.LayoutParams params = window.getAttributes();
-            if (isBlurEnabled && blurIntensity > 0) {
-                int blurRadius = (blurIntensity * 50) / 100;
+        android.view.WindowManager.LayoutParams params = window.getAttributes();
+
+        if (isBlurEnabled && blurIntensity > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Scale blur radius up to 80px for a clearly visible, premium frosted glass blur
+                int maxBlur = 80;
+                int blurRadius = Math.max((blurIntensity * maxBlur) / 100, 15);
                 params.setBlurBehindRadius(blurRadius);
                 window.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            }
+
+            if (materialYouBlur) {
+                int surfaceColor = com.google.android.material.color.MaterialColors.getColor(context,
+                        com.google.android.material.R.attr.colorSurface, Color.BLACK);
+                int alpha = isDarkMode(context) ? 90 : 70;
+                int tinted = Color.argb(alpha, Color.red(surfaceColor), Color.green(surfaceColor), Color.blue(surfaceColor));
+                window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(tinted));
+                params.dimAmount = 0.15f;
+            } else if (blurTintColor != Color.TRANSPARENT) {
+                int alpha = Math.max(Color.alpha(blurTintColor), 100);
+                int tinted = Color.argb(alpha, Color.red(blurTintColor), Color.green(blurTintColor), Color.blue(blurTintColor));
+                window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(tinted));
+                params.dimAmount = 0.15f;
             } else {
+                params.dimAmount = 0.35f;
+                window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 params.setBlurBehindRadius(0);
                 window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
             }
-            window.setAttributes(params);
+            params.dimAmount = 0.5f;
+            window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+        }
+
+        window.setAttributes(params);
+    }
+
+    /**
+     * Apply blur effect to dialog based on preferences
+     */
+    public static void applyBlur(android.app.Dialog dialog) {
+        if (dialog != null) {
+            applyBlurToWindow(dialog.getWindow(), dialog.getContext());
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -29,6 +29,19 @@
         android:text="@string/placeholder_search_engine"
         android:textAppearance="?attr/textAppearanceBodyLarge"
         android:textColor="?attr/colorOnSurface" />
+
+    <TextView
+        android:id="@+id/tv_option_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_unified_chip"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="3dp"
+        android:textColor="?attr/colorOnSecondaryContainer"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/check_mark"

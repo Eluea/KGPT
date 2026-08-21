@@ -188,6 +188,8 @@ public class PatternsAdapter extends RecyclerView.Adapter<PatternsAdapter.Patter
                     return "underlined text" + symbol;
                 case WebSearch:
                     return "latest news about AI" + symbol;
+                case MediaDownloader:
+                    return "https://youtu.be/xyz " + symbol;
                 case Settings:
                     return symbol;
                 default:
@@ -213,6 +215,8 @@ public class PatternsAdapter extends RecyclerView.Adapter<PatternsAdapter.Patter
                     return context.getString(R.string.pattern_underline);
                 case WebSearch:
                     return context.getString(R.string.pattern_web_search);
+                case MediaDownloader:
+                    return context.getString(R.string.pattern_downloader);
                 default:
                     return context.getString(type.titleResId);
             }
@@ -237,6 +241,8 @@ public class PatternsAdapter extends RecyclerView.Adapter<PatternsAdapter.Patter
                     return context.getString(R.string.pattern_desc_underline, symbol);
                 case WebSearch:
                     return context.getString(R.string.pattern_desc_web_search, symbol);
+                case MediaDownloader:
+                    return context.getString(R.string.pattern_desc_downloader, symbol);
                 default:
                     return context.getString(type.exampleResId, symbol);
             }

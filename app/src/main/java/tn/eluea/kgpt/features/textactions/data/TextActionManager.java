@@ -89,9 +89,12 @@ public class TextActionManager {
      * Get list of enabled actions in order.
      */
     public List<TextAction> getEnabledActions() {
+        boolean coreInstalled = tn.eluea.kgpt.features.downloader.core.DownloaderEngine.getInstance().isCoreInstalled(context);
         if (enabledActions.isEmpty()) {
             // Return default actions if none configured
-            return Arrays.asList(
+            List<TextAction> defaults = new ArrayList<>();
+            defaults.add(TextAction.DOWNLOAD);
+            defaults.addAll(Arrays.asList(
                     TextAction.REPHRASE,
                     TextAction.FIX_ERRORS,
                     TextAction.IMPROVE,
@@ -99,11 +102,16 @@ public class TextActionManager {
                     TextAction.SHORTEN,
                     TextAction.FORMAL,
                     TextAction.CASUAL,
-                    TextAction.TRANSLATE);
+                    TextAction.TRANSLATE));
+            return defaults;
         }
 
         List<TextAction> result = new ArrayList<>();
+        if (enabledActions.contains(TextAction.DOWNLOAD)) {
+            result.add(TextAction.DOWNLOAD);
+        }
         for (TextAction action : TextAction.values()) {
+            if (action == TextAction.DOWNLOAD) continue;
             if (enabledActions.contains(action)) {
                 result.add(action);
             }
@@ -116,7 +124,6 @@ public class TextActionManager {
      */
     public boolean isActionEnabled(TextAction action) {
         if (enabledActions.isEmpty()) {
-            // Default enabled actions (all enabled by default now)
             return true;
         }
         return enabledActions.contains(action);
@@ -143,6 +150,13 @@ public class TextActionManager {
             }
         } catch (JSONException e) {
             tn.eluea.kgpt.util.Logger.log(e);
+        }
+
+        if (!actions.isEmpty() && !actions.contains(TextAction.DOWNLOAD)) {
+            boolean explicitlyDisabled = prefs.getBoolean("text_action_disabled_DOWNLOAD", false);
+            if (!explicitlyDisabled) {
+                actions.add(TextAction.DOWNLOAD);
+            }
         }
 
         return actions;

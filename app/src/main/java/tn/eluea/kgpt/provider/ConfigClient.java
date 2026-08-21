@@ -48,16 +48,20 @@ public class ConfigClient {
     private final Map<String, OnConfigChangeListener> mListeners = new ConcurrentHashMap<>();
     private ContentObserver mObserver;
 
-    // Flag to check if we're in Xposed context (XSharedPreferences class is
-    // available)
+    // Flag to check if we're in Xposed context
     private static final boolean IS_XPOSED_CONTEXT;
     static {
         boolean xposedAvailable = false;
         try {
-            Class.forName("de.robv.android.xposed.XSharedPreferences");
+            Class.forName("io.github.libxposed.api.XposedModule");
             xposedAvailable = true;
         } catch (ClassNotFoundException e) {
-            xposedAvailable = false;
+            try {
+                Class.forName("de.robv.android.xposed.XSharedPreferences");
+                xposedAvailable = true;
+            } catch (ClassNotFoundException ignored) {
+                xposedAvailable = false;
+            }
         }
         IS_XPOSED_CONTEXT = xposedAvailable;
     }

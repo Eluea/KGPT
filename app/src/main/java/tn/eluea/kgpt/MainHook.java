@@ -16,11 +16,14 @@ import android.os.Build;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 
-import de.robv.android.xposed.IXposedHookLoadPackage;
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import androidx.annotation.NonNull;
+
+import java.lang.reflect.Method;
+
+import io.github.libxposed.api.XposedInterface;
+import io.github.libxposed.api.XposedModule;
+import io.github.libxposed.api.XposedModuleInterface.PackageLoadedParam;
+
 import tn.eluea.kgpt.hook.HookManager;
 import tn.eluea.kgpt.hook.MethodHook;
 import tn.eluea.kgpt.hook.TextSelectionHook;
@@ -28,242 +31,269 @@ import tn.eluea.kgpt.provider.XposedConfigReader;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
 
-public class MainHook implements IXposedHookLoadPackage {
+public class MainHook extends XposedModule {
+    private static MainHook instance;
     private static Context applicationContext = null;
 
     private KGPTBrain brain;
-
     private HookManager hookManager;
-
     private Class<?> inputConnectionClass = null;
-
     private Class<?> inputMethodServiceClass = null;
-    
+
     // Performance optimization: Cache to avoid redundant re-hooking
     private Class<?> lastHookedInputConnectionClass = null;
     private long lastHookTime = 0;
-    private static final long MIN_HOOK_INTERVAL_MS = 500; // Minimum interval between hooks
+    private static final long MIN_HOOK_INTERVAL_MS = 500;
+
+    public MainHook() {
+        super();
+        instance = this;
+    }
+
+    public static MainHook getInstance() {
+        return instance;
+    }
 
     @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (!lpparam.isFirstApplication) {
+    public void onPackageLoaded(@NonNull PackageLoadedParam param) {
+        instance = this;
+
+        if (!param.isFirstPackage()) {
             return;
         }
 
-        if (lpparam.packageName.equals("tn.eluea.kgpt")) {
+        String packageName = param.getPackageName();
+        ClassLoader classLoader = param.getDefaultClassLoader();
+
+        if ("tn.eluea.kgpt".equals(packageName)) {
             MainHook.log("Hooking own module for status check");
-            // Hook the module status check method
-            XposedHelpers.findAndHookMethod(
-                    "tn.eluea.kgpt.ui.main.fragments.HomeFragment",
-                    lpparam.classLoader,
-                    "isModuleActiveInternal",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            param.setResult(true);
-                        }
-                    });
+            try {
+                Class<?> homeFragmentClass = classLoader.loadClass("tn.eluea.kgpt.ui.main.fragments.HomeFragment");
+                Method statusMethod = homeFragmentClass.getDeclaredMethod("isModuleActiveInternal");
+                hook(statusMethod).intercept(chain -> true);
+            } catch (Throwable t) {
+                MainHook.log("Failed to hook isModuleActiveInternal: " + t.getMessage());
+            }
             return;
         }
 
-        MainHook.log("Loading KGPT for package " + lpparam.packageName);
+        if ("android".equals(packageName)) {
+            MainHook.log("Hooking Android System Framework for Window Blur");
+            try {
+                Class<?> blurListenersClass = classLoader.loadClass("com.android.server.wm.CrossWindowBlurListeners");
+                Method isBlurEnabledMethod = blurListenersClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+                hook(isBlurEnabledMethod).intercept(chain -> true);
+                MainHook.log("Successfully hooked CrossWindowBlurListeners.isCrossWindowBlurEnabled");
+            } catch (Throwable t) {
+                MainHook.log("Failed to hook CrossWindowBlurListeners: " + t.getMessage());
+            }
+            try {
+                Class<?> wmServiceClass = classLoader.loadClass("com.android.server.wm.WindowManagerService");
+                Method isCrossWindowBlurEnabled = wmServiceClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+                hook(isCrossWindowBlurEnabled).intercept(chain -> true);
+                MainHook.log("Successfully hooked WindowManagerService.isCrossWindowBlurEnabled");
+            } catch (Throwable t) {
+                MainHook.log("Failed to hook WindowManagerService: " + t.getMessage());
+            }
+            try {
+                Class<?> clientBlurClass = classLoader.loadClass("android.view.CrossWindowBlurListeners");
+                Method isCrossWindowBlurEnabled = clientBlurClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+                hook(isCrossWindowBlurEnabled).intercept(chain -> true);
+                MainHook.log("Successfully hooked android.view.CrossWindowBlurListeners");
+            } catch (Throwable t) {
+                MainHook.log("Failed to hook android.view.CrossWindowBlurListeners: " + t.getMessage());
+            }
+            return;
+        }
 
-        // Log XSharedPreferences status early
-        MainHook.log("XSharedPreferences available: " + XposedConfigReader.isAvailable());
-        MainHook.log(XposedConfigReader.getDebugInfo());
+        MainHook.log("Loading KGPT for package " + packageName);
 
-        // Hook text selection for AI actions (works in any app)
-        TextSelectionHook.hook(lpparam);
+        if (hookManager == null) {
+            hookManager = new HookManager();
+        }
 
-        hookKeyboard(lpparam);
+        // Hook text selection for AI actions
+        TextSelectionHook.hook(hookManager, classLoader);
+
+        hookKeyboard(classLoader);
     }
 
     private void ensureInitialized(Context applicationContext) {
-        if (MainHook.applicationContext == null) {
+        if (MainHook.applicationContext == null && applicationContext != null) {
             MainHook.applicationContext = applicationContext;
-
             SPManager.init(applicationContext);
             UiInteractor.init(applicationContext);
-
             brain = new KGPTBrain(applicationContext);
         }
     }
 
-    private void hookKeyboard(XC_LoadPackage.LoadPackageParam lpparam) {
-        hookManager = new HookManager();
+    private void hookKeyboard(ClassLoader classLoader) {
+        hookManager.hook(
+                InputMethodService.class,
+                "onCreate",
+                new Class<?>[]{},
+                MethodHook.after(param -> {
+                    MainHook.log("InputMethodService onCreate");
+                    InputMethodService ims = (InputMethodService) param.getThisObject();
+                    ensureInitialized(ims.getApplicationContext());
+                    UiInteractor.getInstance().onInputMethodCreate(ims);
 
-        XposedHelpers.findAndHookMethod(InputMethodService.class, "onCreate", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                MainHook.log("InputMethodService onCreate");
-                InputMethodService ims = (InputMethodService) param.thisObject;
+                    inputMethodServiceClass = ims.getClass();
+                    MainHook.log("InputMethodService : " + inputMethodServiceClass.getName());
 
-                ensureInitialized(ims.getApplicationContext());
+                    hookMethodService();
+                })
+        );
 
-                UiInteractor.getInstance().onInputMethodCreate(ims);
+        hookManager.hook(
+                InputMethodService.class,
+                "onDestroy",
+                new Class<?>[]{},
+                MethodHook.before(param -> {
+                    MainHook.log("InputMethodService onDestroy");
+                    InputMethodService ims = (InputMethodService) param.getThisObject();
+                    UiInteractor.getInstance().onInputMethodDestroy(ims);
 
-                inputMethodServiceClass = ims.getClass();
-                MainHook.log("InputMethodService : " + inputMethodServiceClass.getName());
+                    if (brain != null) {
+                        brain.destroy();
+                        brain = null;
+                    }
 
-                hookMethodService();
-            }
-        });
+                    lastHookedInputConnectionClass = null;
+                    lastHookTime = 0;
+                })
+        );
 
-        XposedHelpers.findAndHookMethod(InputMethodService.class, "onDestroy", new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                MainHook.log("InputMethodService onDestroy");
-                InputMethodService ims = (InputMethodService) param.thisObject;
-                UiInteractor.getInstance().onInputMethodDestroy(ims);
-                
-                // Clean up brain resources
-                if (brain != null) {
-                    brain.destroy();
-                    brain = null;
-                }
-                
-                // Reset hook cache
-                lastHookedInputConnectionClass = null;
-                lastHookTime = 0;
-            }
-        });
+        hookManager.hook(
+                InputMethodService.class,
+                "onFinishInput",
+                new Class<?>[]{},
+                MethodHook.before(param -> MainHook.log("InputMethodService onFinishInput"))
+        );
 
-        XposedHelpers.findAndHookMethod(InputMethodService.class, "onFinishInput", new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                MainHook.log("InputMethodService onFinishInput");
-            }
-        });
-
-        XposedHelpers.findAndHookMethod(Instrumentation.class, "callApplicationOnCreate",
-                Application.class, new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        Application app = (Application) param.args[0];
+        hookManager.hook(
+                Instrumentation.class,
+                "callApplicationOnCreate",
+                new Class<?>[]{Application.class},
+                MethodHook.before(param -> {
+                    Application app = (Application) param.getArgs()[0];
+                    if (app != null) {
                         ensureInitialized(app.getApplicationContext());
                     }
-                });
+                })
+        );
     }
 
     private void hookMethodService() {
-        hookManager.hook(inputMethodServiceClass, "onUpdateSelection",
-                new Class<?>[] { int.class, int.class, int.class, int.class, int.class, int.class },
+        hookManager.hook(
+                inputMethodServiceClass,
+                "onUpdateSelection",
+                new Class<?>[]{int.class, int.class, int.class, int.class, int.class, int.class},
                 MethodHook.after(param -> {
-                    InputMethodService ims = (InputMethodService) param.thisObject;
-                    String packageName = ims.getCurrentInputEditorInfo().packageName;
-                    if (BuildConfig.APPLICATION_ID.equals(packageName)) {
-                        return;
+                    InputMethodService ims = (InputMethodService) param.getThisObject();
+                    if (ims.getCurrentInputEditorInfo() != null) {
+                        String packageName = ims.getCurrentInputEditorInfo().packageName;
+                        if (BuildConfig.APPLICATION_ID.equals(packageName)) {
+                            return;
+                        }
                     }
 
-                    int oldSelStart = (int) param.args[0];
-                    int oldSelEnd = (int) param.args[1];
-                    int newSelStart = (int) param.args[2];
-                    int newSelEnd = (int) param.args[3];
+                    int oldSelStart = (int) param.getArgs()[0];
+                    int oldSelEnd = (int) param.getArgs()[1];
+                    int newSelStart = (int) param.getArgs()[2];
+                    int newSelEnd = (int) param.getArgs()[3];
 
-                    // Notify IMSController for text parsing
                     IMSController.getInstance().onUpdateSelection(
                             oldSelStart,
                             oldSelEnd,
                             newSelStart,
                             newSelEnd,
-                            (int) param.args[4],
-                            (int) param.args[5]);
+                            (int) param.getArgs()[4],
+                            (int) param.getArgs()[5]
+                    );
 
-                    // Notify SelectionHandler for text actions
                     if (brain != null && brain.getSelectionHandler() != null) {
                         brain.getSelectionHandler().onSelectionChanged(
-                                ims, oldSelStart, oldSelEnd, newSelStart, newSelEnd);
+                                ims, oldSelStart, oldSelEnd, newSelStart, newSelEnd
+                        );
                     }
-                }));
+                })
+        );
 
-        hookManager.hook(inputMethodServiceClass, "onStartInput",
-                new Class<?>[] { EditorInfo.class, boolean.class }, MethodHook.after(param -> {
-                    InputMethodService ims = (InputMethodService) param.thisObject;
-                    
-                    // Performance optimization: Skip if InputConnection hasn't changed
+        hookManager.hook(
+                inputMethodServiceClass,
+                "onStartInput",
+                new Class<?>[]{EditorInfo.class, boolean.class},
+                MethodHook.after(param -> {
+                    InputMethodService ims = (InputMethodService) param.getThisObject();
                     if (ims.getCurrentInputConnection() == null) {
                         return;
                     }
-                    
+
                     Class<?> newInputConnectionClass = ims.getCurrentInputConnection().getClass();
                     long currentTime = System.currentTimeMillis();
-                    
-                    // Skip re-hooking if same class and within minimum interval
-                    if (newInputConnectionClass.equals(lastHookedInputConnectionClass) 
+
+                    if (newInputConnectionClass.equals(lastHookedInputConnectionClass)
                             && (currentTime - lastHookTime) < MIN_HOOK_INTERVAL_MS) {
                         return;
                     }
-                    
-                    // Only unhook and rehook if the class actually changed
+
                     if (!newInputConnectionClass.equals(lastHookedInputConnectionClass)) {
-                        hookManager.unhook(m -> m.getClass().equals(inputConnectionClass));
-                        
+                        hookManager.unhook(m -> m.getDeclaringClass().equals(inputConnectionClass));
                         MainHook.log("InputMethodService onStartInput");
                         inputMethodServiceClass = ims.getClass();
                         inputConnectionClass = newInputConnectionClass;
                         lastHookedInputConnectionClass = newInputConnectionClass;
                         MainHook.log("InputMethodService InputConnection : " + inputConnectionClass.getName());
-                        
+
                         hookInputConnection();
                     }
-                    
+
                     lastHookTime = currentTime;
-                }));
+                })
+        );
         MainHook.log("Done hooking InputMethodService : " + inputMethodServiceClass.getName());
     }
 
     @SuppressLint("ObsoleteSdkInt")
     private void hookInputConnection() {
-        XC_MethodHook conditionalGate = MethodHook.before(param -> {
+        MethodHook conditionalGate = MethodHook.before(param -> {
             if (IMSController.getInstance().isInputLocked()) {
                 param.setResult(false);
             }
         });
 
         hookManager.hook(inputConnectionClass, "commitText",
-                new Class<?>[] { CharSequence.class, int.class }, conditionalGate);
+                new Class<?>[]{CharSequence.class, int.class}, conditionalGate);
         hookManager.hook(inputConnectionClass, "commitCorrection",
-                new Class<?>[] { android.view.inputmethod.CorrectionInfo.class }, conditionalGate);
+                new Class<?>[]{android.view.inputmethod.CorrectionInfo.class}, conditionalGate);
         hookManager.hook(inputConnectionClass, "commitCompletion",
-                new Class<?>[] { android.view.inputmethod.CompletionInfo.class }, conditionalGate);
+                new Class<?>[]{android.view.inputmethod.CompletionInfo.class}, conditionalGate);
         hookManager.hook(inputConnectionClass, "setComposingText",
-                new Class<?>[] { CharSequence.class, int.class }, conditionalGate);
+                new Class<?>[]{CharSequence.class, int.class}, conditionalGate);
         hookManager.hook(inputConnectionClass, "finishComposingText",
-                new Class<?>[] {}, conditionalGate);
+                new Class<?>[]{}, conditionalGate);
         hookManager.hook(inputConnectionClass, "deleteSurroundingText",
-                new Class<?>[] { int.class, int.class }, conditionalGate);
+                new Class<?>[]{int.class, int.class}, conditionalGate);
 
         if (Build.VERSION.SDK_INT >= 24) {
             hookManager.hook(inputConnectionClass, "deleteSurroundingTextInCodePoints",
-                    new Class<?>[] { int.class, int.class }, conditionalGate);
+                    new Class<?>[]{int.class, int.class}, conditionalGate);
         }
         if (Build.VERSION.SDK_INT >= 33) {
             hookManager.hook(inputConnectionClass, "commitText",
-                    new Class<?>[] { CharSequence.class, int.class,
-                            android.view.inputmethod.TextAttribute.class },
+                    new Class<?>[]{CharSequence.class, int.class,
+                            android.view.inputmethod.TextAttribute.class},
                     conditionalGate);
         }
         if (Build.VERSION.SDK_INT >= 34) {
             hookManager.hook(inputConnectionClass, "replaceText",
-                    new Class<?>[] { int.class, int.class, CharSequence.class, int.class,
-                            android.view.inputmethod.TextAttribute.class },
+                    new Class<?>[]{int.class, int.class, CharSequence.class, int.class,
+                            android.view.inputmethod.TextAttribute.class},
                     conditionalGate);
         }
 
         MainHook.log("Done hooking InputConnection : " + inputConnectionClass.getName());
-    }
-
-    // Flag to check if we're in Xposed context
-    private static final boolean IS_XPOSED_CONTEXT;
-    static {
-        boolean xposedAvailable = false;
-        try {
-            Class.forName("de.robv.android.xposed.XposedBridge");
-            xposedAvailable = true;
-        } catch (ClassNotFoundException e) {
-            xposedAvailable = false;
-        }
-        IS_XPOSED_CONTEXT = xposedAvailable;
     }
 
     public static void logST() {
@@ -275,16 +305,9 @@ public class MainHook implements IXposedHookLoadPackage {
     }
 
     public static void log(Throwable t) {
-        // In app context, use Android Log
-        if (!IS_XPOSED_CONTEXT) {
-            Log.e("KGPT", "Error", t);
-            return;
-        }
-
-        // In Xposed context, use XposedBridge.log
-        XposedBridge.log(t);
-
+        tn.eluea.kgpt.util.Logger.log(t);
         UiInteractor.getInstance().post(
-                () -> UiInteractor.getInstance().toastLong(t.getClass().getSimpleName() + " : " + t.getMessage()));
+                () -> UiInteractor.getInstance().toastLong(t.getClass().getSimpleName() + " : " + t.getMessage())
+        );
     }
 }

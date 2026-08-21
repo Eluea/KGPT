@@ -36,10 +36,15 @@ public class ServiceLocator {
     static {
         boolean xposedAvailable = false;
         try {
-            Class.forName("de.robv.android.xposed.XposedBridge");
+            Class.forName("io.github.libxposed.api.XposedModule");
             xposedAvailable = true;
         } catch (ClassNotFoundException e) {
-            xposedAvailable = false;
+            try {
+                Class.forName("de.robv.android.xposed.XposedBridge");
+                xposedAvailable = true;
+            } catch (ClassNotFoundException ignored) {
+                xposedAvailable = false;
+            }
         }
         IS_XPOSED_CONTEXT = xposedAvailable;
     }

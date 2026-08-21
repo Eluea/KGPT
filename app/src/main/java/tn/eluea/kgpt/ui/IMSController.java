@@ -156,6 +156,16 @@ public class IMSController {
         timeoutHandler.removeCallbacks(lockTimeoutRunnable);
     }
 
+    public void hideKeyboard() {
+        if (ims != null) {
+            try {
+                ims.requestHideSelf(0);
+            } catch (Exception e) {
+                tn.eluea.kgpt.util.Logger.log("Failed to hide keyboard: " + e.getMessage());
+            }
+        }
+    }
+
     /**
      * Force reset the input lock state. Use this to recover from stuck states.
      */

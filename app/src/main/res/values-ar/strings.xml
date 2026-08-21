@@ -103,6 +103,9 @@
     <string name="action_formal">رسمي</string>
     <string name="action_casual">ودي</string>
     <string name="action_translate">ترجمة</string>
+    <string name="action_download_media">تنزيل</string>
+    <string name="title_select_media_link">اختر الرابط المطلوب تنزيله</string>
+    <string name="desc_select_media_link">تم العثور على %1$d روابط في النص المحدد</string>
 
     <!-- UI Messages -->
     <string name="msg_copied">تم النسخ</string>
@@ -473,6 +476,20 @@
     <string name="desc_settings_backup">نسخ الإعدادات</string>
     <string name="title_settings_restore">استعادة البيانات</string>
     <string name="desc_settings_restore">استعادة الإعدادات</string>
+    <string name="title_backup_and_restore">النسخ الاحتياطي والاستعادة</string>
+    <string name="desc_backup_and_restore_short">تصدير واستعادة الإعدادات</string>
+    <string name="desc_backup_and_restore">تصدير واستعادة جميع أوامرك وتريجراتك وإعداداتك بأمان تام عبر ملفات JSON محلية على جهازك.</string>
+    <string name="offline_backup_note_title">أمان وخصوصية تامة 100% (أوفلاين)</string>
+    <string name="offline_backup_note_desc">يتم حفظ النسخ الاحتياطية محلياً فقط على وحدة تخزين هاتفك، ولا يتم إرسال أي مفاتيح API أو إعدادات خاصة لأي خوادم خارجية.</string>
+    <string name="local_backup_section">النسخ الاحتياطي المحلي</string>
+    <string name="local_export_title">تصدير إلى ملف محلي</string>
+    <string name="local_export_desc">حفظ ملف نسخة احتياطية .kgpt أو .json على ذاكرة هاتفك</string>
+    <string name="local_import_title">استيراد من ملف محلي</string>
+    <string name="local_import_desc">استعادة الإعدادات من ملف .kgpt أو .json محلي</string>
+    <string name="btn_export_local">تصدير إلى ملف محلي</string>
+    <string name="desc_export_local">حفظ ملف نسخة احتياطية .kgpt على ذاكرة جهازك</string>
+    <string name="btn_import_local">استيراد من ملف محلي</string>
+    <string name="desc_import_local">استعادة الإعدادات من ملف .kgpt أو .json محلي</string>
     <string name="support_group">مجموعة الدعم</string>
     <string name="title_export_logs">تصدير السجلات</string>
     <string name="desc_export_logs">للمساعدة في الحل</string>
@@ -577,6 +594,7 @@
     <string name="pattern_crossout">مشطوب</string>
     <string name="pattern_underline">تحته خط</string>
     <string name="pattern_web_search">بحث الويب</string>
+    <string name="pattern_downloader">تنزيل الوسائط</string>
     
     <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">مشغل الإعدادات</string>
@@ -587,6 +605,7 @@
     <string name="pattern_desc_crossout">اكتب النص ثم أضف ~</string>
     <string name="pattern_desc_underline">اكتب النص ثم أضف _</string>
     <string name="pattern_desc_web_search">اكتب النص ثم أضف ?? للبحث</string>
+    <string name="pattern_desc_downloader">اكتب رابط الوسائط ثم أضف %1$s للتنزيل</string>
     
     <!-- Pattern Status -->
     <string name="status_disabled">معطل</string>
@@ -752,6 +771,8 @@
     <string name="title_crossout">مشطوب</string>
     <string name="title_underline">تحته خط</string>
     <string name="title_web_search">بحث الويب</string>
+    <string name="title_downloader_trigger">تنزيل الوسائط</string>
+    <string name="example_downloader_trigger">https://... %1$s</string>
     <string name="btn_reset_pattern">إعادة تعيين النمط</string>
     <string name="msg_reset_pattern_confirm">إعادة تعيين \'%1$s\' إلى الرمز الافتراضي \"%2$s\"؟</string>
     <string name="msg_pattern_reset">تم إعادة تعيين النمط إلى الوضع الافتراضي</string>
@@ -774,4 +795,157 @@
     <string name="interval_every_disabled">معطل</string>
 
     <string name="msg_ai_no_response_error">لم يتم استلام أي رد. أعاد الذكاء الاصطناعي محتوى فارغًا.\nتلميح: ربما تستخدم تريجر/أمر غير مسجل.</string>
+
+    <!-- Universal Media Downloader Strings (Arabic) -->
+    <string name="title_media_downloader">KGPT دونلودر</string>
+    <string name="desc_media_downloader">حمّل الفيديوهات والمقاطع الصوتية بدقات حتى 4K و MP3 من أي تطبيق بمجرد مشاركة الرابط أو لصقه هنا.</string>
+    <string name="desc_media_downloader_short">تنزيل الفيديوهات والصوتيات عبر المشاركة</string>
+    <string name="title_direct_download">تنزيل مباشر عبر الرابط</string>
+    <string name="hint_media_url">الصق رابط الفيديو أو الأغنية هنا...</string>
+    <string name="btn_paste_clipboard">لصق من الحافظة</string>
+    <string name="btn_analyze_download">تحليل وتنزيل</string>
+    <string name="btn_download_now">تنزيل المقطع الآن</string>
+    <string name="btn_download_video_now">تنزيل ملف الفيديو الآن</string>
+    <string name="btn_download_audio_now">تنزيل ملف الصوت الآن</string>
+    <string name="tab_video">🎬 فيديو (Video)</string>
+    <string name="tab_audio">🎵 صوت فقط (MP3)</string>
+    <string name="label_choose_video_quality">اختر دقة الفيديو:</string>
+    <string name="label_choose_audio_format">اختر صيغة وجودة الصوت:</string>
+    <string name="quality_best">أعلى جودة (Best)</string>
+    <string name="label_download_location">مكان التنزيل والمجلدات</string>
+    <string name="label_current_path">مجلد الحفظ:</string>
+    <string name="btn_change_folder">تغيير المجلد</string>
+    <string name="switch_separate_folders">فصل مجلدات الصوت والفيديو</string>
+    <string name="desc_separate_folders">حفظ الصوتيات في KGPT/Audio والفيديوهات في KGPT/Video</string>
+    <string name="switch_group_by_uploader">تنظيم حسب القناة أو الفنان</string>
+    <string name="desc_group_by_uploader">إنشاء مجلدات فرعية تلقائية لكل صانع محتوى أو قناة</string>
+    <string name="label_default_preferences">إعدادات التنزيل الافتراضية</string>
+    <string name="label_default_quality">جودة الفيديو الافتراضية</string>
+    <string name="label_default_format">صيغة الفيديو الافتراضية</string>
+    <string name="label_default_audio">صيغة الصوت الافتراضية</string>
+    <string name="switch_embed_thumbnail">دمج صورة الغلاف والألبوم</string>
+    <string name="desc_embed_thumbnail">تضمين صورة الغلاف داخل ملف الوسائط مباشرة</string>
+    <string name="switch_embed_metadata">دمج البيانات الوصفية (ID3 Tags)</string>
+    <string name="desc_embed_metadata">إضافة العنوان، الفنان، ومعلومات المقطع للملف</string>
+    <string name="switch_embed_subtitles">تنزيل الترجمة المصاحبة</string>
+    <string name="desc_embed_subtitles">تنزيل ودمج الترجمات المتاحة للفيديو</string>
+    <string name="title_supported_platforms">المنصات المدعومة تلقائياً</string>
+    <string name="desc_supported_platforms">يوتيوب، إنستغرام ريلز، تيك توك بدون علامة مائية، فيسبوك، تويتر/X، سبوتيفاي، ساوند كلاود، بينترست، و1000+ موقع.</string>
+    <string name="title_update_engine">تحديث محرك التنزيل (yt-dlp Core)</string>
+    <string name="desc_update_engine">يقوم بتحديث خوارزميات فك تشفير الفيديوهات تلقائياً من الإنترنت إذا طرأ تغيير على منصات الفيديو.</string>
+    <string name="btn_update_engine_now">تحديث خوارزميات التنزيل الآن</string>
+    <string name="toast_download_started">تم بدء التنزيل في الخلفية</string>
+    <string name="toast_clipboard_empty">الحافظة فارغة</string>
+    <string name="toast_invalid_url">يرجى إدخال أو لصق رابط وسائط صالح</string>
+    <string name="toast_engine_updating">جاري فحص وتحديث محرك التنزيل...</string>
+    <string name="toast_engine_updated">تم تحديث محرك التنزيل بنجاح</string>
+    <string name="status_analyzing_media">جاري استخراج الجودات وتفاصيل المقطع...</string>
+    <string name="error_extract_failed">تعذر تحليل الرابط. يرجى التأكد من صحة الرابط والاتصال.</string>
+    <string name="notification_download_complete">تم اكتمال التنزيل بنجاح</string>
+    <string name="notification_download_failed">فشل التنزيل</string>
+    <string name="title_downloader_credits">Credits</string>
+    <string name="desc_downloader_credits">نتقدم بخالص الشكر والتقدير للمطور Denis Cerri ولكل المساهمين الرائعين في مشروع ytdlnis على عملهم المتميز.\n\nتم استخدام أجزاء من الكود البرمجي مفتوح المصدر الخاص بهم داخل هذا التطبيق بموجب رخصة البرمجيات الحرة مفتوحة المصدر GNU General Public License v3.0 (GPL-3.0).</string>
+    <string name="btn_visit_ytdlnis_github">زيارة المشروع على GitHub</string>
+
+    <!-- YTDLnis Modern Downloader UI Strings (Arabic) -->
+    <string name="nav_media_download">تنزيل</string>
+    <string name="desc_adjust_download">تخصيص التنزيل</string>
+    <string name="label_title">العنوان</string>
+    <string name="label_author">المؤلف / القناة</string>
+    <string name="label_container">الحاوية والصيغة</string>
+    <string name="label_video_quality">جودة الفيديو</string>
+    <string name="label_audio_quality">جودة الصوت</string>
+    <string name="label_save_dir">مجلد الحفظ</string>
+    <string name="label_free_space">المساحة المتاحة: %1$s</string>
+    <string name="label_adjust_video">تخصيص الفيديو</string>
+    <string name="label_adjust_audio">تخصيص الصوت</string>
+    <string name="chip_thumbnail">الغلاف</string>
+    <string name="chip_chapters">الفصول</string>
+    <string name="chip_subtitles">الترجمة</string>
+    <string name="chip_recode">إعادة ترميز</string>
+    <string name="chip_filename">قالب التسمية</string>
+    <string name="chip_extra_command">أوامر إضافية</string>
+    <string name="chip_bitrate">معدل البت</string>
+    <string name="tab_command">الأمر المباشر</string>
+    <string name="dialog_title_quality">اختر الجودة والصيغة</string>
+    <string name="dialog_title_container">اختر صيغة الحاوية</string>
+    <string name="dialog_title_thumbnail">صورة الغلاف</string>
+    <string name="dialog_title_chapters">الفصول</string>
+    <string name="dialog_title_subtitles">الترجمة</string>
+    <string name="dialog_title_recode">إعادة ترميز الفيديو</string>
+    <string name="dialog_title_filename">قالب تسمية الملف</string>
+    <string name="dialog_title_extra_command">أوامر yt-dlp إضافية</string>
+    <string name="opt_embed_thumbnail_desc">دمج صورة الغلاف</string>
+    <string name="opt_save_thumbnail_image">حفظ صورة الغلاف كملف</string>
+    <string name="opt_split_chapters_desc">تقسيم حسب الفصول</string>
+    <string name="opt_embed_chapters_desc">دمج بيانات الفصول</string>
+    <string name="opt_embed_subtitles_desc">دمج ملف الترجمة</string>
+    <string name="opt_burn_subtitles_desc">حرق الترجمة على الفيديو</string>
+    <string name="opt_recode_compatible_desc">فيديو متوافق (H.264)</string>
+    <string name="btn_dismiss">إلغاء</string>
+    <string name="btn_open">فتح الملف</string>
+    <string name="chip_cut">اقتصاص الوقت</string>
+    <string name="dialog_title_cut">اقتصاص وتحديد وقت التنزيل</string>
+    <string name="label_start_time">وقت البدء (مثال: 00:00:10)</string>
+    <string name="label_end_time">وقت الانتهاء (مثال: 00:01:30)</string>
+    <string name="label_estimated_size">حجم الملف التقريبي</string>
+    <string name="label_speed_mode">تسريع التنزيل المتعدد (16x)</string>
+    <string name="desc_direct_download">قم بلصق أي رابط لتحميل الفيديو أو الصوت مباشرة.</string>
+    <string name="hint_enter_media_url">https://...</string>
+    <string name="pref_download_directory">مجلد التنزيلات</string>
+    <string name="btn_choose_folder">تغيير</string>
+    <string name="pref_group_by_creator">تنظيم الملفات بحسب القناة أو الناشر</string>
+    <string name="pref_group_by_creator_desc">إنشاء مجلد فرعي باسم كل قناة تلقائياً</string>
+    <string name="pref_default_mode">خيارات التنزيل الافتراضية</string>
+    <string name="opt_embed_thumbnail">تضمين صورة الغلاف داخل الملف</string>
+    <string name="opt_embed_subtitles">تضمين ملفات الترجمة</string>
+    <string name="opt_split_chapters">تقسيم الفيديو بحسب الفصول</string>
+    <string name="title_core_status">محرك التنزيل</string>
+    <string name="desc_core_embedded">اضغط للتحقق من وجود تحديثات للمحرك</string>
+    <string name="btn_update_core">تحديث</string>
+    <string name="btn_paste_short">لصق</string>
+    <string name="badge_ytdlp">yt-dlp</string>
+    <string name="status_core_up_to_date">محرك التنزيل محدث لآخر إصدار</string>
+    <string name="status_core_updated">تم تحديث محرك التنزيل بنجاح</string>
+    <string name="status_core_updating">جاري فحص وتحديث المحرك...</string>
+    
+    <!-- On-Demand Core Plugin Strings (Arabic) -->
+    <string name="title_plugin_required">إضافة KGPT دونلودر</string>
+    <string name="desc_plugin_required">تنزيل المحرك عالي السرعة لتفعيل تنزيل الفيديوهات بدقة 4K وصوتيات MP3</string>
+    <string name="label_device_arch">معمارية المعالج</string>
+    <string name="label_plugin_size">حجم الإضافة</string>
+    <string name="features_plugin_summary">• تنزيل الفيديوهات بدقات حتى 4K و 60 إطار\n• استخراج مقاطع الصوت MP3 بجودة عالية\n• تسريع التنزيل بنظام التيربو المقسم حتى 32 مسار\n• دعم يوتيوب، إنستغرام، تيك توك و1000+ موقع</string>
+    <string name="btn_install_plugin_now">تنزيل وتثبيت الإضافة الآن</string>
+    <string name="status_installing_plugin">جاري تثبيت محرك التنزيل</string>
+    <string name="msg_downloading_simple">جاري تنزيل ملفات المحرك...</string>
+
+    <!-- YouTube Search & Multi-link Selection (Arabic) -->
+    <string name="title_youtube_search">بحث YouTube</string>
+    <string name="desc_youtube_search">نتائج البحث عن: %1$s</string>
+    <string name="hint_search_or_url">ابحث في يوتيوب أو الصق رابطاً...</string>
+    <string name="loading_search_results">جاري البحث في YouTube...</string>
+    <string name="loading_more_results">جاري جلب المزيد من النتائج...</string>
+    <string name="no_search_results">لم يتم العثور على نتائج لـ \"%1$s\"</string>
+    <string name="title_select_links">اختر الوسائط للتنزيل</string>
+    <string name="desc_select_links">تم العثور على %1$d روابط في النص</string>
+    <string name="action_select_all">تحديد الكل</string>
+    <string name="action_deselect_all">إلغاء تحديد الكل</string>
+    <string name="btn_download_selected">تنزيل المحددة (%1$d)</string>
+    <string name="btn_download_single">تنزيل</string>
+    <string name="selected_counter">تم تحديد %1$d من %2$d</string>
+    <string name="toast_no_items_selected">يرجى تحديد عنصر واحد على الأقل للتنزيل</string>
+    <string name="batch_download_started">تم بدء تنزيل %1$d عناصر</string>
+    <string name="btn_load_more_results">عرض 5 نتائج أخرى...</string>
+    <string name="label_search_results">نتائج البحث</string>
+    <string name="desc_cut_media">اسحب طرفي الشريط لتحديد مقطع التنزيل المطلوب</string>
+    <string name="label_start_time_val">البداية: %1$s</string>
+    <string name="label_end_time_val">النهاية: %1$s</string>
+    <string name="label_clip_duration_val">المدة: %1$s</string>
+    <string name="btn_apply_cut">حفظ</string>
+    <string name="btn_reset_cut">إلغاء القص (كامل المقطع)</string>
+    <string name="preset_first_30s">أول 30 ثانية</string>
+    <string name="preset_first_60s">أول دقيقة</string>
+    <string name="preset_full_media">الكل</string>
+    <string name="default_video_title">فيديو YouTube</string>
+    <string name="default_media_title">رابط وسائط</string>
 </resources>

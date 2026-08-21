@@ -77,7 +77,8 @@ public class SettingsFragment extends Fragment {
 
     // Icons for candy colors
     private android.widget.ImageView iconDarkMode, iconAmoled, iconBlur, iconMaterialYou;
-    private android.widget.ImageView iconLogging, iconInternet, iconExport, iconBackup, iconRestore;
+    private LinearLayout btnBackupRestore;
+    private android.widget.ImageView iconLogging, iconInternet, iconExport, iconBackup;
 
     // Update settings - single entry point
     private LinearLayout btnUpdateSettings;
@@ -238,8 +239,7 @@ public class SettingsFragment extends Fragment {
         btnInfo = view.findViewById(R.id.btn_info);
         btnTelegramSupport = view.findViewById(R.id.btn_telegram_support);
         btnChangelog = view.findViewById(R.id.btn_changelog);
-        btnBackup = view.findViewById(R.id.btn_backup);
-        btnRestore = view.findViewById(R.id.btn_restore);
+        btnBackupRestore = view.findViewById(R.id.btn_backup_restore);
         btnExportLogs = view.findViewById(R.id.btn_export_logs);
         btnLanguage = view.findViewById(R.id.btn_language);
         tvCurrentLanguage = view.findViewById(R.id.tv_current_language);
@@ -253,7 +253,6 @@ public class SettingsFragment extends Fragment {
         iconInternet = view.findViewById(R.id.icon_internet);
         iconExport = view.findViewById(R.id.icon_export);
         iconBackup = view.findViewById(R.id.icon_backup);
-        iconRestore = view.findViewById(R.id.icon_restore);
 
         // Initialize update settings button
         btnUpdateSettings = view.findViewById(R.id.btn_update_settings);
@@ -460,8 +459,12 @@ public class SettingsFragment extends Fragment {
 
         btnChangelog.setOnClickListener(v -> showChangelogBottomSheet());
 
-        btnBackup.setOnClickListener(v -> startBackup());
-        btnRestore.setOnClickListener(v -> startRestore());
+        if (btnBackupRestore != null) {
+            btnBackupRestore.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), tn.eluea.kgpt.ui.settings.BackupSettingsActivity.class);
+                startActivity(intent);
+            });
+        }
         btnExportLogs.setOnClickListener(v -> startExportLogs());
         btnLanguage.setOnClickListener(v -> showLanguageDialog());
 

@@ -100,55 +100,6 @@ public class DialogActivity extends AppCompatActivity {
      * Optimized for performance on low-end devices.
      */
     private void applyBlurToActivity() {
-        android.view.Window window = getWindow();
-        if (window == null) return;
-        
-        android.content.SharedPreferences prefs = getSharedPreferences("keyboard_gpt_ui", MODE_PRIVATE);
-        boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true);
-        int blurIntensity = prefs.getInt("blur_intensity", 25);
-        int blurTintColor = prefs.getInt("blur_tint_color", android.graphics.Color.TRANSPARENT);
-        
-        android.view.WindowManager.LayoutParams params = window.getAttributes();
-        
-        // Check if device is low-end to reduce blur intensity
-        android.app.ActivityManager am = (android.app.ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        boolean isLowRamDevice = am != null && am.isLowRamDevice();
-        
-        // Reduce max blur radius for better performance
-        // Max 30 instead of 50, and further reduced on low-end devices
-        int maxBlurRadius = isLowRamDevice ? 15 : 30;
-        
-        if (isBlurEnabled && blurIntensity > 0) {
-            // Blur is enabled
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                int blurRadius = Math.min((blurIntensity * maxBlurRadius) / 100, maxBlurRadius);
-                params.setBlurBehindRadius(blurRadius);
-                window.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-            }
-            
-            // Apply tint color if set, otherwise use dim
-            if (blurTintColor != android.graphics.Color.TRANSPARENT) {
-                int alpha = 120;
-                int colorWithAlpha = android.graphics.Color.argb(alpha, 
-                    android.graphics.Color.red(blurTintColor), 
-                    android.graphics.Color.green(blurTintColor),
-                    android.graphics.Color.blue(blurTintColor));
-                window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(colorWithAlpha));
-                params.dimAmount = 0f;
-            } else {
-                window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-                params.dimAmount = 0.5f;
-            }
-        } else {
-            // Blur is disabled - use standard dim effect
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                params.setBlurBehindRadius(0);
-                window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-            }
-            window.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-            params.dimAmount = 0.5f;
-        }
-        
-        window.setAttributes(params);
+        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this);
     }
 }

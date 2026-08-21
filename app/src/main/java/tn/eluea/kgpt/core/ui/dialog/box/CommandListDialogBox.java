@@ -50,8 +50,9 @@ public class CommandListDialogBox extends DialogBox {
         ImageView ivIcon = layout.findViewById(R.id.iv_icon);
         View iconContainer = layout.findViewById(R.id.icon_container);
         TextView tvEmpty = layout.findViewById(R.id.tv_empty);
-        MaterialButton btnBack = layout.findViewById(R.id.btn_back);
-        MaterialButton btnNew = layout.findViewById(R.id.btn_new);
+        View btnBack = layout.findViewById(R.id.btn_back);
+        View btnNew = layout.findViewById(R.id.btn_new);
+        com.airbnb.lottie.LottieAnimationView btnNewLottie = layout.findViewById(R.id.btn_new_lottie);
 
         tvTitle.setText(R.string.dialog_title_commands_list);
         ivIcon.setImageResource(R.drawable.ic_command_filled);
@@ -61,6 +62,11 @@ public class CommandListDialogBox extends DialogBox {
         tn.eluea.kgpt.core.ui.dialog.utils.DialogUiUtils.applyMaterialYouTints(themedContext, ivIcon, iconContainer);
 
         btnNew.setVisibility(View.VISIBLE);
+        if (btnNewLottie != null) {
+            int primaryColor = com.google.android.material.color.MaterialColors.getColor(themedContext,
+                    androidx.appcompat.R.attr.colorPrimary, android.graphics.Color.WHITE);
+            tn.eluea.kgpt.util.LottieHelper.playOnce(btnNewLottie, primaryColor);
+        }
 
         if (getConfig().commands.isEmpty()) {
             tvEmpty.setVisibility(View.VISIBLE);

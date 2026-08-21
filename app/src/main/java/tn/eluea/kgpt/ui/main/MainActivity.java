@@ -53,11 +53,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_NAV_INDEX = "nav_index";
 
     private FrameLayout navHome, navModels, navLab, navSettings;
-    private ImageView navHomeIcon, navModelsIcon, navLabIcon, navSettingsIcon;
+    private View navSlidingIndicator;
+    private com.airbnb.lottie.LottieAnimationView navHomeLottie, navModelsLottie, navLabLottie, navSettingsLottie;
     private LinearLayout floatingDock;
+    private FrameLayout navItemsWrapper;
     private LinearLayout navItemsContainer;
     private LinearLayout dockActionContainer;
     private ImageView dockActionIcon; // For the action icon
+    private com.airbnb.lottie.LottieAnimationView dockActionLottie; // For Lottie action icon
     private android.widget.TextView dockActionText; // For action text
     private int currentNavIndex = 0;
     private boolean isAmoledMode = false;
@@ -212,15 +215,18 @@ public class MainActivity extends AppCompatActivity {
         navLab = findViewById(R.id.nav_lab);
         navSettings = findViewById(R.id.nav_settings);
 
-        navHomeIcon = findViewById(R.id.nav_home_icon);
-        navModelsIcon = findViewById(R.id.nav_models_icon);
-        navLabIcon = findViewById(R.id.nav_lab_icon);
-        navSettingsIcon = findViewById(R.id.nav_settings_icon);
+        navHomeLottie = findViewById(R.id.nav_home_lottie);
+        navModelsLottie = findViewById(R.id.nav_models_lottie);
+        navLabLottie = findViewById(R.id.nav_lab_lottie);
+        navSettingsLottie = findViewById(R.id.nav_settings_lottie);
 
         floatingDock = findViewById(R.id.floating_dock);
+        navItemsWrapper = findViewById(R.id.nav_items_wrapper);
+        navSlidingIndicator = findViewById(R.id.nav_sliding_indicator);
         navItemsContainer = findViewById(R.id.nav_items_container);
         dockActionContainer = findViewById(R.id.dock_action_container);
         dockActionIcon = findViewById(R.id.dock_action_icon);
+        dockActionLottie = findViewById(R.id.dock_action_lottie);
         dockActionText = findViewById(R.id.dock_action_text);
     }
 
@@ -280,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateNavSelection(int index) {
         currentNavIndex = index;
 
-        // Reset all
+        // Reset all selection states
         navHome.setSelected(false);
         navModels.setSelected(false);
         navLab.setSelected(false);
@@ -294,39 +300,70 @@ public class MainActivity extends AppCompatActivity {
         int primaryColor = com.google.android.material.color.MaterialColors.getColor(this,
                 androidx.appcompat.R.attr.colorPrimary, ContextCompat.getColor(this, R.color.primary));
 
-        navHomeIcon.setColorFilter(inactiveColor);
-        navModelsIcon.setColorFilter(inactiveColor);
-        navLabIcon.setColorFilter(inactiveColor);
-        navSettingsIcon.setColorFilter(inactiveColor);
+        // Reset all to static frame 0 with inactive color
+        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navHomeLottie, 0, inactiveColor);
+        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navModelsLottie, 0, inactiveColor);
+        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navLabLottie, 0, inactiveColor);
+        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navSettingsLottie, 0, inactiveColor);
 
-        // Reset backgrounds
-        navHome.setBackgroundTintList(null);
-        navModels.setBackgroundTintList(null);
-        navLab.setBackgroundTintList(null);
-        navSettings.setBackgroundTintList(null);
+        if (index < 0) {
+            if (navSlidingIndicator != null) {
+                navSlidingIndicator.setVisibility(View.GONE);
+            }
+            return;
+        }
 
-        // Set selected with dynamic theme color
+        if (navSlidingIndicator != null) {
+            navSlidingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        FrameLayout targetView;
+        com.airbnb.lottie.LottieAnimationView targetLottie;
+
         switch (index) {
-            case 0:
-                navHome.setSelected(true);
-                navHomeIcon.setColorFilter(activeColor);
-                navHome.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
-                break;
             case 1:
-                navModels.setSelected(true);
-                navModelsIcon.setColorFilter(activeColor);
-                navModels.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
+                targetView = navModels;
+                targetLottie = navModelsLottie;
                 break;
             case 2:
-                navLab.setSelected(true);
-                navLabIcon.setColorFilter(activeColor);
-                navLab.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
+                targetView = navLab;
+                targetLottie = navLabLottie;
                 break;
             case 3:
-                navSettings.setSelected(true);
-                navSettingsIcon.setColorFilter(activeColor);
-                navSettings.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
+                targetView = navSettings;
+                targetLottie = navSettingsLottie;
                 break;
+            case 0:
+            default:
+                targetView = navHome;
+                targetLottie = navHomeLottie;
+                break;
+        }
+
+        if (targetView != null) {
+            targetView.setSelected(true);
+            if (targetLottie != null) {
+                tn.eluea.kgpt.util.LottieHelper.playOnce(targetLottie, activeColor);
+            }
+
+            if (navSlidingIndicator != null) {
+                navSlidingIndicator.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
+
+                Runnable movePill = () -> {
+                    float targetX = targetView.getX();
+                    navSlidingIndicator.animate()
+                            .x(targetX)
+                            .setDuration(280)
+                            .setInterpolator(new androidx.interpolator.view.animation.FastOutSlowInInterpolator())
+                            .start();
+                };
+
+                if (targetView.getWidth() == 0) {
+                    targetView.post(movePill);
+                } else {
+                    movePill.run();
+                }
+            }
         }
     }
 
@@ -395,11 +432,14 @@ public class MainActivity extends AppCompatActivity {
     // onBackPressed removed. Handled by OnBackPressedDispatcher in onCreate.
 
     public void setDockAction(String text, int iconRes, View.OnClickListener listener) {
-        if (floatingDock == null || navItemsContainer == null || dockActionContainer == null)
+        if (floatingDock == null || dockActionContainer == null)
             return;
 
+        View navView = (navItemsWrapper != null) ? navItemsWrapper : navItemsContainer;
+        if (navView == null) return;
+
         // Check if we're switching from navigation mode to action mode
-        boolean isFromNavigation = navItemsContainer.getVisibility() == View.VISIBLE;
+        boolean isFromNavigation = navView.getVisibility() == View.VISIBLE;
 
         // Check if we're already in action mode (switching between actions)
         boolean isAlreadyInActionMode = dockActionContainer.getVisibility() == View.VISIBLE;
@@ -412,83 +452,91 @@ public class MainActivity extends AppCompatActivity {
             animateDockContentChange(text, iconRes, listener);
         } else {
             // Fallback: just set it up directly
-            navItemsContainer.setVisibility(View.GONE);
+            navView.setVisibility(View.GONE);
             dockActionContainer.setVisibility(View.VISIBLE);
             dockActionText.setText(text);
-            dockActionIcon.setImageResource(iconRes);
+            setupDockActionIcon(iconRes);
             applyDockActionStyle();
             floatingDock.setOnClickListener(listener);
         }
     }
 
     private void animateNavToActionMode(String text, int iconRes, View.OnClickListener listener) {
-        // Fade out navigation items
-        navItemsContainer.animate()
+        View navView = (navItemsWrapper != null) ? navItemsWrapper : navItemsContainer;
+        if (navView == null) return;
+
+        // Cancel any pending animations
+        navView.animate().cancel();
+        dockActionContainer.animate().cancel();
+        dockActionText.animate().cancel();
+        if (dockActionIcon != null) dockActionIcon.animate().cancel();
+        if (dockActionLottie != null) dockActionLottie.animate().cancel();
+
+        // Fade out navigation items wrapper (including sliding indicator pill)
+        navView.animate()
                 .alpha(0f)
                 .scaleX(0.95f)
                 .scaleY(0.95f)
-                .setDuration(120)
+                .setDuration(100)
                 .setInterpolator(new android.view.animation.AccelerateInterpolator())
                 .withEndAction(() -> {
-                    // Start smooth width transition
-                    android.transition.Transition transition = new android.transition.ChangeBounds();
-                    transition.setDuration(300);
-                    transition.setInterpolator(new android.view.animation.DecelerateInterpolator());
-                    android.transition.TransitionManager.beginDelayedTransition(floatingDock, transition);
-
-                    // Hide nav, show action
-                    navItemsContainer.setVisibility(View.GONE);
-                    navItemsContainer.setAlpha(1f);
-                    navItemsContainer.setScaleX(1f);
-                    navItemsContainer.setScaleY(1f);
+                    // Hide nav wrapper completely
+                    navView.setVisibility(View.GONE);
+                    navView.setAlpha(1f);
+                    navView.setScaleX(1f);
+                    navView.setScaleY(1f);
 
                     // Set up action content
                     dockActionText.setText(text);
-                    dockActionIcon.setImageResource(iconRes);
+                    setupDockActionIcon(iconRes);
                     applyDockActionStyle();
-                    floatingDock.setOnClickListener(listener);
+                    floatingDock.setOnClickListener(v -> {
+                        if (dockActionLottie != null && dockActionLottie.getVisibility() == View.VISIBLE) {
+                            int onPrimaryContainer = com.google.android.material.color.MaterialColors.getColor(this,
+                                    com.google.android.material.R.attr.colorOnPrimaryContainer,
+                                    ContextCompat.getColor(this, R.color.primary));
+                            tn.eluea.kgpt.util.LottieHelper.playOnce(dockActionLottie, onPrimaryContainer);
+                        }
+                        if (listener != null) {
+                            listener.onClick(v);
+                        }
+                    });
 
                     // Prepare for animation
                     dockActionContainer.setAlpha(0f);
                     dockActionContainer.setScaleX(0.95f);
                     dockActionContainer.setScaleY(0.95f);
-                    dockActionIcon.setTranslationX(15f);
+                    dockActionIcon.setTranslationX(10f);
                     dockActionIcon.setAlpha(0f);
-                    dockActionText.setTranslationX(15f);
+                    dockActionLottie.setTranslationX(10f);
+                    dockActionLottie.setAlpha(0f);
+                    dockActionText.setTranslationX(10f);
                     dockActionText.setAlpha(0f);
                     dockActionContainer.setVisibility(View.VISIBLE);
 
-                    // Animate container in with expand
+                    // Animate container in with subtle overshoot
                     dockActionContainer.animate()
                             .alpha(1f)
-                            .scaleX(1.02f)
-                            .scaleY(1.02f)
-                            .setDuration(100)
-                            .setInterpolator(new android.view.animation.DecelerateInterpolator())
-                            .withEndAction(() -> {
-                                dockActionContainer.animate()
-                                        .scaleX(1f)
-                                        .scaleY(1f)
-                                        .setDuration(120)
-                                        .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f))
-                                        .start();
-                            })
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(160)
+                            .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f))
                             .start();
 
                     // Animate content sliding in
-                    dockActionIcon.animate()
+                    View activeIconView = (iconRes == R.drawable.ic_add) ? dockActionLottie : dockActionIcon;
+                    activeIconView.animate()
                             .alpha(1f)
                             .translationX(0f)
-                            .setDuration(180)
-                            .setStartDelay(30)
+                            .setDuration(160)
                             .setInterpolator(new android.view.animation.DecelerateInterpolator())
                             .start();
 
                     dockActionText.animate()
                             .alpha(1f)
                             .translationX(0f)
-                            .setDuration(180)
-                            .setStartDelay(60)
+                            .setDuration(160)
+                            .setStartDelay(20)
                             .setInterpolator(new android.view.animation.DecelerateInterpolator())
                             .start();
                 })
@@ -497,66 +545,80 @@ public class MainActivity extends AppCompatActivity {
 
     private void animateDockContentChange(String newText, int newIconRes, View.OnClickListener newListener) {
         // Animate icon and text separately for smoother effect
-
-        // First, fade out just the content (icon + text) while keeping container
-        // visible
-        dockActionIcon.animate()
+        View currentIconView = (dockActionLottie != null && dockActionLottie.getVisibility() == View.VISIBLE) ? dockActionLottie : dockActionIcon;
+        currentIconView.animate()
                 .alpha(0f)
                 .translationX(-10f)
-                .setDuration(100)
+                .setDuration(80)
                 .setInterpolator(new android.view.animation.AccelerateInterpolator())
                 .start();
 
         dockActionText.animate()
                 .alpha(0f)
                 .translationX(-10f)
-                .setDuration(100)
+                .setDuration(80)
                 .setInterpolator(new android.view.animation.AccelerateInterpolator())
                 .withEndAction(() -> {
                     // Update content while faded out
                     dockActionText.setText(newText);
-                    dockActionIcon.setImageResource(newIconRes);
+                    setupDockActionIcon(newIconRes);
                     applyDockActionStyle();
-                    floatingDock.setOnClickListener(newListener);
+                    floatingDock.setOnClickListener(v -> {
+                        if (dockActionLottie != null && dockActionLottie.getVisibility() == View.VISIBLE) {
+                            int onPrimaryContainer = com.google.android.material.color.MaterialColors.getColor(this,
+                                    com.google.android.material.R.attr.colorOnPrimaryContainer,
+                                    ContextCompat.getColor(this, R.color.primary));
+                            tn.eluea.kgpt.util.LottieHelper.playOnce(dockActionLottie, onPrimaryContainer);
+                        }
+                        if (newListener != null) {
+                            newListener.onClick(v);
+                        }
+                    });
 
                     // Reset position for incoming animation
                     dockActionIcon.setTranslationX(10f);
+                    dockActionLottie.setTranslationX(10f);
                     dockActionText.setTranslationX(10f);
 
-                    // Subtle stretch/expand on the container
-                    dockActionContainer.animate()
-                            .scaleX(1.03f)
-                            .scaleY(1.03f)
-                            .setDuration(80)
-                            .setInterpolator(new android.view.animation.DecelerateInterpolator())
-                            .withEndAction(() -> {
-                                // Settle back to normal
-                                dockActionContainer.animate()
-                                        .scaleX(1f)
-                                        .scaleY(1f)
-                                        .setDuration(120)
-                                        .setInterpolator(new android.view.animation.OvershootInterpolator(1.5f))
-                                        .start();
-                            })
-                            .start();
-
                     // Fade in new content with slide
-                    dockActionIcon.animate()
+                    View incomingIconView = (newIconRes == R.drawable.ic_add) ? dockActionLottie : dockActionIcon;
+                    incomingIconView.animate()
                             .alpha(1f)
                             .translationX(0f)
-                            .setDuration(180)
+                            .setDuration(150)
                             .setInterpolator(new android.view.animation.DecelerateInterpolator())
                             .start();
 
                     dockActionText.animate()
                             .alpha(1f)
                             .translationX(0f)
-                            .setDuration(180)
-                            .setStartDelay(30) // Slight stagger for elegance
+                            .setDuration(150)
+                            .setStartDelay(20)
                             .setInterpolator(new android.view.animation.DecelerateInterpolator())
                             .start();
                 })
                 .start();
+    }
+
+    private void setupDockActionIcon(int iconRes) {
+        int onPrimaryContainer = com.google.android.material.color.MaterialColors.getColor(this,
+                com.google.android.material.R.attr.colorOnPrimaryContainer,
+                ContextCompat.getColor(this, R.color.primary));
+
+        if (iconRes == R.drawable.ic_add) {
+            if (dockActionIcon != null) dockActionIcon.setVisibility(View.GONE);
+            if (dockActionLottie != null) {
+                dockActionLottie.setVisibility(View.VISIBLE);
+                tn.eluea.kgpt.util.LottieHelper.playOnce(dockActionLottie, onPrimaryContainer);
+            }
+        } else {
+            if (dockActionLottie != null) dockActionLottie.setVisibility(View.GONE);
+            if (dockActionIcon != null) {
+                dockActionIcon.setVisibility(View.VISIBLE);
+                dockActionIcon.setImageResource(iconRes);
+                dockActionIcon.setColorFilter(onPrimaryContainer);
+            }
+        }
     }
 
     private void applyDockActionStyle() {
@@ -569,21 +631,35 @@ public class MainActivity extends AppCompatActivity {
 
         floatingDock.setBackgroundTintList(ColorStateList.valueOf(primaryContainer));
         dockActionText.setTextColor(onPrimaryContainer);
-        dockActionIcon.setColorFilter(onPrimaryContainer);
+        if (dockActionIcon != null) {
+            dockActionIcon.setColorFilter(onPrimaryContainer);
+        }
+        if (dockActionLottie != null && dockActionLottie.getVisibility() == View.VISIBLE) {
+            tn.eluea.kgpt.util.LottieHelper.tint(dockActionLottie, onPrimaryContainer);
+        }
     }
 
     public void showDockNavigation() {
-        if (floatingDock == null || navItemsContainer == null || dockActionContainer == null)
+        if (floatingDock == null || dockActionContainer == null)
             return;
 
-        // Start smooth width transition
-        android.transition.Transition transition = new android.transition.ChangeBounds();
-        transition.setDuration(300);
-        transition.setInterpolator(new android.view.animation.DecelerateInterpolator());
-        android.transition.TransitionManager.beginDelayedTransition(floatingDock, transition);
+        View navView = (navItemsWrapper != null) ? navItemsWrapper : navItemsContainer;
+        if (navView == null) return;
+
+        // Cancel any pending animations
+        dockActionContainer.animate().cancel();
+        dockActionText.animate().cancel();
+        if (dockActionIcon != null) dockActionIcon.animate().cancel();
+        if (dockActionLottie != null) dockActionLottie.animate().cancel();
+        navView.animate().cancel();
 
         dockActionContainer.setVisibility(View.GONE);
-        navItemsContainer.setVisibility(View.VISIBLE);
+        dockActionContainer.setAlpha(0f);
+
+        navView.setVisibility(View.VISIBLE);
+        navView.setAlpha(1f);
+        navView.setScaleX(1f);
+        navView.setScaleY(1f);
 
         // Restore Dock Style
         int surfaceContainer = com.google.android.material.color.MaterialColors.getColor(this,
@@ -592,10 +668,10 @@ public class MainActivity extends AppCompatActivity {
 
         floatingDock.setBackgroundTintList(ColorStateList.valueOf(surfaceContainer));
         floatingDock.setOnClickListener(null); // Disable action click
-        floatingDock.setClickable(false); // Let events pass to children (but items are clickable)
-        // Actually items capture clicks. floating_dock layout click is irrelevant if
-        // children handle it.
-        // But setting null is safer.
+        floatingDock.setClickable(false); // Let events pass to children
+
+        // Re-align the sliding pill on the current active tab
+        updateNavSelection(currentNavIndex >= 0 ? currentNavIndex : 0);
     }
 
     public void updateSnowObstacles(java.util.List<android.graphics.Rect> obstacles) {

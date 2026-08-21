@@ -21,6 +21,7 @@ import tn.eluea.kgpt.text.parse.result.CommandParseResult;
 import tn.eluea.kgpt.text.parse.result.FormatParseResult;
 import tn.eluea.kgpt.text.parse.result.InlineAskParseResult;
 import tn.eluea.kgpt.text.parse.result.InlineCommandParseResult;
+import tn.eluea.kgpt.text.parse.result.MediaDownloaderParseResult;
 import tn.eluea.kgpt.text.parse.result.ParseResult;
 import tn.eluea.kgpt.text.parse.result.SettingsParseResult;
 import tn.eluea.kgpt.text.parse.result.TextActionParseResult;
@@ -59,6 +60,8 @@ public class BrainDispatcher {
             UiInteractor.getInstance().showSettingsDialog();
         } else if (parseResult instanceof WebSearchParseResult) {
             handleWebSearch((WebSearchParseResult) parseResult);
+        } else if (parseResult instanceof MediaDownloaderParseResult) {
+            handleMediaDownloader((MediaDownloaderParseResult) parseResult);
         } else if (parseResult instanceof AppTriggerParseResult) {
             handleAppTrigger((AppTriggerParseResult) parseResult);
         } else if (parseResult instanceof TextActionParseResult) {
@@ -107,6 +110,20 @@ public class BrainDispatcher {
         UiInteractor.getInstance().showWebSearchDialog("Web Search", url);
     }
 
+    private void handleMediaDownloader(MediaDownloaderParseResult result) {
+        String raw = result.url;
+        String extractedUrl = tn.eluea.kgpt.features.downloader.core.MediaUtils.extractUrl(raw);
+        if (extractedUrl == null || extractedUrl.isEmpty()) {
+            extractedUrl = raw != null ? raw.trim() : "";
+        }
+        if (!extractedUrl.isEmpty()) {
+            final String finalUrl = extractedUrl;
+            UiInteractor.getInstance().post(() -> {
+                UiInteractor.getInstance().showMediaDownloaderDialog(finalUrl);
+            });
+        }
+    }
+
     private void handleAppTrigger(AppTriggerParseResult result) {
         tn.eluea.kgpt.util.Logger.log("AppTrigger detected: trigger='" + result.trigger +
                 "', package='" + result.packageName +
@@ -129,6 +146,20 @@ public class BrainDispatcher {
         // Handle text action commands like "$rephrase", "$fix", etc.
         tn.eluea.kgpt.util.Logger.log("TextAction detected: action=" + result.action.name() +
                 ", text='" + result.text + "'");
+
+        if (result.action == tn.eluea.kgpt.features.textactions.domain.TextAction.DOWNLOAD) {
+            String extractedUrl = tn.eluea.kgpt.features.downloader.core.MediaUtils.extractUrl(result.text);
+            if (extractedUrl == null || extractedUrl.isEmpty()) {
+                extractedUrl = result.text != null ? result.text.trim() : "";
+            }
+            if (!extractedUrl.isEmpty()) {
+                final String finalUrl = extractedUrl;
+                UiInteractor.getInstance().post(() -> {
+                    UiInteractor.getInstance().showMediaDownloaderDialog(finalUrl);
+                });
+            }
+            return;
+        }
 
         // Get the system message for this action
         String systemMessage = TextActionPrompts.getSystemMessage(result.action,

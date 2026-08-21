@@ -51,6 +51,8 @@ public class TextActionPrompts {
                         return context.getString(tn.eluea.kgpt.R.string.prompt_translate_target, targetInfo);
                     }
                     return context.getString(tn.eluea.kgpt.R.string.prompt_translate_auto);
+                case DOWNLOAD:
+                    return context.getString(tn.eluea.kgpt.R.string.action_download_media);
                 default:
                     return context.getString(tn.eluea.kgpt.R.string.prompt_default);
             }

@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Solid Circle Background -->
+    <path
+        android:fillColor="?attr/colorOnSurface"
+        android:pathData="M12,21.25a9.25,9.25 0 1,0 0,-18.5a9.25,9.25 0 0,0 0,18.5" />
+    <!-- Inner Circular Arrows (cutout / white) -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M8.288,15.712a5.25,5.25 0 0,0 7.424,0l0.712,-0.712M15.712,8.288a5.25,5.25 0 0,0 -7.424,0L8,8.575M7.25,17.5v-3h3M17,6.5v3h-3" />
+</vector>

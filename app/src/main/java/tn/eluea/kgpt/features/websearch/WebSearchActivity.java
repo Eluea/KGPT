@@ -96,27 +96,8 @@ public class WebSearchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_web_search);
 
-        // Apply Blur if enabled (optimized for performance)
-        android.content.SharedPreferences prefs = getSharedPreferences("keyboard_gpt_ui",
-                android.content.Context.MODE_PRIVATE);
-        boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true);
-        int blurIntensity = prefs.getInt("blur_intensity", 25);
-        int blurTintColor = prefs.getInt("blur_tint_color", 0); // 0 is Color.TRANSPARENT
-
-        // Check if device is low-end to reduce blur intensity
-        android.app.ActivityManager am = (android.app.ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        boolean isLowRamDevice = am != null && am.isLowRamDevice();
-        int maxBlurRadius = isLowRamDevice ? 15 : 30;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            if (isBlurEnabled && blurIntensity > 0) {
-                int blurRadius = Math.min((blurIntensity * maxBlurRadius) / 100, maxBlurRadius);
-                params.setBlurBehindRadius(blurRadius);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-            }
-            getWindow().setAttributes(params);
-        }
+        // Apply Blur if enabled
+        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this);
 
         // Fix status bar icons visibility (force white icons for dark background)
         WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(),
@@ -154,19 +135,8 @@ public class WebSearchActivity extends AppCompatActivity {
 
         initViews();
 
-        // Apply Blur Tint to Dim Background
         if (dimBackground != null) {
-            if (blurTintColor != 0) { // Not Transparent
-                int alpha = 120;
-                int colorWithAlpha = android.graphics.Color.argb(alpha,
-                        android.graphics.Color.red(blurTintColor),
-                        android.graphics.Color.green(blurTintColor),
-                        android.graphics.Color.blue(blurTintColor));
-                dimBackground.setBackgroundColor(colorWithAlpha);
-            } else {
-                // Default Dim
-                dimBackground.setBackgroundColor(0x80000000);
-            }
+            dimBackground.setOnClickListener(v -> finish());
         }
 
         setupDragBehavior();

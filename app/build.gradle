@@ -9,20 +9,30 @@ android {
 
     defaultConfig {
         applicationId = "tn.eluea.kgpt"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 9
         versionName = "4.0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+        }
     }
 
     signingConfigs {
         release {
-            storeFile = file("${System.getProperty('user.home')}/.android/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+            storeFile = file("keystore/kgpt_release.jks")
+            storePassword = "kgptpassword"
+            keyAlias = "kgpt"
+            keyPassword = "kgptpassword"
+        }
+        debug {
+            storeFile = file("keystore/kgpt_release.jks")
+            storePassword = "kgptpassword"
+            keyAlias = "kgpt"
+            keyPassword = "kgptpassword"
         }
     }
 
@@ -30,6 +40,9 @@ android {
         release {
             minifyEnabled = false
             proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
+            signingConfig = signingConfigs.release
+        }
+        debug {
             signingConfig = signingConfigs.release
         }
     }
@@ -42,7 +55,17 @@ android {
     }
     packaging {
         jniLibs {
-            useLegacyPackaging = false
+            useLegacyPackaging = true
+            excludes += [
+                '**/*.so',
+                'lib/**',
+                'lib/*/**',
+                '**/libpython*.so',
+                '**/libffmpeg*.so',
+                '**/libffprobe*.so',
+                '**/libyoutubedl*.so',
+                '**/libqjs*.so'
+            ]
         }
         resources {
             excludes += ['META-INF/INDEX.LIST', 'META-INF/DEPENDENCIES', 'META-INF/LICENSE',
@@ -70,7 +93,7 @@ android.applicationVariants.all { variant ->
 dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.google.android.material:material:1.14.0-alpha01'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:5.11.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -85,7 +108,28 @@ dependencies {
     // DocumentFile for folder picker
     implementation 'androidx.documentfile:documentfile:1.0.1'
 
-    compileOnly 'de.robv.android.xposed:api:82'
+    // LSPosed Modern API 102 & Service (Vector compatible)
+    compileOnly 'io.github.libxposed:api:102.0.0'
+    implementation 'io.github.libxposed:service:101.0.0'
+
+    // Embedded Universal Media Downloader (yt-dlp + ffmpeg)
+    implementation 'io.github.junkfood02.youtubedl-android:library:0.18.1'
+    implementation 'io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1'
+
+    // Lottie Animation Library
+    implementation 'com.airbnb.android:lottie:6.4.0'
+
+    // Google Play Services Auth & Google Drive API
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
+    implementation('com.google.api-client:google-api-client-android:2.6.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    implementation('com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0') {
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'com.google.guava'
+    }
+    implementation 'com.google.http-client:google-http-client-gson:1.44.1'
 }
 
 java {

@@ -224,6 +224,33 @@ public class UiInteractor {
         return true;
     }
 
+    public boolean showMediaDownloaderDialog(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return false;
+        }
+        if (isDialogOnCooldown()) {
+            return false;
+        }
+
+        try {
+            if (mIMSController != null) {
+                mIMSController.hideKeyboard();
+            }
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setComponent(new android.content.ComponentName("tn.eluea.kgpt", "tn.eluea.kgpt.features.downloader.ui.MediaShareActivity"));
+            intent.setType("text/plain");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Intent.EXTRA_TEXT, url.trim());
+            tn.eluea.kgpt.util.Logger.log("Launching media downloader for url: " + url);
+            mContext.startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            tn.eluea.kgpt.util.Logger.log("Failed to launch media downloader: " + e.getMessage());
+            return false;
+        }
+    }
+
     public boolean showEditCommandsDialog() {
         if (isDialogOnCooldown()) {
             return false;
@@ -252,7 +279,8 @@ public class UiInteractor {
 
     private Intent getOverlayIntent(DialogType dialogType, boolean includeSp) {
         Intent intent = new Intent("tn.eluea.kgpt.OVERLAY");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setPackage("tn.eluea.kgpt");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_DIALOG_TYPE, dialogType.name());
         if (includeSp) {
             String rawCommands = SPManager.getInstance().getGenerativeAICommandsRaw();

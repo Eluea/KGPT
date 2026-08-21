@@ -1,0 +1,71 @@
+﻿{
+    "version":  "4.0.8",
+    "sha256":  "829a6d19974ad3c546a80d55fef094a09fc0d8ba91f920621c8b69f3573607ff",
+    "abi":  "x86",
+    "totalSize":  48735718,
+    "chunks":  [
+                   {
+                       "sha256":  "e6e8784f00b517953e4cd5334a02d1a395cd0262ae09c4e6e6236aee542471e3",
+                       "name":  "chunk_00.bin",
+                       "size":  5242880,
+                       "index":  0
+                   },
+                   {
+                       "sha256":  "3dd55bb4499c75ccab5f403da4af1ec502645f9ab1b1d7ea81e33123633c14ff",
+                       "name":  "chunk_01.bin",
+                       "size":  5242880,
+                       "index":  1
+                   },
+                   {
+                       "sha256":  "83e6c7d1b7633b07b24c7bd1ec804fd701a0ebc08730eea2c05eac2434411fe9",
+                       "name":  "chunk_02.bin",
+                       "size":  5242880,
+                       "index":  2
+                   },
+                   {
+                       "sha256":  "d611ee8da8004cdd2b2775f33f84e0cf257bb3aba33e76635cb314aa2953133d",
+                       "name":  "chunk_03.bin",
+                       "size":  5242880,
+                       "index":  3
+                   },
+                   {
+                       "sha256":  "79c18391e0fa45719bbadb4a4f81c78c1456a16a20862e3733772caff4241ae1",
+                       "name":  "chunk_04.bin",
+                       "size":  5242880,
+                       "index":  4
+                   },
+                   {
+                       "sha256":  "0b3c2d8cc85af47e77aac6c5e268c11849e40eaebb8b5a0d729240eee3f09567",
+                       "name":  "chunk_05.bin",
+                       "size":  5242880,
+                       "index":  5
+                   },
+                   {
+                       "sha256":  "39cc30c22278625ea3251bf6c44ae9ee228c596bb855a6439ef4edbd70bbc995",
+                       "name":  "chunk_06.bin",
+                       "size":  5242880,
+                       "index":  6
+                   },
+                   {
+                       "sha256":  "5f0a0435d958afe1a3d919010d38429b7b52bea6978ac0bbc327a4ba2aba3427",
+                       "name":  "chunk_07.bin",
+                       "size":  5242880,
+                       "index":  7
+                   },
+                   {
+                       "sha256":  "5e4fcd75511cd329a5e93ec65513f5ef5a7e28a958c1d1b9e5da50ee5ef07482",
+                       "name":  "chunk_08.bin",
+                       "size":  5242880,
+                       "index":  8
+                   },
+                   {
+                       "sha256":  "57e98dacae4e078649902e804997ad1d2bc334582ef792e3373c605495aa625f",
+                       "name":  "chunk_09.bin",
+                       "size":  1549798,
+                       "index":  9
+                   }
+               ],
+    "bundleFileName":  "kgpt-core-x86.zip",
+    "chunkSize":  5242880,
+    "chunkCount":  10
+}

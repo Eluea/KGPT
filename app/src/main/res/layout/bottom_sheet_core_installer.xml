@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet_dialog"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <!-- Header Icon -->
+    <ImageView
+        android:id="@+id/iv_header_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_download_filled"
+        app:tint="?attr/colorPrimary" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_plugin_required"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/desc_plugin_required"
+        android:textSize="13sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Plugin Details Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_plugin_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="16dp">
+
+            <!-- Architecture Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_device_arch"
+                    android:letterSpacing="0.08"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_plugin_arch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="arm64-v8a"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/divider_color" />
+
+            <!-- Download Size Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_plugin_size"
+                    android:letterSpacing="0.08"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_plugin_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="~47 MB"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Plugin Features Summary -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_features"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_rounded_surface"
+        android:backgroundTint="?attr/colorSurfaceContainer"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/tv_features"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/features_plugin_summary"
+            android:textSize="13sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:lineSpacingExtra="4dp"
+            android:padding="14dp" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Actions Container (Ready state) -->
+    <LinearLayout
+        android:id="@+id/container_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_download_plugin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/btn_install_plugin_now"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnPrimary"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_download_filled"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconSize="20dp"
+            app:iconTint="?attr/colorOnPrimary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel_plugin"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/btn_dismiss"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Downloading Container (Material You animated circle) -->
+    <LinearLayout
+        android:id="@+id/container_downloading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tv_download_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status_installing_plugin"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:gravity="center"
+            android:layout_marginBottom="28dp" />
+
+        <FrameLayout
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_progress"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                app:lottie_fileName="lottie/system-solid-4024-spinner-two-circles-loop-pulse.json"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
+
+            <ImageView
+                android:id="@+id/iv_success_icon"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_check_circle_success"
+                android:visibility="gone"
+                app:tint="?attr/colorPrimary" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_download_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_downloading_simple"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:gravity="center"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_download_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 MB / 47 MB"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_abort_download"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_dismiss"
+            android:textColor="?attr/colorError" />
+    </LinearLayout>
+
+</LinearLayout>

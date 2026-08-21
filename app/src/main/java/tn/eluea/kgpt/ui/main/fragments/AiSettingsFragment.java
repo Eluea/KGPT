@@ -70,17 +70,69 @@ public class AiSettingsFragment extends Fragment {
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText(R.string.tab_model);
-                    tab.setIcon(R.drawable.ic_model_default);
-                    break;
-                case 1:
-                    tab.setText(R.string.tab_api_keys);
-                    tab.setIcon(R.drawable.ic_key_filled);
-                    break;
+            View customView = LayoutInflater.from(requireContext()).inflate(R.layout.item_tab_lottie, null);
+            com.airbnb.lottie.LottieAnimationView lottieView = customView.findViewById(R.id.tab_lottie_icon);
+            android.widget.TextView tvTitle = customView.findViewById(R.id.tab_title);
+
+            if (position == 0) {
+                tvTitle.setText(R.string.tab_model);
+                lottieView.setAnimation("lottie/system-solid-4019-spinner-four-dots-loop-line-reverse.json");
+            } else {
+                tvTitle.setText(R.string.tab_api_keys);
+                lottieView.setAnimation("lottie/system-solid-1327-api-hover-api.json");
             }
+
+            tab.setCustomView(customView);
         }).attach();
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateCustomTabState(tab, true);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateCustomTabState(tab, false);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                updateCustomTabState(tab, true);
+            }
+        });
+
+        // Initialize state for tabs
+        tabLayout.post(() -> {
+            for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                if (tab != null) {
+                    updateCustomTabState(tab, i == viewPager.getCurrentItem());
+                }
+            }
+        });
+    }
+
+    private void updateCustomTabState(TabLayout.Tab tab, boolean isSelected) {
+        if (!isAdded() || getContext() == null) return;
+        View customView = tab.getCustomView();
+        if (customView == null) return;
+
+        com.airbnb.lottie.LottieAnimationView lottieView = customView.findViewById(R.id.tab_lottie_icon);
+        android.widget.TextView tvTitle = customView.findViewById(R.id.tab_title);
+
+        int activeColor = com.google.android.material.color.MaterialColors.getColor(requireContext(),
+                com.google.android.material.R.attr.colorOnPrimary, android.graphics.Color.WHITE);
+        int inactiveColor = com.google.android.material.color.MaterialColors.getColor(requireContext(),
+                com.google.android.material.R.attr.colorOnSurfaceVariant, android.graphics.Color.GRAY);
+
+        if (isSelected) {
+            if (tvTitle != null) tvTitle.setTextColor(activeColor);
+            tn.eluea.kgpt.util.LottieHelper.playOnce(lottieView, activeColor);
+        } else {
+            if (tvTitle != null) tvTitle.setTextColor(inactiveColor);
+            tn.eluea.kgpt.util.LottieHelper.setStaticFrame(lottieView, 0, inactiveColor);
+        }
     }
 
     private void setupInfoButton() {

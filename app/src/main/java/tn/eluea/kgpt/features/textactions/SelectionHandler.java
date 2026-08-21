@@ -287,8 +287,9 @@ public class SelectionHandler {
             int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
             int positionY = screenHeight / 4;
 
-            // Launch the menu activity
-            Intent intent = new Intent(context, TextActionsMenuActivity.class);
+            // Launch the menu activity with explicit component name
+            Intent intent = new Intent();
+            intent.setComponent(new android.content.ComponentName("tn.eluea.kgpt", "tn.eluea.kgpt.features.textactions.ui.TextActionsMenuActivity"));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.putExtra(TextActionsMenuActivity.EXTRA_SELECTED_TEXT, selectedText);

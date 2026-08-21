@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025-2026 Amr Aldeeb @Eluea
+  ~ GitHub: https://github.com/Eluea
+  ~ Telegram: https://t.me/Eluea
+  ~
+  ~ Licensed under the GPLv3.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet_floating"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="20dp">
+
+    <!-- Drag Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/bg_drag_handle" />
+
+    <!-- Header: Title & Close Button -->
+    <RelativeLayout
+        android:id="@+id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/nav_media_download"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_header_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/desc_adjust_download"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_close"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_circle_filled"
+            android:backgroundTint="?attr/colorSurfaceVariant">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_close"
+                app:tint="?attr/colorOnSurfaceVariant" />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <!-- Capsule Animated Mode Switcher (Video | Audio | CMD) -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout_mode"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/bg_input_field"
+        android:backgroundTint="?attr/colorSurfaceContainer"
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/bg_tab_indicator"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorGravity="stretch"
+        app:tabMode="fixed"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="?attr/colorOnPrimary"
+        app:tabTextColor="?attr/colorOnSurfaceVariant" />
+
+    <!-- Loading State Indicator with Lottie Spinner -->
+    <LinearLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="28dp"
+        android:paddingBottom="28dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_loading"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottie/system-solid-4024-spinner-two-circles-loop-pulse.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/tv_loading_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/status_analyzing_media"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Main Content Layout -->
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- Prominent Large Thumbnail Card with Gradient Scrim Overlay -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_thumbnail_container"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Full Thumbnail Image -->
+                <ImageView
+                    android:id="@+id/iv_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_code_block" />
+
+                <!-- Gradient Scrim for Contrast -->
+                <View
+                    android:id="@+id/scrim_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_gradient_scrim" />
+
+                <!-- Bottom Title & Uploader Overlay Info -->
+                <LinearLayout
+                    android:id="@+id/layout_thumbnail_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2"
+                        android:text="Video Title Loading..."
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_uploader"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="Uploader"
+                            android:textColor="#D9FFFFFF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_duration_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_dark"
+                            android:paddingHorizontal="6dp"
+                            android:paddingVertical="2dp"
+                            android:text="00:00"
+                            android:textColor="@android:color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Success Lottie Animation in Card Center (Large & Multi-colored) -->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_success"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    app:lottie_fileName="lottie/successfully-done.json"
+                    app:lottie_loop="false" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Live Downloading State Layout (Appears when download starts) -->
+        <LinearLayout
+            android:id="@+id/layout_downloading_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Official Material 3 Expressive Wavy Progress Indicator -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_download"
+                style="@style/Widget.Material3Expressive.LinearProgressIndicator.Wavy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:indeterminate="true"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="8dp"
+                app:indicatorColor="?attr/colorPrimary"
+                app:trackColor="?attr/colorSurfaceContainerHighest" />
+
+            <TextView
+                android:id="@+id/tv_download_progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Starting download..."
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp" />
+
+            <!-- Cancel & Background Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_download_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:text="@string/btn_cancel"
+                    android:textColor="?attr/colorOnError"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="?attr/colorError"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_close"
+                    app:iconGravity="textStart"
+                    app:iconSize="18dp"
+                    app:iconTint="?attr/colorOnError" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_download_background"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:text="Background"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_open_in_new_filled"
+                    app:iconGravity="textStart"
+                    app:iconSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Options Section (Hidden during download) -->
+        <LinearLayout
+            android:id="@+id/layout_options_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Container & Quality Selection Cards Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <!-- Container Selector Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/iv_container_chevron"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_container"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_container"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="MP4"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_container_chevron"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_expand_more"
+                            app:tint="?attr/colorOnSurfaceVariant" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Quality Selector Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_quality"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:layout_marginStart="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/iv_quality_chevron"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_quality_section_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_video_quality"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_quality_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="1080p Full HD"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_quality_chevron"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_expand_more"
+                            app:tint="?attr/colorOnSurfaceVariant" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Media File Size Card (Slim & Compact with Centered Turbo Button) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_file_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="10dp">
+
+                    <!-- Left: Estimated Size -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_estimated_size"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tv_estimated_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="~39.2 MB"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Right: Turbo Button with Large Badge Tag for Speed Multiplier -->
+                    <LinearLayout
+                        android:id="@+id/btn_turbo_speed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_unified_chip"
+                        android:backgroundTint="?attr/colorSecondaryContainer"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="6dp">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_turbo_speed"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="6dp"
+                            app:lottie_autoPlay="false"
+                            app:lottie_fileName="lottie/system-solid-451-bolt-hover-bolt.json"
+                            app:lottie_loop="false" />
+
+                        <TextView
+                            android:id="@+id/tv_turbo_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="Turbo"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <!-- Large distinct badge tag for speed multiplier -->
+                        <TextView
+                            android:id="@+id/tv_turbo_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_chip_dark"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="16x"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Adjust Features Chips -->
+            <TextView
+                android:id="@+id/tv_adjust_section_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/label_adjust_video"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Chip 0: Cut & Trim -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_cut"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_cut"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_content_cut"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 1: Thumbnail -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_thumbnail"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_thumbnail"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_image_outline"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 2: Chapters -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_chapters"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_chapters"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_menu_book"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 3: Subtitles -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_subtitles"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_subtitles"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_subtitles_outline"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 4: Recode Video -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_recode"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_recode"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_movie_outline"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 5: Filename Template -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_filename"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/chip_filename"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_document_text_filled"
+                        app:iconSize="16dp" />
+
+                    <!-- Chip 6: Extra Commands -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_chip_extra_command"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:text="@string/chip_extra_command"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_command_filled"
+                        app:iconSize="16dp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Command Tab View (Visible only when Tab 3 is active) -->
+            <LinearLayout
+                android:id="@+id/layout_command_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="Standalone Universal Command:"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_tap_to_copy_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_unified_chip"
+                        android:backgroundTint="?attr/colorSecondaryContainer"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="Tap to Copy"
+                        android:textColor="?attr/colorOnSecondaryContainer"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_command_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_code_block"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="monospace"
+                    android:padding="12dp"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Full-Width Solid Prominent Download Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_download_now"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="@string/nav_media_download"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="?attr/colorPrimary"
+                app:cornerRadius="14dp"
+                app:icon="@drawable/ic_download_filled"
+                app:iconGravity="textStart"
+                app:iconSize="22dp"
+                app:iconTint="?attr/colorOnPrimary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

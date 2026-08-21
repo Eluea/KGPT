@@ -61,7 +61,6 @@ public class CandyColorHelper {
         ICON_COLOR_MAP.put(R.id.icon_internet, R.color.candy_internet);
         ICON_COLOR_MAP.put(R.id.icon_export, R.color.candy_export);
         ICON_COLOR_MAP.put(R.id.icon_backup, R.color.candy_backup);
-        ICON_COLOR_MAP.put(R.id.icon_restore, R.color.candy_restore);
 
         // Home page icons
         ICON_COLOR_MAP.put(R.id.icon_invocation, R.color.candy_invocation);

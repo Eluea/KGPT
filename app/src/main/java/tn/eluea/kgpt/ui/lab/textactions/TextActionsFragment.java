@@ -33,6 +33,8 @@ import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.provider.ConfigClient;
 import tn.eluea.kgpt.features.textactions.domain.TextAction;
 import tn.eluea.kgpt.features.textactions.data.TextActionManager;
+import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
+import tn.eluea.kgpt.features.downloader.ui.CoreUpdateBottomSheet;
 import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.MainActivity;
 
@@ -168,6 +170,11 @@ public class TextActionsFragment extends Fragment {
             switchAction.setChecked(isActionEnabled);
 
             switchAction.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked && action == TextAction.DOWNLOAD && !DownloaderEngine.getInstance().isCoreInstalled(requireContext())) {
+                    buttonView.post(() -> switchAction.setChecked(false));
+                    new CoreUpdateBottomSheet(requireContext()).show();
+                    return;
+                }
                 if (isChecked) {
                     enabledActions.add(action);
                 } else {
@@ -177,7 +184,13 @@ public class TextActionsFragment extends Fragment {
                 showSaveConfirmation();
             });
 
-            view.setOnClickListener(v -> showEditPromptDialog(action, actionManager));
+            view.setOnClickListener(v -> {
+                if (action == TextAction.DOWNLOAD && !DownloaderEngine.getInstance().isCoreInstalled(requireContext())) {
+                    new CoreUpdateBottomSheet(requireContext()).show();
+                    return;
+                }
+                showEditPromptDialog(action, actionManager);
+            });
 
             actionsListLayout.addView(view);
         }
@@ -399,6 +412,14 @@ public class TextActionsFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (!actions.isEmpty() && !actions.contains(TextAction.DOWNLOAD)) {
+            boolean explicitlyDisabled = requireContext().getSharedPreferences("keyboard_gpt", android.content.Context.MODE_PRIVATE)
+                    .getBoolean("text_action_disabled_DOWNLOAD", false);
+            if (!explicitlyDisabled) {
+                actions.add(TextAction.DOWNLOAD);
+            }
         }
         return actions;
     }

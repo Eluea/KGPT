@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -186,29 +186,15 @@
             android:layout_gravity="center"
             android:layout_marginBottom="32dp">
 
-            <!-- Circular Progress Indicator -->
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress_circular"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
+            <!-- Lottie Progress Indicator -->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_progress"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center"
-                app:indicatorSize="160dp"
-                app:trackThickness="16dp"
-                app:indicatorColor="?attr/colorPrimary"
-                app:trackColor="?attr/colorSurfaceContainerHighest"
-                app:trackCornerRadius="8dp"
-                android:max="1000"
-                android:progress="0" />
-
-            <!-- Hourglass Icon (shown during download, rotates) -->
-            <ImageView
-                android:id="@+id/iv_hourglass_icon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_hourglass_filled"
-                android:visibility="gone"
-                app:tint="?attr/colorPrimary" />
+                app:lottie_fileName="lottie/system-solid-4024-spinner-two-circles-loop-pulse.json"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
 
             <!-- Success Icon (shown when complete) -->
             <ImageView

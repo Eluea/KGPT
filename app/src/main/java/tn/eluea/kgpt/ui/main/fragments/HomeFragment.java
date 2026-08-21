@@ -52,12 +52,38 @@ import tn.eluea.kgpt.ui.main.FloatingBottomSheet;
 import tn.eluea.kgpt.ui.main.MainActivity;
 import tn.eluea.kgpt.ui.lab.LabActivity;
 
+import io.github.libxposed.service.XposedService;
+import io.github.libxposed.service.XposedServiceHelper;
+
 public class HomeFragment extends Fragment {
 
     private static final String PREF_AMOLED = "amoled_mode";
     private static final String PREF_THEME = "theme_mode";
     private static final String PREF_MODULE_ENABLED_TIME = "module_enabled_time";
     private static final String PREF_LAST_BOOT_TIME = "last_boot_time";
+
+    private static volatile boolean isServiceBoundActive = false;
+    private static XposedService sXposedService = null;
+
+    static {
+        try {
+            XposedServiceHelper.registerListener(new XposedServiceHelper.OnServiceListener() {
+                @Override
+                public void onServiceBind(XposedService service) {
+                    sXposedService = service;
+                    isServiceBoundActive = true;
+                }
+
+                @Override
+                public void onServiceDied(XposedService service) {
+                    sXposedService = null;
+                    isServiceBoundActive = false;
+                }
+            });
+        } catch (Throwable t) {
+            // Service not available
+        }
+    }
 
     // Module status states
     private static final int STATUS_NOT_ACTIVE = 0;
@@ -333,6 +359,11 @@ public class HomeFragment extends Fragment {
     }
 
     private int checkModuleStatus() {
+        // Modern Xposed API 101/102 Service check
+        if (isServiceBoundActive || (sXposedService != null && sXposedService.getApiVersion() > 0)) {
+            return STATUS_ACTIVE;
+        }
+
         // Check if module is hooked (active)
         boolean isHooked = isModuleActiveInternal();
 

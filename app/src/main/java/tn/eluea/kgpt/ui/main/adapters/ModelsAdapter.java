@@ -76,17 +76,17 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
     class ModelViewHolder extends RecyclerView.ViewHolder {
         private final MaterialCardView cardModel;
         private final FrameLayout iconContainer;
-        private final ImageView ivModelIcon;
+        private final ImageView ivModelIconStatic;
+        private final com.airbnb.lottie.LottieAnimationView lottieModelIcon;
         private final TextView tvModelName;
-        private final ImageView ivSelected;
 
         ModelViewHolder(@NonNull View itemView) {
             super(itemView);
             cardModel = itemView.findViewById(R.id.card_model);
             iconContainer = itemView.findViewById(R.id.icon_container);
-            ivModelIcon = itemView.findViewById(R.id.iv_model_icon);
+            ivModelIconStatic = itemView.findViewById(R.id.iv_model_icon_static);
+            lottieModelIcon = itemView.findViewById(R.id.lottie_model_icon);
             tvModelName = itemView.findViewById(R.id.tv_model_name);
-            ivSelected = itemView.findViewById(R.id.iv_selected);
         }
 
         void bind(LanguageModel model, boolean isSelected) {
@@ -101,15 +101,26 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
             if (isSelected) {
                 cardModel.setStrokeColor(colorPrimary);
                 cardModel.setStrokeWidth(3);
-                ivSelected.setVisibility(View.VISIBLE);
-                ivModelIcon.setImageResource(R.drawable.ic_model_selected);
-                ivModelIcon.setColorFilter(colorPrimary);
+                if (ivModelIconStatic != null) ivModelIconStatic.setVisibility(View.GONE);
+                if (lottieModelIcon != null) {
+                    lottieModelIcon.setVisibility(View.VISIBLE);
+                    tn.eluea.kgpt.util.LottieHelper.tint(lottieModelIcon, colorPrimary);
+                    lottieModelIcon.setRepeatCount(com.airbnb.lottie.LottieDrawable.INFINITE);
+                    if (!lottieModelIcon.isAnimating()) {
+                        lottieModelIcon.playAnimation();
+                    }
+                }
             } else {
                 cardModel.setStrokeColor(colorDivider);
                 cardModel.setStrokeWidth(1);
-                ivSelected.setVisibility(View.GONE);
-                ivModelIcon.setImageResource(R.drawable.ic_model_default);
-                ivModelIcon.setColorFilter(colorOnSurfaceVariant);
+                if (lottieModelIcon != null) {
+                    lottieModelIcon.pauseAnimation();
+                    lottieModelIcon.setVisibility(View.GONE);
+                }
+                if (ivModelIconStatic != null) {
+                    ivModelIconStatic.setVisibility(View.VISIBLE);
+                    ivModelIconStatic.setColorFilter(colorOnSurfaceVariant);
+                }
             }
 
             cardModel.setOnClickListener(v -> {

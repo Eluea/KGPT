@@ -118,6 +118,11 @@ public class BlurControlActivity extends AppCompatActivity {
 
         refreshEffectiveColor();
 
+        // Auto-enable system window blurs if enabled
+        if (blurEnabled) {
+            tn.eluea.kgpt.util.SystemBlurHelper.enableSystemWindowBlurs(this);
+        }
+
         // Update visibility
         updateCustomizationVisibility(blurEnabled);
         updateManualSettingsVisibility(materialYouBlur);
@@ -158,6 +163,9 @@ public class BlurControlActivity extends AppCompatActivity {
     private void setupListeners() {
         switchBlurEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
             prefs.edit().putBoolean(PREF_BLUR_ENABLED, isChecked).apply();
+            if (isChecked) {
+                tn.eluea.kgpt.util.SystemBlurHelper.enableSystemWindowBlurs(this);
+            }
             updateCustomizationVisibility(isChecked);
         });
 

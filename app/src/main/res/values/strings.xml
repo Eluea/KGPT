@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
   ~ GitHub: https://github.com/Eluea
   ~ Telegram: https://t.me/Eluea
@@ -109,6 +109,9 @@
     <string name="action_formal">Formal</string>
     <string name="action_casual">Casual</string>
     <string name="action_translate">Translate</string>
+    <string name="action_download_media">Download</string>
+    <string name="title_select_media_link">Select Media Link</string>
+    <string name="desc_select_media_link">Found %1$d links in selected text</string>
 
     <!-- UI Messages -->
     <string name="msg_copied">Copied</string>
@@ -470,6 +473,20 @@
     <string name="desc_settings_backup">Save your chats and settings</string>
     <string name="title_settings_restore">Restore Data</string>
     <string name="desc_settings_restore">Restore from a backup file</string>
+    <string name="title_backup_and_restore">Backup &amp; Restore</string>
+    <string name="desc_backup_and_restore_short">Export and restore settings</string>
+    <string name="desc_backup_and_restore">Export and restore all your commands, triggers, and configurations safely using offline local JSON files.</string>
+    <string name="offline_backup_note_title">100% Offline &amp; Private</string>
+    <string name="offline_backup_note_desc">Your backup files are stored exclusively on your device storage. API keys and personal data are never sent to any external server.</string>
+    <string name="local_backup_section">Local Storage Backup</string>
+    <string name="local_export_title">Export to Local File</string>
+    <string name="local_export_desc">Save a .kgpt backup file to your device storage</string>
+    <string name="local_import_title">Import from Local File</string>
+    <string name="local_import_desc">Restore settings from a local .kgpt or .json file</string>
+    <string name="btn_export_local">Export to Local File</string>
+    <string name="desc_export_local">Save a .kgpt backup file to your device storage</string>
+    <string name="btn_import_local">Import from Local File</string>
+    <string name="desc_import_local">Restore settings from a local .kgpt or .json file</string>
     <string name="support_group">Support Group</string>
     <string name="title_export_logs">Export Logs</string>
     <string name="desc_export_logs">Share logs for debugging</string>
@@ -572,6 +589,7 @@
     <string name="pattern_crossout">Crossout</string>
     <string name="pattern_underline">Underline</string>
     <string name="pattern_web_search">Web Search</string>
+    <string name="pattern_downloader">Media Downloader</string>
     
     <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">Settings trigger</string>
@@ -582,6 +600,7 @@
     <string name="pattern_desc_crossout">Type text then add %1$s</string>
     <string name="pattern_desc_underline">Type text then add %1$s</string>
     <string name="pattern_desc_web_search">Type text then add %1$s to search</string>
+    <string name="pattern_desc_downloader">Type link then add %1$s to download</string>
     
     <!-- Pattern Status -->
     <string name="status_disabled">Disabled</string>
@@ -731,6 +750,8 @@
     <string name="title_crossout">Crossout</string>
     <string name="title_underline">Underline</string>
     <string name="title_web_search">Web Search</string>
+    <string name="title_downloader_trigger">Media Downloader</string>
+    <string name="example_downloader_trigger">https://... %1$s</string>
     <string name="btn_reset_pattern">Reset Pattern</string>
     <string name="msg_reset_pattern_confirm">Reset \'%1$s\' to default symbol \"%2$s\"?</string>
     
@@ -760,4 +781,159 @@
     
     <!-- Missing Update Interval -->
     <string name="interval_every_disabled">Disabled</string>
+
+    <!-- Universal Media Downloader Strings -->
+    <string name="title_media_downloader">KGPT Downloader</string>
+    <string name="desc_media_downloader">Download videos and audio in up to 4K &amp; MP3 from any app by sharing links or pasting URLs.</string>
+    <string name="desc_media_downloader_short">Download video &amp; audio by sharing</string>
+    <string name="title_direct_download">Direct Download via Link</string>
+    <string name="hint_media_url">Paste video or song link here...</string>
+    <string name="btn_paste_clipboard">Paste from Clipboard</string>
+    <string name="btn_analyze_download">Analyze &amp; Download</string>
+    <string name="btn_download_now">Download Now</string>
+    <string name="btn_download_video_now">Download Video</string>
+    <string name="btn_download_audio_now">Download Audio (MP3)</string>
+    <string name="tab_video">🎬 Video</string>
+    <string name="tab_audio">🎵 Audio (MP3)</string>
+    <string name="label_choose_video_quality">Select Video Quality:</string>
+    <string name="label_choose_audio_format">Select Audio Format:</string>
+    <string name="quality_best">Highest Quality (Best)</string>
+    <string name="label_download_location">Download Location &amp; Folders</string>
+    <string name="label_current_path">Save Directory:</string>
+    <string name="btn_change_folder">Change Folder</string>
+    <string name="switch_separate_folders">Separate Audio &amp; Video Folders</string>
+    <string name="desc_separate_folders">Save audio into KGPT/Audio and video into KGPT/Video</string>
+    <string name="switch_group_by_uploader">Group by Channel / Artist</string>
+    <string name="desc_group_by_uploader">Create subfolders for each creator or channel automatically</string>
+    <string name="label_default_preferences">Default Download Preferences</string>
+    <string name="label_default_quality">Default Video Quality</string>
+    <string name="label_default_format">Default Video Format</string>
+    <string name="label_default_audio">Default Audio Format</string>
+    <string name="switch_embed_thumbnail">Embed Thumbnail &amp; Album Art</string>
+    <string name="desc_embed_thumbnail">Attach cover art directly to media file</string>
+    <string name="switch_embed_metadata">Embed Tags &amp; Metadata</string>
+    <string name="desc_embed_metadata">Add title, artist, and track info</string>
+    <string name="switch_embed_subtitles">Download Subtitles</string>
+    <string name="desc_embed_subtitles">Download and embed available video subtitles</string>
+    <string name="title_supported_platforms">Supported Platforms</string>
+    <string name="desc_supported_platforms">YouTube, Instagram Reels, TikTok (No Watermark), Facebook, Twitter/X, Spotify, SoundCloud, Pinterest, Reddit, Threads, and 1000+ sites.</string>
+    <string name="title_update_engine">Update Core Engine (yt-dlp)</string>
+    <string name="desc_update_engine">Update video extractor algorithms directly from the internet.</string>
+    <string name="btn_update_engine_now">Update Extractor Algorithms Now</string>
+    <string name="toast_download_started">Download started in background</string>
+    <string name="toast_clipboard_empty">Clipboard is empty</string>
+    <string name="toast_invalid_url">Please enter a valid media URL</string>
+    <string name="toast_engine_updating">Checking and updating downloader engine...</string>
+    <string name="toast_engine_updated">Engine updated successfully</string>
+    <string name="status_analyzing_media">Extracting video info and qualities...</string>
+    <string name="error_extract_failed">Failed to analyze link. Please check link and connection.</string>
+    <string name="notification_download_complete">Download Complete</string>
+    <string name="notification_download_failed">Download Failed</string>
+    <string name="share_via_kgpt">Download via KGPT</string>
+
+    <string name="title_downloader_credits">Credits</string>
+    <string name="desc_downloader_credits">We extend our heartfelt thanks and appreciation to Denis Cerri and all the amazing contributors of the ytdlnis project.\n\nPortions of their open-source codebase and architectures have been incorporated into this app in compliance with the GNU General Public License v3.0 (GPL-3.0).</string>
+    <string name="btn_visit_ytdlnis_github">Visit ytdlnis on GitHub</string>
+
+    <!-- YTDLnis Modern Downloader UI Strings -->
+    <string name="nav_media_download">Download</string>
+    <string name="desc_adjust_download">Adjust download</string>
+    <string name="label_title">Title</string>
+    <string name="label_author">Author</string>
+    <string name="label_container">Container</string>
+    <string name="label_video_quality">Video quality</string>
+    <string name="label_audio_quality">Audio quality</string>
+    <string name="label_save_dir">Save dir</string>
+    <string name="label_free_space">Free space: %1$s</string>
+    <string name="label_adjust_video">Adjust video</string>
+    <string name="label_adjust_audio">Adjust audio</string>
+    <string name="chip_thumbnail">Thumbnail</string>
+    <string name="chip_chapters">Chapters</string>
+    <string name="chip_subtitles">Subtitles</string>
+    <string name="chip_recode">Recode video</string>
+    <string name="chip_filename">Filename template</string>
+    <string name="chip_extra_command">Add extra commands</string>
+    <string name="chip_bitrate">Bitrate</string>
+    <string name="tab_command">Command</string>
+    <string name="dialog_title_quality">Select Quality &amp; Format</string>
+    <string name="dialog_title_container">Select Container</string>
+    <string name="dialog_title_thumbnail">Thumbnail</string>
+    <string name="dialog_title_chapters">Chapters</string>
+    <string name="dialog_title_subtitles">Subtitles</string>
+    <string name="dialog_title_recode">Recode video</string>
+    <string name="dialog_title_filename">Filename template</string>
+    <string name="dialog_title_extra_command">Extra yt-dlp Commands</string>
+    <string name="opt_embed_thumbnail_desc">Thumbnail covers</string>
+    <string name="opt_save_thumbnail_image">Save thumbnail</string>
+    <string name="opt_split_chapters_desc">Split by chapters</string>
+    <string name="opt_embed_chapters_desc">Embed chapters</string>
+    <string name="opt_embed_subtitles_desc">Embed subtitles</string>
+    <string name="opt_burn_subtitles_desc">Hardcode subtitles into video</string>
+    <string name="opt_recode_compatible_desc">Compatible Video (H.264)</string>
+    <string name="btn_dismiss">Dismiss</string>
+    <string name="btn_open">Open</string>
+    <string name="chip_cut">Cut &amp; Trim</string>
+    <string name="dialog_title_cut">Cut Video / Audio</string>
+    <string name="label_start_time">Start Time (e.g. 00:00:10)</string>
+    <string name="label_end_time">End Time (e.g. 00:01:30)</string>
+    <string name="label_estimated_size">Estimated Size</string>
+    <string name="label_speed_mode">Turbo Multi-Part (16x)</string>
+    <string name="desc_direct_download">Paste any video or audio link to download directly.</string>
+    <string name="hint_enter_media_url">https://...</string>
+    <string name="pref_download_directory">Download Directory</string>
+    <string name="btn_choose_folder">Change</string>
+    <string name="pref_group_by_creator">Organize by Channel / Creator</string>
+    <string name="pref_group_by_creator_desc">Create subfolders for each creator automatically</string>
+    <string name="pref_default_mode">Default Download Preferences</string>
+    <string name="opt_embed_thumbnail">Embed Thumbnail Cover</string>
+    <string name="opt_embed_subtitles">Embed Subtitles</string>
+    <string name="opt_split_chapters">Split by Chapters</string>
+    <string name="title_core_status">Downloader Core</string>
+    <string name="desc_core_embedded">Tap to check for engine updates</string>
+    <string name="btn_update_core">Update</string>
+    <string name="btn_paste_short">Paste</string>
+    <string name="badge_ytdlp">yt-dlp</string>
+    <string name="status_core_up_to_date">Downloader engine is up to date</string>
+    <string name="status_core_updated">Downloader engine updated successfully</string>
+    <string name="status_core_updating">Checking and updating engine...</string>
+    
+    <!-- On-Demand Core Plugin Strings -->
+    <string name="title_plugin_required">KGPT Downloader Plugin</string>
+    <string name="desc_plugin_required">Download the fast media engine to enable 4K &amp; MP3 downloading</string>
+    <string name="label_device_arch">DEVICE ARCHITECTURE</string>
+    <string name="label_plugin_size">DOWNLOAD SIZE</string>
+    <string name="features_plugin_summary">• Download 4K, 1080p, 60fps videos\n• High-quality MP3 audio extraction\n• Turbo Multi-Part downloading up to 32 streams\n• Works with YouTube, Instagram, TikTok, and 1000+ sites</string>
+    <string name="btn_install_plugin_now">Download &amp; Install Plugin</string>
+    <string name="status_installing_plugin">Installing Downloader Engine</string>
+    <string name="msg_downloading_simple">Downloading engine files...</string>
+
+    <!-- YouTube Search & Multi-link Selection -->
+    <string name="title_youtube_search">YouTube Search</string>
+    <string name="desc_youtube_search">Results for: %1$s</string>
+    <string name="hint_search_or_url">Search YouTube or paste link...</string>
+    <string name="loading_search_results">Searching YouTube...</string>
+    <string name="loading_more_results">Loading more results...</string>
+    <string name="no_search_results">No results found for \"%1$s\"</string>
+    <string name="title_select_links">Select Media to Download</string>
+    <string name="desc_select_links">Found %1$d links in text</string>
+    <string name="action_select_all">Select All</string>
+    <string name="action_deselect_all">Deselect All</string>
+    <string name="btn_download_selected">Download Selected (%1$d)</string>
+    <string name="btn_download_single">Download</string>
+    <string name="selected_counter">%1$d of %2$d selected</string>
+    <string name="toast_no_items_selected">Please select at least one item to download</string>
+    <string name="batch_download_started">Started downloading %1$d items</string>
+    <string name="btn_load_more_results">Load 5 more results...</string>
+    <string name="label_search_results">Search results</string>
+    <string name="desc_cut_media">Drag the sliders to select the desired start and end points</string>
+    <string name="label_start_time_val">Start: %1$s</string>
+    <string name="label_end_time_val">End: %1$s</string>
+    <string name="label_clip_duration_val">Clip: %1$s</string>
+    <string name="btn_apply_cut">Save</string>
+    <string name="btn_reset_cut">Reset (Full Media)</string>
+    <string name="preset_first_30s">First 30s</string>
+    <string name="preset_first_60s">First 1m</string>
+    <string name="preset_full_media">Full</string>
+    <string name="default_video_title">YouTube Video</string>
+    <string name="default_media_title">Media Link</string>
 </resources>

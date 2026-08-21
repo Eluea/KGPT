@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -34,13 +34,14 @@
         android:background="@drawable/bg_icon_glow_error"
         android:backgroundTint="@color/errorContainer">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_info_circle_filled"
-            app:tint="@color/onErrorContainer" />
+            app:lottie_fileName="lottie/system-solid-367-info-circle-hover-info.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
     </FrameLayout>
 
     <!-- Title -->

@@ -69,8 +69,7 @@ public class UpdateBottomSheet {
     private TextView tvDownloadStatus;
     private TextView tvDownloadDetails;
     private TextView tvDownloadTitle;
-    private CircularProgressIndicator progressCircular;
-    private ImageView ivHourglassIcon;
+    private com.airbnb.lottie.LottieAnimationView lottieProgress;
     private ImageView ivSuccessIcon;
     private MaterialButton btnDownload;
     private MaterialButton btnLater;
@@ -125,9 +124,15 @@ public class UpdateBottomSheet {
         tvDownloadStatus = view.findViewById(R.id.tv_download_status);
         tvDownloadDetails = view.findViewById(R.id.tv_download_details);
         tvDownloadTitle = view.findViewById(R.id.tv_download_title);
-        progressCircular = view.findViewById(R.id.progress_circular);
-        ivHourglassIcon = view.findViewById(R.id.iv_hourglass_icon);
+        lottieProgress = view.findViewById(R.id.lottie_progress);
         ivSuccessIcon = view.findViewById(R.id.iv_success_icon);
+
+        int primaryColor = com.google.android.material.color.MaterialColors.getColor(context,
+                androidx.appcompat.R.attr.colorPrimary, android.graphics.Color.WHITE);
+        if (lottieProgress != null) {
+            tn.eluea.kgpt.util.LottieHelper.tint(lottieProgress, primaryColor);
+        }
+
         btnDownload = view.findViewById(R.id.btn_download);
         btnLater = view.findViewById(R.id.btn_later);
         btnInstall = view.findViewById(R.id.btn_install);
@@ -188,7 +193,6 @@ public class UpdateBottomSheet {
                 if (downloader != null) {
                     downloader.cancelDownload();
                 }
-                stopHourglassAnimation();
                 showState(State.READY);
             });
         }
@@ -222,11 +226,6 @@ public class UpdateBottomSheet {
             @Override
             public void onProgressUpdate(int progress, long bytesDownloaded, long totalBytes) {
                 mainHandler.post(() -> {
-                    if (progressCircular != null) {
-                        // Use higher precision (0-1000 instead of 0-100)
-                        int preciseProgress = (int) ((bytesDownloaded * 1000L) / Math.max(totalBytes, 1));
-                        progressCircular.setProgress(preciseProgress);
-                    }
                     if (tvDownloadStatus != null) {
                         tvDownloadStatus.setText(context.getString(R.string.downloading, progress));
                     }
@@ -244,7 +243,6 @@ public class UpdateBottomSheet {
             public void onDownloadComplete(File apkFile) {
                 downloadedApk = apkFile;
                 mainHandler.post(() -> {
-                    stopHourglassAnimation();
                     showState(State.COMPLETE);
                 });
             }
@@ -252,7 +250,6 @@ public class UpdateBottomSheet {
             @Override
             public void onDownloadFailed(String error) {
                 mainHandler.post(() -> {
-                    stopHourglassAnimation();
                     showState(State.READY);
                     if (tvDownloadStatus != null) {
                         tvDownloadStatus.setText("Error: " + error);
@@ -328,23 +325,8 @@ public class UpdateBottomSheet {
                     installContainer.setVisibility(View.GONE);
 
                 // Reset progress UI
-                if (progressCircular != null) {
-                    progressCircular.setProgress(0);
-                    progressCircular.setMax(1000); // Higher precision
-                    progressCircular.setVisibility(View.VISIBLE);
-
-                    // Enable wavy effect (Material 1.13.0+)
-                    // Adjusted for 16dp track thickness
-                    try {
-                        progressCircular.setWavelength(120); // Longer wavelength for smoother waves
-                        progressCircular.setWaveAmplitude(10); // Higher amplitude for visible waves
-                        progressCircular.setWaveSpeed(60); // Moderate speed for smooth animation
-                    } catch (NoSuchMethodError e) {
-                        // Wavy effect not supported in this version
-                    }
-                }
-                if (ivHourglassIcon != null) {
-                    ivHourglassIcon.setVisibility(View.VISIBLE);
+                if (lottieProgress != null) {
+                    lottieProgress.setVisibility(View.VISIBLE);
                 }
                 if (ivSuccessIcon != null)
                     ivSuccessIcon.setVisibility(View.GONE);
@@ -354,9 +336,6 @@ public class UpdateBottomSheet {
                     tvDownloadDetails.setText("");
                 if (btnCancel != null)
                     btnCancel.setVisibility(View.VISIBLE);
-
-                // Start hourglass rotation animation
-                startHourglassAnimation();
                 break;
 
             case COMPLETE:
@@ -394,47 +373,13 @@ public class UpdateBottomSheet {
         }
     }
 
-    private void startHourglassAnimation() {
-        if (ivHourglassIcon == null)
-            return;
-
-        // Create rotation animation - 360 degrees every 1.4 seconds
-        hourglassRotationAnimator = ObjectAnimator.ofFloat(ivHourglassIcon, "rotation", 0f, 360f);
-        hourglassRotationAnimator.setDuration(1400);
-        hourglassRotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        hourglassRotationAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        hourglassRotationAnimator.start();
-    }
-
-    private void stopHourglassAnimation() {
-        if (hourglassRotationAnimator != null) {
-            hourglassRotationAnimator.cancel();
-            hourglassRotationAnimator = null;
-        }
-        // Reset rotation
-        if (ivHourglassIcon != null) {
-            ivHourglassIcon.setRotation(0f);
-        }
-    }
-
     private void showDownloadCompleteAnimation() {
-        if (progressCircular == null || ivSuccessIcon == null || ivHourglassIcon == null)
-            return;
-
-        // Animate progress to 100% (1000 for high precision)
-        progressCircular.setProgress(1000);
-
-        // Hide hourglass icon with fade out
-        ivHourglassIcon.animate()
-                .alpha(0f)
-                .setDuration(200)
-                .withEndAction(() -> ivHourglassIcon.setVisibility(View.GONE))
-                .start();
-
-        // Show success icon with pop animation after hourglass fades
-        mainHandler.postDelayed(() -> {
+        if (lottieProgress != null) {
+            lottieProgress.setVisibility(View.GONE);
+        }
+        if (ivSuccessIcon != null) {
             TransitionHelper.popIn(ivSuccessIcon, TransitionHelper.DURATION_NORMAL);
-        }, 250);
+        }
     }
 
     private String formatBytes(long bytes) {
@@ -449,7 +394,6 @@ public class UpdateBottomSheet {
      * Dismiss the dialog
      */
     public void dismiss() {
-        stopHourglassAnimation();
         if (dialog != null) {
             dialog.dismiss();
         }

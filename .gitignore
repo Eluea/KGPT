@@ -19,3 +19,8 @@ local.properties
 *.log
 .kiro/
 ActivityLauncher-master/
+/lottie/
+/logo/
+/DD/
+client_secret*.json
+core_bundles/*.zip

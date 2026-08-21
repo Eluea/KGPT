@@ -99,43 +99,12 @@ public class FloatingBottomSheet extends Dialog {
             // Only apply blur if managing own blur (standalone dialogs, not inside
             // DialogActivity)
             if (manageOwnBlur) {
-                SharedPreferences prefs = getContext().getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
-                boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true);
-                int blurIntensity = prefs.getInt("blur_intensity", 25);
-                int blurTintColor = prefs.getInt("blur_tint_color", Color.TRANSPARENT);
-
-                if (isBlurEnabled && blurIntensity > 0) {
-                    // Blur is enabled
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        int blurRadius = (blurIntensity * 50) / 100;
-                        params.setBlurBehindRadius(blurRadius);
-                        window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                    }
-
-                    // Apply Tint or Dim
-                    if (blurTintColor != Color.TRANSPARENT) {
-                        int alpha = 120;
-                        int colorWithAlpha = Color.argb(alpha, Color.red(blurTintColor), Color.green(blurTintColor),
-                                Color.blue(blurTintColor));
-                        window.setBackgroundDrawable(new ColorDrawable(colorWithAlpha));
-                        params.dimAmount = 0f;
-                    } else {
-                        params.dimAmount = 0.5f;
-                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    }
-                } else {
-                    // Blur is disabled - use standard dim effect
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        params.setBlurBehindRadius(0);
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                    }
-                    params.dimAmount = 0.5f;
-                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                }
+                BottomSheetHelper.applyBlurToWindow(window, getContext());
             } else {
                 // Inside DialogActivity - no blur, no dim (Activity handles it)
                 params.dimAmount = 0f;
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                window.setAttributes(params);
             }
 
             window.setAttributes(params);
@@ -148,16 +117,13 @@ public class FloatingBottomSheet extends Dialog {
                 window.setNavigationBarContrastEnforced(false);
             }
 
-            // Set navigation bar icons color
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                View decorView = window.getDecorView();
-                int flags = decorView.getSystemUiVisibility();
-                if (!BottomSheetHelper.isDarkMode(getContext())) {
-                    flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-                } else {
-                    flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-                }
-                decorView.setSystemUiVisibility(flags);
+            // Set status bar & navigation bar icons color
+            androidx.core.view.WindowInsetsControllerCompat insetsController =
+                    WindowCompat.getInsetsController(window, window.getDecorView());
+            if (insetsController != null) {
+                // Always keep status bar icons white (appearanceLightStatusBars = false) because the screen is dimmed/dark
+                insetsController.setAppearanceLightStatusBars(false);
+                insetsController.setAppearanceLightNavigationBars(!BottomSheetHelper.isDarkMode(getContext()));
             }
         }
     }

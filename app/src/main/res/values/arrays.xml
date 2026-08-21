@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -10,6 +10,8 @@
 <resources>
     <!-- Recommended scope for LSPosed - these keyboards will be shown as recommended -->
     <string-array name="xposedscope">
+        <!-- Android System Framework -->
+        <item>android</item>
         <!-- Google Gboard -->
         <item>com.google.android.inputmethod.latin</item>
         <!-- Microsoft SwiftKey -->
@@ -32,6 +34,8 @@
         <item>org.dslul.openboard.inputmethod.latin</item>
         <!-- FlorisBoard -->
         <item>dev.patrickgold.florisboard</item>
+        <!-- KGPT App itself for status check -->
+        <item>tn.eluea.kgpt</item>
     </string-array>
     
     <string-array name="languages_list">

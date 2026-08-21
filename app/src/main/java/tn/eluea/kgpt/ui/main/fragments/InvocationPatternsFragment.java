@@ -36,6 +36,8 @@ import tn.eluea.kgpt.text.parse.ParsePattern;
 import tn.eluea.kgpt.text.parse.PatternType;
 import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.FloatingBottomSheet;
+import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
+import tn.eluea.kgpt.features.downloader.ui.CoreUpdateBottomSheet;
 import tn.eluea.kgpt.ui.main.adapters.PatternsAdapter;
 
 public class InvocationPatternsFragment extends Fragment {
@@ -66,6 +68,10 @@ public class InvocationPatternsFragment extends Fragment {
         patternsAdapter = new PatternsAdapter(patterns, new PatternsAdapter.OnPatternClickListener() {
             @Override
             public void onPatternClick(ParsePattern pattern, int position) {
+                if (pattern.getType() == PatternType.MediaDownloader && !DownloaderEngine.getInstance().isCoreInstalled(requireContext())) {
+                    new CoreUpdateBottomSheet(requireContext()).show();
+                    return;
+                }
                 showEditPatternDialog(pattern, position);
             }
 
@@ -176,6 +182,13 @@ public class InvocationPatternsFragment extends Fragment {
                 getString(pattern.getType().exampleResId, PatternType.regexToSymbol(pattern.getPattern().pattern())));
 
         switchEnabled.setChecked(pattern.isEnabled());
+        switchEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked && pattern.getType() == PatternType.MediaDownloader && !DownloaderEngine.getInstance().isCoreInstalled(requireContext())) {
+                buttonView.post(() -> switchEnabled.setChecked(false));
+                new CoreUpdateBottomSheet(requireContext()).show();
+                dialog.dismiss();
+            }
+        });
 
         String currentSymbol = PatternType.regexToSymbol(pattern.getPattern().pattern());
         if (currentSymbol == null || currentSymbol.isEmpty()) {

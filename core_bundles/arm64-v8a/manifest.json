@@ -1,0 +1,71 @@
+﻿{
+    "version":  "4.0.8",
+    "sha256":  "63c9ac24186f3bb2f7ab383b8ee9141931a415a2e8d345dbac44ed207bca1ff4",
+    "abi":  "arm64-v8a",
+    "totalSize":  50147876,
+    "chunks":  [
+                   {
+                       "sha256":  "1d9bc8ff759724d215afe5eebd740538c47cec14ce351541fcaae60c92e01ef2",
+                       "name":  "chunk_00.bin",
+                       "size":  5242880,
+                       "index":  0
+                   },
+                   {
+                       "sha256":  "2c6a5f08361fcad74e143b2e35451e6ca17a2482f53a091072d9a5e25da32707",
+                       "name":  "chunk_01.bin",
+                       "size":  5242880,
+                       "index":  1
+                   },
+                   {
+                       "sha256":  "e906c7563808c155ea558119eed1f1bfd4dad03e9a78c9ea1548a4d02e36a6c7",
+                       "name":  "chunk_02.bin",
+                       "size":  5242880,
+                       "index":  2
+                   },
+                   {
+                       "sha256":  "a8fc9108eb5668b005b314b37dbdcbe1a6a487fddcec8c1730d30fb12ab3c12e",
+                       "name":  "chunk_03.bin",
+                       "size":  5242880,
+                       "index":  3
+                   },
+                   {
+                       "sha256":  "09b272c8039ffa221e2fa06228e5000adf16310899e0248c81acc8dc2540239b",
+                       "name":  "chunk_04.bin",
+                       "size":  5242880,
+                       "index":  4
+                   },
+                   {
+                       "sha256":  "8b6dc4f3a00a6feaa8fda6f5b88b2faa76af3bf2f30e36827eb7a69666f204d9",
+                       "name":  "chunk_05.bin",
+                       "size":  5242880,
+                       "index":  5
+                   },
+                   {
+                       "sha256":  "1ae39d1a1258fd5e45f4d25cd5c9efd317393f60b522b49413ac19f431ed63e1",
+                       "name":  "chunk_06.bin",
+                       "size":  5242880,
+                       "index":  6
+                   },
+                   {
+                       "sha256":  "765430fdb36541e9bd6ceabe2e3e35841e6efed47b586850d921e9733e994e0f",
+                       "name":  "chunk_07.bin",
+                       "size":  5242880,
+                       "index":  7
+                   },
+                   {
+                       "sha256":  "9d32bc6241be592de69694fabf2a7f7310c0d898ab3a7513fa2a37161f2cd27c",
+                       "name":  "chunk_08.bin",
+                       "size":  5242880,
+                       "index":  8
+                   },
+                   {
+                       "sha256":  "380148162bb2f2a168bf9fe5fdc450d74efb7aeb583a0ce44776b39ee223d181",
+                       "name":  "chunk_09.bin",
+                       "size":  2961956,
+                       "index":  9
+                   }
+               ],
+    "bundleFileName":  "kgpt-core-arm64-v8a.zip",
+    "chunkSize":  5242880,
+    "chunkCount":  10
+}

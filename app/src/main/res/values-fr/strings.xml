@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
     <string name="nav_home">Accueil</string>
@@ -80,6 +80,9 @@
     <string name="action_formal">Formel</string>
     <string name="action_casual">Décontracté</string>
     <string name="action_translate">Traduire</string>
+    <string name="action_download_media">Télécharger</string>
+    <string name="title_select_media_link">Sélectionner le lien</string>
+    <string name="desc_select_media_link">%1$d liens trouvés dans le texte</string>
     <string name="msg_copied">Copié</string>
     <string name="msg_ai_error">Erreur IA : %1$s</string>
     <string name="msg_no_text_selected">Aucun texte sélectionné</string>
@@ -449,6 +452,7 @@
     <string name="pattern_crossout">Barré</string>
     <string name="pattern_underline">Souligné</string>
     <string name="pattern_web_search">Recherche Web</string>
+    <string name="pattern_downloader">Téléchargeur de médias</string>
     
     <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">Déclencheur de paramètres</string>
@@ -459,6 +463,7 @@
     <string name="pattern_desc_crossout">Tapez du texte puis ajoutez ~</string>
     <string name="pattern_desc_underline">Tapez du texte puis ajoutez _</string>
     <string name="pattern_desc_web_search">Tapez du texte puis ajoutez ?? pour chercher</string>
+    <string name="pattern_desc_downloader">Tapez le lien puis ajoutez %1$s pour télécharger</string>
     <string name="status_disabled">Désactivé</string>
     
     <!-- Update Intervals -->
@@ -607,6 +612,8 @@
     <string name="title_crossout">Barré</string>
     <string name="title_underline">Souligné</string>
     <string name="title_web_search">Recherche web</string>
+    <string name="title_downloader_trigger">Téléchargeur de médias</string>
+    <string name="example_downloader_trigger">https://... %1$s</string>
     <string name="btn_reset_pattern">Réinitialiser le motif</string>
     <string name="msg_reset_pattern_confirm">Réinitialiser \'%1$s\' au symbole par défaut \"%2$s\"?</string>
     <string name="field_api_key">Clé API</string>
@@ -630,4 +637,35 @@
     <string name="changelog_4_0_8_item5">Correction du problème de disparition du texte lors de l\'utilisation d\'un déclencheur non enregistré ou d\'une absence de réponse de l\'IA</string>
     <string name="changelog_note_4_0_8">Veuillez faire preuve de patience car davantage de problèmes ont été signalés au développeur, mais ils seront résolus par lots mises à jour car il s\'agit d\'un projet d\'une seule personne. Merci de votre compréhension.</string>
     <string name="msg_ai_no_response_error">Aucune réponse reçue. L\'IA a renvoyé un contenu vide.\nIndice : Vous utilisez peut-être un déclencheur/commande non enregistré.</string>
+
+    <!-- YouTube Search & Multi-link Selection (French) -->
+    <string name="title_youtube_search">Recherche YouTube</string>
+    <string name="desc_youtube_search">Résultats pour : %1$s</string>
+    <string name="hint_search_or_url">Rechercher sur YouTube ou coller le lien...</string>
+    <string name="loading_search_results">Recherche sur YouTube...</string>
+    <string name="loading_more_results">Chargement d\'autres résultats...</string>
+    <string name="no_search_results">Aucun résultat trouvé pour \"%1$s\"</string>
+    <string name="title_select_links">Sélectionner les médias à télécharger</string>
+    <string name="desc_select_links">%1$d liens trouvés dans le texte</string>
+    <string name="action_select_all">Tout sélectionner</string>
+    <string name="action_deselect_all">Tout désélectionner</string>
+    <string name="btn_download_selected">Télécharger sélectionnés (%1$d)</string>
+    <string name="btn_download_single">Télécharger</string>
+    <string name="selected_counter">%1$d sur %2$d sélectionnés</string>
+    <string name="toast_no_items_selected">Veuillez sélectionner au moins un élément à télécharger</string>
+    <string name="batch_download_started">Téléchargement de %1$d éléments commencé</string>
+    <string name="btn_load_more_results">Afficher 5 autres résultats...</string>
+    <string name="label_search_results">Résultats de recherche</string>
+    <string name="dialog_title_cut">Couper et rogner le média</string>
+    <string name="desc_cut_media">Faites glisser les curseurs pour définir le début et la fin</string>
+    <string name="label_start_time_val">Début : %1$s</string>
+    <string name="label_end_time_val">Fin : %1$s</string>
+    <string name="label_clip_duration_val">Durée : %1$s</string>
+    <string name="btn_apply_cut">Enregistrer</string>
+    <string name="btn_reset_cut">Réinitialiser (Complet)</string>
+    <string name="preset_first_30s">Premières 30s</string>
+    <string name="preset_first_60s">Première 1 min</string>
+    <string name="preset_full_media">Tout</string>
+    <string name="default_video_title">Vidéo YouTube</string>
+    <string name="default_media_title">Lien média</string>
 </resources>

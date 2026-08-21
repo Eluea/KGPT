@@ -34,7 +34,8 @@ public enum TextAction {
     SHORTEN(R.string.action_shorten, R.drawable.ic_close_circle_filled, "#F44336"),
     FORMAL(R.string.action_formal, R.drawable.ic_document_text_filled, "#607D8B"),
     CASUAL(R.string.action_casual, R.drawable.ic_palette_filled, "#E91E63"),
-    TRANSLATE(R.string.action_translate, R.drawable.ic_global_search_filled, "#00BCD4");
+    TRANSLATE(R.string.action_translate, R.drawable.ic_global_search_filled, "#00BCD4"),
+    DOWNLOAD(R.string.action_download_media, R.drawable.ic_download_filled, "#FF5722");
 
     public final int labelRes;
     public final int iconRes;

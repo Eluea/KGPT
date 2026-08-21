@@ -1,0 +1,65 @@
+﻿{
+    "version":  "4.0.8",
+    "sha256":  "766fb1a5fff960973a60f95ff32c3dcb56f392546234ad955e25d9b6663190f9",
+    "abi":  "armeabi-v7a",
+    "totalSize":  43495037,
+    "chunks":  [
+                   {
+                       "sha256":  "d626e9beda4f3070d7c96e1adfb4fba6b86aaad35e63cfb81d4f10dcec742902",
+                       "name":  "chunk_00.bin",
+                       "size":  5242880,
+                       "index":  0
+                   },
+                   {
+                       "sha256":  "26323fbd483d6b70af12308c0e1bfed12752061ee7b92904ee208aeb61ae7eeb",
+                       "name":  "chunk_01.bin",
+                       "size":  5242880,
+                       "index":  1
+                   },
+                   {
+                       "sha256":  "c49411fc21a3674434b7cf2ce9a99de548ef71082d02a1d720bafc595100149c",
+                       "name":  "chunk_02.bin",
+                       "size":  5242880,
+                       "index":  2
+                   },
+                   {
+                       "sha256":  "aa477ba5341f42b1d1d2aec5c85a5622ca2b21e145cf3082b58615eb34a5a056",
+                       "name":  "chunk_03.bin",
+                       "size":  5242880,
+                       "index":  3
+                   },
+                   {
+                       "sha256":  "0fe1a9a816382c0d6f2abc94e48603c1907d1bece15c428ca6508b9a24eac3f6",
+                       "name":  "chunk_04.bin",
+                       "size":  5242880,
+                       "index":  4
+                   },
+                   {
+                       "sha256":  "3fcb040a72ad9fef25a56c90f0d1f2496663934e67753a2287ab2fcb406ec3b1",
+                       "name":  "chunk_05.bin",
+                       "size":  5242880,
+                       "index":  5
+                   },
+                   {
+                       "sha256":  "ce22fe04dc11416e315a9f75d4c6e88c3f0d341e92ef28862a63ce657f768882",
+                       "name":  "chunk_06.bin",
+                       "size":  5242880,
+                       "index":  6
+                   },
+                   {
+                       "sha256":  "2a7ffdda9e490eb476f4103c1aeb799e9e256f2313d39b4992796380ceba7d1c",
+                       "name":  "chunk_07.bin",
+                       "size":  5242880,
+                       "index":  7
+                   },
+                   {
+                       "sha256":  "f7d3297b53f6d0f4a486a2aa87023e068a43914cdb9ee8a0285bf18b408dc299",
+                       "name":  "chunk_08.bin",
+                       "size":  1551997,
+                       "index":  8
+                   }
+               ],
+    "bundleFileName":  "kgpt-core-armeabi-v7a.zip",
+    "chunkSize":  5242880,
+    "chunkCount":  9
+}

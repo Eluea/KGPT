@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -35,12 +35,13 @@
         android:background="@drawable/bg_icon_glow_success"
         android:backgroundTint="?attr/colorPrimaryContainer">
 
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_global_search_filled"
-            app:tint="?attr/colorOnPrimaryContainer" />
+            app:lottie_fileName="lottie/system-solid-27-globe-loop-world.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
     </FrameLayout>
 
     <!-- Title -->

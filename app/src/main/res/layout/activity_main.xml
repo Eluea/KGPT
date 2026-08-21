@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -45,90 +45,109 @@
         android:orientation="horizontal"
         android:paddingHorizontal="12dp">
 
-        <!-- Navigation Items Container -->
-        <LinearLayout
-            android:id="@+id/nav_items_container"
+        <!-- Navigation Items Wrapper with Smooth Sliding Indicator -->
+        <FrameLayout
+            android:id="@+id/nav_items_wrapper"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
-            <!-- Home -->
-            <FrameLayout
-                android:id="@+id/nav_home"
+            <!-- Sliding Selection Pill Indicator -->
+            <View
+                android:id="@+id/nav_sliding_indicator"
                 android:layout_width="56dp"
                 android:layout_height="48dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_dock_item"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_dock_pill" />
 
-                <ImageView
-                    android:id="@+id/nav_home_icon"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_home_filled"
-                    app:tint="@color/dock_item_inactive" />
-            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/nav_items_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <!-- Models -->
-            <FrameLayout
-                android:id="@+id/nav_models"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_dock_item"
-                android:clickable="true"
-                android:focusable="true">
+                <!-- Home -->
+                <FrameLayout
+                    android:id="@+id/nav_home"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                <ImageView
-                    android:id="@+id/nav_models_icon"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_cpu_setting_filled"
-                    app:tint="@color/dock_item_inactive" />
-            </FrameLayout>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/nav_home_lottie"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        app:lottie_fileName="lottie/system-solid-63-home-hover-pinch.json"
+                        app:lottie_autoPlay="false"
+                        app:lottie_loop="false" />
+                </FrameLayout>
 
-            <!-- Lab -->
-            <FrameLayout
-                android:id="@+id/nav_lab"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_dock_item"
-                android:clickable="true"
-                android:focusable="true">
+                <!-- Models / AI Settings -->
+                <FrameLayout
+                    android:id="@+id/nav_models"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                <ImageView
-                    android:id="@+id/nav_lab_icon"
-                    android:layout_width="29dp"
-                    android:layout_height="29dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_flask_science_filled"
-                    app:tint="@color/dock_item_inactive" />
-            </FrameLayout>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/nav_models_lottie"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        app:lottie_fileName="lottie/system-solid-4020-spinner-nine-dots-hover-bounce.json"
+                        app:lottie_autoPlay="false"
+                        app:lottie_loop="false" />
+                </FrameLayout>
 
-            <!-- Settings -->
-            <FrameLayout
-                android:id="@+id/nav_settings"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_dock_item"
-                android:clickable="true"
-                android:focusable="true">
+                <!-- Lab -->
+                <FrameLayout
+                    android:id="@+id/nav_lab"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                <ImageView
-                    android:id="@+id/nav_settings_icon"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_settings_filled"
-                    app:tint="@color/dock_item_inactive" />
-            </FrameLayout>
-        </LinearLayout>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/nav_lab_lottie"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        app:lottie_fileName="lottie/system-solid-439-flask-hover-science.json"
+                        app:lottie_autoPlay="false"
+                        app:lottie_loop="false" />
+                </FrameLayout>
+
+                <!-- Settings -->
+                <FrameLayout
+                    android:id="@+id/nav_settings"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/nav_settings_lottie"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        app:lottie_fileName="lottie/system-solid-39-cog-hover-cog-4.json"
+                        app:lottie_autoPlay="false"
+                        app:lottie_loop="false" />
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
 
         <!-- Dock Action Container (Hidden by default) -->
         <LinearLayout
@@ -139,6 +158,15 @@
             android:gravity="center"
             android:visibility="gone"
             android:paddingHorizontal="12dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/dock_action_lottie"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="gone"
+                app:lottie_fileName="lottie/system-outline-48-plus-hover-rotation.json"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false" />
 
             <ImageView
                 android:id="@+id/dock_action_icon"

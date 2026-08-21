@@ -105,6 +105,9 @@ public class TextActionsMenuActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
 
+        // Apply blur behind the floating window
+        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this);
+
         Intent intent = getIntent();
         selectedText = intent.getStringExtra(EXTRA_SELECTED_TEXT);
         selectionStart = intent.getIntExtra("selection_start", -1);
@@ -142,6 +145,41 @@ public class TextActionsMenuActivity extends AppCompatActivity
 
     @Override
     public void onActionClicked(TextAction action) {
+        if (action == TextAction.DOWNLOAD) {
+            if (!tn.eluea.kgpt.features.downloader.core.DownloaderEngine.getInstance().isCoreInstalled(this)) {
+                new tn.eluea.kgpt.features.downloader.ui.CoreUpdateBottomSheet(this).show();
+                return;
+            }
+            java.util.List<String> urls = tn.eluea.kgpt.features.downloader.core.MediaUtils.extractAllUrls(selectedText);
+            if (urls.isEmpty()) {
+                if (selectedText != null && !selectedText.trim().isEmpty() && (selectedText.startsWith("http://") || selectedText.startsWith("https://"))) {
+                    urls.add(selectedText.trim());
+                }
+            }
+            if (urls.isEmpty()) {
+                if (selectedText != null && !selectedText.trim().isEmpty()) {
+                    // Smart Search: Selected text contains no URLs, treat as YouTube search query
+                    new tn.eluea.kgpt.features.downloader.ui.YouTubeSearchBottomSheet(this, selectedText.trim()).show();
+                    uiComposer.animateOut(this::finish);
+                    return;
+                }
+                Toast.makeText(this, R.string.toast_invalid_url, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (urls.size() == 1) {
+                UiInteractor.getInstance().showMediaDownloaderDialog(urls.get(0));
+                uiComposer.animateOut(this::finish);
+            } else {
+                tn.eluea.kgpt.features.downloader.ui.LinkSelectionBottomSheet sheet =
+                        new tn.eluea.kgpt.features.downloader.ui.LinkSelectionBottomSheet(this, urls, (tn.eluea.kgpt.features.downloader.ui.LinkSelectionBottomSheet.OnLinkSelectedListener) selectedUrl -> {
+                            UiInteractor.getInstance().showMediaDownloaderDialog(selectedUrl);
+                            uiComposer.animateOut(this::finish);
+                        });
+                sheet.setOnDismissListener(d -> uiComposer.animateOut(this::finish));
+                sheet.show();
+            }
+            return;
+        }
         processAction(action, null);
     }
 
@@ -208,8 +246,25 @@ public class TextActionsMenuActivity extends AppCompatActivity
     // --- Logic ---
 
     private void showMainMenu() {
+        List<TextAction> actions = new java.util.ArrayList<>(actionManager.getEnabledActions());
+
+        // Check if selected text contains media links
+        boolean hasMediaLink = false;
+        if (selectedText != null && !selectedText.trim().isEmpty()) {
+            java.util.List<String> detectedUrls = tn.eluea.kgpt.features.downloader.core.MediaUtils.extractAllUrls(selectedText);
+            hasMediaLink = !detectedUrls.isEmpty() || selectedText.startsWith("http://") || selectedText.startsWith("https://");
+        }
+
+        if (hasMediaLink) {
+            // Promote DOWNLOAD to the very first position so user sees it immediately
+            actions.remove(TextAction.DOWNLOAD);
+            actions.add(0, TextAction.DOWNLOAD);
+        } else if (!actions.contains(TextAction.DOWNLOAD)) {
+            actions.add(0, TextAction.DOWNLOAD);
+        }
+
         uiComposer.showMainMenu(
-                actionManager.getEnabledActions(),
+                actions,
                 actionManager.getCustomActions(),
                 actionManager.shouldShowLabels());
     }

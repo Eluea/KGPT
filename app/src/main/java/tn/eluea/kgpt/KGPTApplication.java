@@ -63,6 +63,15 @@ public class KGPTApplication extends Application {
         // Initialize Update Checker (WorkManager for periodic checks)
         initializeUpdateChecker();
 
+        // Pre-initialize DownloaderEngine in background thread for instant downloads
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                tn.eluea.kgpt.features.downloader.core.DownloaderEngine.getInstance().init(this);
+            } catch (Throwable t) {
+                android.util.Log.e("KGPTApplication", "DownloaderEngine pre-init error", t);
+            }
+        });
+
         // Initialize Material You Manager and register callback for global theming
         tn.eluea.kgpt.util.MaterialYouManager manager = tn.eluea.kgpt.util.MaterialYouManager.getInstance(this);
         registerActivityLifecycleCallbacks(new android.app.Application.ActivityLifecycleCallbacks() {

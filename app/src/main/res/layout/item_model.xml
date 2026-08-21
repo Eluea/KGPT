@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -47,13 +47,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed">
 
+            <!-- Static Nine Dots Icon (Unselected state) -->
             <ImageView
-                android:id="@+id/iv_model_icon"
+                android:id="@+id/iv_model_icon_static"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_spinner_nine_dots"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <!-- Animated Nine Dots Lottie (Selected state) -->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_model_icon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_model_default"
-                app:tint="?attr/colorPrimary" />
+                android:visibility="gone"
+                app:lottie_fileName="lottie/system-solid-4020-spinner-nine-dots-loop-center.json"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="true" />
         </FrameLayout>
 
         <!-- Model Name -->
@@ -72,17 +84,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/icon_container" />
-
-        <!-- Selected Indicator -->
-        <ImageView
-            android:id="@+id/iv_selected"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_shield_tick_filled"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorPrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
