@@ -12,22 +12,22 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
 public enum LanguageModel {
-        Gemini("Gemini", "gemini-2.5-flash", "https://generativelanguage.googleapis.com/v1beta", true,
+        Gemini("Gemini", "gemini-3.7-flash", "https://generativelanguage.googleapis.com/v1beta", true,
                         "https://aistudio.google.com/app/apikey"),
-        ChatGPT("ChatGPT", "gpt-4o", "https://api.openai.com/v1", false, "https://platform.openai.com/api-keys"),
-        Groq("Groq", "llama-3.3-70b-versatile", "https://api.groq.com/openai/v1", true,
+        ChatGPT("ChatGPT", "gpt-5", "https://api.openai.com/v1", false, "https://platform.openai.com/api-keys"),
+        Groq("Groq", "openai/gpt-oss-120b", "https://api.groq.com/openai/v1", true,
                         "https://console.groq.com/keys"),
-        OpenRouter("OpenRouter", "google/gemini-2.0-flash-exp:free", "https://openrouter.ai/api/v1", true,
+        OpenRouter("OpenRouter", "openrouter/free", "https://openrouter.ai/api/v1", true,
                         "https://openrouter.ai/keys"),
-        Claude("Claude", "claude-sonnet-4-5-20250630", "https://api.anthropic.com/v1", false,
+        Claude("Claude", "claude-sonnet-5", "https://api.anthropic.com/v1", false,
                         "https://console.anthropic.com/settings/keys"),
         Mistral("Mistral", "mistral-small-latest", "https://api.mistral.ai/v1", false,
                         "https://console.mistral.ai/api-keys"),
-        Chutes("Chutes", "deepseek-ai/DeepSeek-R1-Distill-Llama-70B", "https://api.chutes.ai/v1", false,
+        Chutes("Chutes", "deepseek-ai/DeepSeek-V3.2", "https://api.chutes.ai/v1", false,
                         "https://chutes.ai"),
         Perplexity("Perplexity", "sonar-pro", "https://api.perplexity.ai", false,
                         "https://www.perplexity.ai/settings/api"),
-        GLM("ZhipuAI", "glm-4", "https://open.bigmodel.cn/api/paas/v4", false,
+        GLM("ZhipuAI", "glm-5.3", "https://open.bigmodel.cn/api/paas/v4", false,
                         "https://open.bigmodel.cn/usercenter/apikeys"),
                         ;
 

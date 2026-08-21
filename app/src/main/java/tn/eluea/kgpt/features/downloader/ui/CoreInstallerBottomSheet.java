@@ -296,6 +296,13 @@ public class CoreInstallerBottomSheet {
             // Initialize the engine
             DownloaderEngine.getInstance().init(context);
 
+            // Asynchronously update yt-dlp to latest release in background
+            new Thread(() -> {
+                try {
+                    com.yausername.youtubedl_android.YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), com.yausername.youtubedl_android.YoutubeDL.UpdateChannel._STABLE);
+                } catch (Throwable ignored) {}
+            }).start();
+
             mainHandler.post(() -> {
                 if (lottieProgress != null) lottieProgress.setVisibility(View.GONE);
                 if (ivSuccessIcon != null) ivSuccessIcon.setVisibility(View.VISIBLE);

@@ -342,6 +342,8 @@ public class YouTubeSearchEngine {
             request.addOption("--no-warnings");
             request.addOption("--ignore-errors");
             request.addOption("--skip-download");
+            request.addOption("--no-update");
+            request.addOption("--extractor-args", "youtube:player_client=android,web");
 
             YoutubeDLResponse response = YoutubeDL.getInstance().execute(request, null, null);
             String out = response.getOut();

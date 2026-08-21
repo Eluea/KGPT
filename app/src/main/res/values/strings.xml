@@ -645,7 +645,10 @@
     <string name="changelog_1_0_0_item7">Added new Perplexity model and Perplexity API support</string>
     <string name="changelog_1_0_0_item8">Removed "/" restriction for using commands</string>
     <string name="changelog_1_0_0_note">Please be patient as more issues have been reported to the developer, but they will be resolved in batches of updates as this is a one-person project. Thank you for your understanding.</string>
-        <string name="changelog_4_0_8_item1">Migrated from LSPosed API 82 to modern API 102</string>
+    <string name="changelog_4_1_1_item1">Fixed YouTube downloads failing with HTTP 403 Forbidden / SABR streaming restrictions</string>
+    <string name="changelog_4_1_1_item2">Added automatic background yt-dlp core update &amp; smart retry mechanism</string>
+    <string name="changelog_4_1_1_item3">Configured Android player client fallback for reliable high-speed downloads</string>
+    <string name="changelog_4_0_8_item1">Migrated from LSPosed API 82 to modern API 102</string>
     <string name="changelog_4_0_8_item2">Major performance optimizations and reduced battery consumption</string>
     <string name="changelog_4_0_8_item3">Fixed various freeze, hang, and ANR scenarios</string>
     <string name="changelog_4_0_8_item4">Added new keyboard trigger: Media Downloader Trigger</string>

@@ -78,113 +78,117 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
     private static final Map<LanguageModel, java.util.Set<String>> VALID_MODELS = new HashMap<>();
 
     static {
-        // Gemini models - validated from Google API
+        // Gemini models - August 2026 latest (Free via Google AI Studio)
         SUB_MODEL_PRESETS.put(LanguageModel.Gemini, new String[] {
+                "gemini-3.7-flash",
+                "gemini-3.6-flash",
+                "gemini-3.5-flash",
+                "gemini-3.5-flash-lite",
+                "gemini-3.1-pro-preview",
+                "gemini-3.1-flash-lite",
                 "gemini-2.5-flash",
-                "gemini-2.5-pro",
-                "gemini-2.5-flash-lite",
-                "gemini-3-flash-preview",
-                "gemini-3-pro-preview",
-                "gemini-2.0-flash",
-                "gemini-2.0-flash-lite"
+                "gemini-2.5-pro"
         });
         VALID_MODELS.put(LanguageModel.Gemini, new java.util.HashSet<>(java.util.Arrays.asList(
+                "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite",
+                "gemini-3.1-pro-preview", "gemini-3.1-flash-lite",
                 "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite",
-                "gemini-3-flash-preview", "gemini-3-pro-preview", "gemini-3-pro-image-preview",
-                "gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-2.0-flash-001",
-                "gemini-2.0-flash-exp", "gemini-2.0-flash-lite-001",
-                "gemini-2.5-flash-preview-09-2025", "gemini-2.5-flash-lite-preview-09-2025",
-                "gemini-flash-latest", "gemini-flash-lite-latest", "gemini-pro-latest")));
+                "gemini-2.0-flash", "gemini-2.0-flash-lite")));
 
-        // ChatGPT models
+        // ChatGPT models - August 2026 latest (GPT-5.6 generation)
         SUB_MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[] {
+                "gpt-5.6-sol",
+                "gpt-5.6-terra",
+                "gpt-5.6-luna",
+                "gpt-5.6-cyber",
                 "gpt-5",
-                "gpt-4o",
-                "gpt-4.1",
-                "o3-mini",
-                "o4-mini"
+                "gpt-oss-120b",
+                "gpt-oss-20b"
         });
         VALID_MODELS.put(LanguageModel.ChatGPT, new java.util.HashSet<>(java.util.Arrays.asList(
-                "gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo",
-                "gpt-4-turbo-preview", "gpt-4-0125-preview", "gpt-4-1106-preview")));
+                "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.6-cyber",
+                "gpt-5", "gpt-4o", "gpt-4o-mini",
+                "gpt-oss-120b", "gpt-oss-20b")));
 
-        // Groq models
+        // Groq models - August 2026 latest (Free LPU inference)
         SUB_MODEL_PRESETS.put(LanguageModel.Groq, new String[] {
-                "llama-3.3-70b-versatile",
-                "meta-llama/llama-4-maverick-17b-128e-instruct",
+                "openai/gpt-oss-120b",
+                "openai/gpt-oss-20b",
+                "qwen/qwen3-vl-32b-instruct",
+                "minimaxai/minimax-m2.5",
                 "groq/compound"
         });
-        VALID_MODELS.put(LanguageModel.Groq, new java.util.HashSet<>(java.util.Arrays.asList(
-                "llama-3.3-70b-versatile", "llama-3.1-8b-instant", "llama3-70b-8192",
-                "llama3-8b-8192", "mixtral-8x7b-32768", "gemma2-9b-it", "gemma-7b-it")));
+        VALID_MODELS.put(LanguageModel.Groq, null); // Allow any - Groq catalog changes frequently
 
-        // OpenRouter models
+        // OpenRouter models - August 2026 (Free tier available)
         SUB_MODEL_PRESETS.put(LanguageModel.OpenRouter, new String[] {
-                "google/gemini-2.0-flash-exp:free",
-                "meta-llama/llama-3.2-3b-instruct:free",
-                "mistralai/mistral-7b-instruct:free",
+                "openrouter/free",
+                "nvidia/nemotron-3-ultra:free",
+                "openai/gpt-oss-120b:free",
+                "qwen/qwen3-coder:free",
+                "google/gemini-2.5-flash:free",
                 "openai/gpt-4o-mini"
         });
         VALID_MODELS.put(LanguageModel.OpenRouter, null); // Allow any for OpenRouter
 
-        // Claude models
+        // Claude models - August 2026 latest (Claude 5 generation)
         SUB_MODEL_PRESETS.put(LanguageModel.Claude, new String[] {
-                "claude-opus-4-5-20250630",
-                "claude-sonnet-4-5-20250630",
-                "claude-haiku-4-5-20250630"
+                "claude-opus-5",
+                "claude-fable-5",
+                "claude-sonnet-5",
+                "claude-haiku-4-5-20251001"
         });
         VALID_MODELS.put(LanguageModel.Claude, new java.util.HashSet<>(java.util.Arrays.asList(
-                "claude-sonnet-4-20250514", "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
-                "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307")));
+                "claude-opus-5", "claude-fable-5", "claude-sonnet-5",
+                "claude-haiku-4-5-20251001", "claude-haiku-4-5",
+                "claude-sonnet-4-20250514", "claude-opus-4-5-20250630",
+                "claude-sonnet-4-5-20250630")));
 
-        // Mistral models
+        // Mistral models - August 2026 latest
         SUB_MODEL_PRESETS.put(LanguageModel.Mistral, new String[] {
-                "magistral-medium-2507",
+                "mistral-large-latest",
+                "mistral-medium-3.5",
                 "mistral-small-latest",
-                "devstral-small-2505",
-                "codestral-latest"
+                "codestral-latest",
+                "ministral-3-latest"
         });
         VALID_MODELS.put(LanguageModel.Mistral, new java.util.HashSet<>(java.util.Arrays.asList(
-                "mistral-large-latest", "mistral-medium-latest", "mistral-small-latest",
-                "open-mistral-7b", "open-mixtral-8x7b", "open-mixtral-8x22b")));
+                "mistral-large-latest", "mistral-medium-3.5", "mistral-small-latest",
+                "codestral-latest", "ministral-3-latest",
+                "mistral-small-2506", "codestral-2501")));
 
-        // Chutes models
+        // Chutes models - August 2026 latest
         SUB_MODEL_PRESETS.put(LanguageModel.Chutes, new String[] {
+                "deepseek-ai/DeepSeek-V3.2",
+                "deepseek-ai/DeepSeek-V4-Flash-0731",
                 "deepseek-ai/DeepSeek-R1",
-                "deepseek-ai/DeepSeek-V3",
                 "meta-llama/Llama-3.3-70B-Instruct",
-                "Qwen/Qwen2.5-72B-Instruct",
-                "nous-research/hermes-3-llama-3.1-405b",
-                "gryphe/mythomax-l2-13b",
-                "mistralai/Mistral-7B-Instruct-v0.3",
-                "mistralai/Mistral-Small-24B-Instruct-2501",
-                "deepseek-ai/DeepSeek-R1-Distill-Llama-70B"
+                "Qwen/Qwen2.5-72B-Instruct"
         });
         VALID_MODELS.put(LanguageModel.Chutes, null); // Allow any model
 
-        // Perplexity models
+        // Perplexity models - August 2026 latest (Search-grounded)
         SUB_MODEL_PRESETS.put(LanguageModel.Perplexity, new String[] {
                 "sonar-pro",
                 "sonar",
                 "sonar-reasoning-pro",
-                "sonar-reasoning",
-                "r1-1776"
+                "sonar-deep-research"
         });
         VALID_MODELS.put(LanguageModel.Perplexity, new java.util.HashSet<>(java.util.Arrays.asList(
-                "sonar-pro", "sonar", "sonar-reasoning-pro", "sonar-reasoning", "r1-1776")));
+                "sonar-pro", "sonar", "sonar-reasoning-pro", "sonar-deep-research")));
 
-        // GLM (ZhipuAI) models
+        // GLM (ZhipuAI / Z.ai) models - August 2026 latest (GLM-5 generation)
         SUB_MODEL_PRESETS.put(LanguageModel.GLM, new String[] {
-                "glm-4",
+                "glm-5.3",
+                "glm-5.2",
+                "glm-5.1",
+                "glm-5",
                 "glm-4-plus",
-                "glm-4-flash",
-                "glm-4-air",
-                "glm-3-turbo"
+                "glm-4-flash"
         });
         VALID_MODELS.put(LanguageModel.GLM, new java.util.HashSet<>(java.util.Arrays.asList(
-                "glm-4", "glm-4-plus", "glm-4-air", "glm-4-airx", "glm-4-long",
-                "glm-4-flashx", "glm-4-flash", "glm-4-9b",
-                "glm-4-0520", "glm-3-turbo")));
+                "glm-5.3", "glm-5.2", "glm-5.1", "glm-5",
+                "glm-4-plus", "glm-4-flash", "glm-4-air")));
     }
 
     /**

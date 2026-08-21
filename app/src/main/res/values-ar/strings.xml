@@ -650,7 +650,10 @@
     <string name="changelog_1_0_0_item7">تم إضافة موديل جديد Perplexity ودعم Perplexity API</string>
     <string name="changelog_1_0_0_item8">تم إلغاء التقييد باستخدام علامة \"/\" فيما يخص استخدام الأوامر</string>
     <string name="changelog_1_0_0_note">برجاء التحلي بالصبر حيث تم إعلام المطور بالمزيد من المشكلات ولكن سيتم حلها على دفعات من التحديثات حيث أنه شخص واحد فقط يقف وراء تطوير كل هذا. شكراً لتفهمكم.</string>
-        <string name="changelog_4_0_8_item1">الانتقال من LSPosed API 82 إلى API 102 الحديث</string>
+    <string name="changelog_4_1_1_item1">إصلاح فشل تنزيل فيديوهات يوتيوب بخطأ HTTP 403 Forbidden وقيود بث SABR</string>
+    <string name="changelog_4_1_1_item2">إضافة آلية ذكية لتحديث نواة yt-dlp وإعادة المحاولة التلقائية في الخلفية</string>
+    <string name="changelog_4_1_1_item3">توجيه استخراج الوسائط عبر عميل الأندرويد لضمان سرعة واستقرار التنزيل</string>
+    <string name="changelog_4_0_8_item1">الانتقال من LSPosed API 82 إلى API 102 الحديث</string>
     <string name="changelog_4_0_8_item2">إصلاحات كبيرة في الأداء وخفض استهلاك البطارية والطاقة</string>
     <string name="changelog_4_0_8_item3">إصلاح العديد من سيناريوهات التجمد والتعليق</string>
     <string name="changelog_4_0_8_item4">إضافة تريجر جديد في الكيبورد (تريجر الدونلودر)</string>

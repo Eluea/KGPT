@@ -756,7 +756,20 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
 
-        // Version 4.0.8 Changes (All 9 items)
+        // Version 4.1.1 Hotfix Changes
+        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+                getString(R.string.changelog_4_1_1_item1),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+                getString(R.string.changelog_4_1_1_item2),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
+                getString(R.string.changelog_4_1_1_item3),
+                colorPrimary, colorOnPrimary);
+
+        // Version 4.0.8 / 4.1.0 Changes
         addChangelogEntry(changelogContent, getString(R.string.tag_improved),
                 getString(R.string.changelog_4_0_8_item1),
                 colorPrimary, colorOnPrimary);

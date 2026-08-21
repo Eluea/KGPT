@@ -320,6 +320,8 @@ public class DownloaderEngine {
                 request.addOption("--no-check-certificates");
                 request.addOption("--geo-bypass");
                 request.addOption("--ignore-no-formats-error");
+                request.addOption("--no-update");
+                request.addOption("--extractor-args", "youtube:player_client=android,web");
 
                 VideoInfo info = YoutubeDL.getInstance().getInfo(request);
                 callback.onSuccess(info);
@@ -331,6 +333,9 @@ public class DownloaderEngine {
                     retryReq.addOption("--no-playlist");
                     retryReq.addOption("--no-check-certificates");
                     retryReq.addOption("--geo-bypass");
+                    retryReq.addOption("--ignore-no-formats-error");
+                    retryReq.addOption("--no-update");
+                    retryReq.addOption("--extractor-args", "youtube:player_client=android,web");
                     VideoInfo info = YoutubeDL.getInstance().getInfo(retryReq);
                     callback.onSuccess(info);
                 } catch (Throwable t) {
@@ -347,20 +352,20 @@ public class DownloaderEngine {
     public void executeDownload(Context context, DownloadOptions options, ProgressListener listener) {
         init(context);
         executor.execute(() -> {
+            File outputDir = options.getCustomDownloadDir() != null
+                    ? options.getCustomDownloadDir()
+                    : DownloaderPrefs.getTargetDownloadDirectory(context, options.isAudio(), options.getUploader());
+
+            if (!outputDir.exists()) {
+                outputDir.mkdirs();
+            }
+
+            YoutubeDLRequest request = buildRequest(context, options, outputDir);
+            String processId = options.getProcessId();
+
+            Log.d(TAG, "Executing download with command: " + request.buildCommand());
+
             try {
-                File outputDir = options.getCustomDownloadDir() != null
-                        ? options.getCustomDownloadDir()
-                        : DownloaderPrefs.getTargetDownloadDirectory(context, options.isAudio(), options.getUploader());
-
-                if (!outputDir.exists()) {
-                    outputDir.mkdirs();
-                }
-
-                YoutubeDLRequest request = buildRequest(context, options, outputDir);
-                String processId = options.getProcessId();
-
-                Log.d(TAG, "Executing download with command: " + request.buildCommand());
-
                 YoutubeDLResponse response = YoutubeDL.getInstance().execute(
                         request,
                         processId,
@@ -378,6 +383,41 @@ public class DownloaderEngine {
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Download execution failed: " + e.getMessage(), e);
+                String msg = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
+                boolean isYouTubeRestriction = msg.contains("403") || msg.contains("sabr") || msg.contains("forbidden")
+                        || msg.contains("older than 90 days") || msg.contains("sign in") || msg.contains("bot")
+                        || msg.contains("unable to download video data");
+
+                if (isYouTubeRestriction) {
+                    Log.w(TAG, "Encountered YouTube restriction / 403 error. Auto-updating yt-dlp core and retrying download...");
+                    try {
+                        YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), YoutubeDL.UpdateChannel._STABLE);
+
+                        YoutubeDLResponse retryResponse = YoutubeDL.getInstance().execute(
+                                request,
+                                processId,
+                                (progress, etaInSeconds, line) -> {
+                                    if (listener != null) {
+                                        listener.onProgressUpdate(progress, etaInSeconds, line);
+                                    }
+                                    return Unit.INSTANCE;
+                                }
+                        );
+
+                        File downloadedFile = findDownloadedFile(outputDir, options.getUrl());
+                        if (listener != null) {
+                            listener.onComplete(downloadedFile);
+                        }
+                        return;
+                    } catch (Throwable retryEx) {
+                        Log.e(TAG, "Retry download after auto-update failed: " + retryEx.getMessage(), retryEx);
+                        if (listener != null) {
+                            listener.onError(retryEx instanceof Exception ? (Exception) retryEx : new Exception(retryEx));
+                        }
+                        return;
+                    }
+                }
+
                 if (listener != null) {
                     listener.onError(e);
                 }
@@ -397,6 +437,8 @@ public class DownloaderEngine {
 
     private YoutubeDLRequest buildRequest(Context context, DownloadOptions options, File outputDir) {
         YoutubeDLRequest request = new YoutubeDLRequest(options.getUrl());
+        request.addOption("--no-update");
+        request.addOption("--extractor-args", "youtube:player_client=android,web");
 
         String template = options.getCustomFileName() != null
                 ? options.getCustomFileName()
