@@ -327,6 +327,11 @@
     <string name="msg_status_placeholder">Message</string>
     <string name="action_primary_placeholder">Primaire</string>
     <string name="action_secondary_placeholder">Secondaire</string>
+    <string name="status_core_up_to_date">Le moteur de téléchargement est à jour</string>
+    <string name="status_core_updated">Moteur mis à jour avec succès</string>
+    <string name="status_core_updating">Vérification et mise à jour...</string>
+    <string name="status_core_ready">Prêt / Installé</string>
+    <string name="status_core_not_installed">Non installé (Cliquer pour configurer)</string>
     <string name="title_update_settings">Paramètres MàJ</string>
     <string name="title_auto_updates">Mise à jour auto</string>
     <string name="switch_auto_updates">Auto</string>

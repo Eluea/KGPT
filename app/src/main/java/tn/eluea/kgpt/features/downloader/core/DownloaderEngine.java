@@ -76,25 +76,33 @@ public class DownloaderEngine {
     }
 
     public boolean isCoreInstalled(Context context) {
-        if (initialized) {
-            return true;
-        }
-        if (DownloaderPrefs.isCoreInstalled(context)) {
-            return true;
-        }
+        if (context == null) return false;
         try {
             File filesDir = context.getApplicationContext().getFilesDir();
             File noBackupDir = context.getApplicationContext().getNoBackupFilesDir();
-            File ytdl1 = new File(filesDir, "youtubedl-android");
-            File ytdl2 = new File(noBackupDir, "youtubedl-android");
-            File python1 = new File(filesDir, "packages/python");
-            File python2 = new File(noBackupDir, "packages/python");
-            if (ytdl1.exists() || ytdl2.exists() || python1.exists() || python2.exists()) {
+
+            File coreDir = new File(filesDir, "youtubedl-core");
+            File ytdlDir = new File(noBackupDir, "youtubedl-android");
+            File pythonDir = new File(noBackupDir, "youtubedl-android/packages/python");
+
+            boolean hasPython = (pythonDir.exists() && pythonDir.isDirectory() && pythonDir.list() != null && pythonDir.list().length > 0)
+                    || new File(coreDir, "libpython.zip.so").exists()
+                    || new File(coreDir, "libpython.so").exists()
+                    || new File(ytdlDir, "libpython.zip.so").exists();
+
+            boolean hasFfmpeg = new File(coreDir, "libffmpeg.zip.so").exists()
+                    || new File(coreDir, "libffmpeg.so").exists()
+                    || new File(ytdlDir, "libffmpeg.zip.so").exists()
+                    || new File(ytdlDir, "libffmpeg.so").exists();
+
+            if (hasPython && hasFfmpeg) {
                 DownloaderPrefs.setCoreInstalled(context, true);
                 return true;
             }
         } catch (Throwable ignored) {
         }
+        DownloaderPrefs.setCoreInstalled(context, false);
+        initialized = false;
         return false;
     }
 

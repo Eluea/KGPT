@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2025-2026 Amr Aldeeb @Eluea
+ * GitHub: https://github.com/Eluea
+ * Telegram: https://t.me/Eluea
+ *
+ * Licensed under the GPLv3.
+ */
 package tn.eluea.kgpt.features.downloader.ui;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +25,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
+import java.util.List;
+
 import tn.eluea.kgpt.R;
+import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
 import tn.eluea.kgpt.features.downloader.core.DownloaderPrefs;
 import tn.eluea.kgpt.features.downloader.core.MediaUtils;
 
@@ -62,6 +74,12 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         setupListeners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSavedPreferences();
+    }
+
     private void initViews() {
         View btnBack = findViewById(R.id.btn_back);
         if (btnBack != null) {
@@ -84,6 +102,7 @@ public class MediaDownloaderActivity extends AppCompatActivity {
 
     private void loadSavedPreferences() {
         updateDirDisplay();
+        updateCoreStatusDisplay();
 
         if (switchGroupCreator != null) switchGroupCreator.setChecked(DownloaderPrefs.isGroupByUploader(this));
         if (switchPrefThumbnail != null) switchPrefThumbnail.setChecked(DownloaderPrefs.isEmbedThumbnail(this));
@@ -95,6 +114,20 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         String path = DownloaderPrefs.getDownloadRootPath(this);
         if (tvCurrentDownloadDir != null) {
             tvCurrentDownloadDir.setText(path);
+        }
+    }
+
+    private void updateCoreStatusDisplay() {
+        boolean installed = DownloaderEngine.getInstance().isCoreInstalled(this);
+        if (tvCoreVersion != null) {
+            if (installed) {
+                tvCoreVersion.setText("v4.0.8 (" + getString(R.string.status_core_ready) + ")");
+                int primaryColor = MaterialColors.getColor(tvCoreVersion, androidx.appcompat.R.attr.colorPrimary, Color.CYAN);
+                tvCoreVersion.setTextColor(primaryColor);
+            } else {
+                tvCoreVersion.setText(R.string.status_core_not_installed);
+                tvCoreVersion.setTextColor(Color.parseColor("#FF5252"));
+            }
         }
     }
 
@@ -121,17 +154,15 @@ public class MediaDownloaderActivity extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.toast_invalid_url), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                java.util.List<String> urls = MediaUtils.extractAllUrls(input);
-                if (urls.size() > 1) {
-                    new LinkSelectionBottomSheet(this, urls, (LinkSelectionBottomSheet.OnLinkSelectedListener) selectedUrl -> {
-                        new MediaDownloaderBottomSheet(this, selectedUrl).show();
+                List<String> urls = MediaUtils.extractAllUrls(input);
+                if (!DownloaderEngine.getInstance().isCoreInstalled(this)) {
+                    new CoreInstallerBottomSheet(this, () -> {
+                        loadSavedPreferences();
+                        proceedWithUrls(urls, input);
                     }).show();
-                } else if (urls.size() == 1) {
-                    new MediaDownloaderBottomSheet(this, urls.get(0)).show();
-                } else {
-                    // Smart Search: Non-URL text entered, search YouTube
-                    new YouTubeSearchBottomSheet(this, input).show();
+                    return;
                 }
+                proceedWithUrls(urls, input);
             });
         }
 
@@ -140,7 +171,13 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         }
 
         if (rowCoreUpdate != null) {
-            rowCoreUpdate.setOnClickListener(v -> new CoreUpdateBottomSheet(this).show());
+            rowCoreUpdate.setOnClickListener(v -> {
+                if (!DownloaderEngine.getInstance().isCoreInstalled(this)) {
+                    new CoreInstallerBottomSheet(this, this::loadSavedPreferences).show();
+                } else {
+                    new CoreUpdateBottomSheet(this).show();
+                }
+            });
         }
 
         if (switchGroupCreator != null) {
@@ -169,6 +206,18 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         }
     }
 
+    private void proceedWithUrls(List<String> urls, String fallbackInput) {
+        if (urls.size() > 1) {
+            new LinkSelectionBottomSheet(this, urls, (LinkSelectionBottomSheet.OnLinkSelectedListener) selectedUrl -> {
+                new MediaDownloaderBottomSheet(this, selectedUrl).show();
+            }).show();
+        } else if (urls.size() == 1) {
+            new MediaDownloaderBottomSheet(this, urls.get(0)).show();
+        } else {
+            new YouTubeSearchBottomSheet(this, fallbackInput).show();
+        }
+    }
+
     private void showCreditsBottomSheet() {
         tn.eluea.kgpt.ui.main.FloatingBottomSheet bottomSheet = new tn.eluea.kgpt.ui.main.FloatingBottomSheet(this);
         View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_downloader_credits, null);
@@ -179,15 +228,13 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         if (btnVisitGithub != null) {
             btnVisitGithub.setOnClickListener(v -> {
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/deniscerri/ytdlnis"));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Eluea/KGPT"));
                     startActivity(browserIntent);
-                } catch (Exception e) {
-                    Toast.makeText(this, "Could not open browser: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                } catch (Throwable ignored) {}
             });
         }
 
-        View btnDismiss = sheetView.findViewById(R.id.btn_dismiss_credits);
+        MaterialButton btnDismiss = sheetView.findViewById(R.id.btn_dismiss_credits);
         if (btnDismiss != null) {
             btnDismiss.setOnClickListener(v -> bottomSheet.dismiss());
         }
@@ -196,12 +243,13 @@ public class MediaDownloaderActivity extends AppCompatActivity {
     }
 
     private void applyAmoledIfNeeded() {
-        boolean isAmoled = getSharedPreferences("app_settings", Context.MODE_PRIVATE)
-                .getBoolean("amoled_mode", false);
-        if (isAmoled) {
+        boolean isDarkMode = tn.eluea.kgpt.ui.main.BottomSheetHelper.isDarkMode(this);
+        boolean isAmoled = tn.eluea.kgpt.ui.main.BottomSheetHelper.isAmoledMode(this);
+
+        if (isDarkMode && isAmoled) {
             View root = findViewById(R.id.root_layout);
             if (root != null) {
-                root.setBackgroundColor(android.graphics.Color.BLACK);
+                root.setBackgroundColor(androidx.core.content.ContextCompat.getColor(this, R.color.background_amoled));
             }
         }
     }

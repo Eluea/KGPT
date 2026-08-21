@@ -908,6 +908,8 @@
     <string name="status_core_up_to_date">محرك التنزيل محدث لآخر إصدار</string>
     <string name="status_core_updated">تم تحديث محرك التنزيل بنجاح</string>
     <string name="status_core_updating">جاري فحص وتحديث المحرك...</string>
+    <string name="status_core_ready">جاهز ومثبت</string>
+    <string name="status_core_not_installed">غير مثبت (انقر للتنزيل والإعداد)</string>
     
     <!-- On-Demand Core Plugin Strings (Arabic) -->
     <string name="title_plugin_required">إضافة KGPT دونلودر</string>

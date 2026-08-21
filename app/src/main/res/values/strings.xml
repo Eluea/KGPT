@@ -896,6 +896,8 @@
     <string name="status_core_up_to_date">Downloader engine is up to date</string>
     <string name="status_core_updated">Downloader engine updated successfully</string>
     <string name="status_core_updating">Checking and updating engine...</string>
+    <string name="status_core_ready">Ready / Installed</string>
+    <string name="status_core_not_installed">Not Installed (Click to Setup)</string>
     
     <!-- On-Demand Core Plugin Strings -->
     <string name="title_plugin_required">KGPT Downloader Plugin</string>
