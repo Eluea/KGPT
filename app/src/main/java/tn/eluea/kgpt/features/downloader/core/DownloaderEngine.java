@@ -1,19 +1,35 @@
+/*
+ * Copyright (c) 2025-2026 Amr Aldeeb @Eluea
+ * GitHub: https://github.com/Eluea
+ * Telegram: https://t.me/Eluea
+ *
+ * Licensed under the GPLv3.
+ */
 package tn.eluea.kgpt.features.downloader.core;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.yausername.ffmpeg.FFmpeg;
-import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
-import com.yausername.youtubedl_android.YoutubeDLException;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
 import com.yausername.youtubedl_android.YoutubeDLResponse;
 import com.yausername.youtubedl_android.mapper.VideoInfo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import kotlin.Unit;
 
 public class DownloaderEngine {
     private static final String TAG = "KGPT_DownloaderEngine";
@@ -43,35 +59,171 @@ public class DownloaderEngine {
     private DownloaderEngine() {}
 
     /**
-     * Initialize the yt-dlp and FFmpeg native engines.
+     * Initialize the yt-dlp and FFmpeg native engines with on-demand runtime support.
      */
     public synchronized void init(Context context) {
-        if (initialized) {
-            return;
-        }
+        if (context == null) return;
+        Context appContext = context.getApplicationContext();
+
         try {
-            YoutubeDL.getInstance().init(context.getApplicationContext());
-            FFmpeg.getInstance().init(context.getApplicationContext());
+            File coreDir = new File(appContext.getFilesDir(), "youtubedl-core");
+            File ytdlDir = new File(appContext.getNoBackupFilesDir(), "youtubedl-android");
+            File packagesDir = new File(ytdlDir, "packages");
+            File pythonDir = new File(packagesDir, "python");
+            File ffmpegDir = new File(packagesDir, "ffmpeg");
+            File ytdlpDir = new File(ytdlDir, "yt-dlp");
+
+            if (!coreDir.exists()) coreDir.mkdirs();
+            if (!ytdlDir.exists()) ytdlDir.mkdirs();
+            if (!packagesDir.exists()) packagesDir.mkdirs();
+            if (!pythonDir.exists()) pythonDir.mkdirs();
+            if (!ffmpegDir.exists()) ffmpegDir.mkdirs();
+            if (!ytdlpDir.exists()) ytdlpDir.mkdirs();
+
+            // Extract inner zip packages if not already extracted
+            File pythonZip = new File(coreDir, "libpython.zip.so");
+            if (pythonZip.exists() && (!pythonDir.exists() || pythonDir.list() == null || pythonDir.list().length == 0)) {
+                try {
+                    extractZip(pythonZip, pythonDir);
+                } catch (Throwable t) {
+                    Log.w(TAG, "Unzipping python package: " + t.getMessage());
+                }
+            }
+
+            File ffmpegZip = new File(coreDir, "libffmpeg.zip.so");
+            if (ffmpegZip.exists() && (!ffmpegDir.exists() || ffmpegDir.list() == null || ffmpegDir.list().length == 0)) {
+                try {
+                    extractZip(ffmpegZip, ffmpegDir);
+                } catch (Throwable t) {
+                    Log.w(TAG, "Unzipping ffmpeg package: " + t.getMessage());
+                }
+            }
+
+            // Grant executable permissions on all binaries
+            setPermissionsRecursively(coreDir);
+            setPermissionsRecursively(ytdlDir);
+
+            // Configure YoutubeDL paths via reflection to point to on-demand coreDir
+            try {
+                Field binDirField = YoutubeDL.class.getDeclaredField("binDir");
+                binDirField.setAccessible(true);
+                binDirField.set(null, coreDir);
+
+                Field pythonPathField = YoutubeDL.class.getDeclaredField("pythonPath");
+                pythonPathField.setAccessible(true);
+                pythonPathField.set(null, new File(coreDir, "libpython.so"));
+
+                Field ffmpegPathField = YoutubeDL.class.getDeclaredField("ffmpegPath");
+                ffmpegPathField.setAccessible(true);
+                ffmpegPathField.set(null, new File(coreDir, "libffmpeg.so"));
+
+                Field qjsField = YoutubeDL.class.getDeclaredField("quickJsPath");
+                qjsField.setAccessible(true);
+                qjsField.set(null, new File(coreDir, "libqjs.so"));
+
+                Field ytdlpField = YoutubeDL.class.getDeclaredField("ytdlpPath");
+                ytdlpField.setAccessible(true);
+                ytdlpField.set(null, new File(ytdlpDir, "yt-dlp"));
+
+                Field ldPathField = YoutubeDL.class.getDeclaredField("ENV_LD_LIBRARY_PATH");
+                ldPathField.setAccessible(true);
+                String ldPath = pythonDir.getAbsolutePath() + "/usr/lib:" + ffmpegDir.getAbsolutePath() + "/usr/lib:" + coreDir.getAbsolutePath();
+                ldPathField.set(null, ldPath);
+
+                Field sslCertField = YoutubeDL.class.getDeclaredField("ENV_SSL_CERT_FILE");
+                sslCertField.setAccessible(true);
+                sslCertField.set(null, pythonDir.getAbsolutePath() + "/usr/etc/tls/cert.pem");
+
+                Field pythonHomeField = YoutubeDL.class.getDeclaredField("ENV_PYTHONHOME");
+                pythonHomeField.setAccessible(true);
+                pythonHomeField.set(null, pythonDir.getAbsolutePath() + "/usr");
+
+                Field tmpDirField = YoutubeDL.class.getDeclaredField("TMPDIR");
+                tmpDirField.setAccessible(true);
+                tmpDirField.set(null, appContext.getCacheDir().getAbsolutePath());
+
+                // Ensure raw yt-dlp binary is extracted into ytdlpDir
+                File ytdlpFile = new File(ytdlpDir, "yt-dlp");
+                if (!ytdlpFile.exists()) {
+                    try (InputStream in = appContext.getResources().openRawResource(com.yausername.youtubedl_android.R.raw.ytdlp);
+                         FileOutputStream fos = new FileOutputStream(ytdlpFile)) {
+                        byte[] buf = new byte[16384];
+                        int len;
+                        while ((len = in.read(buf)) > 0) fos.write(buf, 0, len);
+                    } catch (Throwable ignored) {}
+                }
+
+                Field initField = YoutubeDL.class.getDeclaredField("initialized");
+                initField.setAccessible(true);
+                initField.set(null, true);
+            } catch (Throwable t) {
+                Log.w(TAG, "Configuring YoutubeDL reflection: " + t.getMessage());
+                try {
+                    YoutubeDL.getInstance().init(appContext);
+                } catch (Throwable ignored) {}
+            }
+
+            // Configure FFmpeg paths via reflection
+            try {
+                Field binDirField = FFmpeg.class.getDeclaredField("binDir");
+                binDirField.setAccessible(true);
+                binDirField.set(null, coreDir);
+
+                Field initField = FFmpeg.class.getDeclaredField("initialized");
+                initField.setAccessible(true);
+                initField.set(null, true);
+            } catch (Throwable t) {
+                Log.w(TAG, "Configuring FFmpeg reflection: " + t.getMessage());
+                try {
+                    FFmpeg.getInstance().init(appContext);
+                } catch (Throwable ignored) {}
+            }
+
             initialized = true;
             DownloaderPrefs.setCoreInstalled(context, true);
-            Log.d(TAG, "DownloaderEngine & FFmpeg initialized successfully");
+            Log.d(TAG, "DownloaderEngine & FFmpeg initialized successfully with on-demand runtime");
 
-            // Auto-check for yt-dlp core updates in background
-            executor.execute(() -> {
-                try {
-                    long lastCheck = DownloaderPrefs.getLastCoreCheckTimestamp(context);
-                    long now = System.currentTimeMillis();
-                    if (now - lastCheck > 24 * 60 * 60 * 1000L) { // Check once a day
-                        DownloaderPrefs.setLastCoreCheckTimestamp(context, now);
-                        YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), YoutubeDL.UpdateChannel._STABLE);
-                        Log.d(TAG, "yt-dlp auto-updated to latest stable release");
-                    }
-                } catch (Throwable t) {
-                    Log.w(TAG, "Auto-update yt-dlp check skipped: " + t.getMessage());
-                }
-            });
         } catch (Throwable t) {
             Log.e(TAG, "Failed to initialize DownloaderEngine", t);
+        }
+    }
+
+    private void extractZip(File zipFile, File targetDir) throws Exception {
+        byte[] buffer = new byte[32768];
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                File newFile = new File(targetDir, entry.getName());
+                if (entry.isDirectory()) {
+                    newFile.mkdirs();
+                } else {
+                    new File(newFile.getParent()).mkdirs();
+                    try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                        int len;
+                        while ((len = zis.read(buffer)) > 0) {
+                            fos.write(buffer, 0, len);
+                        }
+                    }
+                    newFile.setExecutable(true, false);
+                    newFile.setReadable(true, false);
+                }
+                zis.closeEntry();
+            }
+        }
+    }
+
+    private void setPermissionsRecursively(File file) {
+        if (file == null || !file.exists()) return;
+        file.setReadable(true, false);
+        file.setExecutable(true, false);
+        file.setWritable(true, true);
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    setPermissionsRecursively(child);
+                }
+            }
         }
     }
 
@@ -99,49 +251,39 @@ public class DownloaderEngine {
                 DownloaderPrefs.setCoreInstalled(context, true);
                 return true;
             }
-        } catch (Throwable ignored) {
-        }
+        } catch (Exception ignored) {}
         DownloaderPrefs.setCoreInstalled(context, false);
-        initialized = false;
         return false;
     }
 
+    public void resetInstallationState(Context context) {
+        DownloaderPrefs.setCoreInstalled(context, false);
+        initialized = false;
+    }
+
     /**
-     * Asynchronously fetch media metadata and available formats.
+     * Fetch media details asynchronously with metadata & available formats.
      */
     public void fetchVideoInfo(Context context, String url, InfoCallback callback) {
+        init(context);
         executor.execute(() -> {
             try {
-                init(context);
-                String cleanUrl = MediaUtils.extractUrl(url);
-                if (cleanUrl == null) {
-                    throw new IllegalArgumentException("Invalid media URL");
-                }
-                VideoInfo info = YoutubeDL.getInstance().getInfo(cleanUrl);
-                if (callback != null) {
-                    callback.onSuccess(info);
-                }
+                VideoInfo info = YoutubeDL.getInstance().getInfo(url);
+                callback.onSuccess(info);
             } catch (Exception e) {
                 Log.e(TAG, "Error fetching video info: " + e.getMessage(), e);
-                if (callback != null) {
-                    callback.onError(e);
-                }
+                callback.onError(e);
             }
         });
     }
 
     /**
-     * Download the media according to user-selected options.
+     * Execute download with user options and progress callbacks.
      */
     public void executeDownload(Context context, DownloadOptions options, ProgressListener listener) {
+        init(context);
         executor.execute(() -> {
             try {
-                init(context);
-                String cleanUrl = MediaUtils.extractUrl(options.getUrl());
-                if (cleanUrl == null) {
-                    throw new IllegalArgumentException("Invalid media URL");
-                }
-
                 File outputDir = options.getCustomDownloadDir() != null
                         ? options.getCustomDownloadDir()
                         : DownloaderPrefs.getTargetDownloadDirectory(context, options.isAudio(), options.getUploader());
@@ -150,130 +292,28 @@ public class DownloaderEngine {
                     outputDir.mkdirs();
                 }
 
-                YoutubeDLRequest request = new YoutubeDLRequest(cleanUrl);
-                
-                // Core reliability & YouTube 403 / SABR bypass options
-                request.addOption("--no-mtime");
-                request.addOption("--no-playlist");
-                request.addOption("--trim-filenames", "160");
-                request.addOption("--retries", "10");
-                request.addOption("--fragment-retries", "10");
-                request.addOption("--http-chunk-size", "10M");
-                request.addOption("--no-check-certificates");
-                request.addOption("--geo-bypass");
-                request.addOption("--extractor-args", "youtube:player_client=android,web");
-                request.addOption("--user-agent", "Mozilla/5.0 (Linux; Android 13; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
-                request.addOption("--add-header", "Accept-Language:en-US,en;q=0.9");
+                YoutubeDLRequest request = buildRequest(context, options, outputDir);
+                String processId = options.getProcessId();
 
-                // Set output template
-                String fileNamePattern = options.getCustomFileName() != null && !options.getCustomFileName().trim().isEmpty()
-                        ? options.getCustomFileName().trim() + ".%(ext)s"
-                        : "%(title)s.%(ext)s";
-                String template = outputDir.getAbsolutePath() + "/" + fileNamePattern;
-                request.addOption("-o", template);
+                Log.d(TAG, "Executing download with command: " + request.buildCommand());
 
-                // Configure Video vs Audio
-                if (options.isAudio()) {
-                    request.addOption("-x");
-                    request.addOption("--audio-format", options.getAudioFormat() != null ? options.getAudioFormat() : "mp3");
-                    if (options.getAudioQuality() != null && !options.getAudioQuality().isEmpty()) {
-                        request.addOption("--audio-quality", options.getAudioQuality().contains("k") ? options.getAudioQuality() : options.getAudioQuality() + "k");
-                    }
-                    request.addOption("-f", "ba/b");
-                } else {
-                    // Video Quality selector with resilient fallback
-                    String quality = options.getVideoQuality();
-                    if ("best".equalsIgnoreCase(quality)) {
-                        request.addOption("-f", "bv*+ba/b");
-                        request.addOption("-S", "res,ext:mp4:m4a");
-                    } else {
-                        request.addOption("-f", "bv*[height<=" + quality + "]+ba/b[height<=" + quality + "]/bv*+ba/b");
-                        request.addOption("-S", "res:" + quality + ",ext:mp4:m4a");
-                    }
-                    String format = options.getVideoFormat() != null ? options.getVideoFormat().toLowerCase() : "mp4";
-                    request.addOption("--merge-output-format", format);
-                }
-
-                if (options.isEmbedThumbnail()) {
-                    request.addOption("--embed-thumbnail");
-                }
-                if (options.isEmbedMetadata()) {
-                    request.addOption("--add-metadata");
-                }
-                if (options.isEmbedSubtitles()) {
-                    request.addOption("--embed-subs");
-                    request.addOption("--sub-langs", "all,-live_chat");
-                }
-                if (options.isSplitChapters()) {
-                    request.addOption("--split-chapters");
-                }
-
-                // Add Cut / Trim section if specified
-                if (options.getDownloadSections() != null && !options.getDownloadSections().trim().isEmpty()) {
-                    request.addOption("--download-sections", options.getDownloadSections().trim());
-                    request.addOption("--force-keyframes-at-cuts");
-                }
-
-                // Multi-threaded Downloading
-                int fragments = options.getConcurrentFragments() > 0 ? options.getConcurrentFragments() : 8;
-                request.addOption("-N", String.valueOf(fragments));
-                request.addOption("--concurrent-fragments", String.valueOf(fragments));
-
-                String processId = options.getProcessId() != null ? options.getProcessId() : "dl_" + System.currentTimeMillis();
-                options.setProcessId(processId);
-
-                // Execute download with live progress
                 YoutubeDLResponse response = YoutubeDL.getInstance().execute(
                         request,
                         processId,
                         (progress, etaInSeconds, line) -> {
                             if (listener != null) {
-                                listener.onProgressUpdate(
-                                        progress != null ? progress : 0f,
-                                        etaInSeconds != null ? etaInSeconds : 0L,
-                                        line != null ? line : ""
-                                );
+                                listener.onProgressUpdate(progress, etaInSeconds, line);
                             }
-                            return kotlin.Unit.INSTANCE;
+                            return Unit.INSTANCE;
                         }
                 );
 
-                Log.d(TAG, "Download finished successfully: " + response.getOut());
-
-                // Scan the output directory for actual media files (strictly ignoring thumbnails, part files, etc.)
-                File[] files = outputDir.listFiles((dir, name) -> {
-                    String lower = name.toLowerCase();
-                    if (lower.endsWith(".part") || lower.endsWith(".temp") || lower.endsWith(".ytdl") || lower.endsWith(".webp") || lower.endsWith(".jpg") || lower.endsWith(".png") || lower.endsWith(".json")) {
-                        return false;
-                    }
-                    if (options.isAudio()) {
-                        return lower.endsWith(".mp3") || lower.endsWith(".m4a") || lower.endsWith(".flac") || lower.endsWith(".opus") || lower.endsWith(".wav") || lower.endsWith(".aac");
-                    } else {
-                        return lower.endsWith(".mp4") || lower.endsWith(".mkv") || lower.endsWith(".webm") || lower.endsWith(".mov") || lower.endsWith(".avi");
-                    }
-                });
-
-                File latestFile = null;
-                long latestTime = 0;
-                if (files != null) {
-                    for (File f : files) {
-                        if (f.lastModified() > latestTime) {
-                            latestTime = f.lastModified();
-                            latestFile = f;
-                        }
-                    }
-                }
-
-                if (latestFile != null) {
-                    MediaUtils.scanMediaFile(context, latestFile, options.isAudio() ? "audio/*" : "video/*");
-                }
-
+                File downloadedFile = findDownloadedFile(outputDir, options.getUrl());
                 if (listener != null) {
-                    listener.onComplete(latestFile);
+                    listener.onComplete(downloadedFile);
                 }
-
             } catch (Exception e) {
-                Log.e(TAG, "Download execution failed", e);
+                Log.e(TAG, "Download execution failed: " + e.getMessage(), e);
                 if (listener != null) {
                     listener.onError(e);
                 }
@@ -281,47 +321,93 @@ public class DownloaderEngine {
         });
     }
 
-    /**
-     * Cancel an active download and delete any partial/temporary files.
-     */
-    public void cancelDownload(String processId, File targetDir) {
-        executor.execute(() -> {
+    public void cancelDownload(String processId, File outputDir) {
+        if (processId != null) {
             try {
-                if (processId != null) {
-                    YoutubeDL.getInstance().destroyProcessById(processId);
-                    Log.d(TAG, "Destroyed process: " + processId);
-                }
-
-                // Delete partial downloaded files
-                if (targetDir != null && targetDir.exists()) {
-                    File[] partials = targetDir.listFiles((dir, name) ->
-                            name.endsWith(".part") || name.endsWith(".temp") || name.endsWith(".ytdl") || name.endsWith(".part-Frag")
-                    );
-                    if (partials != null) {
-                        for (File p : partials) {
-                            boolean deleted = p.delete();
-                            Log.d(TAG, "Deleted partial file on cancel: " + p.getName() + " -> " + deleted);
-                        }
-                    }
-                }
-            } catch (Throwable t) {
-                Log.e(TAG, "Error cancelling download: " + t.getMessage());
+                YoutubeDL.getInstance().destroyProcessById(processId);
+            } catch (Exception e) {
+                Log.w(TAG, "Error destroying download process: " + e.getMessage());
             }
-        });
+        }
     }
 
-    /**
-     * Update yt-dlp core extractor scripts from internet.
-     */
-    public void updateCore(Context context, YoutubeDL.UpdateChannel channel) {
-        init(context);
-        executor.execute(() -> {
-            try {
-                YoutubeDL.getInstance().updateYoutubeDL(context, channel);
-                Log.d(TAG, "yt-dlp core updated successfully");
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to update yt-dlp core", e);
+    private YoutubeDLRequest buildRequest(Context context, DownloadOptions options, File outputDir) {
+        YoutubeDLRequest request = new YoutubeDLRequest(options.getUrl());
+
+        String template = options.getCustomFileName() != null
+                ? options.getCustomFileName()
+                : "%(title)s";
+        request.addOption("-o", outputDir.getAbsolutePath() + "/" + template + ".%(ext)s");
+
+        int fragments = options.getConcurrentFragments();
+        if (fragments > 1) {
+            request.addOption("-N", String.valueOf(fragments));
+        }
+
+        if (options.isAudio()) {
+            request.addOption("-x");
+            String format = options.getAudioFormat() != null ? options.getAudioFormat() : DownloaderPrefs.getDefaultAudioFormat(context);
+            request.addOption("--audio-format", format.toLowerCase());
+            if (options.getAudioQuality() != null && !options.getAudioQuality().equals("0")) {
+                request.addOption("--audio-quality", options.getAudioQuality() + "K");
             }
-        });
+        } else {
+            String quality = options.getVideoQuality() != null ? options.getVideoQuality() : DownloaderPrefs.getDefaultVideoQuality(context);
+            String formatStr = buildVideoFormatSelector(quality);
+            request.addOption("-f", formatStr);
+
+            String container = options.getVideoFormat() != null ? options.getVideoFormat() : DownloaderPrefs.getDefaultVideoFormat(context);
+            request.addOption("--merge-output-format", container.toLowerCase());
+        }
+
+        if (options.isEmbedThumbnail()) {
+            request.addOption("--embed-thumbnail");
+        }
+        if (options.isEmbedMetadata()) {
+            request.addOption("--add-metadata");
+        }
+        if (options.isEmbedSubtitles()) {
+            request.addOption("--embed-subs");
+            request.addOption("--all-subs");
+        }
+        if (options.isSplitChapters()) {
+            request.addOption("--split-chapters");
+        }
+
+        if (options.getDownloadSections() != null && !options.getDownloadSections().isEmpty()) {
+            request.addOption("--download-sections", options.getDownloadSections());
+        }
+
+        request.addOption("--no-mtime");
+        request.addOption("--ignore-errors");
+        return request;
+    }
+
+    private String buildVideoFormatSelector(String quality) {
+        if (quality == null || "best".equalsIgnoreCase(quality)) {
+            return "bestvideo+bestaudio/best";
+        }
+        try {
+            int height = Integer.parseInt(quality.replaceAll("[^0-9]", ""));
+            return "bestvideo[height<=" + height + "]+bestaudio/best[height<=" + height + "]/best";
+        } catch (Exception e) {
+            return "bestvideo+bestaudio/best";
+        }
+    }
+
+    private File findDownloadedFile(File directory, String url) {
+        if (directory == null || !directory.exists()) return null;
+        File[] files = directory.listFiles();
+        if (files == null || files.length == 0) return null;
+
+        File newest = null;
+        long lastMod = 0;
+        for (File f : files) {
+            if (f.isFile() && f.lastModified() > lastMod && !f.getName().endsWith(".part") && !f.getName().endsWith(".ytdl")) {
+                newest = f;
+                lastMod = f.lastModified();
+            }
+        }
+        return newest;
     }
 }

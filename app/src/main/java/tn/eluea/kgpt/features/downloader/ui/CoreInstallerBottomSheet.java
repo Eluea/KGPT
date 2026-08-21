@@ -259,7 +259,32 @@ public class CoreInstallerBottomSheet {
             });
 
             extractZip(finalZip, destCoreDir);
-            extractZip(finalZip, destNoBackupDir);
+
+            // Extract inner packages into packages/python and packages/ffmpeg
+            File packagesDir = new File(destNoBackupDir, "packages");
+            File pythonDir = new File(packagesDir, "python");
+            File ffmpegDir = new File(packagesDir, "ffmpeg");
+            if (!packagesDir.exists()) packagesDir.mkdirs();
+            if (!pythonDir.exists()) pythonDir.mkdirs();
+            if (!ffmpegDir.exists()) ffmpegDir.mkdirs();
+
+            File pythonZip = new File(destCoreDir, "libpython.zip.so");
+            if (pythonZip.exists()) {
+                try {
+                    extractZip(pythonZip, pythonDir);
+                } catch (Throwable t) {
+                    Log.w(TAG, "Unzipping python package: " + t.getMessage());
+                }
+            }
+
+            File ffmpegZip = new File(destCoreDir, "libffmpeg.zip.so");
+            if (ffmpegZip.exists()) {
+                try {
+                    extractZip(ffmpegZip, ffmpegDir);
+                } catch (Throwable t) {
+                    Log.w(TAG, "Unzipping ffmpeg package: " + t.getMessage());
+                }
+            }
 
             // Clean up temporary ZIP
             finalZip.delete();
