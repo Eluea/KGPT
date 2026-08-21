@@ -54,7 +54,14 @@ import tn.eluea.kgpt.util.TransitionHelper;
 public class CoreInstallerBottomSheet {
 
     private static final String TAG = "KGPT_CoreInstaller";
-    private static final String REMOTE_BASE_URL = "https://raw.githubusercontent.com/Eluea/KGPT/main/core_bundles/";
+
+    // High-speed global CDN mirrors + Fallback mirrors
+    private static final String[] REMOTE_BASE_URLS = new String[]{
+            "https://cdn.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
+            "https://fastly.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
+            "https://gcore.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
+            "https://raw.githubusercontent.com/Eluea/KGPT/main/core_bundles/"
+    };
 
     public interface OnInstallCompleteListener {
         void onInstalled();
@@ -225,7 +232,7 @@ public class CoreInstallerBottomSheet {
 
             AtomicLong bytesDownloaded = new AtomicLong(0);
 
-            // 2. Multi-threaded parallel chunk download
+            // 2. Multi-threaded parallel chunk download with CDN mirror fallback
             int workerCount = Math.min(4, chunks.size());
             ExecutorService chunkPool = Executors.newFixedThreadPool(workerCount);
             CountDownLatch latch = new CountDownLatch(chunks.size());
@@ -261,9 +268,8 @@ public class CoreInstallerBottomSheet {
                             }
                         }
 
-                        // Download from remote server with full redirect & UA support
-                        String chunkUrl = REMOTE_BASE_URL + abi + "/" + chunk.name;
-                        downloadChunkFromUrl(chunkUrl, targetChunkFile, chunk.size, bytesDownloaded, totalSize);
+                        // Download from ultra-fast CDN mirrors with automatic fallback
+                        downloadChunkWithMirrorFallback(abi, chunk, targetChunkFile, bytesDownloaded, totalSize);
                         latch.countDown();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage(), e);
@@ -327,6 +333,25 @@ public class CoreInstallerBottomSheet {
         }
     }
 
+    private void downloadChunkWithMirrorFallback(String abi, ChunkInfo chunk, File targetChunkFile, AtomicLong totalDownloaded, long totalSize) throws Exception {
+        Exception lastException = null;
+        for (String baseUrl : REMOTE_BASE_URLS) {
+            if (isCancelled) return;
+            try {
+                String chunkUrl = baseUrl + abi + "/" + chunk.name;
+                downloadChunkFromUrl(chunkUrl, targetChunkFile, chunk.size, totalDownloaded, totalSize);
+                return; // Download succeeded!
+            } catch (Exception e) {
+                Log.w(TAG, "Mirror " + baseUrl + " failed for chunk " + chunk.name + ": " + e.getMessage() + ", trying next mirror...");
+                lastException = e;
+                if (targetChunkFile.exists()) {
+                    targetChunkFile.delete(); // Clean up partial download before retrying next mirror
+                }
+            }
+        }
+        throw (lastException != null ? lastException : new Exception("All mirrors failed for " + chunk.name));
+    }
+
     private File findLocalChunksDir(String abi) {
         String[] possiblePaths = new String[]{
                 "/sdcard/kgpt_core/" + abi,
@@ -353,8 +378,7 @@ public class CoreInstallerBottomSheet {
                 }
             }
             if (manifestJsonStr == null || manifestJsonStr.trim().isEmpty()) {
-                String manifestUrl = REMOTE_BASE_URL + abi + "/manifest.json";
-                manifestJsonStr = downloadString(manifestUrl);
+                manifestJsonStr = downloadStringWithMirrorFallback(abi, "manifest.json");
             }
 
             if (manifestJsonStr != null) {
@@ -393,6 +417,19 @@ public class CoreInstallerBottomSheet {
             }
         }
         return chunks;
+    }
+
+    private static String downloadStringWithMirrorFallback(String abi, String filename) {
+        for (String baseUrl : REMOTE_BASE_URLS) {
+            try {
+                String url = baseUrl + abi + "/" + filename;
+                String result = downloadString(url);
+                if (result != null && !result.trim().isEmpty()) {
+                    return result;
+                }
+            } catch (Exception ignored) {}
+        }
+        return null;
     }
 
     private static HttpURLConnection openConnectionWithRedirects(String urlStr) throws Exception {
