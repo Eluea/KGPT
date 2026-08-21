@@ -557,11 +557,33 @@ public class MediaDownloaderBottomSheet {
             public void onError(Exception e) {
                 mainHandler.post(() -> {
                     layoutLoading.setVisibility(View.GONE);
-                    Toast.makeText(context, "Failed to analyze link: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+                    String msg = cleanErrorMessage(e != null ? e.getMessage() : "Unknown error");
+                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    if (dialog != null) dialog.dismiss();
                 });
             }
         });
+    }
+
+    private String cleanErrorMessage(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return "فشل في تحليل الرابط، يرجى المحاولة لاحقاً";
+        if (raw.contains("ERROR:")) {
+            String after = raw.substring(raw.indexOf("ERROR:") + 6).trim();
+            if (after.contains("\n")) {
+                after = after.substring(0, after.indexOf("\n")).trim();
+            }
+            return after;
+        }
+        if (raw.contains("Traceback")) {
+            String[] lines = raw.split("\n");
+            for (int i = lines.length - 1; i >= 0; i--) {
+                String line = lines[i].trim();
+                if (!line.isEmpty() && !line.startsWith("File ") && !line.startsWith("Traceback")) {
+                    return line;
+                }
+            }
+        }
+        return "فشل في قراءة الرابط: " + raw;
     }
 
     private void populateDetails(VideoInfo info) {

@@ -269,11 +269,29 @@ public class DownloaderEngine {
         init(context);
         executor.execute(() -> {
             try {
-                VideoInfo info = YoutubeDL.getInstance().getInfo(url);
+                YoutubeDLRequest request = new YoutubeDLRequest(url);
+                request.addOption("--no-playlist");
+                request.addOption("--no-check-certificates");
+                request.addOption("--geo-bypass");
+                request.addOption("--ignore-no-formats-error");
+
+                VideoInfo info = YoutubeDL.getInstance().getInfo(request);
                 callback.onSuccess(info);
             } catch (Exception e) {
-                Log.e(TAG, "Error fetching video info: " + e.getMessage(), e);
-                callback.onError(e);
+                Log.w(TAG, "Initial fetch failed, checking yt-dlp update: " + e.getMessage());
+                try {
+                    // Update yt-dlp to latest upstream release and retry
+                    YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), YoutubeDL.UpdateChannel._STABLE);
+                    YoutubeDLRequest retryReq = new YoutubeDLRequest(url);
+                    retryReq.addOption("--no-playlist");
+                    retryReq.addOption("--no-check-certificates");
+                    retryReq.addOption("--geo-bypass");
+                    VideoInfo info = YoutubeDL.getInstance().getInfo(retryReq);
+                    callback.onSuccess(info);
+                } catch (Throwable t) {
+                    Log.e(TAG, "Error fetching video info after update: " + t.getMessage(), t);
+                    callback.onError(e);
+                }
             }
         });
     }
