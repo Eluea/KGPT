@@ -29,7 +29,13 @@ public enum LanguageModel {
                         "https://www.perplexity.ai/settings/api"),
         GLM("ZhipuAI", "glm-5.3", "https://open.bigmodel.cn/api/paas/v4", false,
                         "https://open.bigmodel.cn/usercenter/apikeys"),
-                        ;
+        Grok("Grok", "grok-4.6", "https://api.x.ai/v1", false,
+                        "https://console.x.ai"),
+        DeepSeek("DeepSeek", "deepseek-chat", "https://api.deepseek.com", false,
+                        "https://platform.deepseek.com/api_keys"),
+        Kimi("Kimi", "kimi-k3", "https://api.moonshot.ai/v1", false,
+                        "https://platform.kimi.ai/console/api-keys"),
+        ;
 
         public final String label;
         public final boolean isFree;

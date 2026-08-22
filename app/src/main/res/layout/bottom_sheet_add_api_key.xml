@@ -1,7 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2025 Amr Aldeeb @Eluea
+  ~ Copyright (c) 2025-2026 Amr Aldeeb @Eluea
   ~ GitHub: https://github.com/Eluea
   ~ Telegram: https://t.me/Eluea
   ~
@@ -15,60 +14,58 @@
     android:background="@drawable/bg_bottom_sheet_floating"
     android:backgroundTint="?attr/colorSurfaceContainer"
     android:orientation="vertical"
-    android:paddingHorizontal="24dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="24dp">
+    android:paddingHorizontal="20dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="20dp">
 
     <!-- Handle -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/bg_sheet_handle" />
 
-    <!-- Icon with Glow -->
-    <FrameLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <!-- Animated API Lottie Icon (Replaces static key icon) -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_api_header"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_gravity="center"
-        android:background="@drawable/bg_icon_glow_primary"
-        android:backgroundTint="?attr/colorPrimaryContainer">
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="lottie/system-solid-1327-api-hover-api.json"
+        app:lottie_loop="true" />
 
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_key_filled"
-            app:tint="?attr/colorOnPrimaryContainer" />
-    </FrameLayout>
-
-    <!-- Header -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="@string/title_add_api_key"
-        android:textAppearance="?attr/textAppearanceHeadlineSmall"
-        android:textColor="?attr/colorOnSurface" />
-
+    <!-- Header Title & Subtitle (Compact) -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
+        android:text="@string/title_add_api_key"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/desc_add_api_key"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?attr/colorOnSurfaceVariant" />
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="12sp" />
 
-    <!-- Provider Options Scrollable Area -->
+    <!-- Provider Options Scrollable Area (Expanded height for more options) -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="24dp"
-        android:fillViewport="false">
+        android:layout_height="340dp"
+        android:layout_marginTop="14dp"
+        android:fillViewport="false"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:id="@+id/providers_container"
@@ -82,14 +79,14 @@
         android:id="@+id/btn_cancel"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
         android:text="@string/btn_cancel"
         android:textAllCaps="false"
         android:textColor="?attr/colorOnSurface"
-        android:textSize="16sp"
-        app:cornerRadius="14dp"
-        app:strokeWidth="0dp"
-        app:backgroundTint="?attr/colorSurfaceContainerHigh" />
+        android:textSize="15sp"
+        app:backgroundTint="?attr/colorSurfaceContainerHigh"
+        app:cornerRadius="12dp"
+        app:strokeWidth="0dp" />
 
 </LinearLayout>

@@ -22,4 +22,6 @@ public interface ConfigChangeListener {
     void onPatternsChange(String patternsRaw);
 
     void onOtherSettingsChange(Bundle otherSettings);
+
+    default void onCustomProviderChange(tn.eluea.kgpt.llm.model.CustomProvider provider) {}
 }

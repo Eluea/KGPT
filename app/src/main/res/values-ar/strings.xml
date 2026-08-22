@@ -649,7 +649,11 @@
     <string name="changelog_1_0_0_item6">تم إصلاح مشكلة عدم الاتصال الناجح مع Chutes API</string>
     <string name="changelog_1_0_0_item7">تم إضافة موديل جديد Perplexity ودعم Perplexity API</string>
     <string name="changelog_1_0_0_item8">تم إلغاء التقييد باستخدام علامة \"/\" فيما يخص استخدام الأوامر</string>
-    <string name="changelog_1_0_0_note">برجاء التحلي بالصبر حيث تم إعلام المطور بالمزيد من المشكلات ولكن سيتم حلها على دفعات من التحديثات حيث أنه شخص واحد فقط يقف وراء تطوير كل هذا. شكراً لتفهمكم.</string>
+    <string name="changelog_4_1_2_item1">إضافة إمكانية إضافة مزودين مخصصين والارتباط بنماذج الذكاء الاصطناعي المحلية والسحابية (مثل Ollama و LM Studio و vLLM و DeepInfra و Together AI)</string>
+    <string name="changelog_4_1_2_item2">إضافة دعم مزود Grok (xAI) مع أحدث الموديلات: grok-2 و grok-2-mini و grok-beta و grok-vision-beta</string>
+    <string name="changelog_4_1_2_item3">إضافة دعم مزود DeepSeek مع الموديلات الذكية والتفكيرية: deepseek-chat و deepseek-reasoner و deepseek-v4-pro و deepseek-v4-flash و deepseek-coder و DeepSeek-V3 و DeepSeek-R1</string>
+    <string name="changelog_4_1_2_item4">إضافة دعم مزود Kimi (Moonshot AI) مع موديلات كيمي المتطورة وسلسلة Moonshot: kimi-k3 و kimi-k2.6 و kimi-k2.7-code و kimi-k2.5 و moonshot-v1</string>
+    <string name="changelog_4_1_2_item5">تحسين وتطوير شاشة إضافة مفاتيح API والبوتم شيت العائم مع انميشن سلس وشعارات المتجهات لجميع المزودين</string>
     <string name="changelog_4_1_1_item1">إصلاح فشل تنزيل فيديوهات يوتيوب بخطأ HTTP 403 Forbidden وقيود بث SABR</string>
     <string name="changelog_4_1_1_item2">إضافة آلية ذكية لتحديث نواة yt-dlp وإعادة المحاولة التلقائية في الخلفية</string>
     <string name="changelog_4_1_1_item3">توجيه استخراج الوسائط عبر عميل الأندرويد لضمان سرعة واستقرار التنزيل</string>
@@ -956,4 +960,38 @@
     <string name="preset_full_media">الكل</string>
     <string name="default_video_title">فيديو YouTube</string>
     <string name="default_media_title">رابط وسائط</string>
+
+    <!-- Custom Providers Strings (Arabic) -->
+    <string name="tab_provider_server">السيرفر</string>
+    <string name="tab_provider_models_auth">الموديلات والمصادقة</string>
+    <string name="tab_provider_advanced">متقدم</string>
+    <string name="tab_provider_advanced_test">متقدم</string>
+    <string name="btn_add">إضافة</string>
+    <string name="btn_add_custom_provider">إضافة مزود مخصص</string>
+    <string name="badge_custom_provider">مخصص</string>
+    <string name="title_add_custom_provider">إضافة مزود ذكاء اصطناعي</string>
+    <string name="title_edit_custom_provider">تعديل المزود المخصص</string>
+    <string name="desc_add_custom_provider">قم بربط أي سيرفر ذكاء اصطناعي محلي أو سحابي متوافق مع OpenAI</string>
+    <string name="label_quick_templates">قوالب سريعة جاهزة</string>
+    <string name="hint_provider_name">اسم المزود (مثلاً: Ollama Local)</string>
+    <string name="hint_base_url">الرابط الأساسي (Base URL)</string>
+    <string name="hint_chat_endpoint">مسار المحادثة (Chat Endpoint)</string>
+    <string name="label_models_list">قائمة الموديلات المدعومة</string>
+    <string name="hint_add_model_name">أدخل اسم الموديل</string>
+    <string name="hint_default_model">الموديل الافتراضي للتشغيل</string>
+    <string name="label_authentication">نوع المصادقة والمفتاح</string>
+    <string name="hint_api_key_optional">مفتاح الـ API (اختياري)</string>
+    <string name="label_advanced_capabilities">الإعدادات المتقدمة والقدرات</string>
+    <string name="label_supports_system_message">دعم موجه النظام (System Prompt)</string>
+    <string name="desc_supports_system_message">إرسال موجه النظام كدور منفصل بدلاً من دمجه في نص المستخدم</string>
+    <string name="hint_custom_headers_json">رؤوس HTTP مخصصة (Custom Headers JSON)</string>
+    <string name="btn_test_connection">فحص الاتصال</string>
+    <string name="btn_save_provider">حفظ وتطبيق المزود</string>
+    <string name="btn_delete_provider">حذف هذا المزود</string>
+    <string name="msg_provider_saved">تم حفظ المزود بنجاح</string>
+    <string name="msg_provider_deleted">تم حذف المزود</string>
+    <string name="msg_fill_required_fields">يرجى كتابة اسم المزود والرابط الأساسي وموديل واحد على الأقل</string>
+    <string name="msg_connection_success">نجح الاتصال بالسيرفر بنجاح!</string>
+    <string name="msg_connection_failed">فشل الاتصال: %1$s</string>
+    <string name="msg_confirm_delete_provider">هل أنت متأكد من رغبتك في حذف المزود \"%1$s\"؟</string>
 </resources>

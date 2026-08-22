@@ -1,22 +1,9 @@
 /*
- * Copyright (c) 2025 Amr Aldeeb @Eluea
+ * Copyright (c) 2025-2026 Amr Aldeeb @Eluea
  * GitHub: https://github.com/Eluea
  * Telegram: https://t.me/Eluea
  *
  * Licensed under the GPLv3.
- */
-/*
- * Copyright (C) 2024-2025 Amr Aldeeb @Eluea
- * 
- * This file is part of KGPT - a fork of KeyboardGPT.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * GitHub: https://github.com/Eluea
- * Telegram: https://t.me/Eluea
  */
 package tn.eluea.kgpt.ui.main.adapters;
 
@@ -26,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -34,25 +20,77 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.llm.LanguageModel;
+import tn.eluea.kgpt.llm.model.CustomProvider;
 
 public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewHolder> {
 
-    private final List<LanguageModel> models;
-    private LanguageModel selectedModel;
-    private final OnModelSelectedListener listener;
+    public static class ProviderItem {
+        public enum Type { BUILTIN, CUSTOM }
+        public final Type type;
+        public final LanguageModel builtinModel;
+        public final CustomProvider customProvider;
 
-    public interface OnModelSelectedListener {
-        void onModelSelected(LanguageModel model);
+        public ProviderItem(LanguageModel builtinModel) {
+            this.type = Type.BUILTIN;
+            this.builtinModel = builtinModel;
+            this.customProvider = null;
+        }
+
+        public ProviderItem(CustomProvider customProvider) {
+            this.type = Type.CUSTOM;
+            this.builtinModel = null;
+            this.customProvider = customProvider;
+        }
     }
 
-    public ModelsAdapter(List<LanguageModel> models, LanguageModel selectedModel, OnModelSelectedListener listener) {
-        this.models = models;
-        this.selectedModel = selectedModel;
+    public interface OnModelSelectedListener {
+        void onBuiltinModelSelected(LanguageModel model);
+        void onCustomProviderSelected(CustomProvider provider);
+        void onEditCustomProvider(CustomProvider provider);
+    }
+
+    private final List<ProviderItem> items = new ArrayList<>();
+    private LanguageModel selectedBuiltinModel;
+    private String selectedCustomProviderId;
+    private final OnModelSelectedListener listener;
+
+    public ModelsAdapter(List<LanguageModel> builtinModels,
+                         List<CustomProvider> customProviders,
+                         LanguageModel selectedBuiltinModel,
+                         String selectedCustomProviderId,
+                         OnModelSelectedListener listener) {
+        this.selectedBuiltinModel = selectedBuiltinModel;
+        this.selectedCustomProviderId = selectedCustomProviderId;
         this.listener = listener;
+        updateData(builtinModels, customProviders, selectedBuiltinModel, selectedCustomProviderId);
+    }
+
+    public void updateData(List<LanguageModel> builtinModels,
+                           List<CustomProvider> customProviders,
+                           LanguageModel selectedBuiltinModel,
+                           String selectedCustomProviderId) {
+        this.selectedBuiltinModel = selectedBuiltinModel;
+        this.selectedCustomProviderId = selectedCustomProviderId;
+        this.items.clear();
+
+        if (builtinModels != null) {
+            for (LanguageModel m : builtinModels) {
+                this.items.add(new ProviderItem(m));
+            }
+        }
+
+        if (customProviders != null) {
+            for (CustomProvider cp : customProviders) {
+                this.items.add(new ProviderItem(cp));
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -64,13 +102,13 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
 
     @Override
     public void onBindViewHolder(@NonNull ModelViewHolder holder, int position) {
-        LanguageModel model = models.get(position);
-        holder.bind(model, model == selectedModel);
+        ProviderItem item = items.get(position);
+        holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
-        return models.size();
+        return items.size();
     }
 
     class ModelViewHolder extends RecyclerView.ViewHolder {
@@ -79,7 +117,6 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
         private final ImageView ivModelIconStatic;
         private final com.airbnb.lottie.LottieAnimationView lottieModelIcon;
         private final TextView tvModelName;
-
         ModelViewHolder(@NonNull View itemView) {
             super(itemView);
             cardModel = itemView.findViewById(R.id.card_model);
@@ -89,8 +126,19 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
             tvModelName = itemView.findViewById(R.id.tv_model_name);
         }
 
-        void bind(LanguageModel model, boolean isSelected) {
-            tvModelName.setText(model.label);
+        void bind(ProviderItem item) {
+            boolean isSelected;
+            String label;
+
+            if (item.type == ProviderItem.Type.BUILTIN) {
+                label = item.builtinModel.label;
+                isSelected = (selectedCustomProviderId == null && item.builtinModel == selectedBuiltinModel);
+            } else {
+                label = item.customProvider.getName();
+                isSelected = (selectedCustomProviderId != null && selectedCustomProviderId.equals(item.customProvider.getId()));
+            }
+
+            tvModelName.setText(label);
 
             int colorPrimary = com.google.android.material.color.MaterialColors.getColor(itemView,
                     androidx.appcompat.R.attr.colorPrimary);
@@ -124,14 +172,34 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
             }
 
             cardModel.setOnClickListener(v -> {
-                int previousSelected = models.indexOf(selectedModel);
-                selectedModel = model;
-                notifyItemChanged(previousSelected);
-                notifyItemChanged(getAdapterPosition());
-                if (listener != null) {
-                    listener.onModelSelected(model);
+                if (item.type == ProviderItem.Type.BUILTIN) {
+                    selectedBuiltinModel = item.builtinModel;
+                    selectedCustomProviderId = null;
+                    notifyDataSetChanged();
+                    if (listener != null) {
+                        listener.onBuiltinModelSelected(item.builtinModel);
+                    }
+                } else if (item.type == ProviderItem.Type.CUSTOM) {
+                    selectedCustomProviderId = item.customProvider.getId();
+                    selectedBuiltinModel = null;
+                    notifyDataSetChanged();
+                    if (listener != null) {
+                        listener.onCustomProviderSelected(item.customProvider);
+                    }
                 }
             });
+
+            // Long click on custom provider to edit/delete
+            if (item.type == ProviderItem.Type.CUSTOM) {
+                cardModel.setOnLongClickListener(v -> {
+                    if (listener != null) {
+                        listener.onEditCustomProvider(item.customProvider);
+                    }
+                    return true;
+                });
+            } else {
+                cardModel.setOnLongClickListener(null);
+            }
         }
     }
 }

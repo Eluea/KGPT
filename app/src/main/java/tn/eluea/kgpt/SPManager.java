@@ -83,6 +83,10 @@ public class SPManager implements ConfigInfoProvider {
         }
     }
 
+    public ConfigClient getClient() {
+        return mClient;
+    }
+
     public int getVersion() {
         return mClient.getInt(PREF_MODULE_VERSION, -1);
     }

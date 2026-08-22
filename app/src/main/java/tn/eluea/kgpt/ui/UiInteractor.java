@@ -132,6 +132,16 @@ public class UiInteractor {
                                         }
                                     }
                                     break;
+                                case "tn.eluea.kgpt.config.SELECTED_CUSTOM_PROVIDER_ID":
+                                    String customId = intent.getStringExtra("tn.eluea.kgpt.config.SELECTED_CUSTOM_PROVIDER_ID");
+                                    if (customId != null) {
+                                        tn.eluea.kgpt.llm.model.CustomProvider cp = tn.eluea.kgpt.llm.model.CustomProviderManager.getInstance().getCustomProvider(customId);
+                                        if (cp != null) {
+                                            mConfigChangeListeners.forEach(l -> l.onCustomProviderChange(cp));
+                                            isPrompt = true;
+                                        }
+                                    }
+                                    break;
                                 case EXTRA_CONFIG_LANGUAGE_MODEL:
                                     Bundle bundle = intent.getBundleExtra(EXTRA_CONFIG_LANGUAGE_MODEL);
                                     if (bundle != null) {

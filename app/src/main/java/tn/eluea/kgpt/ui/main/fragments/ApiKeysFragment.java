@@ -282,6 +282,13 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         boolean isAmoled = prefs.getBoolean(PREF_AMOLED, false);
         boolean isDarkMode = prefs.getBoolean(PREF_THEME, false);
 
+        com.airbnb.lottie.LottieAnimationView lottieHeader = sheetView.findViewById(R.id.lottie_api_header);
+        if (lottieHeader != null) {
+            int colorPrimary = resolveAttrColor(requireContext(), androidx.appcompat.R.attr.colorPrimary);
+            tn.eluea.kgpt.util.LottieHelper.tint(lottieHeader, colorPrimary);
+            lottieHeader.playAnimation();
+        }
+
         LinearLayout providersContainer = sheetView.findViewById(R.id.providers_container);
         MaterialButton btnCancel = sheetView.findViewById(R.id.btn_cancel);
 
@@ -291,12 +298,16 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
                     providersContainer, false);
 
             TextView tvName = optionView.findViewById(R.id.tv_provider_name);
+            ImageView ivIcon = optionView.findViewById(R.id.iv_provider_icon);
             MaterialCardView card = optionView.findViewById(R.id.card_provider);
 
             TextView tvStatus = optionView.findViewById(R.id.tv_api_status);
             MaterialCardView cvStatus = optionView.findViewById(R.id.cv_api_status);
 
             tvName.setText(model.label);
+            if (ivIcon != null) {
+                ivIcon.setImageResource(tn.eluea.kgpt.util.ProviderLogoHelper.getLogoRes(model));
+            }
 
             if (model.isFree) {
                 tvStatus.setText("Free API");

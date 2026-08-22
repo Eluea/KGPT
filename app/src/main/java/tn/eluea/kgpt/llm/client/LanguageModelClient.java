@@ -98,6 +98,12 @@ public abstract class LanguageModelClient {
                 return new PerplexityClient();
             case GLM:
                 return new GLMClient();
+            case Grok:
+                return new GrokClient();
+            case DeepSeek:
+                return new DeepSeekClient();
+            case Kimi:
+                return new KimiClient();
             case ChatGPT:
             default:
                 return new ChatGPTClient();

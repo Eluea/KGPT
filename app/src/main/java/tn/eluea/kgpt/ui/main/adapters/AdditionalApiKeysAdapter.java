@@ -79,6 +79,7 @@ public class AdditionalApiKeysAdapter extends RecyclerView.Adapter<AdditionalApi
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvProviderName;
+        private final ImageView ivProviderIcon;
         private final TextInputEditText etApiKey;
         private final ImageView ivStatus;
         private final ImageView btnDelete;
@@ -90,6 +91,7 @@ public class AdditionalApiKeysAdapter extends RecyclerView.Adapter<AdditionalApi
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvProviderName = itemView.findViewById(R.id.tv_provider_name);
+            ivProviderIcon = itemView.findViewById(R.id.iv_provider_icon);
             etApiKey = itemView.findViewById(R.id.et_api_key);
             ivStatus = itemView.findViewById(R.id.iv_status);
             btnDelete = itemView.findViewById(R.id.btn_delete);
@@ -101,6 +103,9 @@ public class AdditionalApiKeysAdapter extends RecyclerView.Adapter<AdditionalApi
 
         void bind(LanguageModel model, int position) {
             tvProviderName.setText(model.label);
+            if (ivProviderIcon != null) {
+                ivProviderIcon.setImageResource(tn.eluea.kgpt.util.ProviderLogoHelper.getLogoRes(model));
+            }
 
             if (model.isFree) {
                 tvApiStatus.setText("Free API");

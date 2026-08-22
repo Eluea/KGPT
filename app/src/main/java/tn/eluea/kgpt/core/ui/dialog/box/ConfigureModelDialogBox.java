@@ -167,6 +167,31 @@ public class ConfigureModelDialogBox extends DialogBox {
                 MODEL_PRESETS.put(LanguageModel.GLM, new String[] {
                                 "glm-4", "glm-4-plus", "glm-4-flash", "glm-4-air", "glm-3-turbo"
                 });
+
+                // Grok (xAI) models
+                VALID_MODELS.put(LanguageModel.Grok, new HashSet<>(Arrays.asList(
+                                "grok-4.6", "grok-4.5", "grok-4.3", "grok-4", "grok-3",
+                                "grok-2-latest", "grok-2", "grok-2-vision-1212", "grok-beta")));
+                MODEL_PRESETS.put(LanguageModel.Grok, new String[] {
+                                "grok-4.6", "grok-4.5", "grok-4", "grok-2-latest", "grok-beta"
+                });
+
+                // DeepSeek models
+                VALID_MODELS.put(LanguageModel.DeepSeek, new HashSet<>(Arrays.asList(
+                                "deepseek-chat", "deepseek-reasoner", "deepseek-v4-pro",
+                                "deepseek-v4-flash", "deepseek-coder",
+                                "deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-R1")));
+                MODEL_PRESETS.put(LanguageModel.DeepSeek, new String[] {
+                                "deepseek-chat", "deepseek-reasoner", "deepseek-v4-pro", "deepseek-v4-flash"
+                });
+
+                // Kimi (Moonshot AI) models
+                VALID_MODELS.put(LanguageModel.Kimi, new HashSet<>(Arrays.asList(
+                                "kimi-k3", "kimi-k2.6", "kimi-k2.7-code", "kimi-k2.5", "kimi-k2-instruct",
+                                "moonshot-v1-auto", "moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k")));
+                MODEL_PRESETS.put(LanguageModel.Kimi, new String[] {
+                                "kimi-k3", "kimi-k2.6", "moonshot-v1-auto", "moonshot-v1-128k"
+                });
         }
 
         public ConfigureModelDialogBox(DialogBoxManager dialogManager, Activity parent,

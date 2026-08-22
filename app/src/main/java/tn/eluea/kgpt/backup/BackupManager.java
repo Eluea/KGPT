@@ -111,6 +111,9 @@ public class BackupManager {
                     subModels.put(model.name(), subModel);
             }
             backup.put(KEY_SUB_MODELS, subModels);
+            backup.put("custom_providers", spManager.getClient().getString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_CUSTOM_PROVIDERS, "[]"));
+            backup.put("selected_provider_type", spManager.getClient().getString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_SELECTED_PROVIDER_TYPE, tn.eluea.kgpt.llm.model.CustomProviderManager.TYPE_BUILTIN));
+            backup.put("selected_custom_provider_id", spManager.getClient().getString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_SELECTED_CUSTOM_PROVIDER_ID, ""));
             includedSections.put(BackupOptions.Option.LANGUAGE_MODEL.key);
         }
 
@@ -281,8 +284,17 @@ public class BackupManager {
                             spManager.setSubModel(model, subModels.getString(model.name()));
                         }
                     }
-                    restoredItems.add("AI Model Settings");
                 }
+                if (backup.has("custom_providers")) {
+                    spManager.getClient().putString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_CUSTOM_PROVIDERS, backup.getString("custom_providers"));
+                }
+                if (backup.has("selected_provider_type")) {
+                    spManager.getClient().putString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_SELECTED_PROVIDER_TYPE, backup.getString("selected_provider_type"));
+                }
+                if (backup.has("selected_custom_provider_id")) {
+                    spManager.getClient().putString(tn.eluea.kgpt.llm.model.CustomProviderManager.PREF_SELECTED_CUSTOM_PROVIDER_ID, backup.getString("selected_custom_provider_id"));
+                }
+                restoredItems.add("AI Model Settings");
             }
 
             if (options.isSelected(BackupOptions.Option.SENSITIVE_DATA) && backup.has(KEY_SENSITIVE_DATA)) {

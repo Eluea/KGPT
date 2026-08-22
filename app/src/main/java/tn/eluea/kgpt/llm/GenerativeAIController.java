@@ -46,13 +46,36 @@ public class GenerativeAIController implements ConfigChangeListener {
         mInteractor = UiInteractor.getInstance();
 
         mInteractor.registerConfigChangeListener(this);
-        if (mSPManager.hasLanguageModel()) {
+        if (tn.eluea.kgpt.llm.model.CustomProviderManager.getInstance().isCustomProviderSelected()) {
+            tn.eluea.kgpt.llm.model.CustomProvider p = tn.eluea.kgpt.llm.model.CustomProviderManager.getInstance().getSelectedCustomProvider();
+            if (p != null) {
+                setCustomProvider(p);
+            } else if (mSPManager.hasLanguageModel()) {
+                setModel(mSPManager.getLanguageModel());
+            } else {
+                mModelClient = LanguageModelClient.forModel(LanguageModel.Gemini);
+            }
+        } else if (mSPManager.hasLanguageModel()) {
             setModel(mSPManager.getLanguageModel());
         } else {
             mModelClient = LanguageModelClient.forModel(LanguageModel.Gemini);
         }
 
         updateInternetProvider();
+    }
+
+    public void setCustomProvider(tn.eluea.kgpt.llm.model.CustomProvider provider) {
+        if (provider == null) return;
+        tn.eluea.kgpt.util.Logger.log("setCustomProvider " + provider.getName());
+        tn.eluea.kgpt.llm.client.CustomProviderClient customClient = new tn.eluea.kgpt.llm.client.CustomProviderClient(provider);
+        String apiKey = tn.eluea.kgpt.llm.model.CustomProviderManager.getInstance().getCustomProviderApiKey(provider.getId());
+        String subModel = tn.eluea.kgpt.llm.model.CustomProviderManager.getInstance().getCustomProviderSubModel(provider.getId());
+        customClient.setField(LanguageModelField.ApiKey, apiKey);
+        if (subModel != null && !subModel.isEmpty()) {
+            customClient.setField(LanguageModelField.SubModel, subModel);
+        }
+        mModelClient = customClient;
+        mModelClient.setInternetProvider(mInternetProvider);
     }
 
     private void updateInternetProvider() {
@@ -102,6 +125,11 @@ public class GenerativeAIController implements ConfigChangeListener {
         if (mModelClient == null || mModelClient.getLanguageModel() != model) {
             setModel(model);
         }
+    }
+
+    @Override
+    public void onCustomProviderChange(tn.eluea.kgpt.llm.model.CustomProvider provider) {
+        setCustomProvider(provider);
     }
 
     @Override

@@ -756,61 +756,26 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
 
-        // Version 4.1.1 Hotfix Changes
-        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
-                getString(R.string.changelog_4_1_1_item1),
+        // Version 4.1.2 Changes
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_1_2_item1),
                 colorPrimary, colorOnPrimary);
 
-        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
-                getString(R.string.changelog_4_1_1_item2),
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_1_2_item2),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_1_2_item3),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_added),
+                getString(R.string.changelog_4_1_2_item4),
                 colorPrimary, colorOnPrimary);
 
         addChangelogEntry(changelogContent, getString(R.string.tag_improved),
-                getString(R.string.changelog_4_1_1_item3),
+                getString(R.string.changelog_4_1_2_item5),
                 colorPrimary, colorOnPrimary);
-
-        // Version 4.0.8 / 4.1.0 Changes
-        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
-                getString(R.string.changelog_4_0_8_item1),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
-                getString(R.string.changelog_4_0_8_item2),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
-                getString(R.string.changelog_4_0_8_item3),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item4),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item5),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item6),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item7),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item8),
-                colorPrimary, colorOnPrimary);
-
-        addChangelogEntry(changelogContent, getString(R.string.tag_added),
-                getString(R.string.changelog_4_0_8_item9),
-                colorPrimary, colorOnPrimary);
-
-        // Add note at the end using the new info card style
-        View noteCard = LayoutInflater.from(requireContext()).inflate(R.layout.item_info_card, changelogContent, false);
-        TextView tvCardText = noteCard.findViewById(R.id.tv_card_text);
-        tvCardText.setText(getString(R.string.changelog_note_4_0_8));
-        changelogContent.addView(noteCard);
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());

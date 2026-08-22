@@ -644,7 +644,11 @@
     <string name="changelog_1_0_0_item6">Fixed connection issue with Chutes API</string>
     <string name="changelog_1_0_0_item7">Added new Perplexity model and Perplexity API support</string>
     <string name="changelog_1_0_0_item8">Removed "/" restriction for using commands</string>
-    <string name="changelog_1_0_0_note">Please be patient as more issues have been reported to the developer, but they will be resolved in batches of updates as this is a one-person project. Thank you for your understanding.</string>
+    <string name="changelog_4_1_2_item1">Added Custom AI Providers support and connection to local/cloud LLM models (Ollama, LM Studio, vLLM, DeepInfra, Together AI)</string>
+    <string name="changelog_4_1_2_item2">Added support for Grok (xAI) with latest models: grok-2, grok-2-mini, grok-beta, and grok-vision-beta</string>
+    <string name="changelog_4_1_2_item3">Added support for DeepSeek with reasoning and smart models: deepseek-chat, deepseek-reasoner, deepseek-v4-pro, deepseek-v4-flash, deepseek-coder, DeepSeek-V3, and DeepSeek-R1</string>
+    <string name="changelog_4_1_2_item4">Added support for Kimi (Moonshot AI) with latest models: kimi-k3, kimi-k2.6, kimi-k2.7-code, kimi-k2.5, and moonshot-v1</string>
+    <string name="changelog_4_1_2_item5">Enhanced API Keys management and Custom Provider bottom sheets with fluid animations and vector brand logos</string>
     <string name="changelog_4_1_1_item1">Fixed YouTube downloads failing with HTTP 403 Forbidden / SABR streaming restrictions</string>
     <string name="changelog_4_1_1_item2">Added automatic background yt-dlp core update &amp; smart retry mechanism</string>
     <string name="changelog_4_1_1_item3">Configured Android player client fallback for reliable high-speed downloads</string>
@@ -944,4 +948,38 @@
     <string name="preset_full_media">Full</string>
     <string name="default_video_title">YouTube Video</string>
     <string name="default_media_title">Media Link</string>
+
+    <!-- Custom Providers Strings -->
+    <string name="tab_provider_server">Server</string>
+    <string name="tab_provider_models_auth">Models &amp; Auth</string>
+    <string name="tab_provider_advanced">Advanced</string>
+    <string name="tab_provider_advanced_test">Advanced</string>
+    <string name="btn_add">Add</string>
+    <string name="btn_add_custom_provider">Add Custom Provider</string>
+    <string name="badge_custom_provider">Custom</string>
+    <string name="title_add_custom_provider">Add AI Provider</string>
+    <string name="title_edit_custom_provider">Edit Custom Provider</string>
+    <string name="desc_add_custom_provider">Connect any local or cloud OpenAI-compatible LLM server</string>
+    <string name="label_quick_templates">Quick Templates</string>
+    <string name="hint_provider_name">Provider Name (e.g. Ollama Local)</string>
+    <string name="hint_base_url">Base URL</string>
+    <string name="hint_chat_endpoint">Chat Endpoint</string>
+    <string name="label_models_list">Supported Models List</string>
+    <string name="hint_add_model_name">Enter model name</string>
+    <string name="hint_default_model">Default Model</string>
+    <string name="label_authentication">Authentication</string>
+    <string name="hint_api_key_optional">API Key (optional)</string>
+    <string name="label_advanced_capabilities">Advanced &amp; Capabilities</string>
+    <string name="label_supports_system_message">Support System Prompt</string>
+    <string name="desc_supports_system_message">Send system prompt as role instead of prepending to user prompt</string>
+    <string name="hint_custom_headers_json">Custom HTTP Headers (JSON)</string>
+    <string name="btn_test_connection">Test Connection</string>
+    <string name="btn_save_provider">Save &amp; Apply Provider</string>
+    <string name="btn_delete_provider">Delete Provider</string>
+    <string name="msg_provider_saved">Provider saved successfully</string>
+    <string name="msg_provider_deleted">Provider deleted</string>
+    <string name="msg_fill_required_fields">Please enter provider name, base URL, and at least one model</string>
+    <string name="msg_connection_success">Connected to server successfully!</string>
+    <string name="msg_connection_failed">Connection failed: %1$s</string>
+    <string name="msg_confirm_delete_provider">Are you sure you want to delete \"%1$s\"?</string>
 </resources>
