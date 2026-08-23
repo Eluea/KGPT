@@ -111,9 +111,10 @@ public class MediaDownloadService extends Service {
             if (options != null) {
                 currentProcessId = options.getProcessId() != null ? options.getProcessId() : "dl_" + System.currentTimeMillis();
                 options.setProcessId(currentProcessId);
+                String platform = MediaUtils.getPlatformName(options.getUrl());
                 currentOutputDir = options.getCustomDownloadDir() != null
                         ? options.getCustomDownloadDir()
-                        : DownloaderPrefs.getTargetDownloadDirectory(this, options.isAudio(), options.getUploader());
+                        : DownloaderPrefs.getTargetDownloadDirectory(this, options.isAudio(), options.getUploader(), platform);
 
                 startForeground(NOTIFICATION_ID, buildProgressNotification(title, 0, "جاري بدء التنزيل..."));
                 executeDownloadTask(options, title);

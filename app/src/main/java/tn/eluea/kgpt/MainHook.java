@@ -27,6 +27,7 @@ import io.github.libxposed.api.XposedModuleInterface.PackageLoadedParam;
 import tn.eluea.kgpt.hook.HookManager;
 import tn.eluea.kgpt.hook.MethodHook;
 import tn.eluea.kgpt.hook.TextSelectionHook;
+import tn.eluea.kgpt.hook.YouTubeHook;
 import tn.eluea.kgpt.provider.XposedConfigReader;
 import tn.eluea.kgpt.ui.IMSController;
 import tn.eluea.kgpt.ui.UiInteractor;
@@ -78,31 +79,24 @@ public class MainHook extends XposedModule {
         }
 
         if ("android".equals(packageName)) {
-            MainHook.log("Hooking Android System Framework for Window Blur");
-            try {
-                Class<?> blurListenersClass = classLoader.loadClass("com.android.server.wm.CrossWindowBlurListeners");
-                Method isBlurEnabledMethod = blurListenersClass.getDeclaredMethod("isCrossWindowBlurEnabled");
-                hook(isBlurEnabledMethod).intercept(chain -> true);
-                MainHook.log("Successfully hooked CrossWindowBlurListeners.isCrossWindowBlurEnabled");
-            } catch (Throwable t) {
-                MainHook.log("Failed to hook CrossWindowBlurListeners: " + t.getMessage());
+            MainHook.log("Hooking Android System Framework (system_server)");
+            if (hookManager == null) {
+                hookManager = new HookManager();
             }
             try {
-                Class<?> wmServiceClass = classLoader.loadClass("com.android.server.wm.WindowManagerService");
-                Method isCrossWindowBlurEnabled = wmServiceClass.getDeclaredMethod("isCrossWindowBlurEnabled");
-                hook(isCrossWindowBlurEnabled).intercept(chain -> true);
-                MainHook.log("Successfully hooked WindowManagerService.isCrossWindowBlurEnabled");
+                tn.eluea.kgpt.hook.SystemFrameworkHook.hook(hookManager, classLoader);
             } catch (Throwable t) {
-                MainHook.log("Failed to hook WindowManagerService: " + t.getMessage());
+                MainHook.log("Failed to initialize SystemFrameworkHook: " + t.getMessage());
             }
-            try {
-                Class<?> clientBlurClass = classLoader.loadClass("android.view.CrossWindowBlurListeners");
-                Method isCrossWindowBlurEnabled = clientBlurClass.getDeclaredMethod("isCrossWindowBlurEnabled");
-                hook(isCrossWindowBlurEnabled).intercept(chain -> true);
-                MainHook.log("Successfully hooked android.view.CrossWindowBlurListeners");
-            } catch (Throwable t) {
-                MainHook.log("Failed to hook android.view.CrossWindowBlurListeners: " + t.getMessage());
+            return;
+        }
+
+        if ("com.google.android.youtube".equals(packageName) || "com.google.android.apps.youtube.music".equals(packageName)) {
+            MainHook.log("Hooking YouTube / YouTube Music for KGPT Downloader Integration");
+            if (hookManager == null) {
+                hookManager = new HookManager();
             }
+            YouTubeHook.hook(hookManager, classLoader, packageName);
             return;
         }
 

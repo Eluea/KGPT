@@ -647,8 +647,9 @@
     <string name="changelog_1_0_0_item4">تم تصحيح الكثير من الأخطاء المتعلقة بالاستقرار وتحسين الأداء</string>
     <string name="changelog_1_0_0_item5">تم اختبار ودعم لوحة مفاتيح FUTO</string>
     <string name="changelog_1_0_0_item6">تم إصلاح مشكلة عدم الاتصال الناجح مع Chutes API</string>
-    <string name="changelog_1_0_0_item7">تم إضافة موديل جديد Perplexity ودعم Perplexity API</string>
-    <string name="changelog_1_0_0_item8">تم إلغاء التقييد باستخدام علامة \"/\" فيما يخص استخدام الأوامر</string>
+    <string name="changelog_4_1_3_item1">إضافة خيار النيتيف اب دونلود مع ميزة الهوك السريع لتسهيل التنزيل المباشر</string>
+    <string name="changelog_4_1_3_item2">إضافة نمط التنزيل والفلترة من خلال عمل مجلد لكل تطبيق تقوم بالتنزيل من خلاله</string>
+    <string name="changelog_4_1_3_item3">تحسين وتطوير تصميم قسم إعدادات ميزة الدونلود مانجير</string>
     <string name="changelog_4_1_2_item1">إضافة إمكانية إضافة مزودين مخصصين والارتباط بنماذج الذكاء الاصطناعي المحلية والسحابية (مثل Ollama و LM Studio و vLLM و DeepInfra و Together AI)</string>
     <string name="changelog_4_1_2_item2">إضافة دعم مزود Grok (xAI) مع أحدث الموديلات: grok-2 و grok-2-mini و grok-beta و grok-vision-beta</string>
     <string name="changelog_4_1_2_item3">إضافة دعم مزود DeepSeek مع الموديلات الذكية والتفكيرية: deepseek-chat و deepseek-reasoner و deepseek-v4-pro و deepseek-v4-flash و deepseek-coder و DeepSeek-V3 و DeepSeek-R1</string>
@@ -842,8 +843,59 @@
     <string name="title_supported_platforms">المنصات المدعومة تلقائياً</string>
     <string name="desc_supported_platforms">يوتيوب، إنستغرام ريلز، تيك توك بدون علامة مائية، فيسبوك، تويتر/X، سبوتيفاي، ساوند كلاود، بينترست، و1000+ موقع.</string>
     <string name="title_update_engine">تحديث محرك التنزيل (yt-dlp Core)</string>
+
+    <!-- Native In-App Download Hook Section (Arabic) -->
+    <string name="title_native_downloader_hooks">التنزيل المباشر من التطبيقات</string>
+    <string name="badge_lsposed">LSPosed</string>
+    <string name="desc_native_downloader_hooks">اعتراض زر التنزيل الرسمي داخل التطبيقات وتحويله تلقائياً لـ KGPT Downloader.</string>
+    <string name="app_youtube_name">YouTube</string>
+    <string name="app_youtube_pkg">com.google.android.youtube</string>
+    <string name="app_ytmusic_name">YouTube Music</string>
+    <string name="app_ytmusic_pkg">com.google.android.apps.youtube.music</string>
+    <string name="toast_hook_enabled">تم تفعيل التنزيل المباشر لـ %1$s. أعد تشغيل التطبيق للتطبيق.</string>
+    <string name="toast_hook_disabled">تم تعطيل التنزيل المباشر لـ %1$s.</string>
+    <string name="toast_lsposed_scope_prompt">تأكد من تفعيل نطاق %1$s لـ KGPT في تطبيق LSPosed.</string>
+    <string name="toast_requesting_lsposed_scope">جاري إرسال طلب تفعيل النطاق إلى LSPosed…</string>
+    <string name="toast_lsposed_scope_denied">تم رفض أو إلغاء طلب النطاق في LSPosed</string>
+
+    <string name="pref_group_by_app">تنظيم حسب التطبيق / المنصة</string>
+    <string name="pref_group_by_app_desc">إنشاء مجلدات فرعية لكل تطبيق (يوتيوب، تيك توك، إنستغرام...)</string>
+
+    <!-- Downloader How-To-Use Guide Strings (Arabic) -->
+    <string name="title_downloader_guide">دليل استخدام KGPT Downloader</string>
+    <string name="desc_downloader_guide">كل الطرق والوسائل المتاحة لتنزيل الوسائط بسهولة وسرعة:</string>
+    <string name="guide_item_share_title">1. المشاركة المباشرة (Share to Download)</string>
+    <string name="guide_item_share_desc">قم بمشاركة أي فيديو أو صوت من يوتيوب، تيك توك، إنستغرام، إكس (تويتر)، فيسبوك أو غيرها مباشرة مع تطبيق KGPT لبدء التنزيل فوراً.</string>
+    <string name="guide_item_paste_title">2. لصق الرابط المباشر</string>
+    <string name="guide_item_paste_desc">انسخ رابط أي وسائط عامة والصقه في بطاقة التنزيل المباشر أعلاه لاختيار الجودة والصيغة والتحميل.</string>
+    <string name="guide_item_native_title">3. أزرار التنزيل النيتيف</string>
+    <string name="guide_item_native_desc">عند تفعيل الميزة عبر LSPosed، يؤدي الضغط على زر التنزيل الرسمي داخل التطبيقات المدعومة إلى فتح KGPT مباشرة.</string>
+    <string name="guide_item_selection_trigger_title">4. تحديد النص وتريجر لوحة المفاتيح</string>
+    <string name="guide_item_selection_trigger_desc">حدد أي رابط في أي مكان واضغط \"Media Downloader\" من قائمة التحديد، أو اكتب الرابط متبوعاً بـ .dl مباشرة في الكيبورد.</string>
+    <string name="guide_item_search_title">5. البحث المباشر</string>
+    <string name="guide_item_search_desc">ابحث باسم أي فيديو أو أغنية بالاسم لتحميل النتيجة مباشرة وبنقرة واحدة.</string>
+    <string name="guide_section_paste_title">1. اللصق المباشر داخل التطبيق</string>
+    <string name="guide_section_paste_desc">الصق رابط أي فيديو أو مقطع صوتي في خانة البحث بالأعلى واضغط تنزيل لاختيار الجودة والصيغة.</string>
+    <string name="guide_section_native_title">2. أزرار التحميل الأصلية</string>
+    <string name="guide_section_native_desc">اضغط مباشرة على زر التنزيل الرسمي في تطبيق YouTube أو YouTube Music ليتم التنزيل مجاناً وبأعلى جودة.</string>
+    <string name="guide_section_share_title">3. قائمة المشاركة من أي تطبيق</string>
+    <string name="guide_section_share_desc">اضغط مشاركة (Share) على أي منشور في إنستغرام، تيك توك، فيسبوك، تويتر/X، بينترست، ثريدز... واختر KGPT Downloader.</string>
+    <string name="guide_section_selection_title">4. قائمة تحديد النص (Text Selection)</string>
+    <string name="guide_section_selection_desc">حدد أي رابط في المتصفح أو أي محادثة، واختر \"Media Downloader\" من شريط الأدوات العائم.</string>
+    <string name="guide_section_trigger_title">5. أوامر وتريجر لوحة المفاتيح</string>
+    <string name="guide_section_trigger_desc">اكتب أي رابط متبوعاً برمز .dl (مثال: https://... .dl) في الكيبورد للتحميل الفوري، أو استخدم الأمر /download.</string>
+    <string name="guide_section_search_title">6. البحث المباشر بدون روابط</string>
+    <string name="guide_section_search_desc">ابحث باسم أي أغنية أو فيديو بالاسم مباشرة وقم بتحميل أي نتيجة تظهر لك بنقرة واحدة.</string>
+    <string name="notice_public_media_title">تنزيل المحتوى العام</string>
+    <string name="notice_public_media_desc">يمكنك استخدام الميزة لتنزيل أي فيديو عام (بدون حماية DRM) من أي تطبيق كان من خلال مشاركة المحتوى مع KGPT بشكل مباشر.</string>
     <string name="desc_update_engine">يقوم بتحديث خوارزميات فك تشفير الفيديوهات تلقائياً من الإنترنت إذا طرأ تغيير على منصات الفيديو.</string>
     <string name="btn_update_engine_now">تحديث خوارزميات التنزيل الآن</string>
+    <string name="core_status_checking">جاري فحص حالة محرك التنزيل…</string>
+    <string name="core_status_ready">محرك التنزيل محدّث بالكامل وجاهز</string>
+    <string name="core_status_update_available">يتوفر تحديث جديد لخوارزميات التنزيل</string>
+    <string name="core_status_downloading">جاري تنزيل وتثبيت التحديث…</string>
+    <string name="btn_core_check_updates">فحص التحديثات</string>
+    <string name="btn_core_install_update">تنزيل وتثبيت التحديث الآن</string>
     <string name="toast_download_started">تم بدء التنزيل في الخلفية</string>
     <string name="toast_clipboard_empty">الحافظة فارغة</string>
     <string name="toast_invalid_url">يرجى إدخال أو لصق رابط وسائط صالح</string>

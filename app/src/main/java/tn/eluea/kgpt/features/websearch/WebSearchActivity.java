@@ -23,20 +23,26 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.CookieManager;
+import android.webkit.RenderProcessGoneDetail;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -550,19 +556,13 @@ public class WebSearchActivity extends AppCompatActivity {
     private void configureWebView() {
         Log.d(TAG, "Configuring WebView");
 
-        // Use hardware acceleration only on capable devices
-        android.app.ActivityManager am = (android.app.ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        boolean isLowRamDevice = am != null && am.isLowRamDevice();
-
-        if (isLowRamDevice) {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        } else {
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        }
+        // Allow default rendering layer
+        webView.setLayerType(View.LAYER_TYPE_NONE, null);
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setBuiltInZoomControls(true);
@@ -570,67 +570,168 @@ public class WebSearchActivity extends AppCompatActivity {
         webSettings.setSupportZoom(true);
         webSettings.setDefaultTextEncodingName("utf-8");
         webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setBlockNetworkImage(false);
+        webSettings.setBlockNetworkLoads(false);
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-
-        // Use cache more aggressively on low-end devices
-        if (isLowRamDevice) {
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        } else {
-            webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        }
-
-        webSettings.setDatabaseEnabled(true);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSettings.setMediaPlaybackRequiresUserGesture(false);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowContentAccess(true);
+        webSettings.setMediaPlaybackRequiresUserGesture(false);
+        webSettings.setSupportMultipleWindows(false);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            webSettings.setSafeBrowsingEnabled(false);
+        }
 
-        webView.setBackgroundColor(ContextCompat.getColor(this, R.color.surface_color));
+        // Default User-Agent is preserved to ensure Sec-CH-UA consistency with Chromium
+        // Enable Cookies & Third Party Cookies
+        try {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
+            cookieManager.setAcceptThirdPartyCookies(webView, true);
+        } catch (Throwable t) {
+            Log.w(TAG, "Failed to configure CookieManager: " + t.getMessage());
+        }
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                Log.d(TAG, "Page finished loading: " + url);
-                progressBar.setVisibility(View.GONE);
-                tvUrl.setText(url);
-                currentUrl = url;
-                webView.requestLayout();
-                webView.invalidate();
-            }
-
             @Override
             public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 Log.d(TAG, "Page started loading: " + url);
-                progressBar.setVisibility(View.VISIBLE);
+                if (url != null && !url.equals("about:blank")) {
+                    currentUrl = url;
+                    if (tvUrl != null) tvUrl.setText(url);
+                }
+                if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                Log.d(TAG, "Page finished loading: " + url);
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
+                if (url != null && !url.equals("about:blank")) {
+                    currentUrl = url;
+                    if (tvUrl != null) tvUrl.setText(url);
+                }
+                view.requestLayout();
+                view.invalidate();
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Log.d(TAG, "shouldOverrideUrlLoading: " + request.getUrl());
+                if (request != null && request.getUrl() != null) {
+                    return handleUrlNavigation(view, request.getUrl().toString());
+                }
                 return false;
+            }
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return handleUrlNavigation(view, url);
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                // Proceed on SSL errors to avoid white screen on redirects or local proxies
+                if (handler != null) {
+                    handler.proceed();
+                }
             }
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Log.e(TAG, "WebView error: " + errorCode + " - " + description + " for " + failingUrl);
             }
+
+            @Override
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                Log.e(TAG, "onRenderProcessGone, recovering WebView...");
+                if (webView != null) {
+                    ViewGroup parent = (ViewGroup) webView.getParent();
+                    if (parent != null) {
+                        parent.removeView(webView);
+                    }
+                    webView.destroy();
+                    webView = new WebView(WebSearchActivity.this);
+                    if (parent != null) {
+                        parent.addView(webView, new FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT));
+                    }
+                    configureWebView();
+                    if (currentUrl != null) {
+                        webView.loadUrl(currentUrl);
+                    }
+                }
+                return true;
+            }
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                Log.d(TAG, "Loading progress: " + newProgress + "%");
-                if (newProgress < 100) {
-                    progressBar.setVisibility(View.VISIBLE);
-                } else {
-                    progressBar.setVisibility(View.GONE);
+                if (progressBar != null) {
+                    if (newProgress < 100) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
+            }
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                Log.d(TAG, "WebView Title received: " + title);
+            }
+
+            @Override
+            public boolean onConsoleMessage(android.webkit.ConsoleMessage consoleMessage) {
+                Log.d(TAG, "JS Console: [" + consoleMessage.messageLevel() + "] " + consoleMessage.message()
+                        + " (source: " + consoleMessage.sourceId() + ":" + consoleMessage.lineNumber() + ")");
+                return true;
             }
         });
 
         WebView.setWebContentsDebuggingEnabled(true);
+    }
+
+    private boolean handleUrlNavigation(WebView view, String url) {
+        if (url == null) return false;
+        Log.d(TAG, "handleUrlNavigation: " + url);
+
+        // Standard web URLs: load internally in this WebView
+        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("about:") || url.startsWith("data:") || url.startsWith("javascript:")) {
+            return false;
+        }
+
+        // Custom app schemes (intent://, market://, tel:, mailto:, tg:, etc.)
+        try {
+            Intent intent;
+            if (url.startsWith("intent://")) {
+                intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                if (intent != null) {
+                    if (getPackageManager().resolveActivity(intent, 0) != null) {
+                        startActivity(intent);
+                        return true;
+                    }
+                    String fallbackUrl = intent.getStringExtra("browser_fallback_url");
+                    if (fallbackUrl != null && !fallbackUrl.isEmpty()) {
+                        view.loadUrl(fallbackUrl);
+                        return true;
+                    }
+                }
+            } else {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "Failed to handle scheme navigation for URL: " + url, t);
+        }
+        return true;
     }
 
     @Override

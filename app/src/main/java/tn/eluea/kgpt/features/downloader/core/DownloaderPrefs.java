@@ -45,6 +45,16 @@ public class DownloaderPrefs {
         getPrefs(context).edit().putString(KEY_CUSTOM_DOWNLOAD_DIR, path).apply();
     }
 
+    public static final String KEY_GROUP_BY_APP = "group_by_app";
+
+    public static boolean isGroupByApp(Context context) {
+        return getPrefs(context).getBoolean(KEY_GROUP_BY_APP, false);
+    }
+
+    public static void setGroupByApp(Context context, boolean value) {
+        getPrefs(context).edit().putBoolean(KEY_GROUP_BY_APP, value).apply();
+    }
+
     public static boolean isGroupByUploader(Context context) {
         return getPrefs(context).getBoolean(KEY_GROUP_BY_UPLOADER, false);
     }
@@ -62,11 +72,20 @@ public class DownloaderPrefs {
     }
 
     public static File getTargetDownloadDirectory(Context context, boolean isAudio, String uploader) {
+        return getTargetDownloadDirectory(context, isAudio, uploader, null);
+    }
+
+    public static File getTargetDownloadDirectory(Context context, boolean isAudio, String uploader, String sourceApp) {
         String rootPath = getDownloadRootPath(context);
         File targetDir = new File(rootPath);
 
         if (isSeparateAudioVideo(context)) {
             targetDir = new File(targetDir, isAudio ? "Audio" : "Video");
+        }
+
+        if (isGroupByApp(context) && sourceApp != null && !sourceApp.trim().isEmpty()) {
+            String cleanApp = sourceApp.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
+            targetDir = new File(targetDir, cleanApp);
         }
 
         if (isGroupByUploader(context) && uploader != null && !uploader.trim().isEmpty()) {
@@ -159,6 +178,41 @@ public class DownloaderPrefs {
 
     public static void setLastCoreCheckTimestamp(Context context, long value) {
         getPrefs(context).edit().putLong("last_core_check_ts", value).apply();
+    }
+
+    public static final String KEY_HOOK_YOUTUBE = "hook_youtube_native_download";
+    public static final String KEY_HOOK_YTMUSIC = "hook_ytmusic_native_download";
+
+    public static boolean isYouTubeHookEnabled(Context context) {
+        if (context == null) return true;
+        try {
+            return tn.eluea.kgpt.provider.WorldReadablePrefs.getPrefs(context).getBoolean(KEY_HOOK_YOUTUBE, true);
+        } catch (Throwable e) {
+            return getPrefs(context).getBoolean(KEY_HOOK_YOUTUBE, true);
+        }
+    }
+
+    public static void setYouTubeHookEnabled(Context context, boolean enabled) {
+        getPrefs(context).edit().putBoolean(KEY_HOOK_YOUTUBE, enabled).apply();
+        try {
+            tn.eluea.kgpt.provider.WorldReadablePrefs.getPrefs(context).edit().putBoolean(KEY_HOOK_YOUTUBE, enabled).commit();
+        } catch (Throwable ignored) {}
+    }
+
+    public static boolean isYTMusicHookEnabled(Context context) {
+        if (context == null) return true;
+        try {
+            return tn.eluea.kgpt.provider.WorldReadablePrefs.getPrefs(context).getBoolean(KEY_HOOK_YTMUSIC, true);
+        } catch (Throwable e) {
+            return getPrefs(context).getBoolean(KEY_HOOK_YTMUSIC, true);
+        }
+    }
+
+    public static void setYTMusicHookEnabled(Context context, boolean enabled) {
+        getPrefs(context).edit().putBoolean(KEY_HOOK_YTMUSIC, enabled).apply();
+        try {
+            tn.eluea.kgpt.provider.WorldReadablePrefs.getPrefs(context).edit().putBoolean(KEY_HOOK_YTMUSIC, enabled).commit();
+        } catch (Throwable ignored) {}
     }
 
     public static boolean isCoreInstalled(Context context) {

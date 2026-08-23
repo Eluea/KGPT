@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2025 Amr Aldeeb @Eluea
  * GitHub: https://github.com/Eluea
  * Telegram: https://t.me/Eluea
@@ -8,11 +8,13 @@
 package tn.eluea.kgpt
 
 import org.junit.Test
-import org.junit.Assert.*
+import io.github.libxposed.api.XposedInterface
 
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun checkChainMethods() {
+        for (m in XposedInterface.Chain::class.java.methods) {
+            println("Chain: ${m.name}(${m.parameterTypes.map { it.simpleName }.joinToString()}) -> ${m.returnType.simpleName}")
+        }
     }
 }

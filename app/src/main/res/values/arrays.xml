@@ -33,9 +33,6 @@
         <!-- Simple Keyboard -->
         <item>rkr.simplekeyboard.inputmethod</item>
         <!-- OpenBoard -->
-        <item>org.dslul.openboard.inputmethod.latin</item>
-        <!-- FlorisBoard -->
-        <item>dev.patrickgold.florisboard</item>
         <!-- KGPT App itself for status check -->
         <item>tn.eluea.kgpt</item>
     </string-array>

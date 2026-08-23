@@ -642,8 +642,9 @@
     <string name="changelog_1_0_0_item4">Fixed many stability issues and improved performance</string>
     <string name="changelog_1_0_0_item5">Tested and added support for FUTO keyboard</string>
     <string name="changelog_1_0_0_item6">Fixed connection issue with Chutes API</string>
-    <string name="changelog_1_0_0_item7">Added new Perplexity model and Perplexity API support</string>
-    <string name="changelog_1_0_0_item8">Removed "/" restriction for using commands</string>
+    <string name="changelog_4_1_3_item1">Added Native In-App Download option with instant LSPosed hook integration</string>
+    <string name="changelog_4_1_3_item2">Added smart download organization with automatic subfolders for each source app</string>
+    <string name="changelog_4_1_3_item3">Redesigned and elevated KGPT Media Downloader settings interface</string>
     <string name="changelog_4_1_2_item1">Added Custom AI Providers support and connection to local/cloud LLM models (Ollama, LM Studio, vLLM, DeepInfra, Together AI)</string>
     <string name="changelog_4_1_2_item2">Added support for Grok (xAI) with latest models: grok-2, grok-2-mini, grok-beta, and grok-vision-beta</string>
     <string name="changelog_4_1_2_item3">Added support for DeepSeek with reasoning and smart models: deepseek-chat, deepseek-reasoner, deepseek-v4-pro, deepseek-v4-flash, deepseek-coder, DeepSeek-V3, and DeepSeek-R1</string>
@@ -828,8 +829,59 @@
     <string name="title_supported_platforms">Supported Platforms</string>
     <string name="desc_supported_platforms">YouTube, Instagram Reels, TikTok (No Watermark), Facebook, Twitter/X, Spotify, SoundCloud, Pinterest, Reddit, Threads, and 1000+ sites.</string>
     <string name="title_update_engine">Update Core Engine (yt-dlp)</string>
+
+    <!-- Native In-App Download Hook Section -->
+    <string name="title_native_downloader_hooks">Native In-App Downloads</string>
+    <string name="badge_lsposed">LSPosed</string>
+    <string name="desc_native_downloader_hooks">Directly intercept the official download button inside apps and open KGPT Downloader seamlessly.</string>
+    <string name="app_youtube_name">YouTube</string>
+    <string name="app_youtube_pkg">com.google.android.youtube</string>
+    <string name="app_ytmusic_name">YouTube Music</string>
+    <string name="app_ytmusic_pkg">com.google.android.apps.youtube.music</string>
+    <string name="toast_hook_enabled">Native download enabled for %1$s. Restart app to apply.</string>
+    <string name="toast_hook_disabled">Native download disabled for %1$s.</string>
+    <string name="toast_lsposed_scope_prompt">Make sure %1$s is enabled in KGPT scope inside LSPosed Manager.</string>
+    <string name="toast_requesting_lsposed_scope">Requesting LSPosed scope authorization…</string>
+    <string name="toast_lsposed_scope_denied">LSPosed scope request was cancelled or denied</string>
+
+    <string name="pref_group_by_app">Group by Source App</string>
+    <string name="pref_group_by_app_desc">Create separate subfolders for each platform (YouTube, TikTok, Instagram...)</string>
+
+    <!-- Downloader How-To-Use Guide Strings -->
+    <string name="title_downloader_guide">KGPT Downloader Guide</string>
+    <string name="desc_downloader_guide">All available ways to download video &amp; audio effortlessly:</string>
+    <string name="guide_item_share_title">1. Share to Download</string>
+    <string name="guide_item_share_desc">Share any video or audio from YouTube, TikTok, Instagram, Twitter/X, Facebook, etc., directly to KGPT to start downloading immediately.</string>
+    <string name="guide_item_paste_title">2. Direct Link Paste</string>
+    <string name="guide_item_paste_desc">Paste any public media link into the downloader card to fetch video details, select audio/video formats, and download.</string>
+    <string name="guide_item_native_title">3. Native In-App Download</string>
+    <string name="guide_item_native_desc">When enabled with LSPosed, tapping the official download button inside supported apps directly triggers KGPT.</string>
+    <string name="guide_item_selection_trigger_title">4. Text Selection &amp; Keyboard Trigger</string>
+    <string name="guide_item_selection_trigger_desc">Select any link anywhere on your phone and tap \"Media Downloader\", or type a URL followed by .dl directly in your keyboard.</string>
+    <string name="guide_item_search_title">5. Direct Search</string>
+    <string name="guide_item_search_desc">Search for songs or videos by title or artist and download results instantly.</string>
+    <string name="guide_section_paste_title">1. In-App Direct Paste</string>
+    <string name="guide_section_paste_desc">Copy any video/audio link to your clipboard and paste it into KGPT to download in any resolution or format.</string>
+    <string name="guide_section_native_title">2. Native In-App Buttons</string>
+    <string name="guide_section_native_desc">Tap the native official download button directly inside YouTube and YouTube Music to launch instant KGPT download.</string>
+    <string name="guide_section_share_title">3. Share Menu from Any App</string>
+    <string name="guide_section_share_desc">Tap \"Share\" on any post or reel in TikTok, Instagram, Facebook, X, Pinterest, Threads, etc., and pick KGPT Downloader.</string>
+    <string name="guide_section_selection_title">4. Text Selection Action</string>
+    <string name="guide_section_selection_desc">Highlight any URL in a browser or chat, then choose \"Media Downloader\" from the floating context menu.</string>
+    <string name="guide_section_trigger_title">5. Keyboard Triggers &amp; Commands</string>
+    <string name="guide_section_trigger_desc">Type a URL followed by .dl (e.g. https://... .dl) on your keyboard, or type /download.</string>
+    <string name="guide_section_search_title">6. Direct Media Search</string>
+    <string name="guide_section_search_desc">Search for any song or video title directly by name and download results with a single tap.</string>
+    <string name="notice_public_media_title">Public Media Notice</string>
+    <string name="notice_public_media_desc">You can download any public (no DRM) video from any app by sharing the content directly to KGPT.</string>
     <string name="desc_update_engine">Update video extractor algorithms directly from the internet.</string>
     <string name="btn_update_engine_now">Update Extractor Algorithms Now</string>
+    <string name="core_status_checking">Checking core engine status…</string>
+    <string name="core_status_ready">Core engine is fully updated and ready</string>
+    <string name="core_status_update_available">New core update is available</string>
+    <string name="core_status_downloading">Downloading and installing update…</string>
+    <string name="btn_core_check_updates">Check for Updates</string>
+    <string name="btn_core_install_update">Download &amp; Install Update</string>
     <string name="toast_download_started">Download started in background</string>
     <string name="toast_clipboard_empty">Clipboard is empty</string>
     <string name="toast_invalid_url">Please enter a valid media URL</string>

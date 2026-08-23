@@ -11,8 +11,8 @@ android {
         applicationId = "tn.eluea.kgpt"
         minSdk = 26
         targetSdk = 36
-        versionCode = 12
-        versionName = "4.1.2"
+        versionCode = 413
+        versionName = "4.1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -38,11 +38,13 @@ android {
 
     buildTypes {
         release {
+            debuggable false
             minifyEnabled = false
             proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
             signingConfig = signingConfigs.release
         }
         debug {
+            debuggable false
             signingConfig = signingConfigs.release
         }
     }
@@ -130,6 +132,9 @@ dependencies {
         exclude group: 'com.google.guava'
     }
     implementation 'com.google.http-client:google-http-client-gson:1.44.1'
+
+    // DexKit for robust DEX string searching
+    implementation 'org.luckypray:dexkit:2.0.4'
 }
 
 java {

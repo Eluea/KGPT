@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
@@ -185,8 +185,7 @@
             <WebView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layerType="hardware" />
+                android:layout_height="match_parent" />
         </FrameLayout>
 
     </LinearLayout>

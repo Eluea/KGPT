@@ -54,6 +54,9 @@ public class KGPTApplication extends Application {
         // Initialize SPManager to ensure we can read prefs
         tn.eluea.kgpt.SPManager.init(this);
 
+        // Initialize LSPosed Modern Service helper
+        tn.eluea.kgpt.util.LSPosedHelper.init(this);
+
         // Apply theme globally before any activity is created
         applyGlobalTheme();
 

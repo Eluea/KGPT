@@ -18,16 +18,37 @@ import java.util.List;
 
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
+import tn.eluea.kgpt.features.downloader.core.MediaSearchItem;
 import tn.eluea.kgpt.features.downloader.core.MediaUtils;
+import tn.eluea.kgpt.features.downloader.core.YouTubeSearchEngine;
 
 public class MediaShareActivity extends AppCompatActivity {
     private static final String TAG = "KGPT_MediaShareActivity";
 
+    private MediaDownloaderBottomSheet currentSheet = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        overridePendingTransition(0, 0);
         super.onCreate(savedInstanceState);
+        handleIntent(getIntent());
+    }
 
-        Intent intent = getIntent();
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (currentSheet != null) {
+            try {
+                currentSheet.dismiss();
+            } catch (Throwable ignored) {}
+            currentSheet = null;
+        }
+
         if (intent == null) {
             finish();
             return;
@@ -63,10 +84,30 @@ public class MediaShareActivity extends AppCompatActivity {
 
         if (extractedUrls.isEmpty()) {
             if (rawText != null && !rawText.trim().isEmpty()) {
-                // Smart Search: Non-URL text shared to KGPT Downloader
-                YouTubeSearchBottomSheet searchSheet = new YouTubeSearchBottomSheet(this, rawText.trim());
-                searchSheet.setOnDismissListener(dialog -> finish());
-                searchSheet.show();
+                final String query = rawText.trim();
+                // Auto-resolve top video directly instead of showing search picker sheet
+                YouTubeSearchEngine.getInstance().search(this, query, 1, null, new YouTubeSearchEngine.SearchCallback() {
+                    @Override
+                    public void onSuccess(YouTubeSearchEngine.SearchResult result) {
+                        if (isFinishing() || isDestroyed()) return;
+                        if (result != null && !result.getItems().isEmpty()) {
+                            MediaSearchItem item = result.getItems().get(0);
+                            String videoUrl = item.getUrl();
+                            if (videoUrl != null && !videoUrl.isEmpty()) {
+                                openDirectDownloadSheet(videoUrl);
+                                return;
+                            }
+                        }
+                        // Fallback to search bottom sheet if no direct item resolved
+                        openSearchSheet(query);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        if (isFinishing() || isDestroyed()) return;
+                        openSearchSheet(query);
+                    }
+                });
                 return;
             }
             Toast.makeText(this, getString(R.string.toast_invalid_url), Toast.LENGTH_SHORT).show();
@@ -89,16 +130,43 @@ public class MediaShareActivity extends AppCompatActivity {
         openTargetFlow(finalUrls);
     }
 
+    private void openDirectDownloadSheet(String url) {
+        if (!DownloaderEngine.getInstance().isCoreInstalled(this)) {
+            CoreInstallerBottomSheet installer = new CoreInstallerBottomSheet(this, () -> {
+                openDirectDownloadSheet(url);
+            });
+            installer.setOnDismissListener(dialog -> finish());
+            installer.show();
+            return;
+        }
+
+        currentSheet = new MediaDownloaderBottomSheet(this, url);
+        currentSheet.setOnDismissListener(this::finish);
+        currentSheet.show();
+    }
+
+    private void openSearchSheet(String query) {
+        YouTubeSearchBottomSheet searchSheet = new YouTubeSearchBottomSheet(this, query);
+        searchSheet.setOnDismissListener(dialog -> finish());
+        searchSheet.show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
     private void openTargetFlow(List<String> extractedUrls) {
         if (extractedUrls.size() == 1) {
-            MediaDownloaderBottomSheet sheet = new MediaDownloaderBottomSheet(this, extractedUrls.get(0));
-            sheet.setOnDismissListener(this::finish);
-            sheet.show();
+            currentSheet = new MediaDownloaderBottomSheet(this, extractedUrls.get(0));
+            currentSheet.setOnDismissListener(this::finish);
+            currentSheet.show();
         } else {
             LinkSelectionBottomSheet linkPicker = new LinkSelectionBottomSheet(this, extractedUrls, (LinkSelectionBottomSheet.OnLinkSelectedListener) selectedUrl -> {
-                MediaDownloaderBottomSheet sheet = new MediaDownloaderBottomSheet(this, selectedUrl);
-                sheet.setOnDismissListener(this::finish);
-                sheet.show();
+                currentSheet = new MediaDownloaderBottomSheet(this, selectedUrl);
+                currentSheet.setOnDismissListener(this::finish);
+                currentSheet.show();
             });
             linkPicker.setOnDismissListener(dialog -> finish());
             linkPicker.show();

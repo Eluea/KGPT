@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
 
     private static volatile boolean isServiceBoundActive = false;
     private static XposedService sXposedService = null;
+    private static java.lang.ref.WeakReference<HomeFragment> sCurrentInstance = new java.lang.ref.WeakReference<>(null);
 
     static {
         try {
@@ -72,17 +73,29 @@ public class HomeFragment extends Fragment {
                 public void onServiceBind(XposedService service) {
                     sXposedService = service;
                     isServiceBoundActive = true;
+                    HomeFragment instance = sCurrentInstance.get();
+                    if (instance != null && instance.isAdded() && instance.getActivity() != null) {
+                        instance.getActivity().runOnUiThread(instance::updateUI);
+                    }
                 }
 
                 @Override
                 public void onServiceDied(XposedService service) {
                     sXposedService = null;
                     isServiceBoundActive = false;
+                    HomeFragment instance = sCurrentInstance.get();
+                    if (instance != null && instance.isAdded() && instance.getActivity() != null) {
+                        instance.getActivity().runOnUiThread(instance::updateUI);
+                    }
                 }
             });
         } catch (Throwable t) {
             // Service not available
         }
+    }
+
+    public static XposedService getXposedService() {
+        return sXposedService != null ? sXposedService : tn.eluea.kgpt.util.LSPosedHelper.getService();
     }
 
     // Module status states
@@ -134,17 +147,23 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sCurrentInstance = new java.lang.ref.WeakReference<>(this);
         rootView = view;
         initViews(view);
         applyAmoledIfNeeded();
         // applyCandyColorsIfNeeded(); // Removed
         setupClickListeners();
         updateUI();
+
+        // Delayed checks to catch async LSPosed Service binding
+        view.postDelayed(this::updateUI, 300);
+        view.postDelayed(this::updateUI, 1000);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        sCurrentInstance = new java.lang.ref.WeakReference<>(this);
         updateUI();
         // Start cat peek timer
         if (catPeekManager != null) {
@@ -360,14 +379,18 @@ public class HomeFragment extends Fragment {
 
     private int checkModuleStatus() {
         // Modern Xposed API 101/102 Service check
-        if (isServiceBoundActive || (sXposedService != null && sXposedService.getApiVersion() > 0)) {
+        if (isServiceBoundActive || (sXposedService != null && sXposedService.getApiVersion() > 0)
+                || tn.eluea.kgpt.util.LSPosedHelper.isLSPosedActive()) {
             return STATUS_ACTIVE;
         }
 
         // Check if module is hooked (active)
         boolean isHooked = isModuleActiveInternal();
-
         if (isHooked) {
+            return STATUS_ACTIVE;
+        }
+
+        if (getContext() != null && tn.eluea.kgpt.provider.WorldReadablePrefs.isWorldReadableAvailable(getContext())) {
             return STATUS_ACTIVE;
         }
 

@@ -136,6 +136,15 @@ public class MediaDownloaderBottomSheet {
         }
     }
 
+    public void dismiss() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.setOnDismissListener(null);
+            try {
+                dialog.dismiss();
+            } catch (Throwable ignored) {}
+        }
+    }
+
     public void show() {
         if (!DownloaderEngine.getInstance().isCoreInstalled(context)) {
             CoreInstallerBottomSheet installer = new CoreInstallerBottomSheet(context, () -> {
@@ -541,6 +550,10 @@ public class MediaDownloaderBottomSheet {
         layoutLoading.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(View.GONE);
 
+        cachedVideoInfo = null;
+        ThumbnailLoader.getInstance().clearCache();
+        DownloaderEngine.getInstance().clearCache(context);
+
         DownloaderEngine.getInstance().fetchVideoInfo(context, mediaUrl, new DownloaderEngine.InfoCallback() {
             @Override
             public void onSuccess(VideoInfo info) {
@@ -566,7 +579,7 @@ public class MediaDownloaderBottomSheet {
     }
 
     private String cleanErrorMessage(String raw) {
-        if (raw == null || raw.trim().isEmpty()) return "فشل في تحليل الرابط، يرجى المحاولة لاحقاً";
+        if (raw == null || raw.trim().isEmpty()) return context.getString(R.string.error_extract_failed);
         if (raw.contains("ERROR:")) {
             String after = raw.substring(raw.indexOf("ERROR:") + 6).trim();
             if (after.contains("\n")) {
@@ -583,7 +596,7 @@ public class MediaDownloaderBottomSheet {
                 }
             }
         }
-        return "فشل في قراءة الرابط: " + raw;
+        return context.getString(R.string.error_extract_failed) + " (" + raw + ")";
     }
 
     private void populateDetails(VideoInfo info) {
@@ -1186,7 +1199,7 @@ public class MediaDownloaderBottomSheet {
         ClipData clip = ClipData.newPlainText("Universal Downloader CMD", cmd);
         if (clipboard != null) {
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(context, "Command copied to clipboard! 📋", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_copied), Toast.LENGTH_SHORT).show();
         }
     }
 

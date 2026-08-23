@@ -309,19 +309,41 @@ public class DownloaderEngine {
     }
 
     /**
+     * Clear all thumbnail, temporary and cache files from downloader.
+     */
+    public void clearCache(Context context) {
+        ThumbnailLoader.getInstance().clearCache();
+        try {
+            if (context != null) {
+                File cacheDir = context.getCacheDir();
+                if (cacheDir != null && cacheDir.exists()) {
+                    File[] files = cacheDir.listFiles((dir, name) -> name.startsWith("kgpt_") || name.startsWith("ytdl_") || name.endsWith(".tmp") || name.endsWith(".part"));
+                    if (files != null) {
+                        for (File f : files) {
+                            try { f.delete(); } catch (Throwable ignored) {}
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+    }
+
+    /**
      * Fetch media details asynchronously with metadata & available formats.
      */
     public void fetchVideoInfo(Context context, String url, InfoCallback callback) {
         init(context);
+        clearCache(context);
         executor.execute(() -> {
             try {
                 YoutubeDLRequest request = new YoutubeDLRequest(url);
                 request.addOption("--no-playlist");
+                request.addOption("--no-cache-dir");
                 request.addOption("--no-check-certificates");
                 request.addOption("--geo-bypass");
                 request.addOption("--ignore-no-formats-error");
                 request.addOption("--no-update");
-                request.addOption("--extractor-args", "youtube:player_client=android,web");
+                request.addOption("--extractor-args", "youtube:player_client=android_music,android,web,mweb");
 
                 VideoInfo info = YoutubeDL.getInstance().getInfo(request);
                 callback.onSuccess(info);
@@ -331,11 +353,12 @@ public class DownloaderEngine {
                     YoutubeDL.getInstance().updateYoutubeDL(context.getApplicationContext(), YoutubeDL.UpdateChannel._STABLE);
                     YoutubeDLRequest retryReq = new YoutubeDLRequest(url);
                     retryReq.addOption("--no-playlist");
+                    retryReq.addOption("--no-cache-dir");
                     retryReq.addOption("--no-check-certificates");
                     retryReq.addOption("--geo-bypass");
                     retryReq.addOption("--ignore-no-formats-error");
                     retryReq.addOption("--no-update");
-                    retryReq.addOption("--extractor-args", "youtube:player_client=android,web");
+                    retryReq.addOption("--extractor-args", "youtube:player_client=android_music,android,web,mweb");
                     VideoInfo info = YoutubeDL.getInstance().getInfo(retryReq);
                     callback.onSuccess(info);
                 } catch (Throwable t) {
@@ -352,9 +375,10 @@ public class DownloaderEngine {
     public void executeDownload(Context context, DownloadOptions options, ProgressListener listener) {
         init(context);
         executor.execute(() -> {
+            String platform = MediaUtils.getPlatformName(options.getUrl());
             File outputDir = options.getCustomDownloadDir() != null
                     ? options.getCustomDownloadDir()
-                    : DownloaderPrefs.getTargetDownloadDirectory(context, options.isAudio(), options.getUploader());
+                    : DownloaderPrefs.getTargetDownloadDirectory(context, options.isAudio(), options.getUploader(), platform);
 
             if (!outputDir.exists()) {
                 outputDir.mkdirs();
@@ -438,7 +462,7 @@ public class DownloaderEngine {
     private YoutubeDLRequest buildRequest(Context context, DownloadOptions options, File outputDir) {
         YoutubeDLRequest request = new YoutubeDLRequest(options.getUrl());
         request.addOption("--no-update");
-        request.addOption("--extractor-args", "youtube:player_client=android,web");
+        request.addOption("--extractor-args", "youtube:player_client=android_music,android,web,mweb");
 
         String template = options.getCustomFileName() != null
                 ? options.getCustomFileName()

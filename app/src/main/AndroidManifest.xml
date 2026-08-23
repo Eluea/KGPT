@@ -189,6 +189,7 @@
             android:label="@string/nav_media_download"
             android:launchMode="singleTop"
             android:excludeFromRecents="true"
+            android:supportsPictureInPicture="false"
             android:taskAffinity=""
             android:exported="true">
             <intent-filter>
@@ -242,6 +243,9 @@
         <meta-data
             android:name="xposedsharedprefs"
             android:value="true" />
+        <meta-data
+            android:name="xposedentry"
+            android:value="tn.eluea.kgpt.MainHook" />
         <meta-data
             android:name="xposedscope"
             android:resource="@array/xposedscope" />
