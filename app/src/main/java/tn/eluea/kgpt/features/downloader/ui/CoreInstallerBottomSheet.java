@@ -210,6 +210,11 @@ public class CoreInstallerBottomSheet {
 
         if (containerDownloading != null) containerDownloading.setVisibility(View.VISIBLE);
 
+        if (lottieProgress != null) {
+            lottieProgress.setRepeatCount(com.airbnb.lottie.LottieDrawable.INFINITE);
+            lottieProgress.playAnimation();
+        }
+
         executor.execute(this::performDownloadAndInstallation);
     }
 
@@ -304,8 +309,9 @@ public class CoreInstallerBottomSheet {
             }).start();
 
             mainHandler.post(() -> {
-                if (lottieProgress != null) lottieProgress.setVisibility(View.GONE);
-                if (ivSuccessIcon != null) ivSuccessIcon.setVisibility(View.VISIBLE);
+                if (lottieProgress != null) {
+                    lottieProgress.setRepeatCount(0);
+                }
                 if (tvDownloadStatus != null) tvDownloadStatus.setText(context.getString(R.string.toast_engine_updated));
                 if (tvDownloadDetails != null) tvDownloadDetails.setText("Ready to download media");
 
@@ -318,13 +324,15 @@ public class CoreInstallerBottomSheet {
                     if (listener != null) {
                         listener.onInstalled();
                     }
-                }, 800);
+                }, 1000);
             });
 
         } catch (Exception e) {
             Log.e(TAG, "Install failed: " + e.getMessage(), e);
             mainHandler.post(() -> {
-                if (lottieProgress != null) lottieProgress.setVisibility(View.GONE);
+                if (lottieProgress != null) {
+                    lottieProgress.setRepeatCount(0);
+                }
                 Toast.makeText(context, "Installation failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 if (dialog != null) dialog.dismiss();
             });

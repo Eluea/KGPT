@@ -277,22 +277,15 @@ public class DownloaderEngine {
     public boolean isCoreInstalled(Context context) {
         if (context == null) return false;
         try {
-            File filesDir = context.getApplicationContext().getFilesDir();
             File noBackupDir = context.getApplicationContext().getNoBackupFilesDir();
+            File packagesDir = new File(noBackupDir, "youtubedl-android/packages");
+            File pythonDir = new File(packagesDir, "python");
+            File ffmpegDir = new File(packagesDir, "ffmpeg");
 
-            File coreDir = new File(filesDir, "youtubedl-core");
-            File ytdlDir = new File(noBackupDir, "youtubedl-android");
-            File pythonDir = new File(noBackupDir, "youtubedl-android/packages/python");
-
-            boolean hasPython = (pythonDir.exists() && pythonDir.isDirectory() && pythonDir.list() != null && pythonDir.list().length > 0)
-                    || new File(coreDir, "libpython.zip.so").exists()
-                    || new File(coreDir, "libpython.so").exists()
-                    || new File(ytdlDir, "libpython.zip.so").exists();
-
-            boolean hasFfmpeg = new File(coreDir, "libffmpeg.zip.so").exists()
-                    || new File(coreDir, "libffmpeg.so").exists()
-                    || new File(ytdlDir, "libffmpeg.zip.so").exists()
-                    || new File(ytdlDir, "libffmpeg.so").exists();
+            boolean hasPython = pythonDir.exists() && pythonDir.isDirectory()
+                    && pythonDir.list() != null && pythonDir.list().length > 0;
+            boolean hasFfmpeg = ffmpegDir.exists() && ffmpegDir.isDirectory()
+                    && ffmpegDir.list() != null && ffmpegDir.list().length > 0;
 
             if (hasPython && hasFfmpeg) {
                 DownloaderPrefs.setCoreInstalled(context, true);

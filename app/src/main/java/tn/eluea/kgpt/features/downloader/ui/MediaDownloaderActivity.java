@@ -336,6 +336,13 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         if (isFinishing() || isDestroyed()) return;
 
         boolean isInstalled = DownloaderEngine.getInstance().isCoreInstalled(this);
+        if (!isInstalled) {
+            new CoreInstallerBottomSheet(this, () -> {
+                loadSavedPreferences();
+                updateCoreStatusDisplay();
+            }).show();
+            return;
+        }
 
         // Transition button to loading / loop animation
         if (containerCoreAction != null) {
@@ -343,13 +350,8 @@ public class MediaDownloaderActivity extends AppCompatActivity {
         }
 
         if (btnCoreAction != null) btnCoreAction.setVisibility(View.GONE);
-        if (isInstalled) {
-            if (layoutCoreCheckingProgress != null) layoutCoreCheckingProgress.setVisibility(View.VISIBLE);
-            if (layoutCoreDownloadingProgress != null) layoutCoreDownloadingProgress.setVisibility(View.GONE);
-        } else {
-            if (layoutCoreCheckingProgress != null) layoutCoreCheckingProgress.setVisibility(View.GONE);
-            if (layoutCoreDownloadingProgress != null) layoutCoreDownloadingProgress.setVisibility(View.VISIBLE);
-        }
+        if (layoutCoreCheckingProgress != null) layoutCoreCheckingProgress.setVisibility(View.VISIBLE);
+        if (layoutCoreDownloadingProgress != null) layoutCoreDownloadingProgress.setVisibility(View.GONE);
 
         if (lottieCoreStatus != null) {
             lottieCoreStatus.setRepeatCount(com.airbnb.lottie.LottieDrawable.INFINITE);
@@ -363,7 +365,6 @@ public class MediaDownloaderActivity extends AppCompatActivity {
             try {
                 com.yausername.youtubedl_android.YoutubeDL.UpdateStatus status =
                         com.yausername.youtubedl_android.YoutubeDL.getInstance().updateYoutubeDL(this, com.yausername.youtubedl_android.YoutubeDL.UpdateChannel._STABLE);
-                DownloaderPrefs.setCoreInstalled(this, true);
 
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) return;

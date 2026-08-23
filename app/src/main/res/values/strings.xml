@@ -641,7 +641,8 @@
     <string name="changelog_1_0_0_item3">Improved screen layouts for one-handed use and larger fingers</string>
     <string name="changelog_1_0_0_item4">Fixed many stability issues and improved performance</string>
     <string name="changelog_1_0_0_item5">Tested and added support for FUTO keyboard</string>
-    <string name="changelog_1_0_0_item6">Fixed connection issue with Chutes API</string>
+    <string name="changelog_4_1_4_item1">Hotfix: Fixed core engine installation detection and in-app download launcher</string>
+    <string name="changelog_4_1_4_item2">Updated core installer bottom sheet with smooth Lottie animation lifecycle</string>
     <string name="changelog_4_1_3_item1">Added Native In-App Download option with instant LSPosed hook integration</string>
     <string name="changelog_4_1_3_item2">Added smart download organization with automatic subfolders for each source app</string>
     <string name="changelog_4_1_3_item3">Redesigned and elevated KGPT Media Downloader settings interface</string>

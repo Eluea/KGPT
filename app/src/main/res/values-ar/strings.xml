@@ -645,8 +645,8 @@
     <string name="changelog_1_0_0_item2">تم إضافة إمكانية اختيار لغة معينة مع دعم جميع اللغات المتاحة</string>
     <string name="changelog_1_0_0_item3">تم تحسين بعض الشاشات لتناسب سهولة استخدام اليد الواحدة والأصابع الكبيرة</string>
     <string name="changelog_1_0_0_item4">تم تصحيح الكثير من الأخطاء المتعلقة بالاستقرار وتحسين الأداء</string>
-    <string name="changelog_1_0_0_item5">تم اختبار ودعم لوحة مفاتيح FUTO</string>
-    <string name="changelog_1_0_0_item6">تم إصلاح مشكلة عدم الاتصال الناجح مع Chutes API</string>
+    <string name="changelog_4_1_4_item1">إصلاح خلل التحقق وتنزيل نواة التنزيل (Core Engine) من داخل التطبيق</string>
+    <string name="changelog_4_1_4_item2">تحديث أنيميشن التحميل داخل بوتم شيت تثبيت النواة بحركة لوتي انسيابية</string>
     <string name="changelog_4_1_3_item1">إضافة خيار النيتيف اب دونلود مع ميزة الهوك السريع لتسهيل التنزيل المباشر</string>
     <string name="changelog_4_1_3_item2">إضافة نمط التنزيل والفلترة من خلال عمل مجلد لكل تطبيق تقوم بالتنزيل من خلاله</string>
     <string name="changelog_4_1_3_item3">تحسين وتطوير تصميم قسم إعدادات ميزة الدونلود مانجير</string>

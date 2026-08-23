@@ -216,10 +216,12 @@ public class DownloaderPrefs {
     }
 
     public static boolean isCoreInstalled(Context context) {
-        return getPrefs(context).getBoolean("core_installed", false);
+        if (context == null) return false;
+        return DownloaderEngine.getInstance().isCoreInstalled(context);
     }
 
     public static void setCoreInstalled(Context context, boolean value) {
+        if (context == null) return;
         getPrefs(context).edit().putBoolean("core_installed", value).apply();
     }
 }
