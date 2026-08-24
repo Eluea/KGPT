@@ -227,6 +227,19 @@ public class MainHook extends XposedModule {
     }
 
     private void hookMethodService() {
+        // P2: deoptimize the proven-critical selection path — prevents ART
+        // inlining from ever silencing this hook on aggressive OEM builds.
+        // (InputConnection commit hooks are deliberately NOT deoptimized:
+        // they fire on every commit and interpreter mode would add typing
+        // latency; virtual interface dispatch keeps them hookable.)
+        try {
+            deoptimizeIfPossible(HookManager.findMethod(inputMethodServiceClass,
+                    "onUpdateSelection",
+                    new Class<?>[]{int.class, int.class, int.class, int.class, int.class, int.class}));
+            deoptimizeIfPossible(HookManager.findMethod(inputMethodServiceClass,
+                    "onStartInput", new Class<?>[]{EditorInfo.class, boolean.class}));
+        } catch (Throwable ignored) {}
+
         hookManager.hook(
                 inputMethodServiceClass,
                 "onUpdateSelection",
