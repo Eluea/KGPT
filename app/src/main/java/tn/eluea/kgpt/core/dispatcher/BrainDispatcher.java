@@ -42,6 +42,7 @@ public class BrainDispatcher {
     }
 
     public void dispatch(ParseResult parseResult) {
+
         IMSController imsController = UiInteractor.getInstance().getIMSController();
 
         if (parseResult instanceof FormatParseResult) {

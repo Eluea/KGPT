@@ -90,6 +90,7 @@ public class TextParser implements ConfigChangeListener {
     private void updatePatterns(List<ParsePattern> parsePatterns) {
         directives.clear();
         aiTriggerEnabled = false;
+        android.util.Log.d("KGPT_ParseDiag", "updatePatterns: in=" + parsePatterns.size());
 
         for (ParsePattern parsePattern : parsePatterns) {
             // Only add enabled patterns

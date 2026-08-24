@@ -10,6 +10,8 @@ package tn.eluea.kgpt.ui;
 import android.inputmethodservice.InputMethodService;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.inputmethod.ExtractedText;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import java.util.ArrayList;
@@ -68,10 +70,20 @@ public class IMSController {
             return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
-            // Bounded read instead of getExtractedText(): copies at most
-            // TEXT_WINDOW_CHARS characters rather than the entire field on
-            // every cursor move / keystroke.
+            // Bounded read first (cheap); some ICs (e.g. the Google search
+            // box) return null here — fall back to a bounded extracted-text
+            // read so the trigger pipeline never silently dies.
             CharSequence beforeCursor = ic.getTextBeforeCursor(TEXT_WINDOW_CHARS, 0);
+            if (beforeCursor == null) {
+                ExtractedTextRequest req = new ExtractedTextRequest();
+                req.hintMaxChars = TEXT_WINDOW_CHARS;
+                ExtractedText et = ic.getExtractedText(req, 0);
+                if (et != null && et.text != null) {
+                    int selEnd = Math.min(newSelEnd, et.text.length());
+                    int from = Math.max(0, selEnd - TEXT_WINDOW_CHARS);
+                    beforeCursor = et.text.subSequence(from, selEnd);
+                }
+            }
             if (beforeCursor != null) {
                 typedText = beforeCursor.toString();
                 cursor = newSelEnd;
