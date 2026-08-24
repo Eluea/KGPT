@@ -229,8 +229,17 @@ public class CoreInstallerBottomSheet {
         try {
             boolean downloadSuccess = false;
 
+            // 0. P4: framework Remote Files (trusted, LSPosed-managed)
+            File remoteZip = findRemoteBundleZip(abi);
+            if (remoteZip != null) {
+                String zipSha = readManifestZipSha(abi);
+                if (zipSha != null) verifySha256(remoteZip, zipSha);
+                copyFile(remoteZip, finalZip);
+                downloadSuccess = true;
+            }
+
             // 1. First check local device storage (Instant setup if present)
-            File localZip = findLocalBundleZip(abi);
+            File localZip = (remoteZip != null) ? null : findLocalBundleZip(abi);
             if (localZip != null) {
                 // Local bundles get the same zero-trust treatment: verify against
                 // the manifest zip digest when available, otherwise reject.
@@ -487,6 +496,37 @@ public class CoreInstallerBottomSheet {
             file.delete();
             throw new Exception("Integrity check failed (sha256 mismatch) for " + file.getName());
         }
+    }
+
+    /**
+     * P4: framework Remote Files are a TRUSTED distribution source (managed by
+     * LSPosed daemon) — checked before anything else. Digest is still enforced
+     * by the caller when the manifest declares it.
+     */
+    private File findRemoteBundleZip(String abi) {
+        try {
+            io.github.libxposed.service.XposedService svc = tn.eluea.kgpt.util.LSPosedHelper.getService();
+            if (svc == null) return null;
+            String name = "kgpt-core-" + abi + ".zip";
+            for (String remoteName : svc.listRemoteFiles()) {
+                if (name.equals(remoteName)) {
+                    android.os.ParcelFileDescriptor pfd = svc.openRemoteFile(name);
+                    if (pfd == null) return null;
+                    File local = new File(context.getCacheDir(), "kgpt_remote_" + name);
+                    try (java.io.InputStream in = new android.os.ParcelFileDescriptor.AutoCloseInputStream(pfd);
+                         java.io.FileOutputStream out = new java.io.FileOutputStream(local)) {
+                        byte[] buf = new byte[32768];
+                        int n;
+                        while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                    }
+                    Log.i(TAG, "Using framework remote file: " + name);
+                    return local;
+                }
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "remote file source unavailable: " + t.getMessage());
+        }
+        return null;
     }
 
     private File findLocalBundleZip(String abi) {

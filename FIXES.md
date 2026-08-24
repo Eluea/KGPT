@@ -267,3 +267,21 @@ OtherSettingsType.java            EnableLogs=false
 - **P1 (جزئي) — Remote Preferences**: نبضة التفعيل تُكتب/تُقرأ عبر `getRemotePreferences` (إدارة الإطار، بلا ملفات world-readable) كإثبات نمط؛ الترحيل الكامل للإعدادات مؤجل حتى service:102/SDK37.
 - **P6 — توحيد المستمعين**: حُذف مستمع HomeFragment الساكن المنافس (كان رابع مستمع)؛ `LSPosedHelper` أصبح المصدر الوحيد مع `addServiceBindListener` للتحديث الفوري، و`onServiceDied` يعيد تسليح retries.
 - **المكتبات**: core-ktx 1.16 (1.19 يتطلب AGP 9.1) • work 2.11.2 • appcompat 1.7.1 • lottie 6.7.1 • dexkit 2.2.0 • mockito 5.12 • test-ext 1.2.1 • espresso 3.6.1.
+---
+
+# ثاني عشر: P1 الترحيل الكامل + P4 Remote Files (ISSUE-026)
+
+**الاكتشاف**: `getRemotePreferences` متاح في service:**101** وapi:**102** الحاليين — قيد compileSdk 37 كان يخص artifact service:102 فقط. الترحيل الكامل **نُفذ بدون انتظار**.
+
+## P1 — ConfigGateway (ConfigClient)
+- **القراءة**: Remote Preferences (LSPosed-managed) أولاً → ContentProvider → XSharedPreferences → cache.
+- **الكتابة**: DUAL WRITE (remote + provider) — التوافق الكامل مع كل القراء.
+- يعمل في العمليتين: المهوكاة (XposedInterface) والتطبيق (XposedService).
+- **الأثر الأمني**: المزود المصدوم بقي للتوافق لكنه لم يعد مصدر القراءة الأساسي.
+- **ملاحظة موثقة**: كتابات adb المباشرة (dev-only) لا تنعكس على الـ remote.
+
+## P4 — Remote Files للنواة
+- مصدر أول موثوق (يديره LSPosed daemon) يُفحص قبل المحلي والشبكة، مع بقاء SHA-256 إلزامياً.
+
+## المؤجل
+- P3 `Hooker<T>` refactor (تنسيقي، بلا فائدة وظيفية).

@@ -48,6 +48,37 @@ public class ConfigClient {
     private final Map<String, OnConfigChangeListener> mListeners = new ConcurrentHashMap<>();
     private ContentObserver mObserver;
 
+    // ===== P1 FULL MIGRATION: framework-managed Remote Preferences =====
+    // Priority: REMOTE (LSPosed-managed, no world-readable files) →
+    // ContentProvider → XSharedPreferences → cache/default.
+    // ALL writes are DUAL (remote + provider) so legacy readers stay correct.
+    // Caveat (documented): direct provider writes that bypass ConfigClient
+    // (e.g. `adb shell content insert`) will not refresh the remote store.
+    private android.content.SharedPreferences remotePrefs = null;
+    private boolean remoteAttempted = false;
+
+    private android.content.SharedPreferences getRemote() {
+        if (remoteAttempted) return remotePrefs;
+        remoteAttempted = true;
+        try {
+            if (IS_XPOSED_CONTEXT) {
+                tn.eluea.kgpt.MainHook hook = tn.eluea.kgpt.MainHook.getInstance();
+                if (hook != null) {
+                    remotePrefs = hook.getRemotePreferences("kgpt_config");
+                }
+            } else {
+                io.github.libxposed.service.XposedService svc =
+                        tn.eluea.kgpt.util.LSPosedHelper.getService();
+                if (svc != null) {
+                    remotePrefs = svc.getRemotePreferences("kgpt_config");
+                }
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "Remote preferences unavailable: " + t.getMessage());
+        }
+        return remotePrefs;
+    }
+
     // Flag to check if we're in Xposed context
     private static final boolean IS_XPOSED_CONTEXT;
     static {
@@ -120,11 +151,21 @@ public class ConfigClient {
     }
 
     public String getString(String key, String defaultValue) {
-        // FORCE REFRESH: By-pass cache check for Strings to ensure freshness via
-        // ContentProvider
-        // Cache is only checked as a fallback if provider query fails.
+        // P1: REMOTE FIRST (framework-managed store)
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null) {
+                String v = rp.getString(key, null);
+                if (v != null) {
+                    mCache.put(key, v);
+                    return v;
+                }
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "remote getString failed for: " + key);
+        }
 
-        // Always try ContentProvider first (Single Source of Truth)
+        // ContentProvider (single source of truth for the legacy path)
         // This works in Xposed context because the provider is exported
         try {
             Uri uri = Uri.withAppendedPath(ConfigProvider.CONTENT_URI, key);
@@ -186,9 +227,30 @@ public class ConfigClient {
         } catch (Exception e) {
             Log.w(TAG, "Provider insert failed for: " + key, e);
         }
+
+        // P1: DUAL WRITE — mirror into the framework-managed remote store so
+        // remote-first readers (hooked processes) always see fresh values.
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null) rp.edit().putString(key, value).apply();
+        } catch (Exception e) {
+            Log.d(TAG, "remote putString failed for: " + key);
+        }
     }
 
     public boolean getBoolean(String key, boolean defaultValue) {
+        // P1: REMOTE FIRST
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null && rp.contains(key)) {
+                boolean v = rp.getBoolean(key, defaultValue);
+                mCache.put(key, v);
+                return v;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "remote getBoolean failed for: " + key);
+        }
+
         // Check cache first
         if (mCache.containsKey(key)) {
             Object cached = mCache.get(key);
@@ -251,9 +313,29 @@ public class ConfigClient {
         } catch (Exception e) {
             Log.w(TAG, "Provider insert failed for: " + key, e);
         }
+
+        // P1: DUAL WRITE (boolean mirrored as string for legacy readers)
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null) rp.edit().putBoolean(key, value).apply();
+        } catch (Exception e) {
+            Log.d(TAG, "remote putBoolean failed for: " + key);
+        }
     }
 
     public int getInt(String key, int defaultValue) {
+        // P1: REMOTE FIRST
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null && rp.contains(key)) {
+                int v = rp.getInt(key, defaultValue);
+                mCache.put(key, v);
+                return v;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "remote getInt failed for: " + key);
+        }
+
         // Check cache first
         if (mCache.containsKey(key)) {
             Object cached = mCache.get(key);
@@ -322,6 +404,14 @@ public class ConfigClient {
             mResolver.insert(ConfigProvider.CONTENT_URI, cv);
         } catch (Exception e) {
             Log.w(TAG, "Provider insert failed for: " + key, e);
+        }
+
+        // P1: DUAL WRITE
+        try {
+            android.content.SharedPreferences rp = getRemote();
+            if (rp != null) rp.edit().putInt(key, value).apply();
+        } catch (Exception e) {
+            Log.d(TAG, "remote putInt failed for: " + key);
         }
     }
 
