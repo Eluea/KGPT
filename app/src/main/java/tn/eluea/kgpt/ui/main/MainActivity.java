@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment;
         switch (index) {
             case 1:
-                fragment = new ModelsFragment();
+                fragment = new AiSettingsFragment();
                 break;
             case 2:
                 fragment = new tn.eluea.kgpt.ui.lab.LabFragment();
@@ -267,9 +267,10 @@ public class MainActivity extends AppCompatActivity {
 
         navModels.setOnClickListener(v -> {
             if (currentNavIndex != 1) {
-                // Unified with restore path (loadFragmentForIndex) and
-                // navigateToModels — three screens shared one dock slot before.
-                loadFragment(new ModelsFragment());
+                // AiSettingsFragment = combined screen (ViewPager: Models + API
+                // Keys tabs). The earlier "unify to ModelsFragment" broke the
+                // API tab — the deep-audit A6 finding was a false positive.
+                loadFragment(new AiSettingsFragment());
                 updateNavSelection(1);
             }
         });
@@ -440,7 +441,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToModels() {
-        loadFragment(new ModelsFragment());
+        loadFragment(new AiSettingsFragment());
         updateNavSelection(1);
     }
 
