@@ -18,7 +18,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 
 import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.XposedModule;
@@ -40,6 +40,10 @@ public class MainHook extends XposedModule {
     private HookManager hookManager;
     private Class<?> inputConnectionClass = null;
     private Class<?> inputMethodServiceClass = null;
+    // Exact members hooked for the current InputConnection implementation —
+    // unhook by identity, because the fuzzy finder may resolve methods declared
+    // on superclasses (declaringClass would never match the runtime class).
+    private final java.util.Set<Member> lastHookedICMembers = new java.util.HashSet<>();
 
     // Performance optimization: Cache to avoid redundant re-hooking
     private Class<?> lastHookedInputConnectionClass = null;
@@ -66,17 +70,10 @@ public class MainHook extends XposedModule {
         String packageName = param.getPackageName();
         ClassLoader classLoader = param.getDefaultClassLoader();
 
-        if ("tn.eluea.kgpt".equals(packageName)) {
-            MainHook.log("Hooking own module for status check");
-            try {
-                Class<?> homeFragmentClass = classLoader.loadClass("tn.eluea.kgpt.ui.main.fragments.HomeFragment");
-                Method statusMethod = homeFragmentClass.getDeclaredMethod("isModuleActiveInternal");
-                hook(statusMethod).intercept(chain -> true);
-            } catch (Throwable t) {
-                MainHook.log("Failed to hook isModuleActiveInternal: " + t.getMessage());
-            }
-            return;
-        }
+        // NOTE: Under the Modern Xposed API (minApiVersion=100) module apps are
+        // no longer hooked by themselves, so this callback never fires for our
+        // own package. Module activation status is detected via XposedService
+        // binding instead (see HomeFragment.checkModuleStatus).
 
         if ("android".equals(packageName)) {
             MainHook.log("Hooking Android System Framework (system_server)");
@@ -115,9 +112,60 @@ public class MainHook extends XposedModule {
     private void ensureInitialized(Context applicationContext) {
         if (MainHook.applicationContext == null && applicationContext != null) {
             MainHook.applicationContext = applicationContext;
+
+            // Report FIRST: nothing above it can throw and suppress the proof
+            // that LSPosed really loaded us into this process.
+            reportActivationHeartbeat(applicationContext);
+
             SPManager.init(applicationContext);
             UiInteractor.init(applicationContext);
-            brain = new KGPTBrain(applicationContext);
+        }
+        // Recreate the brain on every IMS (re)creation: onDestroy nulls it, and
+        // gating on applicationContext (set once) left it dead forever after
+        // the first keyboard restart.
+        if (brain == null && MainHook.applicationContext != null) {
+            brain = new KGPTBrain(MainHook.applicationContext);
+        }
+    }
+
+    // Activation heartbeat: this code only ever runs inside a HOOKED process
+    // (keyboard app) when LSPosed actually loaded the module, so writing it is
+    // direct proof of real activation. The module app's status card reads it
+    // via the exported ConfigProvider as a second, ground-truth signal beside
+    // XposedService binding.
+    private static boolean heartbeatReported = false;
+
+    private static void reportActivationHeartbeat(Context context) {
+        if (heartbeatReported || context == null) return;
+        heartbeatReported = true;
+        try {
+            // P1: Remote Preferences (API 102) — framework-managed, no
+            // world-readable files, delivered to the app via XposedService.
+            try {
+                android.content.SharedPreferences remote =
+                        getInstance().getRemotePreferences("kgpt_heartbeat");
+                remote.edit()
+                        .putLong("ts", System.currentTimeMillis())
+                        .putString("pkg", context.getPackageName())
+                        .commit();
+            } catch (Throwable t2) {
+                MainHook.log("remote heartbeat failed: " + t2.getMessage());
+            }
+
+            // Legacy provider path kept as fallback for older frameworks
+            tn.eluea.kgpt.provider.ConfigClient client =
+                    new tn.eluea.kgpt.provider.ConfigClient(context);
+            try {
+                client.putString("module_activation_heartbeat",
+                        String.valueOf(System.currentTimeMillis()));
+                client.putString("module_activation_process",
+                        context.getPackageName());
+            } finally {
+                client.destroy();
+            }
+            MainHook.log("Activation heartbeat reported from " + context.getPackageName());
+        } catch (Throwable t) {
+            MainHook.log(t);
         }
     }
 
@@ -233,7 +281,8 @@ public class MainHook extends XposedModule {
                     }
 
                     if (!newInputConnectionClass.equals(lastHookedInputConnectionClass)) {
-                        hookManager.unhook(m -> m.getDeclaringClass().equals(inputConnectionClass));
+                        final java.util.Set<Member> stale = new java.util.HashSet<>(lastHookedICMembers);
+                        hookManager.unhook(stale::contains);
                         MainHook.log("InputMethodService onStartInput");
                         inputMethodServiceClass = ims.getClass();
                         inputConnectionClass = newInputConnectionClass;
@@ -251,6 +300,7 @@ public class MainHook extends XposedModule {
 
     @SuppressLint("ObsoleteSdkInt")
     private void hookInputConnection() {
+        lastHookedICMembers.clear();
         MethodHook conditionalGate = MethodHook.before(param -> {
             if (IMSController.getInstance().isInputLocked()) {
                 param.setResult(false);
@@ -287,7 +337,28 @@ public class MainHook extends XposedModule {
                     conditionalGate);
         }
 
-        MainHook.log("Done hooking InputConnection : " + inputConnectionClass.getName());
+        // Snapshot exactly which Members got hooked for precise unhook later
+        for (Member m : hookManager.getHookedMembers()) {
+            if (m.getDeclaringClass().equals(inputConnectionClass)
+                    || inputConnectionClass.isAssignableFrom(m.getDeclaringClass())
+                    || m.getDeclaringClass().isAssignableFrom(inputConnectionClass)) {
+                lastHookedICMembers.add(m);
+            }
+        }
+        MainHook.log("Done hooking InputConnection : " + inputConnectionClass.getName()
+                + " (" + lastHookedICMembers.size() + " methods)");
+    }
+
+    /**
+     * P2 (API 102): force ART to interpret a method so hot system hooks can
+     * never be inlined away by OEM optimisations. Safe no-op on failure.
+     */
+    public static void deoptimizeIfPossible(Member member) {
+        try {
+            if (member instanceof java.lang.reflect.Executable && getInstance() != null) {
+                getInstance().deoptimize((java.lang.reflect.Executable) member);
+            }
+        } catch (Throwable ignored) {}
     }
 
     public static void logST() {

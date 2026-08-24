@@ -37,7 +37,6 @@ import java.util.Arrays;
  * 2. APK Signature - Ensures APK is signed by the same developer
  */
 public class UpdateSecurityVerifier {
-
     private static final String TAG = "KGPT_SecurityVerifier";
 
     private final Context context;
@@ -54,7 +53,26 @@ public class UpdateSecurityVerifier {
      * @return VerificationResult indicating success or failure reason
      */
     public VerificationResult verifyApk(File apkFile, String expectedChecksum) {
+        return verifyApk(apkFile, expectedChecksum, -1);
+    }
+
+    /**
+     * Verify downloaded APK file.
+     *
+     * @param installedVersionCode  versionCode of the installed app; a candidate
+     *                              LOWER than this is rejected (downgrade attack)
+     */
+    public VerificationResult verifyApk(File apkFile, String expectedChecksum, long installedVersionCode) {
         Log.d(TAG, "Starting APK verification: " + apkFile.getName());
+
+        // Step 0: Downgrade protection
+        if (installedVersionCode > 0) {
+            long candidate = readApkVersionCode(apkFile);
+            if (candidate > 0 && candidate < installedVersionCode) {
+                return new VerificationResult(false,
+                        "Downgrade rejected: candidate " + candidate + " < installed " + installedVersionCode);
+            }
+        }
 
         // Step 1: Verify file exists and is readable
         if (!apkFile.exists() || !apkFile.canRead()) {
@@ -118,6 +136,18 @@ public class UpdateSecurityVerifier {
      * app
      */
     @SuppressWarnings("deprecation")
+    /** Read versionCode from the candidate APK without installing it. */
+    private long readApkVersionCode(File apkFile) {
+        try {
+            android.content.pm.PackageManager pm = context.getPackageManager();
+            android.content.pm.PackageInfo pi = pm.getPackageArchiveInfo(apkFile.getAbsolutePath(), 0);
+            return pi != null ? (android.os.Build.VERSION.SDK_INT >= 28 ? pi.getLongVersionCode() : pi.versionCode) : -1;
+        } catch (Throwable t) {
+            Log.w(TAG, "readApkVersionCode failed: " + t.getMessage());
+            return -1;
+        }
+    }
+
     private boolean verifySignature(File apkFile) {
         try {
             PackageManager pm = context.getPackageManager();

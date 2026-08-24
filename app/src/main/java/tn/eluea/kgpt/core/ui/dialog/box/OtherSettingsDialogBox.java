@@ -38,8 +38,15 @@ public class OtherSettingsDialogBox extends DialogBox {
         super(dialogManager, parent, inputBundle, configContainer);
     }
 
+    private Bundle otherExtrasSnapshot;
+
     @Override
     protected Dialog build() {
+        // A4: toggles mutate otherExtras immediately; snapshot so Cancel
+        // restores the original values instead of persisting discarded changes.
+        otherExtrasSnapshot = getConfig().otherExtras != null
+                ? new Bundle(getConfig().otherExtras) : new Bundle();
+
         // Load settings from ContentProvider
         Bundle otherSettingsInput = loadOtherSettings();
 
@@ -102,6 +109,9 @@ public class OtherSettingsDialogBox extends DialogBox {
         }
 
         btnCancel.setOnClickListener(v -> {
+            if (otherExtrasSnapshot != null) {
+                getConfig().otherExtras = otherExtrasSnapshot;
+            }
             sheet.dismiss();
             switchToDialog(DialogType.Settings);
         });

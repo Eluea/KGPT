@@ -49,6 +49,18 @@ public class CommandManager implements ConfigChangeListener {
         }
     }
 
+    /**
+     * Re-read commands from config and rebuild the lookup map.
+     * Used by the periodic config refresh in hooked processes.
+     */
+    public void reloadCommands() {
+        try {
+            updateCommandMap(SPManager.getInstance().getGenerativeAICommands());
+        } catch (Exception e) {
+            tn.eluea.kgpt.util.Logger.log(e);
+        }
+    }
+
     public AbstractCommand get(String prefix) {
         return commandMap.get(prefix);
     }

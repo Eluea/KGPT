@@ -141,6 +141,7 @@ public class AiSettingsFragment extends Fragment {
 
     private void showInfoBottomSheet() {
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_ai_usage, null);
+        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyTheme(requireContext(), view);
 
         FloatingBottomSheet bottomSheet = new FloatingBottomSheet(requireContext());
         bottomSheet.setContentView(view);

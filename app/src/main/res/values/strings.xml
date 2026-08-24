@@ -7,51 +7,25 @@
   -->
 <resources>
     <string name="app_name">KGPT</string>
-    
-    <!-- Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_models">Models</string>
-    <string name="nav_api_keys">API Keys</string>
-    <string name="nav_settings">Settings</string>
-    
-    <!-- Home Screen -->
     <string name="module_active">Module Active</string>
     <string name="module_inactive">Module Not Active</string>
     <string name="module_active_desc">KGPT is working</string>
     <string name="module_inactive_desc">Enable in LSPosed Manager</string>
-    <string name="module_restart_required_desc">Reboot device to activate module</string>
     <string name="quick_actions">Quick Actions</string>
-    <string name="current_model">Current Model</string>
     <string name="ai_invocation">AI Invocation</string>
-    <string name="ai_invocation_desc">Configure commands and patterns</string>
     <string name="how_to_use">How to Use</string>
     <string name="how_to_use_desc">Learn how to use KGPT</string>
-    
-    <!-- Models Screen -->
-    <string name="ai_models">AI Models</string>
     <string name="select_model">Select your preferred AI model</string>
     <string name="model_config">Model Configuration</string>
     <string name="sub_model">Sub Model</string>
     <string name="base_url">Base URL</string>
-    <string name="advanced_settings">Advanced Settings</string>
     <string name="max_tokens">Max Tokens</string>
     <string name="temperature">Temperature</string>
     <string name="save_config">Save Configuration</string>
-    
-    <!-- API Keys Screen -->
-    <string name="api_keys">API Keys</string>
-    <string name="manage_api_keys">Manage your API keys for each provider</string>
     <string name="enter_api_key">Enter API Key</string>
     <string name="save">Save</string>
-    <string name="api_key_info">API keys are stored securely on your device and never shared.</string>
-    
-    <!-- Settings Screen -->
-    <string name="settings">Settings</string>
-    <string name="appearance">Appearance</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="follow_system">Follow system theme</string>
-    <string name="amoled_dark">AMOLED Dark</string>
-    <string name="amoled_desc">Pure black for OLED screens</string>
     <string name="blur_control">Blur Control</string>
     <string name="blur_control_desc">Control of the app blur</string>
     <string name="blur_enabled">Enable Window Blur</string>
@@ -62,45 +36,19 @@
     <string name="general">General</string>
     <string name="enable_logging">Enable Logging</string>
     <string name="logging_desc">Disable for better performance</string>
-    <string name="external_internet">External Internet Service</string>
-    <string name="external_internet_desc">Recommended for chat completion</string>
-    <string name="backup_restore">Backup &amp; Restore</string>
-    <string name="export_backup">Export Backup</string>
-    <string name="export_backup_desc">Save settings to file</string>
-    <string name="import_backup">Import Backup</string>
-    <string name="import_backup_desc">Restore settings from file</string>
-    <string name="about">About</string>
-    
-    <!-- Messages -->
-    <string name="config_saved">Configuration saved</string>
-    <string name="api_key_saved">API key saved</string>
-    <string name="api_key_removed">API key removed</string>
     <string name="backup_exported">Backup exported successfully</string>
-    <string name="backup_imported">Backup imported successfully</string>
     <string name="export_failed">Export failed</string>
     <string name="import_failed">Import failed</string>
-    
-    <!-- Themed Icon -->
-    <string name="themed_icon_title">Themed App Icon</string>
-    <string name="themed_icon_desc">Enable in launcher settings to apply Material You colors</string>
-    
-    <!-- About Home (Encoding Fix) -->
     <string name="about_home_title">About Home</string>
     <string name="about_home_description">Welcome to KGPT! This is your main dashboard.\n\n\u2022 Module Status: Shows whether the Xposed module is active. Enable it in LSPosed Manager.\n\n\u2022 Current Model: Displays your selected AI model. Tap to change it.\n\n\u2022 AI Invocation: Configure commands and patterns to trigger AI.\n\n\u2022 How to Use: Learn how to use KGPT effectively.</string>
-
-    <!-- Commands Adapter (Encoding Fix) -->
     <string name="built_in_indicator">  \u2022  Built-in</string>
     <string name="ask_command_description">Keeps your text intact - AI response appears after your text</string>
     <string name="ask_command_example">e.g. Hello, /ask how are you? \u2192 Hello, I\'m fine!</string>
-
-    <!-- AI Response Manager -->
     <string name="generating_content">&lt;Generating Content...&gt;</string>
     <string name="choose_model_message">Chose and configure your language model</string>
     <string name="missing_api_key_message">%1$s is Missing API Key</string>
     <string name="unknown_error">Unknown error occurred</string>
     <string name="error_format">[Error: %1$s]</string>
-
-    <!-- Text Actions -->
     <string name="action_rephrase">Rephrase</string>
     <string name="action_fix_errors">Fix Errors</string>
     <string name="action_improve">Improve</string>
@@ -110,10 +58,6 @@
     <string name="action_casual">Casual</string>
     <string name="action_translate">Translate</string>
     <string name="action_download_media">Download</string>
-    <string name="title_select_media_link">Select Media Link</string>
-    <string name="desc_select_media_link">Found %1$d links in selected text</string>
-
-    <!-- UI Messages -->
     <string name="msg_copied">Copied</string>
     <string name="msg_ai_error">AI Error: %1$s</string>
     <string name="msg_no_text_selected">No text selected</string>
@@ -137,8 +81,6 @@
     <string name="dialog_subtitle_edit_custom_action">Edit your custom AI text action</string>
     <string name="dialog_title_edit_prompt">Edit Prompt</string>
     <string name="dialog_subtitle_edit_prompt">Customize the AI instruction</string>
-
-    <!-- System Prompts -->
     <string name="prompt_rephrase">You are a text rephrasing assistant. Rephrase the given text while keeping the exact same meaning. Maintain the same language as the input. Only output the rephrased text, nothing else.</string>
     <string name="prompt_fix_errors">You are a grammar and spelling correction assistant. Fix all grammar, spelling, and punctuation errors in the given text. Maintain the same language and meaning. Only output the corrected text, nothing else.</string>
     <string name="prompt_improve">You are a writing improvement assistant. Improve the style, clarity, and flow of the given text while keeping the same meaning. Maintain the same language. Only output the improved text, nothing else.</string>
@@ -149,8 +91,6 @@
     <string name="prompt_translate_auto">You are a translation assistant. Detect the language of the input text and translate it to the opposite language (if Arabic, translate to English; if English, translate to Arabic; for other languages, translate to English). Only output the translated text, nothing else.</string>
     <string name="prompt_translate_target">You are a translation assistant. Translate the given text to %1$s. Only output the translated text, nothing else.</string>
     <string name="prompt_default">Process the following text:</string>
-
-    <!-- Update Dialog -->
     <string name="update_available">Update Available</string>
     <string name="update_available_desc">A new version of KGPT is available.</string>
     <string name="update_available_title">Update Available!</string>
@@ -167,11 +107,8 @@
     <string name="check_failed_desc">Sorry, we couldn\'t check for updates right now.\n\n%1$s\n\nPlease check your internet connection and try again.</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="no_internet_desc">Unable to check for updates.\n\nPlease connect to the internet and try again.</string>
-
-    <!-- Update Actions -->
     <string name="btn_download">Download</string>
     <string name="btn_later">Later</string>
-    <string name="btn_install">Install</string>
     <string name="btn_try_again">Try Again</string>
     <string name="btn_close">Close</string>
     <string name="btn_ok">OK</string>
@@ -182,8 +119,6 @@
     <string name="btn_proceed">Proceed</string>
     <string name="btn_restart_now">Restart Now</string>
     <string name="btn_save_color">Save Color</string>
-
-    <!-- How to Use -->
     <string name="how_to_use_title">How to Use KGPT</string>
     <string name="quick_guide">Quick Guide</string>
     <string name="guide_step_1">Enable the module in LSPosed Manager</string>
@@ -193,8 +128,6 @@
     <string name="guide_step_5">The AI will respond directly in the text field</string>
     <string name="example">Example</string>
     <string name="guide_example_text">What is the capital of France?$</string>
-
-    <!-- Backup & Restore Dialogs -->
     <string name="backup_settings_title">Backup Settings</string>
     <string name="restore_settings_title">Restore Settings</string>
     <string name="backup_settings_desc">Select what you want to backup</string>
@@ -202,8 +135,6 @@
     <string name="action_backup">Backup</string>
     <string name="action_restore">Restore</string>
     <string name="select_all">Select All</string>
-
-    <!-- Backup Options -->
     <string name="option_ai_commands">AI Commands</string>
     <string name="option_ai_commands_desc">Custom AI commands and prompts</string>
     <string name="option_trigger_patterns">Trigger Patterns</string>
@@ -222,37 +153,23 @@
     <string name="option_text_actions_desc">AI text actions and prompts</string>
     <string name="option_sensitive_data">API Keys &amp; Credentials</string>
     <string name="option_sensitive_data_desc">Warning: Files with keys are risky to share</string>
-
-    <!-- Backup Warning Dialog -->
     <string name="backup_warning_title">Security Warning</string>
     <string name="backup_warning_keys">This backup contains private API keys.</string>
     <string name="backup_warning_risk">Sharing it risks financial loss from unauthorized use.\nThe developer is not liable for any damages.</string>
     <string name="backup_warning_confirm">Are you fully aware of the risks and agree to proceed?</string>
     <string name="backup_warning_hint">YES</string>
-
-    <!-- Info Dialog -->
     <string name="info_title">About This Page</string>
     <string name="info_chip">Info</string>
     <string name="info_default_desc">Information about this page.</string>
-
-    <!-- Restart Dialog -->
     <string name="restart_required_title">Restart Required</string>
     <string name="restart_required_desc">To apply AI Text Actions changes, the app needs to restart.</string>
-
-    <!-- Delete Confirmation -->
     <string name="delete_title">Delete Command</string>
     <string name="delete_message">Are you sure you want to delete this item?</string>
     <string name="item_name_placeholder">Item Name</string>
     <string name="btn_cancel">Cancel</string>
-
-    <!-- Web Search Dialog -->
     <string name="web_search_title">Web Search</string>
-
-    <!-- Search Engine Selection -->
     <string name="select_search_engine_title">Select Search Engine</string>
     <string name="select_search_engine_desc">Choose your preferred search engine</string>
-
-    <!-- Log Export Success -->
     <string name="logs_exported_title">Logs Exported Successfully</string>
     <string name="root_access_granted">Root Access Granted</string>
     <string name="logs_exported_desc">The following logs have been exported:</string>
@@ -264,19 +181,13 @@
     <string name="log_crash">• Crash &amp; ANR Logs</string>
     <string name="root_explanation">Root access was used to collect kernel logs (dmesg) which require elevated permissions on Android.</string>
     <string name="btn_done">Done</string>
-
-    <!-- Delete Custom Action / Trigger -->
     <string name="delete_action_title">Delete Action</string>
     <string name="delete_action_desc">Are you sure you want to delete this custom action? This action cannot be undone.</string>
     <string name="delete_trigger_title">Delete Trigger</string>
     <string name="delete_trigger_desc">Are you sure you want to delete this app trigger? This action cannot be undone.</string>
     <string name="action_delete">Delete</string>
-
-    <!-- Color Picker -->
     <string name="title_choose_color">Choose Color</string>
     <string name="label_color_code">COLOR CODE</string>
-
-    <!-- AI Usage / Quick Guide (Duplicate?) - Reusing or adding new keys -->
     <string name="quick_guide_title">Quick Guide</string>
     <string name="quick_guide_subtitle">Type text + trigger symbol at end</string>
     <string name="guide_ai_trigger_title">AI Trigger</string>
@@ -287,52 +198,27 @@
     <string name="guide_commands_example">Hello /translate$</string>
     <string name="guide_formatting_title">Formatting</string>
     <string name="guide_formatting_example">text| text@ text~ text_</string>
-
-    <!-- Changelog -->
     <string name="title_changelog">Changelog</string>
-
-    <!-- App Selection -->
     <string name="title_select_app">Select App</string>
     <string name="chip_all">All</string>
     <string name="chip_user">User</string>
     <string name="chip_system">System</string>
     <string name="hint_search_apps">Search apps...</string>
     <string name="msg_loading_apps">Loading apps...</string>
-
-    <!-- API Key Dialog -->
     <string name="title_add_api_key">Add API Key</string>
     <string name="desc_add_api_key">Select an AI provider to add a new API key.</string>
-
-    <!-- Action Picker Dialog -->
-    <string name="title_add_actions">Add Actions</string>
-    <string name="desc_add_actions">Select actions to add to your scenario</string>
-
-    <!-- Logging Warning Dialog -->
     <string name="title_logging_disabled">Logging Disabled</string>
     <string name="desc_logging_disabled">Enable Logging is currently disabled. You must enable it first to export logs.\n\nGo to Settings → Enable Logging and turn it on, then try again.</string>
     <string name="btn_enable_logging">Enable Logging</string>
-
-    <!-- Update Interval Dialog -->
     <string name="title_check_frequency">Check Frequency</string>
     <string name="desc_check_frequency">How often should we check for updates?</string>
-
-    <!-- Dialog Titles & Labels -->
     <string name="title_choose_model">Choose Model</string>
-    <string name="label_select_provider_hint">Select the AI provider for this key</string>
-    <string name="hint_select_provider">Select Provider</string>
-
-    <!-- Placeholders (for layout preview) -->
     <string name="placeholder_search_engine">Search Engine</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Item Name</string>
     <string name="placeholder_changelog_desc">Change description</string>
     <string name="tag_add">ADD</string>
-
-    <!-- Configure Model Strings -->
     <string name="configure_model_title">Configure Model</string>
-    <string name="advanced_settings_title">Advanced</string>
-
-    <!-- Edit Command Dialog -->
     <string name="edit_command_title">Edit Command</string>
     <string name="new_command_title">New Command</string>
     <string name="error_prefix_empty">Prefix cannot be empty</string>
@@ -340,64 +226,38 @@
     <string name="error_duplicate_command">There is another command with same name</string>
     <string name="hint_command_prefix">Command (e.g. ask)</string>
     <string name="hint_prompt">Prompt</string>
-
-    <!-- Edit Trigger Symbol Dialog -->
     <string name="title_edit_trigger_symbol">Edit Trigger Symbol</string>
     <string name="desc_edit_trigger_symbol">Change the symbol that triggers this action</string>
     <string name="label_enable_trigger">Enable Trigger</string>
     <string name="desc_enable_trigger">Turn on to activate this trigger</string>
     <string name="hint_trigger_symbol">Trigger Symbol</string>
     <string name="label_preview">Preview</string>
-
-    <!-- App Trigger Dialog -->
     <string name="hint_trigger_word">Trigger Word</string>
     <string name="helper_trigger_word">Type this word to open the app</string>
     <string name="example_trigger_word">Example: Type \'chrome\' → Opens Chrome</string>
-
-    <!-- Dialog List -->
     <string name="msg_no_items">No items</string>
-
-    <!-- Dialog Add Trigger -->
-    <string name="title_add_trigger_symbol">Add Trigger Symbol</string>
-    <string name="desc_add_trigger_symbol">Enter 1-3 characters that will trigger text capture</string>
-    <string name="hint_trigger_example">e.g. @@ or ## or $$</string>
-    
-    <!-- API Key Items -->
     <string name="status_free">Free</string>
     <string name="btn_save_key">Save Key</string>
     <string name="btn_get_key">Get Key</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Action Name</string>
     <string name="placeholder_description">Description</string>
     <string name="placeholder_action">Action</string>
-
-    <!-- Home Fragment -->
     <string name="version_placeholder">v4.0.0</string>
     <string name="tag_stable">STABLE</string>
     <string name="commands_patterns_desc">Commands &amp; patterns</string>
     <string name="section_information">Information</string>
-
-    <!-- Fragment Models -->
     <string name="sub_model_desc">Select a preset or enter custom</string>
     <string name="hint_custom_model">Or enter custom model name</string>
-    
-
-
-    <!-- New Strings extracted from layouts -->
     <string name="title_app_triggers">App Triggers</string>
-    <string name="lab_badge">LAB</string>
-    <string name="app_triggers_intro">Open apps quickly by typing their trigger word</string>
     <string name="btn_enable_app_triggers">Enable App Triggers</string>
     <string name="desc_enable_app_triggers">Type trigger word to launch apps</string>
     <string name="msg_no_triggers">No app triggers added yet.\nTap the button above to add one.</string>
     <string name="guide_triggers_usage">• Type the trigger word → App opens automatically\n• Tap on app card to edit or delete</string>
-    
     <string name="material_you_blur">Material You Blur</string>
     <string name="use_dynamic_app_colors">Automatically use dynamic app colors</string>
     <string name="reset_settings">Reset Settings</string>
     <string name="performance_tip">Performance Tip</string>
     <string name="performance_tip_desc">Disable this feature on old or low-end devices for better performance.</string>
-    
     <string name="kgpt_lab">KGPT Lab</string>
     <string name="experimental_badge">EXPERIMENTAL</string>
     <string name="lab_warning">Experimental features that are still in development. Use with caution.</string>
@@ -406,7 +266,6 @@
     <string name="desc_text_actions">Quick AI actions on selected text</string>
     <string name="text_actions_intro">Quick AI text actions using trigger commands. Type your text, then add the action trigger at the end.</string>
     <string name="coming_soon">More features coming soon...</string>
-    
     <string name="title_material_you">Material You</string>
     <string name="desc_material_you">Customize dynamic colors and app theming.</string>
     <string name="use_wallpaper_colors">Use Wallpaper Colors</string>
@@ -414,8 +273,6 @@
     <string name="seed_color">Seed Color</string>
     <string name="manual_color_select">Manually select base color</string>
     <string name="enable_text_actions">Enable Text Actions</string>
-    
-    <!-- More Text Actions Strings -->
     <string name="title_show_labels">Show Labels</string>
     <string name="desc_show_labels">Display text labels under icons</string>
     <string name="title_available_actions">Available Actions</string>
@@ -424,8 +281,6 @@
     <string name="msg_enable_text_actions">Enable Text Actions to configure\nwhich actions appear in the menu</string>
     <string name="desc_enable_text_actions_sub">Show floating menu on text selection</string>
     <string name="title_ai_text_actions">AI Text Actions</string>
-    
-    <!-- Update & Status Strings -->
     <string name="new_update_badge">NEW UPDATE</string>
     <string name="update_changelog_placeholder">• Bug fixes and improvements...</string>
     <string name="title_downloading_update">Downloading Update</string>
@@ -448,29 +303,21 @@
     <string name="title_download_path">Download Path</string>
     <string name="path_default_downloads">Default (Downloads)</string>
     <string name="desc_app_tagline">Integrate Generative AI and many models</string>
-
-    <!-- Command & Pattern Dialogs -->
     <string name="title_add_command">Add new command</string>
     <string name="desc_add_command">Create a custom command to trigger AI</string>
     <string name="hint_command_name">Command Name</string>
     <string name="hint_system_message">System Message (Optional)</string>
     <string name="help_command_usage">Usage: text command + AI trigger symbol\ne.g. Hello world short$</string>
     <string name="title_edit_pattern">Edit Pattern</string>
-    <string name="desc_edit_pattern">Customize the regex pattern for AI trigger</string>
-    <string name="hint_regex_pattern">Regex Pattern</string>
-    <string name="help_regex_default">Default: $prompt$ → \$([^$]*)\$</string>
     <string name="title_other_settings">Other Settings</string>
     <string name="enable_trigger">Enable this trigger</string>
     <string name="hint_description">Description...</string>
     <string name="reset_default">Reset to default</string>
     <string name="hint_example">Example...</string>
     <string name="no_commands">No commands yet</string>
-
-    <!-- Settings Fragment Extras -->
     <string name="winter_mode">Winter Mode</string>
     <string name="winter_mode_desc">Enable snowfall animation effect</string>
     <string name="title_settings_backup">Backup Data</string>
-    <string name="desc_settings_backup">Save your chats and settings</string>
     <string name="title_settings_restore">Restore Data</string>
     <string name="desc_settings_restore">Restore from a backup file</string>
     <string name="title_backup_and_restore">Backup &amp; Restore</string>
@@ -483,37 +330,22 @@
     <string name="local_export_desc">Save a .kgpt backup file to your device storage</string>
     <string name="local_import_title">Import from Local File</string>
     <string name="local_import_desc">Restore settings from a local .kgpt or .json file</string>
-    <string name="btn_export_local">Export to Local File</string>
-    <string name="desc_export_local">Save a .kgpt backup file to your device storage</string>
-    <string name="btn_import_local">Import from Local File</string>
-    <string name="desc_import_local">Restore settings from a local .kgpt or .json file</string>
     <string name="support_group">Support Group</string>
     <string name="title_export_logs">Export Logs</string>
     <string name="desc_export_logs">Share logs for debugging</string>
     <string name="title_updates">Updates</string>
     <string name="desc_updates_config">Check and configure updates</string>
-    
-    <!-- Web Search -->
     <string name="open_in_browser">Open in browser</string>
     <string name="hint_enter_url">Enter URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
-
-    <!-- Easter Egg (Cat) -->
     <string name="cat_caught_title">Meow! You caught me!</string>
     <string name="cat_caught_msg">Hey there! I\'m the KGPT cat.\n\nIf you\'re enjoying the app, would you mind giving us a star on GitHub?\nIt really helps!</string>
     <string name="cat_action_star">Star on GitHub</string>
     <string name="cat_action_later">Maybe later</string>
-
-    <!-- Invocation Patterns -->
     <string name="quick_example">Quick Example</string>
     <string name="example_pattern_usage">Type: \"What is the weather?$\" • AI will respond</string>
     <string name="active_triggers">Active Triggers</string>
-    
-    <!-- Misc -->
     <string name="action_placeholder">Action</string>
     <string name="version_v4_1_0">v4.1.0</string>
-
-    <!-- API Keys Fragment -->
     <string name="api_keys_description">Manage your API keys</string>
     <string name="gemini_api_title">Gemini API Key</string>
     <string name="free_api_badge">Free API</string>
@@ -526,8 +358,6 @@
     <string name="add_key_desc">Add keys for other AI providers</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="privacy_notice_desc">API keys are processed locally on your device and never shared.</string>
-
-    <!-- Settings Fragment Misc -->
     <string name="settings_appearance">Appearance</string>
     <string name="material_you_title">AMOLED Dark</string>
     <string name="material_you_desc">Pure black for OLED screens</string>
@@ -550,37 +380,14 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">Language</string>
-    <string name="language_desc">Choose application language</string>
     <string name="select_language">Select Language</string>
     <string name="about_settings_title">About Settings</string>
     <string name="about_settings_desc">Customize your KGPT experience.\n\n• Dark Mode: Enable dark theme for comfortable viewing at night.\n\n• AMOLED Dark: Pure black theme for OLED screens to save battery.\n\n• Enable Logging: Turn on logs for debugging. Disable for better performance.\n\n• External Internet Service: Recommended for chat completion. Enables external network requests for AI responses.</string>
-    
-    <!-- Logging Warning Bottom Sheet -->
-    <string name="logging_warning_title">Enable Logging?</string>
-    <string name="logging_warning_desc">Logging is currently disabled. You need to enable it to export logs.</string>
-    <string name="btn_enable_logging_action">Enable Logging</string>
     <string name="logging_enabled_toast">Logging enabled. You can now export logs.</string>
-    
-    <!-- Export Success Bottom Sheet -->
-    <string name="export_success_title">Export Successful</string>
-    <string name="export_success_desc">Logs have been saved to:</string>
-    <string name="root_status_label">Root Status</string>
-    <string name="boot_logs_label">Boot Logs</string>
-    <string name="system_logs_label">System Logs</string>
-    <string name="crash_logs_label">Crash Logs</string>
-    <string name="app_logs_label">App Logs</string>
-    <string name="available">Available</string>
-    <string name="unavailable">Unavailable</string>
-    
-    <!-- Tab Names -->
     <string name="tab_commands">Commands</string>
     <string name="tab_triggers">Triggers</string>
-    
-    <!-- Dock Actions -->
     <string name="dock_add_command">Add Command</string>
     <string name="dock_how_to_use">How to Use</string>
-    
-    <!-- Pattern Types (Triggers) -->
     <string name="pattern_settings">Settings</string>
     <string name="pattern_ai_trigger">AI Trigger</string>
     <string name="pattern_custom_command">Custom command</string>
@@ -590,8 +397,6 @@
     <string name="pattern_underline">Underline</string>
     <string name="pattern_web_search">Web Search</string>
     <string name="pattern_downloader">Media Downloader</string>
-    
-    <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">Settings trigger</string>
     <string name="pattern_desc_ai_trigger">Type text then add %1$s at end</string>
     <string name="pattern_desc_custom_command" formatted="false">Type text then add %1$scommand%1$s</string>
@@ -601,11 +406,7 @@
     <string name="pattern_desc_underline">Type text then add %1$s</string>
     <string name="pattern_desc_web_search">Type text then add %1$s to search</string>
     <string name="pattern_desc_downloader">Type link then add %1$s to download</string>
-    
-    <!-- Pattern Status -->
     <string name="status_disabled">Disabled</string>
-    
-    <!-- Update Interval Options -->
     <string name="interval_every_hour">Every hour</string>
     <string name="interval_every_6_hours">Every 6 hours</string>
     <string name="interval_every_12_hours">Every 12 hours</string>
@@ -614,59 +415,19 @@
     <string name="interval_every_week">Every week</string>
     <string name="interval_disabled">Disabled</string>
     <string name="interval_every_n_hours">Every %d hours</string>
-    
-    <!-- Download Path Options -->
     <string name="path_default_downloads_option">Default (Downloads)</string>
     <string name="path_choose_custom">Choose Custom Folder</string>
     <string name="path_internal_storage">Internal Storage</string>
-    
-    <!-- Update Check -->
     <string name="check_for_updates">Check for Updates</string>
     <string name="checking_updates">Checking...</string>
-    
-    <!-- AI Settings Tabs -->
     <string name="tab_model">Model</string>
     <string name="tab_api_keys">API Keys</string>
-    
-    <!-- Dock Actions -->
     <string name="dock_add_app_trigger">Add App Trigger</string>
-    
-    <!-- Changelog Items -->
-    <string name="tag_added">ADD</string>
     <string name="tag_improved">IMPROVE</string>
     <string name="tag_fixed">FIX</string>
-    
-    <string name="changelog_1_0_0_item1">Added Google AI Mode to web search options</string>
-    <string name="changelog_1_0_0_item2">Added language selection feature with support for all available languages</string>
-    <string name="changelog_1_0_0_item3">Improved screen layouts for one-handed use and larger fingers</string>
-    <string name="changelog_1_0_0_item4">Fixed many stability issues and improved performance</string>
-    <string name="changelog_1_0_0_item5">Tested and added support for FUTO keyboard</string>
     <string name="changelog_4_1_4_item1">Hotfix: Fixed core engine installation detection and in-app download launcher</string>
     <string name="changelog_4_1_4_item2">Updated core installer bottom sheet with smooth Lottie animation lifecycle</string>
-    <string name="changelog_4_1_3_item1">Added Native In-App Download option with instant LSPosed hook integration</string>
-    <string name="changelog_4_1_3_item2">Added smart download organization with automatic subfolders for each source app</string>
-    <string name="changelog_4_1_3_item3">Redesigned and elevated KGPT Media Downloader settings interface</string>
-    <string name="changelog_4_1_2_item1">Added Custom AI Providers support and connection to local/cloud LLM models (Ollama, LM Studio, vLLM, DeepInfra, Together AI)</string>
-    <string name="changelog_4_1_2_item2">Added support for Grok (xAI) with latest models: grok-2, grok-2-mini, grok-beta, and grok-vision-beta</string>
-    <string name="changelog_4_1_2_item3">Added support for DeepSeek with reasoning and smart models: deepseek-chat, deepseek-reasoner, deepseek-v4-pro, deepseek-v4-flash, deepseek-coder, DeepSeek-V3, and DeepSeek-R1</string>
-    <string name="changelog_4_1_2_item4">Added support for Kimi (Moonshot AI) with latest models: kimi-k3, kimi-k2.6, kimi-k2.7-code, kimi-k2.5, and moonshot-v1</string>
-    <string name="changelog_4_1_2_item5">Enhanced API Keys management and Custom Provider bottom sheets with fluid animations and vector brand logos</string>
-    <string name="changelog_4_1_1_item1">Fixed YouTube downloads failing with HTTP 403 Forbidden / SABR streaming restrictions</string>
-    <string name="changelog_4_1_1_item2">Added automatic background yt-dlp core update &amp; smart retry mechanism</string>
-    <string name="changelog_4_1_1_item3">Configured Android player client fallback for reliable high-speed downloads</string>
-    <string name="changelog_4_0_8_item1">Migrated from LSPosed API 82 to modern API 102</string>
-    <string name="changelog_4_0_8_item2">Major performance optimizations and reduced battery consumption</string>
-    <string name="changelog_4_0_8_item3">Fixed various freeze, hang, and ANR scenarios</string>
-    <string name="changelog_4_0_8_item4">Added new keyboard trigger: Media Downloader Trigger</string>
-    <string name="changelog_4_0_8_item5">Added new Text Selection action: Media Downloader</string>
-    <string name="changelog_4_0_8_item6">Added new Lab feature: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Added live YouTube and video search feature</string>
-    <string name="changelog_4_0_8_item8">Added Video &amp; Audio downloading with custom formats, quality, and trimming</string>
-    <string name="changelog_4_0_8_item9">Added Universal Standalone Command generator to download on any device</string>
-    <string name="changelog_note_4_0_8">Please be patient as more issues have been reported to the developer, but they will be resolved in batches of updates as this is a one-person project. Thank you for your understanding.</string>
     <string name="msg_ai_no_response_error">No response received. The AI returned empty content.\nHint: You might be using an unregistered trigger/command.</string>
-    
-    <!-- Language Selection -->
     <string name="hint_search_language">Search languages...</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
@@ -706,7 +467,6 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">This symbol is already used by another pattern</string>
-    <!-- Model Config Fields -->
     <string name="field_api_key">API Key</string>
     <string name="field_top_p">Top P</string>
     <string name="dialog_title_config_model">%1$s Config</string>
@@ -717,7 +477,6 @@
     <string name="settings_option_choose_model">Choose &amp; Configure Model</string>
     <string name="dialog_title_commands_list">Commands List</string>
     <string name="settings_option_patterns_list">Patterns List</string>
-    <!-- Other Settings -->
     <string name="setting_enable_logging">Enable logging</string>
     <string name="setting_desc_enable_logging">Disable for performance. You won\'t be able to report errors.</string>
     <string name="setting_external_internet">Use external internet service</string>
@@ -738,8 +497,6 @@
     <string name="setting_desc_update_interval">How often to check for updates (in hours).</string>
     <string name="setting_download_path">Download Path</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
-
-    <!-- Pattern List & Edit -->
     <string name="dialog_title_trigger_symbols">Trigger Symbols</string>
     <string name="no_patterns">No patterns</string>
     <string name="dialog_title_edit_pattern">Edit %1$s</string>
@@ -750,10 +507,7 @@
     <string name="example_format_bold">\u0022text%1$s\u0022 \u2192 bold text</string>
     <string name="example_format_crossout">\u0022text%1$s\u0022 \u2192 strikethrough</string>
     <string name="example_format_underline">\u0022text%1$s\u0022 \u2192 underlined</string>
-    <string name="example_default">Type text, then add \u0022%1$s\u0022 at the end</string>
     <string name="pattern_subtitle_trigger">Trigger: %1$s</string>
-    
-    <!-- PatternType Titles -->
     <string name="title_settings_trigger">Settings</string>
     <string name="title_ai_trigger">AI Trigger</string>
     <string name="title_custom_command">Custom command</string>
@@ -766,72 +520,10 @@
     <string name="example_downloader_trigger">https://... %1$s</string>
     <string name="btn_reset_pattern">Reset Pattern</string>
     <string name="msg_reset_pattern_confirm">Reset \'%1$s\' to default symbol \"%2$s\"?</string>
-    
-    <!-- Missing Pattern Strings -->
-    <string name="format_edit_pattern_title">Edit %1$s</string>
-    <string name="error_symbol_empty">Symbol cannot be empty</string>
-    <string name="error_symbol_not_allowed">This symbol is not allowed</string>
-    <string name="error_pattern_creation_failed">Could not create pattern for this symbol</string>
-    <string name="error_pattern_invalid">Invalid pattern generated</string>
-    <string name="error_pattern_duplicate">This symbol is already used by another pattern</string>
-    <string name="msg_trigger_enabled">Trigger "%1$s" enabled</string>
-    <string name="msg_trigger_disabled">Trigger "%1$s" disabled</string>
-    <string name="example_preview_settings">"%1$s" → Opens settings</string>
-    <string name="example_preview_ai">"Hello%1$s" → AI responds</string>
-    <string name="example_preview_custom">"Hello%1$stranslate%1$s" → Translates</string>
-    <string name="example_preview_italic">"text%1$s" → italic</string>
-    <string name="example_preview_bold">"text%1$s" → bold</string>
-    <string name="example_preview_crossout">"text%1$s" → strikethrough</string>
-    <string name="example_preview_underline">"text%1$s" → underlined</string>
-    <string name="example_preview_default">Type text, then add "%1$s" at the end</string>
-    
-    <!-- Missing Model Config Fields -->
-    <string name="field_sub_model">Sub-model</string>
-    <string name="field_base_url">Base URL</string>
-    <string name="field_max_tokens">Max tokens</string>
-    <string name="field_temperature">Temperature</string>
-    
-    <!-- Missing Update Interval -->
-    <string name="interval_every_disabled">Disabled</string>
-
-    <!-- Universal Media Downloader Strings -->
     <string name="title_media_downloader">KGPT Downloader</string>
     <string name="desc_media_downloader">Download videos and audio in up to 4K &amp; MP3 from any app by sharing links or pasting URLs.</string>
     <string name="desc_media_downloader_short">Download video &amp; audio by sharing</string>
     <string name="title_direct_download">Direct Download via Link</string>
-    <string name="hint_media_url">Paste video or song link here...</string>
-    <string name="btn_paste_clipboard">Paste from Clipboard</string>
-    <string name="btn_analyze_download">Analyze &amp; Download</string>
-    <string name="btn_download_now">Download Now</string>
-    <string name="btn_download_video_now">Download Video</string>
-    <string name="btn_download_audio_now">Download Audio (MP3)</string>
-    <string name="tab_video">🎬 Video</string>
-    <string name="tab_audio">🎵 Audio (MP3)</string>
-    <string name="label_choose_video_quality">Select Video Quality:</string>
-    <string name="label_choose_audio_format">Select Audio Format:</string>
-    <string name="quality_best">Highest Quality (Best)</string>
-    <string name="label_download_location">Download Location &amp; Folders</string>
-    <string name="label_current_path">Save Directory:</string>
-    <string name="btn_change_folder">Change Folder</string>
-    <string name="switch_separate_folders">Separate Audio &amp; Video Folders</string>
-    <string name="desc_separate_folders">Save audio into KGPT/Audio and video into KGPT/Video</string>
-    <string name="switch_group_by_uploader">Group by Channel / Artist</string>
-    <string name="desc_group_by_uploader">Create subfolders for each creator or channel automatically</string>
-    <string name="label_default_preferences">Default Download Preferences</string>
-    <string name="label_default_quality">Default Video Quality</string>
-    <string name="label_default_format">Default Video Format</string>
-    <string name="label_default_audio">Default Audio Format</string>
-    <string name="switch_embed_thumbnail">Embed Thumbnail &amp; Album Art</string>
-    <string name="desc_embed_thumbnail">Attach cover art directly to media file</string>
-    <string name="switch_embed_metadata">Embed Tags &amp; Metadata</string>
-    <string name="desc_embed_metadata">Add title, artist, and track info</string>
-    <string name="switch_embed_subtitles">Download Subtitles</string>
-    <string name="desc_embed_subtitles">Download and embed available video subtitles</string>
-    <string name="title_supported_platforms">Supported Platforms</string>
-    <string name="desc_supported_platforms">YouTube, Instagram Reels, TikTok (No Watermark), Facebook, Twitter/X, Spotify, SoundCloud, Pinterest, Reddit, Threads, and 1000+ sites.</string>
-    <string name="title_update_engine">Update Core Engine (yt-dlp)</string>
-
-    <!-- Native In-App Download Hook Section -->
     <string name="title_native_downloader_hooks">Native In-App Downloads</string>
     <string name="badge_lsposed">LSPosed</string>
     <string name="desc_native_downloader_hooks">Directly intercept the official download button inside apps and open KGPT Downloader seamlessly.</string>
@@ -841,14 +533,10 @@
     <string name="app_ytmusic_pkg">com.google.android.apps.youtube.music</string>
     <string name="toast_hook_enabled">Native download enabled for %1$s. Restart app to apply.</string>
     <string name="toast_hook_disabled">Native download disabled for %1$s.</string>
-    <string name="toast_lsposed_scope_prompt">Make sure %1$s is enabled in KGPT scope inside LSPosed Manager.</string>
     <string name="toast_requesting_lsposed_scope">Requesting LSPosed scope authorization…</string>
     <string name="toast_lsposed_scope_denied">LSPosed scope request was cancelled or denied</string>
-
     <string name="pref_group_by_app">Group by Source App</string>
     <string name="pref_group_by_app_desc">Create separate subfolders for each platform (YouTube, TikTok, Instagram...)</string>
-
-    <!-- Downloader How-To-Use Guide Strings -->
     <string name="title_downloader_guide">KGPT Downloader Guide</string>
     <string name="desc_downloader_guide">All available ways to download video &amp; audio effortlessly:</string>
     <string name="guide_item_share_title">1. Share to Download</string>
@@ -861,53 +549,26 @@
     <string name="guide_item_selection_trigger_desc">Select any link anywhere on your phone and tap \"Media Downloader\", or type a URL followed by .dl directly in your keyboard.</string>
     <string name="guide_item_search_title">5. Direct Search</string>
     <string name="guide_item_search_desc">Search for songs or videos by title or artist and download results instantly.</string>
-    <string name="guide_section_paste_title">1. In-App Direct Paste</string>
-    <string name="guide_section_paste_desc">Copy any video/audio link to your clipboard and paste it into KGPT to download in any resolution or format.</string>
-    <string name="guide_section_native_title">2. Native In-App Buttons</string>
-    <string name="guide_section_native_desc">Tap the native official download button directly inside YouTube and YouTube Music to launch instant KGPT download.</string>
-    <string name="guide_section_share_title">3. Share Menu from Any App</string>
-    <string name="guide_section_share_desc">Tap \"Share\" on any post or reel in TikTok, Instagram, Facebook, X, Pinterest, Threads, etc., and pick KGPT Downloader.</string>
-    <string name="guide_section_selection_title">4. Text Selection Action</string>
-    <string name="guide_section_selection_desc">Highlight any URL in a browser or chat, then choose \"Media Downloader\" from the floating context menu.</string>
-    <string name="guide_section_trigger_title">5. Keyboard Triggers &amp; Commands</string>
-    <string name="guide_section_trigger_desc">Type a URL followed by .dl (e.g. https://... .dl) on your keyboard, or type /download.</string>
-    <string name="guide_section_search_title">6. Direct Media Search</string>
-    <string name="guide_section_search_desc">Search for any song or video title directly by name and download results with a single tap.</string>
     <string name="notice_public_media_title">Public Media Notice</string>
     <string name="notice_public_media_desc">You can download any public (no DRM) video from any app by sharing the content directly to KGPT.</string>
-    <string name="desc_update_engine">Update video extractor algorithms directly from the internet.</string>
-    <string name="btn_update_engine_now">Update Extractor Algorithms Now</string>
     <string name="core_status_checking">Checking core engine status…</string>
     <string name="core_status_ready">Core engine is fully updated and ready</string>
-    <string name="core_status_update_available">New core update is available</string>
     <string name="core_status_downloading">Downloading and installing update…</string>
     <string name="btn_core_check_updates">Check for Updates</string>
     <string name="btn_core_install_update">Download &amp; Install Update</string>
-    <string name="toast_download_started">Download started in background</string>
     <string name="toast_clipboard_empty">Clipboard is empty</string>
     <string name="toast_invalid_url">Please enter a valid media URL</string>
-    <string name="toast_engine_updating">Checking and updating downloader engine...</string>
     <string name="toast_engine_updated">Engine updated successfully</string>
     <string name="status_analyzing_media">Extracting video info and qualities...</string>
     <string name="error_extract_failed">Failed to analyze link. Please check link and connection.</string>
     <string name="notification_download_complete">Download Complete</string>
     <string name="notification_download_failed">Download Failed</string>
-    <string name="share_via_kgpt">Download via KGPT</string>
-
-    <string name="title_downloader_credits">Credits</string>
-    <string name="desc_downloader_credits">We extend our heartfelt thanks and appreciation to Denis Cerri and all the amazing contributors of the ytdlnis project.\n\nPortions of their open-source codebase and architectures have been incorporated into this app in compliance with the GNU General Public License v3.0 (GPL-3.0).</string>
-    <string name="btn_visit_ytdlnis_github">Visit ytdlnis on GitHub</string>
-
-    <!-- YTDLnis Modern Downloader UI Strings -->
     <string name="nav_media_download">Download</string>
     <string name="desc_adjust_download">Adjust download</string>
     <string name="label_title">Title</string>
-    <string name="label_author">Author</string>
     <string name="label_container">Container</string>
     <string name="label_video_quality">Video quality</string>
     <string name="label_audio_quality">Audio quality</string>
-    <string name="label_save_dir">Save dir</string>
-    <string name="label_free_space">Free space: %1$s</string>
     <string name="label_adjust_video">Adjust video</string>
     <string name="label_adjust_audio">Adjust audio</string>
     <string name="chip_thumbnail">Thumbnail</string>
@@ -916,10 +577,7 @@
     <string name="chip_recode">Recode video</string>
     <string name="chip_filename">Filename template</string>
     <string name="chip_extra_command">Add extra commands</string>
-    <string name="chip_bitrate">Bitrate</string>
-    <string name="tab_command">Command</string>
     <string name="dialog_title_quality">Select Quality &amp; Format</string>
-    <string name="dialog_title_container">Select Container</string>
     <string name="dialog_title_thumbnail">Thumbnail</string>
     <string name="dialog_title_chapters">Chapters</string>
     <string name="dialog_title_subtitles">Subtitles</string>
@@ -937,14 +595,11 @@
     <string name="btn_open">Open</string>
     <string name="chip_cut">Cut &amp; Trim</string>
     <string name="dialog_title_cut">Cut Video / Audio</string>
-    <string name="label_start_time">Start Time (e.g. 00:00:10)</string>
-    <string name="label_end_time">End Time (e.g. 00:01:30)</string>
     <string name="label_estimated_size">Estimated Size</string>
     <string name="label_speed_mode">Turbo Multi-Part (16x)</string>
     <string name="desc_direct_download">Paste any video or audio link to download directly.</string>
     <string name="hint_enter_media_url">https://...</string>
     <string name="pref_download_directory">Download Directory</string>
-    <string name="btn_choose_folder">Change</string>
     <string name="pref_group_by_creator">Organize by Channel / Creator</string>
     <string name="pref_group_by_creator_desc">Create subfolders for each creator automatically</string>
     <string name="pref_default_mode">Default Download Preferences</string>
@@ -953,16 +608,12 @@
     <string name="opt_split_chapters">Split by Chapters</string>
     <string name="title_core_status">Downloader Core</string>
     <string name="desc_core_embedded">Tap to check for engine updates</string>
-    <string name="btn_update_core">Update</string>
     <string name="btn_paste_short">Paste</string>
     <string name="badge_ytdlp">yt-dlp</string>
     <string name="status_core_up_to_date">Downloader engine is up to date</string>
     <string name="status_core_updated">Downloader engine updated successfully</string>
     <string name="status_core_updating">Checking and updating engine...</string>
-    <string name="status_core_ready">Ready / Installed</string>
     <string name="status_core_not_installed">Not Installed (Click to Setup)</string>
-    
-    <!-- On-Demand Core Plugin Strings -->
     <string name="title_plugin_required">KGPT Downloader Plugin</string>
     <string name="desc_plugin_required">Download the fast media engine to enable 4K &amp; MP3 downloading</string>
     <string name="label_device_arch">DEVICE ARCHITECTURE</string>
@@ -971,43 +622,30 @@
     <string name="btn_install_plugin_now">Download &amp; Install Plugin</string>
     <string name="status_installing_plugin">Installing Downloader Engine</string>
     <string name="msg_downloading_simple">Downloading engine files...</string>
-
-    <!-- YouTube Search & Multi-link Selection -->
     <string name="title_youtube_search">YouTube Search</string>
     <string name="desc_youtube_search">Results for: %1$s</string>
-    <string name="hint_search_or_url">Search YouTube or paste link...</string>
     <string name="loading_search_results">Searching YouTube...</string>
     <string name="loading_more_results">Loading more results...</string>
     <string name="no_search_results">No results found for \"%1$s\"</string>
     <string name="title_select_links">Select Media to Download</string>
     <string name="desc_select_links">Found %1$d links in text</string>
     <string name="action_select_all">Select All</string>
-    <string name="action_deselect_all">Deselect All</string>
     <string name="btn_download_selected">Download Selected (%1$d)</string>
     <string name="btn_download_single">Download</string>
     <string name="selected_counter">%1$d of %2$d selected</string>
     <string name="toast_no_items_selected">Please select at least one item to download</string>
     <string name="batch_download_started">Started downloading %1$d items</string>
     <string name="btn_load_more_results">Load 5 more results...</string>
-    <string name="label_search_results">Search results</string>
     <string name="desc_cut_media">Drag the sliders to select the desired start and end points</string>
-    <string name="label_start_time_val">Start: %1$s</string>
-    <string name="label_end_time_val">End: %1$s</string>
     <string name="label_clip_duration_val">Clip: %1$s</string>
     <string name="btn_apply_cut">Save</string>
     <string name="btn_reset_cut">Reset (Full Media)</string>
     <string name="preset_first_30s">First 30s</string>
     <string name="preset_first_60s">First 1m</string>
     <string name="preset_full_media">Full</string>
-    <string name="default_video_title">YouTube Video</string>
-    <string name="default_media_title">Media Link</string>
-
-    <!-- Custom Providers Strings -->
     <string name="tab_provider_server">Server</string>
     <string name="tab_provider_models_auth">Models &amp; Auth</string>
     <string name="tab_provider_advanced">Advanced</string>
-    <string name="tab_provider_advanced_test">Advanced</string>
-    <string name="btn_add">Add</string>
     <string name="btn_add_custom_provider">Add Custom Provider</string>
     <string name="badge_custom_provider">Custom</string>
     <string name="title_add_custom_provider">Add AI Provider</string>
@@ -1017,12 +655,10 @@
     <string name="hint_provider_name">Provider Name (e.g. Ollama Local)</string>
     <string name="hint_base_url">Base URL</string>
     <string name="hint_chat_endpoint">Chat Endpoint</string>
-    <string name="label_models_list">Supported Models List</string>
     <string name="hint_add_model_name">Enter model name</string>
     <string name="hint_default_model">Default Model</string>
     <string name="label_authentication">Authentication</string>
     <string name="hint_api_key_optional">API Key (optional)</string>
-    <string name="label_advanced_capabilities">Advanced &amp; Capabilities</string>
     <string name="label_supports_system_message">Support System Prompt</string>
     <string name="desc_supports_system_message">Send system prompt as role instead of prepending to user prompt</string>
     <string name="hint_custom_headers_json">Custom HTTP Headers (JSON)</string>
@@ -1035,4 +671,21 @@
     <string name="msg_connection_success">Connected to server successfully!</string>
     <string name="msg_connection_failed">Connection failed: %1$s</string>
     <string name="msg_confirm_delete_provider">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="quality_best_label">Highest Quality (Auto Best)</string>
+    <string name="quality_unavailable_title">Requested quality not available</string>
+    <string name="quality_unavailable_msg">This video does not offer the selected quality.\nThe highest available quality is %1$dp. Continue with it?</string>
+    <string name="quality_continue_with_available">Continue with best available</string>
+    <string name="audio_original_best_label">Best original audio (no re-encode)</string>
+    <string name="audio_converted_suffix"> (converted)</string>
+    <string name="audio_lossless_flac_converted">Lossless container FLAC (converted)</string>
+    <string name="msg_invalid_filename_template">Invalid filename template: path separators and leading dashes are not allowed.</string>
+    <string name="label_free_api">Free API</string>
+    <string name="label_paid_api">Paid API</string>
+    <string name="msg_api_key_saved_fmt">%1$s API key saved</string>
+    <string name="msg_api_key_removed_fmt">%1$s key removed</string>
+    <string name="title_edit_command">Edit Command</string>
+    <string name="title_delete_command">Delete Command</string>
+    <string name="title_invalid_model_name">Invalid Model Name</string>
+    <string name="msg_restored_restart_fmt">Restored: %1$s. Restart app to apply theme changes.</string>
+    <string name="error_prefix_reserved">This prefix is reserved by the system</string>
 </resources>

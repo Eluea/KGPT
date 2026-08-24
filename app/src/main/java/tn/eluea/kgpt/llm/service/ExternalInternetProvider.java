@@ -23,12 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import android.os.Handler;
+import android.os.Looper;
 
 import tn.eluea.kgpt.MainHook;
 import tn.eluea.kgpt.core.network.InternetService;
@@ -44,6 +48,11 @@ public class ExternalInternetProvider extends AbstractServiceClient implements I
                 "tn.eluea.kgpt");
     }
 
+    // If no HTTP status arrives within this window the request is failed so
+    // the caller's worker threads are never blocked indefinitely.
+    private static final long STATUS_TIMEOUT_MS = 30_000;
+    private static final Handler TIMEOUT_HANDLER = new Handler(Looper.getMainLooper());
+
     private long lastRequestId = -1;
 
     private Map<Long, InternetRequestSubscriber> listeners = new HashMap<>();
@@ -51,6 +60,30 @@ public class ExternalInternetProvider extends AbstractServiceClient implements I
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private Queue<Bundle> messageQueue = new LinkedList<>();
+
+    @Override
+    protected void onServiceUnavailable() {
+        failAllPending(new IOException("KGPT internet service unavailable"));
+        synchronized (messageQueue) {
+            messageQueue.clear();
+        }
+    }
+
+    /** Fail and dispose every in-flight request (service died / disconnected). */
+    private void failAllPending(Throwable reason) {
+        List<InternetRequestSubscriber> pending;
+        synchronized (listeners) {
+            if (listeners.isEmpty()) return;
+            pending = new ArrayList<>(listeners.values());
+            listeners.clear();
+        }
+        for (InternetRequestSubscriber irs : pending) {
+            try {
+                irs.irl.onRequestError(reason);
+            } catch (Throwable ignored) {}
+            disposeIrs(irs);
+        }
+    }
 
     @Override
     public InputStream sendRequest(HttpURLConnection con, String body, InternetRequestListener irl) throws IOException {
@@ -67,10 +100,34 @@ public class ExternalInternetProvider extends AbstractServiceClient implements I
         requestBundle.putString("request_method", requestMethod);
         requestBundle.putString("request_body", body);
 
-        listeners.put(lastRequestId, new InternetRequestSubscriber(irl));
+        InternetRequestSubscriber subscriber = new InternetRequestSubscriber(irl);
+        Runnable statusTimeoutTask = () -> {
+            boolean stillPending;
+            synchronized (listeners) {
+                stillPending = subscribersContain(lastRequestId, subscriber);
+            }
+            if (!stillPending) return;
+            synchronized (listeners) {
+                listeners.remove(lastRequestId);
+            }
+            try {
+                irl.onRequestError(new IOException("KGPT internet proxy: request timed out"));
+            } catch (Throwable ignored) {}
+            disposeIrs(subscriber);
+        };
+        TIMEOUT_HANDLER.postDelayed(statusTimeoutTask, STATUS_TIMEOUT_MS);
+        subscriber.statusDeadline = statusTimeoutTask;
+
+        synchronized (listeners) {
+            listeners.put(lastRequestId, subscriber);
+        }
         sendMessage(requestBundle, InternetService.SEND_REQUEST_WHAT);
 
         return Objects.requireNonNull(listeners.get(lastRequestId)).is;
+    }
+
+    private boolean subscribersContain(long id, InternetRequestSubscriber subscriber) {
+        return listeners.get(id) == subscriber;
     }
 
     private void serviceHandler() {
@@ -98,6 +155,10 @@ public class ExternalInternetProvider extends AbstractServiceClient implements I
                     switch (responseType) {
                         case STATUS_CODE:
                             statusCode = message.getInt("status_code");
+                            if (irs.statusDeadline != null) {
+                                TIMEOUT_HANDLER.removeCallbacks(irs.statusDeadline);
+                                irs.statusDeadline = null;
+                            }
                             irs.irl.onRequestStatusCode(statusCode);
                             break;
                         case INPUT_STREAM:
@@ -158,6 +219,7 @@ public class ExternalInternetProvider extends AbstractServiceClient implements I
         public final InternetRequestListener irl;
         public InputStream is;
         public OutputStream os;
+        public Runnable statusDeadline;
 
         private InternetRequestSubscriber(InternetRequestListener irl) throws IOException {
             this.irl = irl;

@@ -17,6 +17,7 @@ public enum DialogType {
     EditPattern("Edit Pattern", false),
     Settings("Settings", false),
     OtherSettings("Other Settings", true),
+    AddCustomProvider("Add Custom Provider", false),
     ;
 
     public final String title;

@@ -38,13 +38,19 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.tabs.TabLayout;
+import com.yausername.youtubedl_android.mapper.VideoFormat;
 import com.yausername.youtubedl_android.mapper.VideoInfo;
 
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -104,6 +110,20 @@ public class MediaDownloaderBottomSheet {
     private String selectedVideoQuality = "1080";
     private String selectedAudioFormat = "mp3";
     private String selectedAudioBitrate = "320";
+    // Real-format selection (from yt-dlp formats list). Null when the user
+    // picked a generic tier or real formats were unavailable.
+    private String selectedFormatId = null;
+    private long selectedFormatBytes = -1;
+    private int maxHeightAvailable = -1;
+    // Real ORIGINAL audio sources (no transcode) picked straight from yt-dlp
+    private String selectedAudioSourceFormatId = null;
+    private long selectedAudioBytes = -1;
+    private String selectedAudioLabel = null;
+    // Actual container extensions present among this video's streams
+    private final java.util.Set<String> availableVideoExts = new java.util.LinkedHashSet<>();
+    // Guards async results: a fetch started for a previous video (user closed
+    // and opened another quickly) must never populate the current sheet.
+    private int loadGeneration = 0;
     private int concurrentFragments = 16;
     private String customTitle = null;
     private String customFilenameTemplate = "%(uploader)s - %(title)s";
@@ -446,12 +466,16 @@ public class MediaDownloaderBottomSheet {
             tvQualitySectionLabel.setText(context.getString(R.string.label_audio_quality));
             tvAdjustSectionLabel.setText(context.getString(R.string.label_adjust_audio));
             tvContainer.setText(selectedAudioFormat.toUpperCase());
-            tvQualityTitle.setText("High Quality Audio (" + selectedAudioBitrate + " kbps)");
+            if (selectedAudioLabel != null) {
+                tvQualityTitle.setText(selectedAudioLabel);
+            } else {
+                tvQualityTitle.setText("High Quality Audio (" + selectedAudioBitrate + " kbps)");
+            }
         } else {
             tvQualitySectionLabel.setText(context.getString(R.string.label_video_quality));
             tvAdjustSectionLabel.setText(context.getString(R.string.label_adjust_video));
             tvContainer.setText(selectedContainer);
-            tvQualityTitle.setText(selectedVideoQuality.equals("best") ? "Highest Quality (Best)" : selectedVideoQuality + "p Full HD");
+            tvQualityTitle.setText(qualityLabel(selectedVideoQuality));
         }
 
         updateEstimatedSizeAndStorage();
@@ -515,9 +539,17 @@ public class MediaDownloaderBottomSheet {
         long duration = cachedVideoInfo != null ? cachedVideoInfo.getDuration() : 180;
         if (duration <= 0) duration = 180;
 
-        String estimatedStr = (currentTab == 1)
-                ? estimateAudioSize(duration, selectedAudioBitrate)
-                : estimateVideoSize(duration, selectedVideoQuality);
+        String estimatedStr;
+        if (currentTab == 1) {
+            estimatedStr = selectedAudioBytes > 0
+                    ? formatBytes(selectedAudioBytes)
+                    : estimateAudioSize(duration, selectedAudioBitrate);
+        } else if (selectedFormatBytes > 0) {
+            // Real size of the exact selected format from yt-dlp
+            estimatedStr = formatBytes(selectedFormatBytes);
+        } else {
+            estimatedStr = estimateVideoSize(duration, selectedVideoQuality);
+        }
         tvEstimatedSize.setText("~" + estimatedStr);
 
         if (tvTurboBadge != null) {
@@ -550,15 +582,29 @@ public class MediaDownloaderBottomSheet {
         layoutLoading.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(View.GONE);
 
+        // Per-attempt safe cache clean (active downloads are protected inside
+        // clearCache) so every open strictly reflects the TARGET media.
+        DownloaderEngine.getInstance().clearCache(context);
+
+        final int generation = ++loadGeneration;
         cachedVideoInfo = null;
+        selectedFormatId = null;
+        selectedFormatBytes = -1;
+        maxHeightAvailable = -1;
+        selectedAudioSourceFormatId = null;
+        selectedAudioBytes = -1;
+        selectedAudioLabel = null;
+        availableVideoExts.clear();
         ThumbnailLoader.getInstance().clearCache();
         DownloaderEngine.getInstance().clearCache(context);
 
         DownloaderEngine.getInstance().fetchVideoInfo(context, mediaUrl, new DownloaderEngine.InfoCallback() {
             @Override
             public void onSuccess(VideoInfo info) {
+                if (generation != loadGeneration) return; // stale result from another video
                 cachedVideoInfo = info;
                 mainHandler.post(() -> {
+                    if (generation != loadGeneration) return;
                     TransitionHelper.beginTransition(rootLayout, TransitionHelper.DURATION_NORMAL);
                     layoutLoading.setVisibility(View.GONE);
                     layoutContent.setVisibility(View.VISIBLE);
@@ -568,7 +614,9 @@ public class MediaDownloaderBottomSheet {
 
             @Override
             public void onError(Exception e) {
+                if (generation != loadGeneration) return;
                 mainHandler.post(() -> {
+                    if (generation != loadGeneration) return;
                     layoutLoading.setVisibility(View.GONE);
                     String msg = cleanErrorMessage(e != null ? e.getMessage() : "Unknown error");
                     Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
@@ -858,20 +906,19 @@ public class MediaDownloaderBottomSheet {
         LinearLayout optionsContainer = sheetView.findViewById(R.id.options_container);
 
         if (currentTab == 1) {
-            String[][] audioOptions = {
-                    {"320", "320 kbps (High Quality MP3)"},
-                    {"256", "256 kbps (AAC M4A)"},
-                    {"192", "192 kbps (Standard MP3)"},
-                    {"0", "Lossless (FLAC)"}
-            };
-            for (String[] opt : audioOptions) {
+            // Real original audio sources first (true quality, no transcode),
+            // then conversion presets clearly labeled as conversions.
+            List<QualityOption> audioOptions = buildRealAudioOptions();
+            for (QualityOption opt : audioOptions) {
                 View optView = LayoutInflater.from(context).inflate(R.layout.item_search_engine_option, optionsContainer, false);
                 TextView tvName = optView.findViewById(R.id.tv_option_name);
                 View checkMark = optView.findViewById(R.id.check_mark);
                 View container = optView.findViewById(R.id.option_container);
 
-                tvName.setText(opt[1]);
-                boolean isSelected = opt[0].equals(selectedAudioBitrate);
+                tvName.setText(opt.label);
+                boolean isSelected = opt.key.equals(selectedAudioSourceFormatId)
+                        || (opt.formatId == null && selectedAudioSourceFormatId == null
+                                && opt.key.equals(selectedAudioBitrate));
                 checkMark.setVisibility(isSelected ? View.VISIBLE : View.INVISIBLE);
 
                 if (isSelected) {
@@ -881,7 +928,19 @@ public class MediaDownloaderBottomSheet {
                 }
 
                 optView.setOnClickListener(v -> {
-                    selectedAudioBitrate = opt[0];
+                    if (opt.formatId != null) {
+                        // Original source stream: exact itag, no re-encode
+                        selectedAudioSourceFormatId = opt.formatId;
+                        selectedAudioBytes = opt.bytes;
+                        selectedAudioLabel = opt.label;
+                    } else {
+                        // Conversion preset (mp3/m4a/flac/wav target)
+                        selectedAudioSourceFormatId = null;
+                        selectedAudioBytes = -1;
+                        selectedAudioBitrate = opt.key;
+                        selectedAudioFormat = guessConversionContainer(opt.key);
+                        selectedAudioLabel = opt.label;
+                    }
                     updateModeUi();
                     subSheet.dismiss();
                 });
@@ -889,23 +948,15 @@ public class MediaDownloaderBottomSheet {
                 optionsContainer.addView(optView);
             }
         } else {
-            String[][] videoOptions = {
-                    {"best", "Highest Quality (Auto Best)"},
-                    {"2160", "2160p 4K Ultra HD"},
-                    {"1440", "1440p 2K QHD"},
-                    {"1080", "1080p Full HD"},
-                    {"720", "720p HD"},
-                    {"480", "480p SD"},
-                    {"360", "360p Data Saver"}
-            };
-            for (String[] opt : videoOptions) {
+            List<QualityOption> videoOptions = buildRealQualityOptions();
+            for (QualityOption opt : videoOptions) {
                 View optView = LayoutInflater.from(context).inflate(R.layout.item_search_engine_option, optionsContainer, false);
                 TextView tvName = optView.findViewById(R.id.tv_option_name);
                 View checkMark = optView.findViewById(R.id.check_mark);
                 View container = optView.findViewById(R.id.option_container);
 
-                tvName.setText(opt[1]);
-                boolean isSelected = opt[0].equals(selectedVideoQuality);
+                tvName.setText(opt.label);
+                boolean isSelected = opt.key.equals(selectedVideoQuality);
                 checkMark.setVisibility(isSelected ? View.VISIBLE : View.INVISIBLE);
 
                 if (isSelected) {
@@ -915,7 +966,9 @@ public class MediaDownloaderBottomSheet {
                 }
 
                 optView.setOnClickListener(v -> {
-                    selectedVideoQuality = opt[0];
+                    selectedVideoQuality = opt.key;
+                    selectedFormatId = opt.formatId;
+                    selectedFormatBytes = opt.bytes;
                     updateModeUi();
                     subSheet.dismiss();
                 });
@@ -926,6 +979,217 @@ public class MediaDownloaderBottomSheet {
 
         subSheet.setContentView(sheetView);
         subSheet.show();
+    }
+
+    /** A real, downloadable video quality derived from the yt-dlp formats list. */
+    private static class QualityOption {
+        final String key;       // "best" or height as string, e.g. "1080"
+        final String label;
+        final String formatId;  // exact yt-dlp format id, null for generic tiers
+        final long bytes;       // real size when known, -1 otherwise
+
+        QualityOption(String key, String label, String formatId, long bytes) {
+            this.key = key;
+            this.label = label;
+            this.formatId = formatId;
+            this.bytes = bytes;
+        }
+    }
+
+    /**
+     * Build the quality list from the REAL formats reported by yt-dlp.
+     * Falls back to a static tier list only when no formats were parsed
+     * (e.g. info fetch failed or extractor returned none).
+     */
+    private List<QualityOption> buildRealQualityOptions() {
+        List<QualityOption> result = new ArrayList<>();
+        Map<Integer, VideoFormat> bestByHeight = new LinkedHashMap<>();
+
+        if (cachedVideoInfo != null && cachedVideoInfo.getFormats() != null) {
+            for (VideoFormat f : cachedVideoInfo.getFormats()) {
+                if (f == null || f.getVcodec() == null || !"none".equalsIgnoreCase(f.getVcodec())) {
+                    // track real container extensions for video streams
+                    if (f != null && f.getVcodec() != null && f.getExt() != null) {
+                        availableVideoExts.add(f.getExt().toLowerCase(Locale.US));
+                    }
+                }
+                if (f == null || f.getVcodec() == null || "none".equalsIgnoreCase(f.getVcodec())) {
+                    continue; // audio-only / storyboard entries are not video qualities
+                }
+                int h = f.getHeight();
+                if (h <= 0 && f.getWidth() > 0) {
+                    h = Math.round(f.getWidth() * 9f / 16f);
+                }
+                if (h <= 0) continue;
+
+                VideoFormat current = bestByHeight.get(h);
+                long sz = Math.max(f.getFileSize(), f.getFileSizeApproximate());
+                long curSz = current != null
+                        ? Math.max(current.getFileSize(), current.getFileSizeApproximate())
+                        : Long.MIN_VALUE;
+                if (current == null || sz > curSz) {
+                    bestByHeight.put(h, f);
+                }
+            }
+        }
+
+        maxHeightAvailable = bestByHeight.isEmpty() ? -1 : Collections.max(bestByHeight.keySet());
+
+        // "Best" is always offered first
+        result.add(new QualityOption("best",
+                context.getString(R.string.quality_best_label), null, -1));
+
+        List<Integer> heights = new ArrayList<>(bestByHeight.keySet());
+        Collections.sort(heights, Comparator.reverseOrder());
+        for (Integer h : heights) {
+            VideoFormat f = bestByHeight.get(h);
+            long bytes = Math.max(f.getFileSize(), f.getFileSizeApproximate());
+            StringBuilder label = new StringBuilder(h + "p");
+            if (h >= 2160) label.append(" 4K");
+            else if (h >= 1440) label.append(" QHD");
+            else if (h >= 1080) label.append(" Full HD");
+            else if (h >= 720) label.append(" HD");
+            if (f.getFps() > 0 && f.getFps() > 30) label.append(" ").append(f.getFps()).append("fps");
+            if (f.getFormatNote() != null && !f.getFormatNote().isEmpty()
+                    && !"default".equalsIgnoreCase(f.getFormatNote())) {
+                label.append(" · ").append(f.getFormatNote());
+            }
+            if (bytes > 0) label.append(" · ").append(formatBytes(bytes));
+
+            String id = f.getFormatId();
+            result.add(new QualityOption(String.valueOf(h), label.toString(), id, bytes));
+        }
+
+        if (heights.isEmpty()) {
+            // Fallback: static tiers when the extractor gave us nothing usable
+            maxHeightAvailable = -1;
+            String[][] staticTiers = {
+                    {"2160", "2160p 4K Ultra HD"},
+                    {"1440", "1440p 2K QHD"},
+                    {"1080", "1080p Full HD"},
+                    {"720", "720p HD"},
+                    {"480", "480p SD"},
+                    {"360", "360p"}
+            };
+            for (String[] t : staticTiers) {
+                result.add(new QualityOption(t[0], t[1], null, -1));
+            }
+        }
+        return result;
+    }
+
+    private String qualityLabel(String quality) {
+        if ("best".equals(quality)) {
+            return context.getString(R.string.quality_best_label);
+        }
+        try {
+            int h = Integer.parseInt(quality.replaceAll("[^0-9]", ""));
+            if (h >= 2160) return h + "p 4K Ultra HD";
+            if (h >= 1440) return h + "p 2K QHD";
+            if (h >= 1080) return h + "p Full HD";
+            if (h >= 720) return h + "p HD";
+            return h + "p";
+        } catch (Exception e) {
+            return quality + "p";
+        }
+    }
+
+    private String formatBytes(long bytes) {
+        if (bytes <= 0) return "";
+        double mb = bytes / (1024.0 * 1024.0);
+        if (mb < 1024) {
+            return mb >= 10 ? Math.round(mb) + " MB" : String.format(Locale.US, "%.1f MB", mb);
+        }
+        return String.format(Locale.US, "%.2f GB", mb / 1024.0);
+    }
+
+    /** Pretty codec name from yt-dlp acodec string. */
+    private String prettyCodec(String acodec, String ext) {
+        if (acodec == null) return ext != null ? ext.toUpperCase(Locale.US) : "Audio";
+        String low = acodec.toLowerCase(Locale.US);
+        if (low.startsWith("opus")) return "Opus";
+        if (low.startsWith("mp4a")) return "AAC";
+        if (low.startsWith("vorbis")) return "Vorbis";
+        if (low.startsWith("mp3")) return "MP3";
+        if (low.startsWith("flac")) return "FLAC";
+        return acodec;
+    }
+
+    /**
+     * Build the audio quality list from REAL source streams reported by
+     * yt-dlp (audio-only formats), best bitrate first — these download the
+     * original codec with zero quality loss. Conversion presets follow,
+     * honestly labeled as re-encodes.
+     */
+    private List<QualityOption> buildRealAudioOptions() {
+        List<QualityOption> result = new ArrayList<>();
+
+        // Best original audio (single tap default)
+        List<VideoFormat> sources = collectOriginalAudioSources();
+        if (!sources.isEmpty()) {
+            VideoFormat top = sources.get(0);
+            long bytes = Math.max(top.getFileSize(), top.getFileSizeApproximate());
+            result.add(new QualityOption(
+                    "original_best",
+                    context.getString(R.string.audio_original_best_label)
+                            + optionalMetaSuffix(top, bytes),
+                    top.getFormatId(), bytes));
+        }
+
+        // Every distinct original stream, highest bitrate first
+        for (VideoFormat f : sources) {
+            long bytes = Math.max(f.getFileSize(), f.getFileSizeApproximate());
+            int kbps = Math.max(f.getAbr(), f.getTbr());
+            StringBuilder label = new StringBuilder("Original ")
+                    .append(prettyCodec(f.getAcodec(), f.getExt()));
+            if (kbps > 0) label.append(" · ~").append(kbps).append(" kbps");
+            if (bytes > 0) label.append(" · ").append(formatBytes(bytes));
+            label.append(" · .").append(f.getExt() != null ? f.getExt() : "?");
+            result.add(new QualityOption(f.getFormatId(), label.toString(),
+                    f.getFormatId(), bytes));
+        }
+
+        // Conversion presets — honest about being re-encodes
+        String conv = context.getString(R.string.audio_converted_suffix);
+        result.add(new QualityOption("320", "320 kbps MP3" + conv, null, -1));
+        result.add(new QualityOption("256", "256 kbps AAC M4A" + conv, null, -1));
+        result.add(new QualityOption("192", "192 kbps MP3" + conv, null, -1));
+        result.add(new QualityOption("0", context.getString(R.string.audio_lossless_flac_converted), null, -1));
+        return result;
+    }
+
+    private String optionalMetaSuffix(VideoFormat f, long bytes) {
+        int kbps = Math.max(f.getAbr(), f.getTbr());
+        StringBuilder s = new StringBuilder();
+        if (kbps > 0) s.append(" · ~").append(kbps).append(" kbps");
+        if (bytes > 0) s.append(" · ").append(formatBytes(bytes));
+        return s.toString();
+    }
+
+    /** Audio-only streams (vcodec none / absent, acodec real), best first. */
+    private List<VideoFormat> collectOriginalAudioSources() {
+        List<VideoFormat> out = new ArrayList<>();
+        if (cachedVideoInfo == null || cachedVideoInfo.getFormats() == null) return out;
+        for (VideoFormat f : cachedVideoInfo.getFormats()) {
+            if (f == null) continue;
+            boolean hasVideo = f.getVcodec() != null && !"none".equalsIgnoreCase(f.getVcodec());
+            boolean hasAudio = f.getAcodec() != null && !"none".equalsIgnoreCase(f.getAcodec());
+            if (!hasVideo && hasAudio) {
+                out.add(f);
+            }
+        }
+        out.sort((a, b) -> Integer.compare(
+                Math.max(b.getAbr(), b.getTbr()), Math.max(a.getAbr(), a.getTbr())));
+        return out;
+    }
+
+    /** Map a conversion preset key to its container extension. */
+    private String guessConversionContainer(String presetKey) {
+        switch (presetKey) {
+            case "256": return "m4a";
+            case "0": return "flac";
+            default: return "mp3"; // 320/192
+        }
     }
 
     private void showContainerSelectorSheet() {
@@ -944,9 +1208,23 @@ public class MediaDownloaderBottomSheet {
 
         LinearLayout optionsContainer = sheetView.findViewById(R.id.options_container);
 
-        String[] formats = currentTab == 1
-                ? new String[]{"MP3", "M4A", "FLAC", "OPUS", "WAV"}
-                : new String[]{"MP4", "MKV", "WebM"};
+        // Video: only containers that actually exist among this video's video
+        // streams (plus MKV which is a valid universal remux target). Audio
+        // keeps its conversion output list.
+        List<String> formats = new ArrayList<>();
+        if (currentTab == 1) {
+            formats.add("MP3");
+            formats.add("M4A");
+            formats.add("FLAC");
+            formats.add("OPUS");
+            formats.add("WAV");
+        } else {
+            formats.add("MP4"); // always a valid merge/remux target
+            if (availableVideoExts.contains("webm")) {
+                formats.add("WebM");
+            }
+            formats.add("MKV"); // universal remux target
+        }
 
         for (String fmt : formats) {
             View optView = LayoutInflater.from(context).inflate(R.layout.item_search_engine_option, optionsContainer, false);
@@ -1207,9 +1485,18 @@ public class MediaDownloaderBottomSheet {
         boolean isAudio = (currentTab == 1);
         StringBuilder ytDlpArgs = new StringBuilder("yt-dlp ");
         if (isAudio) {
-            ytDlpArgs.append("-x --audio-format ").append(selectedAudioFormat).append(" --audio-quality 0 ");
+            if (selectedAudioSourceFormatId != null && !selectedAudioSourceFormatId.isEmpty()) {
+                // Original source stream, no transcode
+                ytDlpArgs.append("-f \"").append(selectedAudioSourceFormatId).append("\" -x ");
+            } else {
+                ytDlpArgs.append("-x --audio-format ").append(selectedAudioFormat).append(" --audio-quality 0 ");
+            }
         } else {
-            ytDlpArgs.append("-f \"bestvideo[height<=").append(selectedVideoQuality).append("]+bestaudio/best\" ");
+            if (selectedFormatId != null && !selectedFormatId.isEmpty()) {
+                ytDlpArgs.append("-f \"").append(selectedFormatId).append("+bestaudio/best\" ");
+            } else {
+                ytDlpArgs.append("-f \"bestvideo[height<=").append(selectedVideoQuality).append("]+bestaudio/best\" ");
+            }
         }
         ytDlpArgs.append("-N ").append(concurrentFragments).append(" --concurrent-fragments ").append(concurrentFragments).append(" ");
         if (!cutStartTime.isEmpty() && !cutEndTime.isEmpty()) {
@@ -1230,18 +1517,74 @@ public class MediaDownloaderBottomSheet {
     }
 
     private void startDownload() {
+        // Downgrade transparency: if the user picked a specific height that is
+        // higher than anything this video actually offers, tell them up front
+        // instead of silently delivering a lower-quality file.
+        if (currentTab == 0 && !"best".equals(selectedVideoQuality)) {
+            try {
+                int requested = Integer.parseInt(selectedVideoQuality.replaceAll("[^0-9]", ""));
+                if (requested > 0 && maxHeightAvailable > 0 && requested > maxHeightAvailable) {
+                    showQualityDowngradeConfirm(requested);
+                    return;
+                }
+            } catch (Exception ignored) {}
+        }
+        startDownloadInternal();
+    }
+
+    private void showQualityDowngradeConfirm(int requested) {
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(R.string.quality_unavailable_title)
+                .setMessage(context.getString(R.string.quality_unavailable_msg, maxHeightAvailable))
+                .setPositiveButton(R.string.quality_continue_with_available, (d, w) -> {
+                    selectedVideoQuality = String.valueOf(maxHeightAvailable);
+                    selectedFormatId = null;
+                    selectedFormatBytes = -1;
+                    updateModeUi();
+                    d.dismiss();
+                    startDownloadInternal();
+                })
+                .setNegativeButton(android.R.string.cancel, (d, w) -> d.dismiss())
+                .show();
+    }
+
+    private void startDownloadInternal() {
         // Prepare download options
         DownloadOptions options = new DownloadOptions(mediaUrl);
         options.setType(currentTab == 1 ? DownloadOptions.Type.AUDIO : DownloadOptions.Type.VIDEO);
         if (cachedVideoInfo != null) {
             options.setUploader(cachedVideoInfo.getUploader());
         }
+        // Pin the exact yt-dlp format the user picked from the REAL formats
+        // list (video height or original audio stream), and reuse the
+        // extractor client set that produced it so the id stays valid.
+        options.setExtractorArgs(DownloaderEngine.getLastSuccessfulExtractorArgs());
+        String treeUri = DownloaderPrefs.getCustomTreeUri(context);
+        if (treeUri != null) options.setCustomTreeUri(treeUri);
 
         options.setEmbedThumbnail(embedThumbnail);
-        options.setEmbedSubtitles(embedSubtitles);
+        options.setEmbedSubtitles(embedSubtitles || burnSubtitles);
+        options.setBurnSubtitles(burnSubtitles);
         options.setSplitChapters(splitChapters);
+        options.setEmbedChapters(embedChapters);
+        options.setRecodeVideo(recodeVideo || compatibleH264);
+        options.setCompatibleH264(compatibleH264);
+        options.setSaveSeparateThumbnail(saveSeparateThumbnail);
+        options.setExtraCommands(extraCommands);
         options.setEmbedMetadata(true);
         options.setConcurrentFragments(concurrentFragments);
+        // D1: the Filename chip edits a real output template — forward it
+        // (sanitized: no path separators/traversal, leading dashes rejected so
+        // it can't be parsed as an option).
+        if (customFilenameTemplate != null && !customFilenameTemplate.trim().isEmpty()
+                && !customFilenameTemplate.equals("%(uploader)s - %(title)s")) {
+            String tpl = customFilenameTemplate;
+            if (tpl.contains("/") || tpl.contains("\\") || tpl.contains("..") || tpl.startsWith("-")) {
+                Toast.makeText(context, R.string.msg_invalid_filename_template, Toast.LENGTH_LONG).show();
+            } else {
+                options.setCustomFileName(tpl);
+            }
+        }
 
         if (!cutStartTime.isEmpty() && !cutEndTime.isEmpty()) {
             options.setDownloadSections("*" + cutStartTime + "-" + cutEndTime);
@@ -1250,8 +1593,12 @@ public class MediaDownloaderBottomSheet {
         if (currentTab == 1) {
             options.setAudioFormat(selectedAudioFormat);
             options.setAudioQuality(selectedAudioBitrate);
+            // Original source stream → exact itag, no re-encode (true quality)
+            options.setPreferredFormatId(selectedAudioSourceFormatId);
+            options.setKeepOriginalAudio(selectedAudioSourceFormatId != null);
         } else {
             options.setVideoQuality(selectedVideoQuality);
+            options.setPreferredFormatId(selectedFormatId);
             if (selectedContainer.contains("MKV")) {
                 options.setVideoFormat("mkv");
             } else if (selectedContainer.contains("WebM")) {

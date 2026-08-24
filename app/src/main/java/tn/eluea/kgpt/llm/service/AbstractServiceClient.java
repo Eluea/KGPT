@@ -48,6 +48,19 @@ public abstract class AbstractServiceClient {
             bound = true;
             MainHook.log("Connected to service");
 
+            // Watch the remote binder so in-flight requests fail fast instead
+            // of hanging forever when the KGPT process is killed.
+            try {
+                service.linkToDeath(() -> {
+                    MainHook.log("Internet service binder died");
+                    serviceMessenger = null;
+                    bound = false;
+                    onServiceUnavailable();
+                }, 0);
+            } catch (Throwable t) {
+                MainHook.log("linkToDeath failed: " + t.getMessage());
+            }
+
             while (!messageQueue.isEmpty()) {
                 Bundle message = messageQueue.poll();
                 int what = message.getInt("what");
@@ -60,8 +73,16 @@ public abstract class AbstractServiceClient {
             serviceMessenger = null;
             bound = false;
             MainHook.log("Disconnected from service");
+            onServiceUnavailable();
         }
     };
+
+    /**
+     * Called when the remote service becomes unavailable (disconnected or
+     * binder died). Subclasses should fail/clean up any pending requests.
+     */
+    protected void onServiceUnavailable() {
+    }
 
     public AbstractServiceClient(Context context, String intentAction, String intentPackage) {
         this.context = context;

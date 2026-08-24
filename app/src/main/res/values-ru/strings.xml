@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Главная</string>
-    <string name="nav_models">Модели</string>
-    <string name="nav_api_keys">API ключи</string>
-    <string name="nav_settings">Настройки</string>
     <string name="module_active">Модуль активен</string>
     <string name="module_inactive">Модуль неактивен</string>
     <string name="module_active_desc">KGPT работает</string>
     <string name="module_inactive_desc">Включите в LSPosed Manager</string>
     <string name="quick_actions">Быстрые действия</string>
-    <string name="current_model">Текущая модель</string>
     <string name="ai_invocation">Вызов ИИ</string>
-    <string name="ai_invocation_desc">Настройка команд и триггеров</string>
     <string name="how_to_use">Инструкция</string>
     <string name="how_to_use_desc">Как использовать KGPT</string>
-    <string name="ai_models">Модели ИИ</string>
     <string name="select_model">Выберите модель</string>
     <string name="model_config">Конфигурация модели</string>
     <string name="sub_model">Подмодель</string>
     <string name="base_url">Базовый URL</string>
-    <string name="advanced_settings">Дополнительно</string>
     <string name="max_tokens">Макс. токенов</string>
     <string name="temperature">Температура</string>
     <string name="save_config">Сохранить</string>
-    <string name="api_keys">API ключи</string>
-    <string name="manage_api_keys">Управление ключами API</string>
     <string name="enter_api_key">Введите API ключ</string>
     <string name="save">Сохранить</string>
-    <string name="api_key_info">Ключи надежно хранятся на вашем устройстве.</string>
-    <string name="settings">Настройки</string>
-    <string name="appearance">Внешний вид</string>
     <string name="dark_mode">Темная тема</string>
     <string name="follow_system">Системная тема</string>
-    <string name="amoled_dark">AMOLED черный</string>
-    <string name="amoled_desc">Настоящий черный для OLED экранов</string>
     <string name="blur_control">Управление размытием</string>
     <string name="blur_control_desc">Настройка размытия фона</string>
     <string name="blur_enabled">Включить размытие</string>
@@ -45,23 +30,9 @@
     <string name="general">Общее</string>
     <string name="enable_logging">Включить логирование</string>
     <string name="logging_desc">Отключите для производительности</string>
-    <string name="external_internet">Внешний интернет</string>
-    <string name="external_internet_desc">Рекомендуется для стабильности</string>
-    <string name="backup_restore">Резервное копирование</string>
-    <string name="export_backup">Экспорт настроек</string>
-    <string name="export_backup_desc">Сохранить настройки в файл</string>
-    <string name="import_backup">Импорт настроек</string>
-    <string name="import_backup_desc">Восстановить из файла</string>
-    <string name="about">О приложении</string>
-    <string name="config_saved">Конфигурация сохранена</string>
-    <string name="api_key_saved">API ключ сохранен</string>
-    <string name="api_key_removed">API ключ удален</string>
     <string name="backup_exported">Экспорт успешен</string>
-    <string name="backup_imported">Импорт успешен</string>
     <string name="export_failed">Ошибка экспорта</string>
     <string name="import_failed">Ошибка импорта</string>
-    <string name="themed_icon_title">Тематический значок</string>
-    <string name="themed_icon_desc">Адаптивный значок (Material You)</string>
     <string name="about_home_title">О главном экране</string>
     <string name="about_home_description">Добро пожаловать в KGPT!\n\n\u2022 Статус: Показывает активность модуля Xposed.\n\n\u2022 Модель: Текущий активный ИИ.\n\n\u2022 Вызов: Настройка триггеров запуска.\n\n\u2022 Инструкция: Советы по использованию.</string>
     <string name="built_in_indicator">  \u2022  Встроено</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">Требуется подключение.</string>
     <string name="btn_download">Скачать</string>
     <string name="btn_later">Позже</string>
-    <string name="btn_install">Установить</string>
     <string name="btn_try_again">Повторить</string>
     <string name="btn_close">Закрыть</string>
     <string name="btn_ok">ОК</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">Загрузка...</string>
     <string name="title_add_api_key">Добавить ключ</string>
     <string name="desc_add_api_key">Выберите провайдера.</string>
-    <string name="title_add_actions">Добавить действия</string>
-    <string name="desc_add_actions">Выберите действия</string>
     <string name="title_logging_disabled">Логи отключены</string>
     <string name="desc_logging_disabled">Включите логи в настройках.</string>
     <string name="btn_enable_logging">Включить логи</string>
     <string name="title_check_frequency">Частота</string>
     <string name="desc_check_frequency">Как часто проверять обновления?</string>
     <string name="title_choose_model">Выбор модели</string>
-    <string name="label_select_provider_hint">Выбрать провайдера</string>
-    <string name="hint_select_provider">Провайдер</string>
     <string name="placeholder_search_engine">Поисковик</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Имя</string>
     <string name="placeholder_changelog_desc">Описание</string>
     <string name="tag_add">Новое</string>
     <string name="configure_model_title">Настроить</string>
-    <string name="advanced_settings_title">Дополнительно</string>
     <string name="edit_command_title">Редактировать команду</string>
     <string name="hint_command_prefix">Префикс</string>
     <string name="hint_prompt">Промпт</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">Введите для открытия приложения</string>
     <string name="example_trigger_word">Например: \'chrome\'</string>
     <string name="msg_no_items">Нет элементов</string>
-    <string name="title_add_trigger_symbol">Добавить символ</string>
-    <string name="desc_add_trigger_symbol">1-3 символа</string>
-    <string name="hint_trigger_example">Напр: @@</string>
     <string name="status_free">Бесплатно</string>
     <string name="btn_save_key">Сохранить</string>
     <string name="btn_get_key">Получить ключ</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Название</string>
     <string name="placeholder_description">Описание</string>
     <string name="placeholder_action">Действие</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">Пресет или пользовательская</string>
     <string name="hint_custom_model">Своя модель</string>
     <string name="title_app_triggers">Триггеры приложений</string>
-    <string name="lab_badge">Лаб</string>
-    <string name="app_triggers_intro">Открывайте приложения текстом</string>
     <string name="btn_enable_app_triggers">Включить триггеры</string>
     <string name="desc_enable_app_triggers">Ключ. слово -> Открыть App</string>
     <string name="msg_no_triggers">Нет триггеров.</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">Системное сообщение (опц.)</string>
     <string name="help_command_usage">Исп: текст /cmd + символ</string>
     <string name="title_edit_pattern">Изм. паттерн</string>
-    <string name="desc_edit_pattern">Свое регулярное выражение</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">По умолч: $prompt$</string>
     <string name="title_other_settings">Прочее</string>
     <string name="enable_trigger">Актив.</string>
     <string name="hint_description">Описание</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">Зимний режим</string>
     <string name="winter_mode_desc">Эффект снега</string>
     <string name="title_settings_backup">Бэкап</string>
-    <string name="desc_settings_backup">Сохранить данные</string>
     <string name="title_settings_restore">Восстановить</string>
     <string name="desc_settings_restore">Загрузить данные</string>
     <string name="support_group">Группа поддержки</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">Проверка обновлений</string>
     <string name="open_in_browser">Открыть в браузере</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Мяу!</string>
     <string name="cat_caught_msg">Ты нашёл меня!\nЗвезду на GitHub?</string>
     <string name="cat_action_star">Дать звезду</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6с</string>
     <string name="language">Язык</string>
-    <string name="language_desc">Язык приложения</string>
     <string name="select_language">Выбрать язык</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">О настройках</string>
     <string name="about_settings_desc">Настройте KGPT.\n\n• Тёмная тема: Для комфорта.\n\n• AMOLED: Чисто чёрный для OLED.\n\n• Логи: Для отладки.\n\n• Внешнее: Рекомендуется для ИИ.</string>
-    <string name="logging_warning_title">Включить логи?</string>
-    <string name="logging_warning_desc">Логи отключены. Включите для экспорта.</string>
-    <string name="btn_enable_logging_action">Включить Логи</string>
     <string name="logging_enabled_toast">Логи включены. Можно экспортировать.</string>
-    <string name="export_success_title">Экспорт Успешен</string>
-    <string name="export_success_desc">Логи сохранены в:</string>
-    <string name="root_status_label">Статус Root</string>
-    <string name="boot_logs_label">Логи Загрузки</string>
-    <string name="system_logs_label">Системные Логи</string>
-    <string name="crash_logs_label">Логи Сбоев</string>
-    <string name="app_logs_label">Логи Приложения</string>
-    <string name="available">Доступно</string>
-    <string name="unavailable">Недоступно</string>
     <string name="tab_commands">Команды</string>
     <string name="tab_triggers">Триггеры</string>
     <string name="tab_model">Модель</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">Внутренняя Память</string>
     <string name="check_for_updates">Проверить Обновления</string>
     <string name="checking_updates">Проверка...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">ДОБАВЛЕНО</string>
     <string name="tag_improved">УЛУЧШЕНО</string>
     <string name="tag_fixed">ИСПРАВЛЕНО</string>
-    <string name="changelog_1_0_0_item1">Добавлен Google AI Mode в опции веб-поиска</string>
-    <string name="changelog_1_0_0_item2">Добавлена функция выбора языка с поддержкой всех доступных языков</string>
-    <string name="changelog_1_0_0_item3">Улучшены макеты экрана для использования одной рукой и больших пальцев</string>
-    <string name="changelog_1_0_0_item4">Исправлено множество проблем со стабильностью и улучшена производительность</string>
-    <string name="changelog_1_0_0_item5">Протестирована и добавлена поддержка клавиатуры FUTO</string>
-    <string name="changelog_1_0_0_item6">Исправлена проблема подключения к Chutes API</string>
-    <string name="changelog_1_0_0_item7">Добавлена новая модель Perplexity и поддержка API Perplexity</string>
-    <string name="changelog_1_0_0_item8">Удалено ограничение на использование \"/\" для команд</string>
-    <string name="changelog_1_0_0_note">Пожалуйста, будьте терпеливы, так как разработчику сообщили о дополнительных проблемах, но они будут решены в пакетах обновлений, поскольку это проект одного человека. Спасибо за понимание.</string>
-    <string name="module_restart_required_desc">Перезагрузите устройство для активации модуля</string>
-
     <string name="new_command_title">Новая команда</string>
     <string name="error_prefix_empty">Префикс не может быть пустым</string>
     <string name="error_message_empty">Сообщение не может быть пустым</string>
     <string name="error_duplicate_command">Существует другая команда с таким именем</string>
-    <string name="format_edit_pattern_title">Изменить %1$s</string>
-    <string name="error_symbol_empty">Символ не может быть пустым</string>
-    <string name="error_symbol_not_allowed">Этот символ недопустим</string>
-    <string name="error_pattern_creation_failed">Не удалось создать шаблон для этого символа</string>
-    <string name="error_pattern_invalid">Создан недопустимый шаблон</string>
-    <string name="error_pattern_duplicate">Этот символ уже используется другим шаблоном</string>
-    <string name="msg_trigger_enabled">Триггер "%1$s" включен</string>
-    <string name="msg_trigger_disabled">Триггер "%1$s" отключен</string>
-    <string name="example_preview_settings">"%1$s" ← Открывает настройки</string>
-    <string name="example_preview_ai">"Привет%1$s" ← ИИ отвечает</string>
-    <string name="example_preview_custom">"Привет%1$sперевод%1$s" ← Переводит</string>
-    <string name="example_preview_italic">"текст%1$s" ← курсив</string>
-    <string name="example_preview_bold">"текст%1$s" ← жирный</string>
-    <string name="example_preview_crossout">"текст%1$s" ← зачеркнутый</string>
-    <string name="example_preview_underline">"текст%1$s" ← подчеркнутый</string>
-    <string name="example_preview_default">Введите текст, затем добавьте "%1$s" в конце</string>
     <string name="msg_theme_updated">Тема обновлена</string>
     <string name="msg_settings_restored">Настройки восстановлены</string>
     <string name="msg_requesting_root">Запрос прав root...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Не удалось создать шаблон для этого символа</string>
     <string name="msg_pattern_generated_invalid">Сгенерирован неверный шаблон</string>
     <string name="msg_symbol_already_used">Этот символ уже используется</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">Выбрать и настроить модель</string>
     <string name="dialog_title_commands_list">Список команд</string>
     <string name="settings_option_patterns_list">Список шаблонов</string>
     <string name="dialog_title_config_model">Настройка %1$s</string>
-
     <string name="setting_enable_logging">Включить логирование</string>
     <string name="setting_desc_enable_logging">Отключите для производительности. Вы не сможете сообщать об ошибках.</string>
     <string name="setting_external_internet">Использовать внешний интернет</string>
@@ -572,7 +478,6 @@
     <string name="example_format_bold">\u0022текст%1$s\u0022 \u2192 жирный текст</string>
     <string name="example_format_crossout">\u0022текст%1$s\u0022 \u2192 зачёркнутый</string>
     <string name="example_format_underline">\u0022текст%1$s\u0022 \u2192 подчёркнутый</string>
-    <string name="example_default">Введите текст, затем добавьте \u0022%1$s\u0022 в конце</string>
     <string name="pattern_subtitle_trigger">Триггер: %1$s</string>
     <string name="title_settings_trigger">Настройки</string>
     <string name="title_ai_trigger">Триггер ИИ</string>
@@ -585,28 +490,11 @@
     <string name="btn_reset_pattern">Sбросить шаблон</string>
     <string name="msg_reset_pattern_confirm">Сбросить \'%1$s\' до символа по умолчанию \"%2$s\"?</string>
     <string name="field_api_key">API-ключ</string>
-    <string name="field_sub_model">Подмодель</string>
-    <string name="field_base_url">Базовый URL</string>
-    <string name="field_max_tokens">Макс. токенов</string>
-    <string name="field_temperature">Температура</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-        <string name="changelog_4_0_8_item1">Переход с LSPosed API 82 на современный API 102</string>
-    <string name="changelog_4_0_8_item2">Значительная оптимизация производительности и снижение расхода батареи</string>
-    <string name="changelog_4_0_8_item3">Исправлены различные сценарии зависания и задержек</string>
-    <string name="changelog_4_0_8_item4">Добавлен новый триггер клавиатуры: Триггер загрузчика медиа</string>
-    <string name="changelog_4_0_8_item5">Добавлено новое действие выделения текста: Загрузчик медиа</string>
-    <string name="changelog_4_0_8_item6">Добавлена новая функция Лаборатории: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Добавлен прямой поиск видео и YouTube</string>
-    <string name="changelog_4_0_8_item8">Загрузка видео и аудио с настройкой качества, формата и обрезкой</string>
-    <string name="changelog_4_0_8_item9">Добавлена генерация универсальной автономной команды для скачивания на любом устройстве</string>
-    <string name="changelog_note_4_0_8">Пожалуйста, наберитесь терпения, так как разработчику было сообщено о других проблемах, но они будут решаться пакетами обновлений, так как это проект одного человека. Спасибо за понимание.</string>
     <string name="msg_ai_no_response_error">Ответ не получен. ИИ вернул пустой контент.\nПодсказка: возможно, вы используете незарегистрированный триггер/команду.</string>
 </resources>

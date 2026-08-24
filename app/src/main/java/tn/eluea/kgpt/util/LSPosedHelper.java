@@ -31,6 +31,13 @@ public class LSPosedHelper {
     private static volatile boolean isBound = false;
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
+    // The framework may deliver the service binder before/after our listener
+    // registration or while the daemon is still settling after boot/update,
+    // and registerListener itself can fail silently. A few spaced retries make
+    // binding reliable instead of one-shot.
+    private static final long[] RETRY_DELAYS_MS = {3_000, 8_000, 20_000};
+    private static int retryAttempt = 0;
+
     public interface ScopeCallback {
         void onResult(boolean approved);
     }
@@ -40,6 +47,35 @@ public class LSPosedHelper {
     }
 
     private static final List<ScopeListener> sScopeListeners = new CopyOnWriteArrayList<>();
+    // P6: unified service-bind listeners (HomeFragment no longer registers its
+    // own competing XposedServiceHelper listener)
+    private static final List<Runnable> sBindListeners = new CopyOnWriteArrayList<>();
+    private static final List<Runnable> sDeathListeners = new CopyOnWriteArrayList<>();
+
+    public static void addServiceBindListener(Runnable onBind, Runnable onDeath) {
+        if (onBind != null) {
+            sBindListeners.add(onBind);
+            if (isBound) onBind.run(); // late registration still gets current state
+        }
+        if (onDeath != null) sDeathListeners.add(onDeath);
+    }
+
+    public static void removeServiceBindListener(Runnable onBind, Runnable onDeath) {
+        if (onBind != null) sBindListeners.remove(onBind);
+        if (onDeath != null) sDeathListeners.remove(onDeath);
+    }
+
+    private static void notifyBind() {
+        for (Runnable r : sBindListeners) {
+            try { r.run(); } catch (Throwable ignored) {}
+        }
+    }
+
+    private static void notifyDeath() {
+        for (Runnable r : sDeathListeners) {
+            try { r.run(); } catch (Throwable ignored) {}
+        }
+    }
 
     public static void addScopeListener(ScopeListener listener) {
         if (listener != null && !sScopeListeners.contains(listener)) {
@@ -58,6 +94,7 @@ public class LSPosedHelper {
                 public void onServiceBind(XposedService service) {
                     sService = service;
                     isBound = true;
+                    retryAttempt = RETRY_DELAYS_MS.length; // stop retries
                     Log.d(TAG, "LSPosed XposedService bound successfully, API: " + service.getApiVersion());
                 }
 
@@ -65,12 +102,44 @@ public class LSPosedHelper {
                 public void onServiceDied(XposedService service) {
                     sService = null;
                     isBound = false;
+                    retryAttempt = 0; // re-arm retries for the next daemon
                     Log.d(TAG, "LSPosed XposedService died");
                 }
             });
+            scheduleRetry(context);
         } catch (Throwable t) {
             Log.w(TAG, "Failed to register XposedService listener: " + t.getMessage());
+            scheduleRetry(context);
         }
+    }
+
+    private static void scheduleRetry(Context context) {
+        if (isBound || retryAttempt >= RETRY_DELAYS_MS.length) return;
+        long delay = RETRY_DELAYS_MS[retryAttempt++];
+        sHandler.postDelayed(() -> {
+            if (isBound) return;
+            Log.d(TAG, "Retrying XposedService registration, attempt " + retryAttempt);
+            try {
+                XposedServiceHelper.registerListener(new XposedServiceHelper.OnServiceListener() {
+                    @Override
+                    public void onServiceBind(XposedService service) {
+                        sService = service;
+                        isBound = true;
+                        Log.d(TAG, "LSPosed XposedService bound on retry, API: " + service.getApiVersion());
+                        notifyBind();
+                    }
+
+                    @Override
+                    public void onServiceDied(XposedService service) {
+                        sService = null;
+                        isBound = false;
+                        notifyDeath();
+                    }
+                });
+            } catch (Throwable t) {
+                Log.w(TAG, "Retry register failed: " + t.getMessage());
+            }
+        }, delay);
     }
 
     public static XposedService getService() {

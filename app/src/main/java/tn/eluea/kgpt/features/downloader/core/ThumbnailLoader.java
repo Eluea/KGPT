@@ -24,6 +24,8 @@ public class ThumbnailLoader {
     private static ThumbnailLoader instance;
 
     private final LruCache<String, Bitmap> memoryCache;
+    private final java.util.Set<String> inFlight =
+            java.util.Collections.newSetFromMap(new java.util.concurrent.ConcurrentHashMap<>());
     private final ExecutorService executorService;
     private final Handler mainHandler;
 

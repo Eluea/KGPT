@@ -216,56 +216,6 @@ public class DialogUiUtils {
      * @param context  The themed context used to inflate the view.
      * @param rootView The root view of the dialog layout.
      */
-    public static void applyDialogBackground(Context context, View rootView) {
-        if (rootView == null)
-            return;
-
-        int backgroundColor;
-        boolean isAmoled = false;
-
-        // Check preference first to be sure
-        try {
-            android.content.SharedPreferences appPrefs = context.getSharedPreferences("keyboard_gpt_ui",
-                    Context.MODE_PRIVATE);
-            isAmoled = appPrefs.getBoolean("amoled_mode", false);
-        } catch (Exception e) {
-        }
-
-        // Also check if context theme resolves colorSurface to BLACK, which is a strong
-        // indicator of AMOLED overlay
-        if (!isAmoled) {
-            try {
-                TypedValue typedValue = new TypedValue();
-                if (context.getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true)) {
-                    if (typedValue.data == Color.BLACK) {
-                        isAmoled = true;
-                    }
-                }
-            } catch (Exception e) {
-            }
-        }
-
-        if (isAmoled) {
-            backgroundColor = Color.BLACK;
-        } else {
-            // Not AMOLED. Check Night Mode to decide between our forced Dark Blue-Grey
-            // (#1C2026) and Standard Light.
-
-            int nightModeFlags = context.getResources().getConfiguration().uiMode &
-                    android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-
-            if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-                // FORCE Dark Blue-Grey (#1C2026) for non-AMOLED Dark Mode
-                backgroundColor = context.getColor(R.color.container_background_dark);
-            } else {
-                // Light Mode -> Use Light Background
-                backgroundColor = context.getColor(R.color.container_background_light);
-            }
-        }
-
-        rootView.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
-    }
-
     /**
      * Programmatically forces the MaterialSwitch to use the blue color scheme
      * (primary color) for the thumb and track when checked.

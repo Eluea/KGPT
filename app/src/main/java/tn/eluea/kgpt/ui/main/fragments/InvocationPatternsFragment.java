@@ -243,6 +243,16 @@ public class InvocationPatternsFragment extends Fragment {
                 return;
             }
 
+            // H3: duplicate-symbol guard (parity with the floating editor) —
+            // two patterns sharing one symbol made the floating editor refuse
+            // to fix either of them.
+            for (int i = 0; i < patterns.size(); i++) {
+                if (i != position && patterns.get(i).getPattern().pattern().equals(newRegex)) {
+                    Toast.makeText(requireContext(), R.string.msg_symbol_already_used, Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+
             ParsePattern newPattern = new ParsePattern(pattern.getType(), newRegex, pattern.getExtras());
             newPattern.setEnabled(isEnabled);
             patterns.set(position, newPattern);
@@ -300,7 +310,9 @@ public class InvocationPatternsFragment extends Fragment {
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnDelete.setOnClickListener(v -> {
-            patterns.set(position, new ParsePattern(pattern.getType(), pattern.getType().defaultPattern));
+            // Use the shared factory so reset keeps an explicit enabled state
+            // instead of silently dropping extras and disabling the pattern.
+            patterns.set(position, ParsePattern.createDefault(pattern.getType()));
             savePatterns();
             patternsAdapter.updatePatterns(patterns);
             dialog.dismiss();

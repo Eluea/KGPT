@@ -77,167 +77,9 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
     private CustomProvider selectedCustomProvider;
 
     // Sub model presets for each provider (validated and working models)
-    private static final Map<LanguageModel, String[]> SUB_MODEL_PRESETS = new HashMap<>();
-
-    // All valid model names for validation
-    private static final Map<LanguageModel, java.util.Set<String>> VALID_MODELS = new HashMap<>();
-
-    static {
-        // Gemini models - August 2026 latest (Free via Google AI Studio)
-        SUB_MODEL_PRESETS.put(LanguageModel.Gemini, new String[] {
-                "gemini-3.7-flash",
-                "gemini-3.6-flash",
-                "gemini-3.5-flash",
-                "gemini-3.5-flash-lite",
-                "gemini-3.1-pro-preview",
-                "gemini-3.1-flash-lite",
-                "gemini-2.5-flash",
-                "gemini-2.5-pro"
-        });
-        VALID_MODELS.put(LanguageModel.Gemini, new java.util.HashSet<>(java.util.Arrays.asList(
-                "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite",
-                "gemini-3.1-pro-preview", "gemini-3.1-flash-lite",
-                "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite",
-                "gemini-2.0-flash", "gemini-2.0-flash-lite")));
-
-        // ChatGPT models - August 2026 latest (GPT-5.6 generation)
-        SUB_MODEL_PRESETS.put(LanguageModel.ChatGPT, new String[] {
-                "gpt-5.6-sol",
-                "gpt-5.6-terra",
-                "gpt-5.6-luna",
-                "gpt-5.6-cyber",
-                "gpt-5",
-                "gpt-oss-120b",
-                "gpt-oss-20b"
-        });
-        VALID_MODELS.put(LanguageModel.ChatGPT, new java.util.HashSet<>(java.util.Arrays.asList(
-                "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-5.6-cyber",
-                "gpt-5", "gpt-4o", "gpt-4o-mini",
-                "gpt-oss-120b", "gpt-oss-20b")));
-
-        // Groq models - August 2026 latest (Free LPU inference)
-        SUB_MODEL_PRESETS.put(LanguageModel.Groq, new String[] {
-                "openai/gpt-oss-120b",
-                "openai/gpt-oss-20b",
-                "qwen/qwen3-vl-32b-instruct",
-                "minimaxai/minimax-m2.5",
-                "groq/compound"
-        });
-        VALID_MODELS.put(LanguageModel.Groq, null); // Allow any - Groq catalog changes frequently
-
-        // OpenRouter models - August 2026 (Free tier available)
-        SUB_MODEL_PRESETS.put(LanguageModel.OpenRouter, new String[] {
-                "openrouter/free",
-                "nvidia/nemotron-3-ultra:free",
-                "openai/gpt-oss-120b:free",
-                "qwen/qwen3-coder:free",
-                "google/gemini-2.5-flash:free",
-                "openai/gpt-4o-mini"
-        });
-        VALID_MODELS.put(LanguageModel.OpenRouter, null); // Allow any for OpenRouter
-
-        // Claude models - August 2026 latest (Claude 5 generation)
-        SUB_MODEL_PRESETS.put(LanguageModel.Claude, new String[] {
-                "claude-opus-5",
-                "claude-fable-5",
-                "claude-sonnet-5",
-                "claude-haiku-4-5-20251001"
-        });
-        VALID_MODELS.put(LanguageModel.Claude, new java.util.HashSet<>(java.util.Arrays.asList(
-                "claude-opus-5", "claude-fable-5", "claude-sonnet-5",
-                "claude-haiku-4-5-20251001", "claude-haiku-4-5",
-                "claude-sonnet-4-20250514", "claude-opus-4-5-20250630",
-                "claude-sonnet-4-5-20250630")));
-
-        // Mistral models - August 2026 latest
-        SUB_MODEL_PRESETS.put(LanguageModel.Mistral, new String[] {
-                "mistral-large-latest",
-                "mistral-medium-3.5",
-                "mistral-small-latest",
-                "codestral-latest",
-                "ministral-3-latest"
-        });
-        VALID_MODELS.put(LanguageModel.Mistral, new java.util.HashSet<>(java.util.Arrays.asList(
-                "mistral-large-latest", "mistral-medium-3.5", "mistral-small-latest",
-                "codestral-latest", "ministral-3-latest",
-                "mistral-small-2506", "codestral-2501")));
-
-        // Chutes models - August 2026 latest
-        SUB_MODEL_PRESETS.put(LanguageModel.Chutes, new String[] {
-                "deepseek-ai/DeepSeek-V3.2",
-                "deepseek-ai/DeepSeek-V4-Flash-0731",
-                "deepseek-ai/DeepSeek-R1",
-                "meta-llama/Llama-3.3-70B-Instruct",
-                "Qwen/Qwen2.5-72B-Instruct"
-        });
-        VALID_MODELS.put(LanguageModel.Chutes, null); // Allow any model
-
-        // Perplexity models - August 2026 latest (Search-grounded)
-        SUB_MODEL_PRESETS.put(LanguageModel.Perplexity, new String[] {
-                "sonar-pro",
-                "sonar",
-                "sonar-reasoning-pro",
-                "sonar-deep-research"
-        });
-        VALID_MODELS.put(LanguageModel.Perplexity, new java.util.HashSet<>(java.util.Arrays.asList(
-                "sonar-pro", "sonar", "sonar-reasoning-pro", "sonar-deep-research")));
-
-        // GLM (ZhipuAI / Z.ai) models - August 2026 latest (GLM-5 generation)
-        SUB_MODEL_PRESETS.put(LanguageModel.GLM, new String[] {
-                "glm-5.3",
-                "glm-5.2",
-                "glm-5.1",
-                "glm-5",
-                "glm-4-plus",
-                "glm-4-flash"
-        });
-        VALID_MODELS.put(LanguageModel.GLM, new java.util.HashSet<>(java.util.Arrays.asList(
-                "glm-5.3", "glm-5.2", "glm-5.1", "glm-5",
-                "glm-4-plus", "glm-4-flash", "glm-4-air")));
-
-        // Grok (xAI) models - August 2026 latest
-        SUB_MODEL_PRESETS.put(LanguageModel.Grok, new String[] {
-                "grok-4.6",
-                "grok-4.5",
-                "grok-4.3",
-                "grok-4",
-                "grok-3",
-                "grok-2-latest",
-                "grok-2",
-                "grok-beta"
-        });
-        VALID_MODELS.put(LanguageModel.Grok, new java.util.HashSet<>(java.util.Arrays.asList(
-                "grok-4.6", "grok-4.5", "grok-4.3", "grok-4", "grok-3",
-                "grok-2-latest", "grok-2", "grok-2-vision-1212", "grok-beta")));
-
-        // DeepSeek models - August 2026 latest
-        SUB_MODEL_PRESETS.put(LanguageModel.DeepSeek, new String[] {
-                "deepseek-chat",
-                "deepseek-reasoner",
-                "deepseek-v4-pro",
-                "deepseek-v4-flash",
-                "deepseek-coder"
-        });
-        VALID_MODELS.put(LanguageModel.DeepSeek, new java.util.HashSet<>(java.util.Arrays.asList(
-                "deepseek-chat", "deepseek-reasoner", "deepseek-v4-pro",
-                "deepseek-v4-flash", "deepseek-coder",
-                "deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-R1")));
-
-        // Kimi (Moonshot AI) models - August 2026 latest
-        SUB_MODEL_PRESETS.put(LanguageModel.Kimi, new String[] {
-                "kimi-k3",
-                "kimi-k2.6",
-                "kimi-k2.7-code",
-                "kimi-k2.5",
-                "moonshot-v1-auto",
-                "moonshot-v1-8k",
-                "moonshot-v1-32k",
-                "moonshot-v1-128k"
-        });
-        VALID_MODELS.put(LanguageModel.Kimi, new java.util.HashSet<>(java.util.Arrays.asList(
-                "kimi-k3", "kimi-k2.6", "kimi-k2.7-code", "kimi-k2.5", "kimi-k2-instruct",
-                "moonshot-v1-auto", "moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k")));
-    }
+    // H1: single source of truth shared with the floating dialog
+    private static final Map<LanguageModel, String[]> SUB_MODEL_PRESETS = tn.eluea.kgpt.util.ModelCatalog.PRESETS;
+    private static final Map<LanguageModel, java.util.Set<String>> VALID_MODELS = tn.eluea.kgpt.util.ModelCatalog.VALID;
 
     private boolean isValidModelName(LanguageModel model, String modelName) {
         if (modelName == null || modelName.trim().isEmpty()) {
@@ -545,6 +387,12 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
     @Override
     public void onEditCustomProvider(CustomProvider provider) {
         showAddOrEditCustomProviderDialog(provider);
+    }
+
+    /** Public entry point so MainActivity can open it via intent extras. */
+    public void openAddCustomProviderDialog() {
+        if (getView() == null) return;
+        showAddOrEditCustomProviderDialog(null);
     }
 
     private void showAddOrEditCustomProviderDialog(@Nullable CustomProvider existing) {
@@ -1118,7 +966,7 @@ public class ModelsFragment extends Fragment implements ModelsAdapter.OnModelSel
             String suggested = getSuggestedModel(selectedModel, finalSubModel);
 
             new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Invalid Model Name")
+                    .setTitle(R.string.title_invalid_model_name)
                     .setMessage("The model \"" + finalSubModel + "\" may not be valid.\n\nDid you mean: " + suggested
                             + "?\n\nUsing an invalid model name will cause API errors.")
                     .setPositiveButton("Use Suggested", (dialog, which) -> {

@@ -22,6 +22,7 @@ package tn.eluea.kgpt.ui.main;
 
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -47,6 +48,8 @@ import tn.eluea.kgpt.ui.main.fragments.ModelsFragment;
 import tn.eluea.kgpt.ui.main.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String EXTRA_OPEN_ADD_CUSTOM_PROVIDER = "tn.eluea.kgpt.OPEN_ADD_CUSTOM_PROVIDER";
 
     private static final String PREF_THEME = "theme_mode";
     private static final String PREF_AMOLED = "amoled_mode";
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Restore navigation state
+        maybeOpenAddCustomProvider(getIntent());
+
         if (savedInstanceState != null) {
             currentNavIndex = savedInstanceState.getInt(KEY_NAV_INDEX, 0);
             loadFragmentForIndex(currentNavIndex);
@@ -181,6 +186,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        maybeOpenAddCustomProvider(intent);
+    }
+
+    private void maybeOpenAddCustomProvider(Intent intent) {
+        if (intent == null || !intent.getBooleanExtra(EXTRA_OPEN_ADD_CUSTOM_PROVIDER, false)) return;
+        intent.removeExtra(EXTRA_OPEN_ADD_CUSTOM_PROVIDER);
+        navigateToModels();
+        getSupportFragmentManager().registerFragmentLifecycleCallbacks(new androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentViewCreated(androidx.fragment.app.FragmentManager fm, androidx.fragment.app.Fragment f, View v, Bundle savedInstanceState) {
+                if (f instanceof ModelsFragment) {
+                    fm.unregisterFragmentLifecycleCallbacks(this);
+                    v.post(() -> ((ModelsFragment) f).openAddCustomProviderDialog());
+                }
+            }
+        }, true);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_NAV_INDEX, currentNavIndex);
@@ -193,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new ModelsFragment();
                 break;
             case 2:
-                fragment = new ApiKeysFragment();
+                fragment = new tn.eluea.kgpt.ui.lab.LabFragment();
                 break;
             case 3:
                 fragment = new SettingsFragment();
@@ -240,7 +267,9 @@ public class MainActivity extends AppCompatActivity {
 
         navModels.setOnClickListener(v -> {
             if (currentNavIndex != 1) {
-                loadFragment(new AiSettingsFragment());
+                // Unified with restore path (loadFragmentForIndex) and
+                // navigateToModels — three screens shared one dock slot before.
+                loadFragment(new ModelsFragment());
                 updateNavSelection(1);
             }
         });
@@ -283,8 +312,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    private int navGeneration = 0;
+
     private void updateNavSelection(int index) {
         currentNavIndex = index;
+        final int gen = ++navGeneration;
 
         // Reset all selection states
         navHome.setSelected(false);
@@ -299,23 +331,6 @@ public class MainActivity extends AppCompatActivity {
                 com.google.android.material.R.attr.colorOnPrimary, getResources().getColor(R.color.white, getTheme()));
         int primaryColor = com.google.android.material.color.MaterialColors.getColor(this,
                 androidx.appcompat.R.attr.colorPrimary, ContextCompat.getColor(this, R.color.primary));
-
-        // Reset all to static frame 0 with inactive color
-        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navHomeLottie, 0, inactiveColor);
-        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navModelsLottie, 0, inactiveColor);
-        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navLabLottie, 0, inactiveColor);
-        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(navSettingsLottie, 0, inactiveColor);
-
-        if (index < 0) {
-            if (navSlidingIndicator != null) {
-                navSlidingIndicator.setVisibility(View.GONE);
-            }
-            return;
-        }
-
-        if (navSlidingIndicator != null) {
-            navSlidingIndicator.setVisibility(View.VISIBLE);
-        }
 
         FrameLayout targetView;
         com.airbnb.lottie.LottieAnimationView targetLottie;
@@ -340,11 +355,30 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        // Reset all NON-target icons to static frame 0 with inactive color.
+        // (The target is intentionally NOT reset here — resetting it queued a
+        // deferred re-apply that fired AFTER playOnce() and killed the active
+        // animation, leaving the selected icon dark and the transition cut.)
+        applyNavState(navHomeLottie, 0, inactiveColor, gen, false, navHomeLottie != targetLottie);
+        applyNavState(navModelsLottie, 0, inactiveColor, gen, false, navModelsLottie != targetLottie);
+        applyNavState(navLabLottie, 0, inactiveColor, gen, false, navLabLottie != targetLottie);
+        applyNavState(navSettingsLottie, 0, inactiveColor, gen, false, navSettingsLottie != targetLottie);
+
+        if (index < 0) {
+            if (navSlidingIndicator != null) {
+                navSlidingIndicator.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        if (navSlidingIndicator != null) {
+            navSlidingIndicator.setVisibility(View.VISIBLE);
+        }
+
         if (targetView != null) {
             targetView.setSelected(true);
-            if (targetLottie != null) {
-                tn.eluea.kgpt.util.LottieHelper.playOnce(targetLottie, activeColor);
-            }
+            // Active icon: animated one-shot transition in the active color.
+            applyNavState(targetLottie, 0, activeColor, gen, true, true);
 
             if (navSlidingIndicator != null) {
                 navSlidingIndicator.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
@@ -367,6 +401,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Apply a Lottie nav state, generation-guarded.
+     *
+     * Lottie compositions load ASYNC — a frame/color set before the
+     * composition is ready is silently dropped (the invisible-white-home-icon
+     * bug), so we re-apply once after layout. The generation tag makes stale
+     * deferred applies from a previous selection a no-op, and the deferred
+     * re-apply is skipped entirely when the composition is already loaded so
+     * playOnce() animations are never cut mid-flight (the dark-selected-icon
+     * + non-smooth-slide regression).
+     */
+    private void applyNavState(com.airbnb.lottie.LottieAnimationView lottie, int frame,
+            int color, int gen, boolean playActive, boolean apply) {
+        if (lottie == null || !apply) return;
+        lottie.setTag(gen);
+
+        if (playActive) {
+            tn.eluea.kgpt.util.LottieHelper.playOnce(lottie, color);
+        } else {
+            tn.eluea.kgpt.util.LottieHelper.setStaticFrame(lottie, frame, color);
+        }
+
+        lottie.post(() -> {
+            try {
+                Object tag = lottie.getTag();
+                if (!(tag instanceof Integer) || (Integer) tag != gen) return; // stale selection
+                if (lottie.getComposition() == null) {
+                    // Composition finished parsing after our first attempt — retry once
+                    if (playActive) {
+                        tn.eluea.kgpt.util.LottieHelper.playOnce(lottie, color);
+                    } else {
+                        tn.eluea.kgpt.util.LottieHelper.setStaticFrame(lottie, frame, color);
+                    }
+                }
+            } catch (Throwable ignored) {}
+        });
+    }
+
     public void navigateToModels() {
         loadFragment(new ModelsFragment());
         updateNavSelection(1);
@@ -374,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void navigateToApiKeys() {
         loadFragment(new ApiKeysFragment());
-        updateNavSelection(2);
+        updateNavSelection(-1); // ApiKeys is not a dock destination
     }
 
     public void navigateToAiInvocation() {

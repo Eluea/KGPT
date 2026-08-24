@@ -139,6 +139,55 @@ public class DownloadOptions implements Serializable {
     private int concurrentFragments = 16;   // 16 or 32 concurrent threads
     private String estimatedFileSize = null;
     private String processId = null;
+    private String preferredFormatId = null; // exact yt-dlp format id picked from real available formats
+    private String extractorArgs = null;     // extractor-args used when info was fetched (keeps format ids valid)
+    private boolean keepOriginalAudio = false; // true = download the source codec as-is, no transcode
+    private boolean burnSubtitles = false;
+    private boolean embedChapters = false;
+    private boolean recodeVideo = false;
+    private boolean compatibleH264 = false;
+    private boolean saveSeparateThumbnail = false;
+    private String extraCommands = null;
+    private String customTreeUri = null; // SAF tree URI for custom download dir
+
+    public boolean isKeepOriginalAudio() {
+        return keepOriginalAudio;
+    }
+
+    public void setKeepOriginalAudio(boolean keepOriginalAudio) {
+        this.keepOriginalAudio = keepOriginalAudio;
+    }
+
+    public String getPreferredFormatId() {
+        return preferredFormatId;
+    }
+
+    public void setPreferredFormatId(String preferredFormatId) {
+        this.preferredFormatId = preferredFormatId;
+    }
+
+    public String getExtractorArgs() {
+        return extractorArgs;
+    }
+
+    public boolean isBurnSubtitles() { return burnSubtitles; }
+    public void setBurnSubtitles(boolean v) { this.burnSubtitles = v; }
+    public boolean isEmbedChapters() { return embedChapters; }
+    public void setEmbedChapters(boolean v) { this.embedChapters = v; }
+    public boolean isRecodeVideo() { return recodeVideo; }
+    public void setRecodeVideo(boolean v) { this.recodeVideo = v; }
+    public boolean isCompatibleH264() { return compatibleH264; }
+    public void setCompatibleH264(boolean v) { this.compatibleH264 = v; }
+    public boolean isSaveSeparateThumbnail() { return saveSeparateThumbnail; }
+    public void setSaveSeparateThumbnail(boolean v) { this.saveSeparateThumbnail = v; }
+    public String getExtraCommands() { return extraCommands; }
+    public void setExtraCommands(String v) { this.extraCommands = v; }
+    public String getCustomTreeUri() { return customTreeUri; }
+    public void setCustomTreeUri(String v) { this.customTreeUri = v; }
+
+    public void setExtractorArgs(String extractorArgs) {
+        this.extractorArgs = extractorArgs;
+    }
 
     public String getDownloadSections() {
         return downloadSections;

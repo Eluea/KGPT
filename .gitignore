@@ -25,3 +25,6 @@ ActivityLauncher-master/
 /svg/
 client_secret*.json
 core_bundles/*.zip
+
+# Signing credentials (do not commit)
+keystore.properties

@@ -3,6 +3,26 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// Signing credentials are loaded from keystore.properties (gitignored) or
+// environment variables — never commit real passwords to the repository.
+// See keystore.properties.example for the expected format.
+def keystoreProps = new Properties()
+def keystorePropsFile = rootProject.file("keystore.properties")
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+def ksStoreFile = keystoreProps['storeFile'] ?: System.getenv('KGPT_STORE_FILE') ?: 'keystore/kgpt_release.jks'
+def ksStorePassword = keystoreProps['storePassword'] ?: System.getenv('KGPT_STORE_PASSWORD') ?: ''
+def ksKeyAlias = keystoreProps['keyAlias'] ?: System.getenv('KGPT_KEY_ALIAS') ?: 'kgpt'
+def ksKeyPassword = keystoreProps['keyPassword'] ?: System.getenv('KGPT_KEY_PASSWORD') ?: ''
+
+if (!file("$ksStoreFile").exists()) {
+    logger.warn("KGPT: signing keystore not found at '$ksStoreFile'. " +
+            "Create keystore.properties in the repo root (see keystore.properties.example) " +
+            "or set KGPT_STORE_FILE/KGPT_STORE_PASSWORD/KGPT_KEY_ALIAS/KGPT_KEY_PASSWORD. " +
+            "Release builds will fail until then.")
+}
+
 android {
     namespace = 'tn.eluea.kgpt'
     compileSdk = 36
@@ -23,16 +43,20 @@ android {
 
     signingConfigs {
         release {
-            storeFile = file("keystore/kgpt_release.jks")
-            storePassword = "kgptpassword"
-            keyAlias = "kgpt"
-            keyPassword = "kgptpassword"
+            storeFile = file("$ksStoreFile")
+            storePassword = "$ksStorePassword"
+            keyAlias = "$ksKeyAlias"
+            keyPassword = "$ksKeyPassword"
         }
         debug {
-            storeFile = file("keystore/kgpt_release.jks")
-            storePassword = "kgptpassword"
-            keyAlias = "kgpt"
-            keyPassword = "kgptpassword"
+            // Debug builds fall back to the default debug keystore when no
+            // release credentials are configured on this machine.
+            if (file("$ksStoreFile").exists() && ksStorePassword) {
+                storeFile = file("$ksStoreFile")
+                storePassword = "$ksStorePassword"
+                keyAlias = "$ksKeyAlias"
+                keyPassword = "$ksKeyPassword"
+            }
         }
     }
 
@@ -44,16 +68,23 @@ android {
             signingConfig = signingConfigs.release
         }
         debug {
-            debuggable false
-            signingConfig = signingConfigs.release
+            debuggable true
+            // With keystore.properties present, debug builds are signed with the
+            // release key (historical behavior). Without credentials, leave
+            // signingConfig unset so AGP applies its auto-managed default debug
+            // keystore and fresh machines can still build & install.
+            def hasReleaseCreds = file("$ksStoreFile").exists() && ksStorePassword?.trim()
+            if (hasReleaseCreds) {
+                signingConfig = signingConfigs.debug
+            }
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     packaging {
         jniLibs {
@@ -93,33 +124,35 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.14.0-alpha01'
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.14.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.11.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
-    implementation 'com.google.guava:guava:31.0.1-android'
     implementation 'org.reactivestreams:reactive-streams:1.0.4'
 
     // WorkManager for background update checking
-    implementation 'androidx.work:work-runtime:2.9.0'
+    implementation 'androidx.work:work-runtime:2.11.2'
     
     // DocumentFile for folder picker
-    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'androidx.documentfile:documentfile:1.1.0'
 
     // LSPosed Modern API 102 & Service (Vector compatible)
     compileOnly 'io.github.libxposed:api:102.0.0'
-    implementation 'io.github.libxposed:service:101.0.0'
+    implementation 'io.github.libxposed:service:101.0.0' // 102 requires compileSdk 37 — revisit when AGP/SDK 37 ships
+    // Expose the API to unit tests (compile-only deps are absent from the
+    // unit test classpath, which broke test compilation)
+    testImplementation 'io.github.libxposed:api:102.0.0'
 
     // Embedded Universal Media Downloader (yt-dlp + ffmpeg)
     implementation 'io.github.junkfood02.youtubedl-android:library:0.18.1'
     implementation 'io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1'
 
     // Lottie Animation Library
-    implementation 'com.airbnb.android:lottie:6.4.0'
+    implementation 'com.airbnb.android:lottie:6.7.1'
 
     // Google Play Services Auth & Google Drive API
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
@@ -134,7 +167,7 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.44.1'
 
     // DexKit for robust DEX string searching
-    implementation 'org.luckypray:dexkit:2.0.4'
+    implementation 'org.luckypray:dexkit:2.2.0'
 }
 
 java {

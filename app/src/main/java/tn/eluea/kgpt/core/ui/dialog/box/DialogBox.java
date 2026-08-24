@@ -30,8 +30,8 @@ import tn.eluea.kgpt.ui.UiInteractor;
  */
 @android.annotation.SuppressLint("InflateParams")
 public abstract class DialogBox {
-    private final Activity mParent;
-    private final Dialog mDialog;
+    protected final Activity mParent;
+    private Dialog mDialog;
     private final Bundle mInputBundle;
     private final ConfigContainer mConfigContainer;
     private final DialogBoxManager mManager;
@@ -46,7 +46,13 @@ public abstract class DialogBox {
         mInputBundle = inputBundle;
         mConfigContainer = configContainer;
         mClient = new ConfigClient(parent);
-        mDialog = build();
+        try {
+            mDialog = build();
+        } catch (Throwable t) {
+            // A throwing box must never kill the translucent dialog process
+            android.util.Log.e("KGPT_DialogBox", "build() failed for " + getClass().getSimpleName(), t);
+            mDialog = null;
+        }
         if (mDialog != null) {
             tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlur(mDialog);
             mDialog.setOnDismissListener(d -> {
@@ -100,18 +106,6 @@ public abstract class DialogBox {
         getContext().sendBroadcast(broadcastIntent);
 
         getParent().finish();
-    }
-
-    protected void silentDismiss() {
-        canClose = false;
-        if (mDialog != null) {
-            // Use dismissInstant if available to keep blur continuous
-            if (mDialog instanceof tn.eluea.kgpt.ui.main.FloatingBottomSheet) {
-                ((tn.eluea.kgpt.ui.main.FloatingBottomSheet) mDialog).dismissInstant();
-            } else {
-                mDialog.dismiss();
-            }
-        }
     }
 
     /**

@@ -610,13 +610,13 @@ public class SettingsFragment extends Fragment {
         if (result.hasRootAccess) {
             rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_success);
             tvRootStatus.setText("Root Access Granted");
-            tvBootLogs.setText("â€¢ Boot/Kernel Logs (dmesg) âœ“");
+            tvBootLogs.setText("• Boot/Kernel Logs (dmesg) ✓");
             tvRootExplanation.setText(
                     "Root access was used to collect kernel logs (dmesg) and ANR traces which require elevated permissions on Android.");
         } else {
             rootStatusContainer.setBackgroundResource(R.drawable.bg_chip_warning);
             tvRootStatus.setText("No Root Access");
-            tvBootLogs.setText("â€¢ Boot/Kernel Logs (limited)");
+            tvBootLogs.setText("• Boot/Kernel Logs (limited)");
             tvRootExplanation.setText(
                     "Without root access, kernel logs (dmesg) and ANR traces could not be fully collected. Basic boot events from logcat are included.");
         }
@@ -689,7 +689,7 @@ public class SettingsFragment extends Fragment {
         if (result.success) {
             String restoredItemsStr = String.join(", ", result.restoredItems);
             Toast.makeText(requireContext(),
-                    "Restored: " + restoredItemsStr + ". Restart app to apply theme changes.",
+                    getString(R.string.msg_restored_restart_fmt, restoredItemsStr),
                     Toast.LENGTH_LONG).show();
 
             // Reload app triggers if they were restored
@@ -799,9 +799,6 @@ public class SettingsFragment extends Fragment {
 
     // Existing helper if needed, but defining simple one above is safer to avoid
     // method not found
-    private void _unused_placeholder() {
-        // Just to ensure I replace the method signature correctly manually in the block
-    }
 
     // Original method signature was (LinearLayout, String, String)
     // I am changing it to (LinearLayout, String, String, int, int)

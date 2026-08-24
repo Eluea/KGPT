@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import android.util.Log;
@@ -26,7 +28,11 @@ import tn.eluea.kgpt.llm.service.InternetRequestListener;
 public class InternetRequestPublisher implements
         Publisher<String>, InternetRequestListener {
     private static final String TAG = "KGPT_InternetPub";
+    private static final long RESPONSE_TIMEOUT_MS = 60_000;
+
     private final AtomicInteger mStatusCode = new AtomicInteger(-1);
+    private final AtomicReference<Throwable> mFatalError = new AtomicReference<>(null);
+    private volatile boolean mCancelled = false;
     private final Object mLock = new Object();
     private final Callback mOnStatusCodeSuccess;
     private final Callback mOnStatusCodeError;
@@ -48,13 +54,32 @@ public class InternetRequestPublisher implements
                     return;
                 }
 
+                // Bounded wait: never block forever if the remote side dies
+                // without replying (previously this waited indefinitely and
+                // starved the caller's worker threads).
+                long deadline = System.currentTimeMillis() + RESPONSE_TIMEOUT_MS;
                 synchronized (mLock) {
-                    while (mStatusCode.get() == -1) {
-                        Log.d(TAG, "Waiting for status code");
-                        try {
-                            mLock.wait();
-                        } catch (InterruptedException e) {
+                    while (mStatusCode.get() == -1 && mFatalError.get() == null && !mCancelled) {
+                        long remaining = deadline - System.currentTimeMillis();
+                        if (remaining <= 0) {
+                            Log.e(TAG, "Timed out waiting for HTTP status");
+                            subscriber.onError(new IOException("KGPT internet proxy: timed out waiting for response"));
+                            return;
                         }
+                        try {
+                            mLock.wait(Math.min(remaining, 5_000));
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
+                    }
+                    Throwable fatal = mFatalError.get();
+                    if (fatal != null) {
+                        subscriber.onError(fatal);
+                        return;
+                    }
+                    if (mCancelled) {
+                        return;
                     }
                 }
 
@@ -82,6 +107,10 @@ public class InternetRequestPublisher implements
 
             @Override
             public void cancel() {
+                mCancelled = true;
+                synchronized (mLock) {
+                    mLock.notifyAll();
+                }
             }
         });
     }
@@ -97,6 +126,14 @@ public class InternetRequestPublisher implements
     @Override
     public void onRequestComplete() {
 
+    }
+
+    @Override
+    public void onRequestError(Throwable t) {
+        mFatalError.set(t);
+        synchronized (mLock) {
+            mLock.notifyAll();
+        }
     }
 
     public void setInputStream(InputStream inputStream) {

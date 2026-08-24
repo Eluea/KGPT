@@ -161,54 +161,6 @@ public class FloatingBottomSheet extends Dialog {
     /**
      * Smoothly transition to new content with crossfade animation
      */
-    public void transitionToContent(@NonNull View newView, Runnable onComplete) {
-        if (wrapper == null || contentView == null) {
-            setContentView(newView);
-            if (onComplete != null)
-                onComplete.run();
-            return;
-        }
-
-        // Apply theme to new content
-        BottomSheetHelper.applyTheme(getContext(), newView);
-        newView.setClickable(true);
-
-        Context context = getContext();
-        int margin = (int) (16 * context.getResources().getDisplayMetrics().density);
-
-        android.widget.FrameLayout.LayoutParams contentParams = new android.widget.FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentParams.gravity = Gravity.BOTTOM;
-        contentParams.setMargins(margin, 0, margin, margin);
-
-        // Prepare new view
-        newView.setAlpha(0f);
-        wrapper.addView(newView, contentParams);
-
-        final View oldView = contentView;
-        contentView = newView;
-
-        // Crossfade animation
-        oldView.animate()
-                .alpha(0f)
-                .setDuration(150)
-                .setInterpolator(new android.view.animation.AccelerateInterpolator())
-                .start();
-
-        newView.animate()
-                .alpha(1f)
-                .setDuration(150)
-                .setStartDelay(50)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator())
-                .withEndAction(() -> {
-                    wrapper.removeView(oldView);
-                    if (onComplete != null)
-                        onComplete.run();
-                })
-                .start();
-    }
-
     @Override
     public void show() {
         super.show();
@@ -261,7 +213,5 @@ public class FloatingBottomSheet extends Dialog {
     /**
      * Get the current content view
      */
-    public View getContentView() {
-        return contentView;
-    }
+
 }

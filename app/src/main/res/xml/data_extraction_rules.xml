@@ -1,13 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+﻿<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
   ~ GitHub: https://github.com/Eluea
   ~ Telegram: https://t.me/Eluea
   ~
   ~ Licensed under the GPLv3.
   -->
+<!--
+   Android 12+ backup & device-transfer rules.
+   The "keyboard_gpt" prefs hold AI provider API keys — excluded from cloud
+   backup and device-to-device transfer so they never leave the device.
+   In-app backups are handled by BackupManager (Google Drive).
+-->
 <data-extraction-rules>
     <cloud-backup>
+        <exclude domain="sharedpref" path="keyboard_gpt.xml" />
     </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="keyboard_gpt.xml" />
+    </device-transfer>
 </data-extraction-rules>

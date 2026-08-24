@@ -41,19 +41,38 @@ public class TextActionReceiver extends BroadcastReceiver implements GenerativeA
 
     private Context context;
     private StringBuilder responseBuilder;
+    private PendingResult pendingResult;
+    private String responseTargetPackage;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!ACTION_REQUEST.equals(intent.getAction()))
             return;
 
+        // Keep the (background) KGPT process alive for the whole AI round-trip.
+        // Without this, Android could kill the process right after onReceive
+        // returns, so the in-place replacement never arrived and the user had
+        // to fall back to opening the app manually.
+        pendingResult = goAsync();
         this.context = context;
 
         String actionName = intent.getStringExtra("action");
         String text = intent.getStringExtra("text");
+        String targetPackage = intent.getStringExtra("target_package");
+        // Hardening: cap input (any app can send this exported broadcast; a
+        // forged megabyte request would burn AI tokens and memory).
+        if (text != null && text.length() > 20_000) {
+            text = text.substring(0, 20_000);
+        }
 
         if (actionName == null || text == null || text.isEmpty()) {
             Log.w(TAG, "Invalid text action request");
+            return;
+        }
+        try {
+            TextAction.valueOf(actionName);
+        } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Rejected unknown action: " + actionName);
             return;
         }
 
@@ -61,13 +80,12 @@ public class TextActionReceiver extends BroadcastReceiver implements GenerativeA
 
         try {
             TextAction action = TextAction.valueOf(actionName);
-            processTextAction(action, text);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "Unknown action: " + actionName);
+            processTextAction(action, text, targetPackage);
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
-    private void processTextAction(TextAction action, String text) {
+    private void processTextAction(TextAction action, String text, String targetPackage) {
         responseBuilder = new StringBuilder();
 
         // Get prompts for this action
@@ -77,6 +95,7 @@ public class TextActionReceiver extends BroadcastReceiver implements GenerativeA
         // Create AI controller and generate response
         GenerativeAIController aiController = new GenerativeAIController();
         aiController.addListener(this);
+        responseTargetPackage = targetPackage;
 
         // Run in background thread
         new Thread(() -> {
@@ -108,13 +127,31 @@ public class TextActionReceiver extends BroadcastReceiver implements GenerativeA
     }
 
     private void sendResponse(String result) {
-        if (context == null)
+        if (context == null) {
+            finishPending();
             return;
+        }
 
+        // NOTE: keep this broadcast IMPLICIT — the listener is a dynamic
+        // receiver registered inside the HOOKED app process; pinning the
+        // package would route it back to KGPT and never deliver.
         Intent responseIntent = new Intent(ACTION_RESPONSE);
         responseIntent.putExtra("result", result);
+        if (responseTargetPackage != null) {
+            responseIntent.putExtra("target_package", responseTargetPackage);
+        }
         context.sendBroadcast(responseIntent);
 
         Log.d(TAG, "Sent response broadcast");
+        finishPending();
+    }
+
+    private void finishPending() {
+        if (pendingResult != null) {
+            try {
+                pendingResult.finish();
+            } catch (Throwable ignored) {}
+            pendingResult = null;
+        }
     }
 }

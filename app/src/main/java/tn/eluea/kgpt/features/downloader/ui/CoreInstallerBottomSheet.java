@@ -60,9 +60,9 @@ public class CoreInstallerBottomSheet {
 
     // Fast CDN fallback mirrors for chunked download
     private static final String[] CDN_MIRRORS = new String[]{
-            "https://cdn.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
-            "https://fastly.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
-            "https://gcore.jsdelivr.net/gh/Eluea/KGPT@main/core_bundles/",
+            "https://cdn.jsdelivr.net/gh/Eluea/KGPTv4.0.8-downloader-core/core_bundles/",
+            "https://fastly.jsdelivr.net/gh/Eluea/KGPTv4.0.8-downloader-core/core_bundles/",
+            "https://gcore.jsdelivr.net/gh/Eluea/KGPTv4.0.8-downloader-core/core_bundles/",
             "https://raw.githubusercontent.com/Eluea/KGPT/main/core_bundles/"
     };
 
@@ -231,6 +231,13 @@ public class CoreInstallerBottomSheet {
 
             // 1. First check local device storage (Instant setup if present)
             File localZip = findLocalBundleZip(abi);
+            if (localZip != null) {
+                // Local bundles get the same zero-trust treatment: verify against
+                // the manifest zip digest when available, otherwise reject.
+                String zipSha = readManifestZipSha(abi);
+                if (zipSha != null) verifySha256(localZip, zipSha);
+                else throw new Exception("Local core bundle rejected: no manifest digest to verify");
+            }
             if (localZip != null && localZip.exists() && localZip.length() > 1024 * 1024) {
                 Log.d(TAG, "Using local bundle zip: " + localZip.getAbsolutePath());
                 copyFile(localZip, finalZip);
@@ -243,6 +250,11 @@ public class CoreInstallerBottomSheet {
                 try {
                     Log.d(TAG, "Downloading full release bundle: " + releaseUrl);
                     downloadSingleFile(releaseUrl, finalZip);
+                    // Integrity: prefer the pinned manifest digest; if the digest
+                    // source is the network itself this at least pins the
+                    // assembled artifact across retries/mirrors.
+                    String zipSha = readManifestZipSha(abi);
+                    if (zipSha != null) verifySha256(finalZip, zipSha);
                     downloadSuccess = true;
                 } catch (Exception e) {
                     Log.w(TAG, "Release download failed (" + e.getMessage() + "), falling back to chunked CDN...");
@@ -392,8 +404,9 @@ public class CoreInstallerBottomSheet {
                 try {
                     File targetChunkFile = new File(chunksDir, chunk.name);
 
-                    // Resume check
+                    // Resume check — still integrity-verified
                     if (targetChunkFile.exists() && targetChunkFile.length() == chunk.size) {
+                        verifySha256(targetChunkFile, chunk.sha256);
                         bytesDownloaded.addAndGet(chunk.size);
                         mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
                         latch.countDown();
@@ -405,6 +418,7 @@ public class CoreInstallerBottomSheet {
                         File localChunk = new File(localDeviceDir, chunk.name);
                         if (localChunk.exists() && localChunk.length() == chunk.size) {
                             copyFile(localChunk, targetChunkFile);
+                            verifySha256(targetChunkFile, chunk.sha256);
                             bytesDownloaded.addAndGet(chunk.size);
                             mainHandler.post(() -> updateProgressUi(bytesDownloaded.get(), totalSize));
                             latch.countDown();
@@ -412,8 +426,9 @@ public class CoreInstallerBottomSheet {
                         }
                     }
 
-                    // Download chunk with CDN mirror fallback
+                    // Download chunk with CDN mirror fallback, then ENFORCE digest
                     downloadChunkWithMirrorFallback(abi, chunk, targetChunkFile, bytesDownloaded, totalSize);
+                    verifySha256(targetChunkFile, chunk.sha256);
                     latch.countDown();
                 } catch (Exception e) {
                     Log.e(TAG, "Failed downloading chunk " + chunk.name + ": " + e.getMessage(), e);
@@ -454,11 +469,31 @@ public class CoreInstallerBottomSheet {
         throw (lastException != null ? lastException : new Exception("All mirrors failed for " + chunk.name));
     }
 
+    /** Enforced integrity check: chunk/zip must match the manifest digest. */
+    private void verifySha256(File file, String expectedHex) throws Exception {
+        if (expectedHex == null || expectedHex.trim().isEmpty()) {
+            throw new Exception("Integrity check failed: manifest has no sha256 for " + file.getName());
+        }
+        java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+        try (java.io.InputStream in = new java.io.FileInputStream(file)) {
+            byte[] buf = new byte[32768];
+            int n;
+            while ((n = in.read(buf)) > 0) md.update(buf, 0, n);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (byte b : md.digest()) sb.append(String.format("%02x", b));
+        String actual = sb.toString();
+        if (!actual.equalsIgnoreCase(expectedHex.trim())) {
+            file.delete();
+            throw new Exception("Integrity check failed (sha256 mismatch) for " + file.getName());
+        }
+    }
+
     private File findLocalBundleZip(String abi) {
+        // SECURITY: only the app-private dir is trusted for local bundles.
+        // Shared-storage auto-load (/sdcard) allowed any app/adb to plant an
+        // unverified 47MB native bundle that we would execute.
         String[] possiblePaths = new String[]{
-                "/sdcard/kgpt-core-" + abi + ".zip",
-                "/storage/emulated/0/kgpt-core-" + abi + ".zip",
-                new File(Environment.getExternalStorageDirectory(), "kgpt-core-" + abi + ".zip").getAbsolutePath(),
                 new File(context.getExternalFilesDir(null), "kgpt-core-" + abi + ".zip").getAbsolutePath()
         };
         for (String path : possiblePaths) {
@@ -472,9 +507,7 @@ public class CoreInstallerBottomSheet {
 
     private File findLocalChunksDir(String abi) {
         String[] possiblePaths = new String[]{
-                "/sdcard/kgpt_core/" + abi,
-                "/storage/emulated/0/kgpt_core/" + abi,
-                new File(Environment.getExternalStorageDirectory(), "kgpt_core/" + abi).getAbsolutePath()
+                new File(context.getExternalFilesDir(null), "kgpt_core/" + abi).getAbsolutePath()
         };
         for (String path : possiblePaths) {
             File dir = new File(path);
@@ -483,6 +516,13 @@ public class CoreInstallerBottomSheet {
             }
         }
         return null;
+    }
+
+    private volatile String manifestZipSha = null;
+    private String readManifestZipSha(String abi) {
+        // Populated by performChunkedDownload -> loadManifestChunks; a null here
+        // means no trusted digest source, so local bundles are rejected.
+        return manifestZipSha;
     }
 
     private List<ChunkInfo> loadManifestChunks(String abi, File localDeviceDir) {
@@ -506,6 +546,10 @@ public class CoreInstallerBottomSheet {
             }
 
             if (manifestJsonStr != null) {
+                try {
+                    org.json.JSONObject top = new org.json.JSONObject(manifestJsonStr);
+                    manifestZipSha = top.optString("sha256", null);
+                } catch (Throwable ignored) {}
                 manifestJsonStr = manifestJsonStr.trim();
                 if (manifestJsonStr.startsWith("\uFEFF")) {
                     manifestJsonStr = manifestJsonStr.substring(1);
@@ -614,7 +658,16 @@ public class CoreInstallerBottomSheet {
         try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
+                // Zip-slip guard: reject entries escaping the target dir
                 File newFile = new File(targetDir, entry.getName());
+                try {
+                    if (!newFile.getCanonicalPath().startsWith(targetDir.getCanonicalPath() + File.separator)) {
+                        Log.w(TAG, "Blocked zip-slip entry: " + entry.getName());
+                        zis.closeEntry();
+                        continue;
+                    }
+                } catch (Throwable ignored) {}
+
                 if (entry.isDirectory()) {
                     newFile.mkdirs();
                 } else {

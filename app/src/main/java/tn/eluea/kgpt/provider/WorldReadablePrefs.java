@@ -46,7 +46,7 @@ public class WorldReadablePrefs {
         if (sPrefs != null) {
             return sPrefs;
         }
-        
+
         try {
             // Use MODE_WORLD_READABLE - LSPosed hooks this to make it work
             sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_WORLD_READABLE);
@@ -56,20 +56,13 @@ public class WorldReadablePrefs {
             Log.w(TAG, "MODE_WORLD_READABLE not available, using MODE_PRIVATE", e);
             sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
-        
+
         return sPrefs;
     }
-    
-    /**
-     * Check if world-readable mode is working (LSPosed is active)
-     */
-    @SuppressWarnings("deprecation")
-    public static boolean isWorldReadableAvailable(Context context) {
-        try {
-            context.getSharedPreferences(PREF_NAME, Context.MODE_WORLD_READABLE);
-            return true;
-        } catch (SecurityException e) {
-            return false;
-        }
-    }
+
+    // NOTE: Do NOT use "does MODE_WORLD_READABLE throw?" as an LSPosed-activation
+    // heuristic. The framework's checkMode() only runs on the first access of a
+    // prefs file per process; once any code opens the file with MODE_PRIVATE the
+    // cached instance is returned and no SecurityException ever fires. Module
+    // activation must be detected via XposedService binding instead.
 }

@@ -73,10 +73,6 @@ public class SnowfallView extends View {
         invalidate();
     }
 
-    public void setSpeedMultiplier(float multiplier) {
-        // Not used currently as SPEED_MULTIPLIER is static final, but good for future
-    }
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -117,6 +113,15 @@ public class SnowfallView extends View {
         float wind = -0.5f + random.nextFloat() * 1f; // Horizontal drift
         float alpha = 0.5f + random.nextFloat() * 0.5f; // Opacity
         return new SnowFlake(x, y, size, speed, wind, alpha);
+    }
+
+    /** Reset an existing flake in place (zero-allocation recycle). */
+    private void recycleToTop(SnowFlake flake) {
+        flake.y = -flake.size;
+        flake.x = random.nextFloat() * getWidth();
+        flake.landed = false;
+        flake.landedLife = 0;
+        flake.speed = 2f + random.nextFloat() * 4f;
     }
 
     private void startAnimation() {
@@ -210,9 +215,9 @@ public class SnowfallView extends View {
                         // Flake is stable. Check life.
                         flake.landedLife--;
                         if (flake.landedLife <= 0) {
-                            // Melted: recycle to top
-                            SnowFlake newFlake = createFlake(false);
-                            flake.copyFrom(newFlake);
+                            // Melted: recycle to top — mutate in place instead of
+                            // allocating a throwaway flake every frame
+                            recycleToTop(flake);
                         }
                         continue;
                     }
@@ -254,8 +259,7 @@ public class SnowfallView extends View {
 
             // Reset if out of bounds
             if (flake.y > height + 20) {
-                SnowFlake newFlake = createFlake(false);
-                flake.copyFrom(newFlake);
+                recycleToTop(flake);
             }
             if (flake.x < -20) {
                 flake.x = width + 20;

@@ -32,6 +32,29 @@ import tn.eluea.kgpt.instruction.command.InlineAskCommand;
  */
 public class InlineAskParseResultFactory implements ParseResultFactory {
 
+    // Single-entry compiled-pattern cache (runs on every keystroke; inputs
+    // change only when the user renames the ask prefix or the trigger symbol).
+    private static final Object CACHE_LOCK = new Object();
+    private static String cachedKey = null;
+    private static Pattern cachedPattern = null;
+
+    private static Pattern getPattern(String commandPrefix, String triggerSymbol) {
+        String key = commandPrefix + "|" + triggerSymbol;
+        synchronized (CACHE_LOCK) {
+            if (cachedPattern != null && key.equals(cachedKey)) {
+                return cachedPattern;
+            }
+        }
+        String escapedSymbol = Pattern.quote(triggerSymbol);
+        Pattern pattern = Pattern
+                .compile("(.*)\\s*/" + Pattern.quote(commandPrefix) + "\\s+(.+)" + escapedSymbol + "$");
+        synchronized (CACHE_LOCK) {
+            cachedKey = key;
+            cachedPattern = pattern;
+        }
+        return pattern;
+    }
+
     public InlineAskParseResultFactory() {
     }
 
@@ -57,12 +80,7 @@ public class InlineAskParseResultFactory implements ParseResultFactory {
         // Get current prefix (may have been customized by user)
         String commandPrefix = InlineAskCommand.getPrefix();
 
-        // Build pattern with the trigger symbol and current prefix
-        String escapedSymbol = Pattern.quote(triggerSymbol);
-        Pattern pattern = Pattern
-                .compile("(.*)\\s*/" + Pattern.quote(commandPrefix) + "\\s+(.+)" + escapedSymbol + "$");
-
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = getPattern(commandPrefix, triggerSymbol).matcher(text);
         if (matcher.find()) {
             String preservedText = matcher.group(1);
             String prompt = matcher.group(2);

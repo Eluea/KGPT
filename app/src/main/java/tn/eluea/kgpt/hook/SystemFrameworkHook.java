@@ -15,6 +15,8 @@ import android.media.MediaMetadata;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.text.TextUtils;
+
+import tn.eluea.kgpt.MainHook;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -32,8 +34,6 @@ import java.util.Locale;
 public class SystemFrameworkHook {
 
     private static final String TAG = "KGPT_SYS_HOOK";
-    public static final String ACTION_SYSTEM_MEDIA_UPDATE = "tn.eluea.kgpt.ACTION_SYSTEM_MEDIA_UPDATE";
-    public static final String ACTION_SYSTEM_CLIPBOARD_URL = "tn.eluea.kgpt.ACTION_SYSTEM_CLIPBOARD_URL";
     public static final String TARGET_PKG = "tn.eluea.kgpt";
 
     // Active media state across the whole OS
@@ -61,6 +61,7 @@ public class SystemFrameworkHook {
         try {
             Class<?> blurListenersClass = classLoader.loadClass("com.android.server.wm.CrossWindowBlurListeners");
             Method m = blurListenersClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+            MainHook.deoptimizeIfPossible(m); // P2: hot global path — prevent ART inlining
             hookManager.hook(m, MethodHook.before(param -> param.setResult(true)));
             log("Hooked CrossWindowBlurListeners.isCrossWindowBlurEnabled -> true");
         } catch (Throwable t) {
@@ -70,6 +71,7 @@ public class SystemFrameworkHook {
         try {
             Class<?> wmServiceClass = classLoader.loadClass("com.android.server.wm.WindowManagerService");
             Method m = wmServiceClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+            MainHook.deoptimizeIfPossible(m); // P2: hot global path — prevent ART inlining
             hookManager.hook(m, MethodHook.before(param -> param.setResult(true)));
             log("Hooked WindowManagerService.isCrossWindowBlurEnabled -> true");
         } catch (Throwable t) {
@@ -79,6 +81,7 @@ public class SystemFrameworkHook {
         try {
             Class<?> clientBlurClass = classLoader.loadClass("android.view.CrossWindowBlurListeners");
             Method m = clientBlurClass.getDeclaredMethod("isCrossWindowBlurEnabled");
+            MainHook.deoptimizeIfPossible(m); // P2: hot global path — prevent ART inlining
             hookManager.hook(m, MethodHook.before(param -> param.setResult(true)));
             log("Hooked android.view.CrossWindowBlurListeners -> true");
         } catch (Throwable t) {
@@ -95,6 +98,7 @@ public class SystemFrameworkHook {
             // Hook setMetadata(MediaMetadata)
             for (Method m : recordClass.getDeclaredMethods()) {
                 if (m.getName().equals("setMetadata") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == MediaMetadata.class) {
+                    MainHook.deoptimizeIfPossible(m); // P2: hot media path
                     hookManager.hook(m, MethodHook.after(param -> {
                         Object record = param.getThisObject();
                         MediaMetadata metadata = (MediaMetadata) param.getArgs()[0];
@@ -103,15 +107,6 @@ public class SystemFrameworkHook {
                         }
                     }));
                     log("Hooked MediaSessionRecord.setMetadata successfully");
-                } else if (m.getName().equals("setPlaybackState") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == PlaybackState.class) {
-                    hookManager.hook(m, MethodHook.after(param -> {
-                        Object record = param.getThisObject();
-                        PlaybackState state = (PlaybackState) param.getArgs()[0];
-                        if (record != null && state != null) {
-                            handleSystemPlaybackState(record, state);
-                        }
-                    }));
-                    log("Hooked MediaSessionRecord.setPlaybackState successfully");
                 }
             }
         } catch (Throwable t) {
@@ -156,14 +151,6 @@ public class SystemFrameworkHook {
         }
     }
 
-    private static void handleSystemPlaybackState(Object record, PlaybackState state) {
-        try {
-            String pkg = extractPackageNameFromRecord(record);
-            if (state.getState() == PlaybackState.STATE_PLAYING) {
-                log(">>> [GLOBAL MEDIA PLAYING] App: " + pkg);
-            }
-        } catch (Throwable ignored) {}
-    }
 
     private static String extractPackageNameFromRecord(Object record) {
         if (record == null) return "unknown";
@@ -218,10 +205,9 @@ public class SystemFrameworkHook {
             CharSequence text = clip.getItemAt(0).getText();
             if (text != null) {
                 String s = text.toString().trim();
-                log(">>> [GLOBAL SYSTEM CLIPBOARD] Copied: " + (s.length() > 60 ? s.substring(0, 60) + "..." : s));
-
+                // PRIVACY: never log clipboard CONTENT (readable via adb/bugreports).
                 if (isMediaUrl(s)) {
-                    log(">>> [GLOBAL MEDIA URL DETECTED] " + s);
+                    log("Global media URL detected (content not logged)");
                     lastMediaUrl = s;
                 }
             }
@@ -253,15 +239,9 @@ public class SystemFrameworkHook {
 
     // ==================== GETTERS ====================
 
-    public static String getLastMediaUrl() {
-        return lastMediaUrl;
-    }
 
-    public static String getLastMediaTitle() {
-        return lastMediaTitle;
-    }
 
-    public static String getLastMediaPackage() {
-        return lastMediaPackage;
-    }
+
+
+
 }

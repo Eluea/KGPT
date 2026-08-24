@@ -374,7 +374,7 @@ public class UpdateSettingsActivity extends AppCompatActivity {
             final UpdateInfo finalUpdateInfo = updateInfo;
             final Exception finalError = error;
 
-            mainHandler.post(() -> {
+            mainHandler.post(() -> { if (isFinishing() || isDestroyed()) return;
                 // Stop rotation animation
                 stopIconRotation();
 

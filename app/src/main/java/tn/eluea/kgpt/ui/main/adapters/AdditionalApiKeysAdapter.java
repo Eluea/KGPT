@@ -108,13 +108,13 @@ public class AdditionalApiKeysAdapter extends RecyclerView.Adapter<AdditionalApi
             }
 
             if (model.isFree) {
-                tvApiStatus.setText("Free API");
+                tvApiStatus.setText(R.string.label_free_api);
                 cvApiStatus.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(resolveAttrColor(
                         itemView.getContext(), com.google.android.material.R.attr.colorPrimaryContainer)));
                 tvApiStatus.setTextColor(resolveAttrColor(itemView.getContext(),
                         com.google.android.material.R.attr.colorOnPrimaryContainer));
             } else {
-                tvApiStatus.setText("Paid API");
+                tvApiStatus.setText(R.string.label_paid_api);
                 cvApiStatus.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(resolveAttrColor(
                         itemView.getContext(), com.google.android.material.R.attr.colorTertiaryContainer)));
                 tvApiStatus.setTextColor(resolveAttrColor(itemView.getContext(),

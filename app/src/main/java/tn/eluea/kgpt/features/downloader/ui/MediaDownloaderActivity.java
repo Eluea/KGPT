@@ -72,11 +72,10 @@ public class MediaDownloaderActivity extends AppCompatActivity {
                         );
                     } catch (Throwable ignored) {}
 
-                    String path = uri.getPath();
-                    if (path != null) {
-                        DownloaderPrefs.setCustomDownloadPath(this, path);
-                        updateDirDisplay();
-                    }
+                    // Store the tree URI (not uri.getPath() — a /tree/... path is
+                    // not a filesystem location and mkdirs silently failed)
+                    DownloaderPrefs.setCustomTreeUri(this, uri.toString());
+                    updateDirDisplay();
                 }
             }
     );
@@ -241,8 +240,10 @@ public class MediaDownloaderActivity extends AppCompatActivity {
     }
 
     private boolean isLSPosedActiveOnDevice() {
-        return tn.eluea.kgpt.util.LSPosedHelper.isLSPosedActive()
-                || tn.eluea.kgpt.provider.WorldReadablePrefs.isWorldReadableAvailable(this);
+        // XposedService binding is the only reliable activation signal under
+        // the Modern API (world-readable prefs heuristics produce false
+        // positives on devices without LSPosed).
+        return tn.eluea.kgpt.util.LSPosedHelper.isLSPosedActive();
     }
 
     private void setupNativeAppHooksDisplay() {
@@ -306,6 +307,14 @@ public class MediaDownloaderActivity extends AppCompatActivity {
     }
 
     private void updateDirDisplay() {
+        String tree = DownloaderPrefs.getCustomTreeUri(this);
+        if (tree != null && tvCurrentDownloadDir != null) {
+            // Show a friendly summary of the SAF tree (last segment)
+            String seg = android.net.Uri.parse(tree).getLastPathSegment();
+            if (seg != null && seg.contains(":")) seg = seg.substring(seg.indexOf(':') + 1);
+            tvCurrentDownloadDir.setText("SAF: " + (seg != null ? seg : tree));
+            return;
+        }
         String path = DownloaderPrefs.getDownloadRootPath(this);
         if (tvCurrentDownloadDir != null) {
             tvCurrentDownloadDir.setText(path);

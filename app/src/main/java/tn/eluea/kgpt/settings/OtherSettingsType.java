@@ -11,7 +11,7 @@ import tn.eluea.kgpt.R;
 
 public enum OtherSettingsType {
         EnableLogs(R.string.setting_enable_logging, R.string.setting_desc_enable_logging,
-                        Nature.Boolean, true),
+                        Nature.Boolean, false),
         EnableExternalInternet(R.string.setting_external_internet,
                         R.string.setting_desc_external_internet,
                         Nature.Boolean, true),

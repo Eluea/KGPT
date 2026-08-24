@@ -30,7 +30,7 @@ public class WebSearchDialogBox extends DialogBox {
         String searchEngine = getInput().getString(UiInteractor.EXTRA_SEARCH_ENGINE, "duckduckgo");
         
         if (url == null) {
-            throw new NullPointerException(UiInteractor.EXTRA_WEBVIEW_URL + " cannot be null");
+            return null; // no URL extra: manager shows nothing instead of crashing
         }
 
         // Launch WebSearchActivity as floating bottom sheet

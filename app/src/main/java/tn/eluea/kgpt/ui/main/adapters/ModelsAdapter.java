@@ -70,6 +70,18 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
         updateData(builtinModels, customProviders, selectedBuiltinModel, selectedCustomProviderId);
     }
 
+    private int findSelectedPosition() {
+        for (int i = 0; i < items.size(); i++) {
+            ProviderItem it = items.get(i);
+            if (it.type == ProviderItem.Type.BUILTIN && it.builtinModel != null
+                    && it.builtinModel.equals(selectedBuiltinModel)) return i;
+            if (it.type == ProviderItem.Type.CUSTOM && it.customProvider != null
+                    && it.customProvider.getId() != null
+                    && it.customProvider.getId().equals(selectedCustomProviderId)) return i;
+        }
+        return -1;
+    }
+
     public void updateData(List<LanguageModel> builtinModels,
                            List<CustomProvider> customProviders,
                            LanguageModel selectedBuiltinModel,
@@ -173,16 +185,22 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelViewH
 
             cardModel.setOnClickListener(v -> {
                 if (item.type == ProviderItem.Type.BUILTIN) {
+                    int oldPos = findSelectedPosition();
                     selectedBuiltinModel = item.builtinModel;
                     selectedCustomProviderId = null;
-                    notifyDataSetChanged();
+                    // E4: rebind only the affected cells (full notify restarted
+                    // every row's Lottie)
+                    if (oldPos >= 0) notifyItemChanged(oldPos);
+                    notifyItemChanged(getBindingAdapterPosition());
                     if (listener != null) {
                         listener.onBuiltinModelSelected(item.builtinModel);
                     }
                 } else if (item.type == ProviderItem.Type.CUSTOM) {
+                    int oldPos = findSelectedPosition();
                     selectedCustomProviderId = item.customProvider.getId();
                     selectedBuiltinModel = null;
-                    notifyDataSetChanged();
+                    if (oldPos >= 0) notifyItemChanged(oldPos);
+                    notifyItemChanged(getBindingAdapterPosition());
                     if (listener != null) {
                         listener.onCustomProviderSelected(item.customProvider);
                     }

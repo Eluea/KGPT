@@ -70,6 +70,23 @@ public class TextParser implements ConfigChangeListener {
         this.textActionsEnabled = enabled;
     }
 
+    // Cached ask-shield pattern: compiled once per prefix instead of on every
+    // keystroke (this parse path runs on the keyboard's main thread).
+    private static volatile String cachedAskPrefix = null;
+    private static volatile java.util.regex.Pattern cachedAskPattern = null;
+
+    private static java.util.regex.Pattern getAskPattern(String prefix) {
+        java.util.regex.Pattern p = cachedAskPattern;
+        if (p != null && prefix.equals(cachedAskPrefix)) {
+            return p;
+        }
+        String regex = "(?:/|\\s+|^)" + java.util.regex.Pattern.quote(prefix) + "\\s+";
+        p = java.util.regex.Pattern.compile(regex, java.util.regex.Pattern.CASE_INSENSITIVE);
+        cachedAskPrefix = prefix;
+        cachedAskPattern = p;
+        return p;
+    }
+
     private void updatePatterns(List<ParsePattern> parsePatterns) {
         directives.clear();
         aiTriggerEnabled = false;
@@ -92,6 +109,19 @@ public class TextParser implements ConfigChangeListener {
         }
     }
 
+    /**
+     * Re-read patterns from config and rebuild directives.
+     * Used by the periodic config refresh so hooked processes recover from
+     * stale initial reads without requiring a manual edit+save.
+     */
+    public void reloadPatterns() {
+        try {
+            updatePatterns(SPManager.getInstance().getParsePatterns());
+        } catch (Exception e) {
+            tn.eluea.kgpt.util.Logger.log(e);
+        }
+    }
+
     public ParseResult parse(String text, int cursor) {
         // Bounds check to prevent StringIndexOutOfBoundsException
         if (text == null || text.isEmpty()) {
@@ -102,11 +132,8 @@ public class TextParser implements ConfigChangeListener {
         String textBeforeCursor = text.substring(0, cursor);
 
         // Check for app triggers first (if enabled)
-        android.util.Log.d("KGPT_AppTrigger", "parse() called with text: '" + textBeforeCursor + "'");
         AppTriggerParseResult appTriggerResult = checkAppTrigger(textBeforeCursor);
         if (appTriggerResult != null) {
-            android.util.Log.d("KGPT_AppTrigger",
-                    "Found trigger: " + appTriggerResult.trigger + " -> " + appTriggerResult.packageName);
             return appTriggerResult;
         }
 
@@ -135,10 +162,8 @@ public class TextParser implements ConfigChangeListener {
             // Regex: Whitespace OR start of line, optional slash, then 'ask', then
             // whitespace
             // This is safer than previous slash-enforced logic
-            String askPatternStr = "(?:/|\\s+|^)" + java.util.regex.Pattern.quote(prefix) + "\\s+";
-            java.util.regex.Pattern askPattern = java.util.regex.Pattern.compile(askPatternStr,
-                    java.util.regex.Pattern.CASE_INSENSITIVE);
-            java.util.regex.Matcher askMatcher = askPattern.matcher(textBeforeCursor);
+            // Compiled once per prefix — this runs on every keystroke.
+            java.util.regex.Matcher askMatcher = getAskPattern(prefix).matcher(textBeforeCursor);
 
             int lastAskIndex = -1;
             int lastContentStart = -1;
@@ -200,19 +225,11 @@ public class TextParser implements ConfigChangeListener {
      * Check if the text ends with an app trigger
      */
     private AppTriggerParseResult checkAppTrigger(String text) {
-        android.util.Log.d("KGPT_AppTrigger", "checkAppTrigger() - appTriggerManager: " + (appTriggerManager != null));
-
         if (appTriggerManager == null || !appTriggerManager.isFeatureEnabled()) {
-            android.util.Log.d("KGPT_AppTrigger", "Feature disabled or manager null. Enabled: " +
-                    (appTriggerManager != null ? appTriggerManager.isFeatureEnabled() : "null"));
             return null;
         }
 
         List<AppTrigger> triggers = appTriggerManager.getAppTriggers();
-        android.util.Log.d("KGPT_AppTrigger", "Loaded " + triggers.size() + " triggers");
-        for (AppTrigger t : triggers) {
-            android.util.Log.d("KGPT_AppTrigger", "  - Trigger: '" + t.getTrigger() + "' enabled: " + t.isEnabled());
-        }
 
         if (triggers.isEmpty()) {
             return null;
@@ -231,7 +248,6 @@ public class TextParser implements ConfigChangeListener {
         // Check if the trimmed text ends with any trigger
         // This handles both "trigger" and "trigger " cases
         String lowerTrimmed = trimmedText.toLowerCase(java.util.Locale.ROOT);
-        android.util.Log.d("KGPT_AppTrigger", "Checking text: '" + lowerTrimmed + "'");
 
         for (AppTrigger trigger : triggers) {
             if (!trigger.isEnabled()) {
@@ -239,7 +255,6 @@ public class TextParser implements ConfigChangeListener {
             }
 
             String triggerText = trigger.getTrigger().toLowerCase(java.util.Locale.ROOT);
-            android.util.Log.d("KGPT_AppTrigger", "Comparing with trigger: '" + triggerText + "'");
 
             boolean match = false;
             if (lowerTrimmed.equals(triggerText)) {
@@ -253,7 +268,6 @@ public class TextParser implements ConfigChangeListener {
             }
 
             if (match) {
-                android.util.Log.d("KGPT_AppTrigger", "MATCH FOUND! trigger: " + triggerText);
 
                 // Find the actual position in original text
                 int triggerStartInTrimmed = trimmedText.length() - trigger.getTrigger().length();
@@ -278,7 +292,6 @@ public class TextParser implements ConfigChangeListener {
             }
         }
 
-        android.util.Log.d("KGPT_AppTrigger", "No match found");
         return null;
     }
 
@@ -293,8 +306,6 @@ public class TextParser implements ConfigChangeListener {
         // Parse the text for action commands
         TextActionCommands.ParseResult result = TextActionCommands.parse(text);
         if (result != null) {
-            android.util.Log.d("KGPT_TextAction",
-                    "Found action: " + result.action.name() + " for text: " + result.text);
             return new TextActionParseResult(
                     Collections.singletonList(result.text),
                     result.startIndex,

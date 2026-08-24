@@ -41,7 +41,6 @@ public class UiInteractor {
 
     public static final String EXTRA_CONFIG_LANGUAGE_MODEL = "tn.eluea.kgpt.config.model";
 
-    public static final String EXTRA_CONFIG_LANGUAGE_MODEL_FIELD = "tn.eluea.kgpt.config.model.%s";
 
     public static final String EXTRA_WEBVIEW_TITLE = "tn.eluea.kgpt.webview.TITLE";
 
@@ -84,7 +83,14 @@ public class UiInteractor {
     }
 
     public static void init(Context context) {
-        instance = new UiInteractor(context, SPManager.getInstance());
+        // First-wins: re-init from another activity discarded the old
+        // singleton's registered receivers/listeners (I1).
+        if (instance != null) return;
+        synchronized (UiInteractor.class) {
+            if (instance != null) return;
+            instance = new UiInteractor(context,
+                    SPManager.isReady() ? SPManager.getInstance() : null);
+        }
     }
 
     public Context getContext() {

@@ -102,10 +102,15 @@ public class InternetService extends Service {
             Messenger messenger = msg.replyTo;
             Bundle data = msg.getData();
             int what = msg.what;
-            new Thread(() -> handleMessageAsync(messenger, data, what)).start();
+            // Bounded pool instead of unbounded thread-per-request: a burst of
+            // requests can no longer spawn unlimited threads in this process.
+            REQUEST_EXECUTOR.execute(() -> handleMessageAsync(messenger, data, what));
             return true;
         }
     });
+
+    private static final java.util.concurrent.ExecutorService REQUEST_EXECUTOR =
+            java.util.concurrent.Executors.newFixedThreadPool(4);
 
     private final Messenger serviceMessenger = new Messenger(incomingHandler);
 

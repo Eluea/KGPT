@@ -10,6 +10,7 @@ public class DownloaderPrefs {
     private static final String PREF_NAME = "kgpt_downloader_prefs";
 
     public static final String KEY_CUSTOM_DOWNLOAD_DIR = "custom_download_dir";
+    public static final String KEY_CUSTOM_TREE_URI = "custom_tree_uri";
     public static final String KEY_GROUP_BY_UPLOADER = "group_by_uploader";
     public static final String KEY_SEPARATE_AUDIO_VIDEO = "separate_audio_video";
     public static final String KEY_DEFAULT_TYPE = "default_type"; // "video" or "audio"
@@ -43,6 +44,22 @@ public class DownloaderPrefs {
 
     public static void setCustomDownloadPath(Context context, String path) {
         getPrefs(context).edit().putString(KEY_CUSTOM_DOWNLOAD_DIR, path).apply();
+    }
+
+    /** SAF tree URI (content://...) for the custom download folder, if set. */
+    public static String getCustomTreeUri(Context context) {
+        String uri = getPrefs(context).getString(KEY_CUSTOM_TREE_URI, null);
+        return (uri != null && uri.startsWith("content://")) ? uri : null;
+    }
+
+    public static void setCustomTreeUri(Context context, String uri) {
+        getPrefs(context).edit().putString(KEY_CUSTOM_TREE_URI, uri).apply();
+        // A tree URI supersedes the legacy plain-path custom dir
+        if (uri != null) {
+            getPrefs(context).edit().remove(KEY_CUSTOM_DOWNLOAD_DIR).apply();
+        } else {
+            getPrefs(context).edit().remove(KEY_CUSTOM_TREE_URI).apply();
+        }
     }
 
     public static final String KEY_GROUP_BY_APP = "group_by_app";

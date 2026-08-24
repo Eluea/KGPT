@@ -10,8 +10,6 @@ package tn.eluea.kgpt.ui;
 import android.inputmethodservice.InputMethodService;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.inputmethod.ExtractedText;
-import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import java.util.ArrayList;
@@ -21,6 +19,14 @@ import tn.eluea.kgpt.listener.InputEventListener;
 
 public class IMSController {
     private static final long INPUT_LOCK_TIMEOUT_MS = 15000; // 15 seconds timeout (reduced from 60s)
+
+    /**
+     * Max characters read from the field per selection update. All KGPT
+     * triggers are suffix-anchored and short, so a bounded window is
+     * functionally equivalent while avoiding the O(field-length) copy of a
+     * full getExtractedText() binder round-trip on every keystroke.
+     */
+    private static final int TEXT_WINDOW_CHARS = 4000;
 
     private InputMethodService ims = null;
     private String typedText = "";
@@ -62,9 +68,12 @@ public class IMSController {
             return;
         InputConnection ic = ims.getCurrentInputConnection();
         if (ic != null) {
-            ExtractedText extractedText = ic.getExtractedText(new ExtractedTextRequest(), 0);
-            if (extractedText != null && extractedText.text != null) {
-                typedText = extractedText.text.toString();
+            // Bounded read instead of getExtractedText(): copies at most
+            // TEXT_WINDOW_CHARS characters rather than the entire field on
+            // every cursor move / keystroke.
+            CharSequence beforeCursor = ic.getTextBeforeCursor(TEXT_WINDOW_CHARS, 0);
+            if (beforeCursor != null) {
+                typedText = beforeCursor.toString();
                 cursor = newSelEnd;
                 notifyTextUpdate();
             }

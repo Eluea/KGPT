@@ -295,48 +295,6 @@ public class MaterialYouSettingsActivity extends AppCompatActivity {
 
     // --- Restart Logic ---
 
-    private void showRestartPrompt() {
-        tn.eluea.kgpt.ui.main.FloatingBottomSheet sheet = new tn.eluea.kgpt.ui.main.FloatingBottomSheet(this);
-        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_restart_required, null);
-        sheet.setContentView(view);
-
-        TextView tvTitle = view.findViewById(R.id.tv_countdown_tag);
-        if (tvTitle != null) {
-            tvTitle.setText("Now"); // Simplify for this context
-        }
-
-        TextView tvDesc = ((LinearLayout) view.findViewById(R.id.bottom_sheet_container)).findViewById(R.id.iv_icon)
-                .getNextFocusDownId() != View.NO_ID ? null : null;
-        // Logic to find description based on layout structure or IDs.
-        // Based on XML: Title is "Restart Required", Description is "To apply AI Text
-        // Actions changes..."
-        // We should update the description text programmatically.
-
-        // Traverse to find description TextView (it doesn't have an ID in the XML
-        // snippet provided, just below title)
-        // Actually, let's just use the view hierarchy or assume standard IDs if we can,
-        // but since the XML shows no ID for description, we might need to rely on the
-        // fixed text
-        // or just accept it says "AI Text Actions".
-        // WAIT: The XML shows: <TextView ... text="To apply AI Text Actions changes..."
-        // />
-        // We should probably give it an ID to change the text, but since I can't edit
-        // the XML easily without
-        // another tool call and it's a shared layout, let's just adding a generic
-        // restart prompt method
-        // or just recreate() for now which is faster and easier for the user flow in
-        // Settings.
-
-        // CHANGING STRATEGY: instead of the complex sheet, let's just RECREATE the
-        // activity
-        // and show a Toast saying "Restart app to apply full changes".
-        // The user complained specifically that *it doesn't apply*.
-        // Immediate recreation of THIS activity will show if it works for this screen.
-        // For the rest of the app, a toast is sufficient.
-
-        recreate();
-    }
-
     // Changing strategy: The user wants it to WORK.
     // Immediate feedback is best.
     // Let's call recreate() when settings change.

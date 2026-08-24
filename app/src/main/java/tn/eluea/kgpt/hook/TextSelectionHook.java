@@ -71,8 +71,12 @@ public class TextSelectionHook {
 
                         appContextRef = new WeakReference<>(activity.getApplicationContext());
 
-                        if (mode.getType() == ActionMode.TYPE_FLOATING) {
-                            log("Floating ActionMode started, adding KGPT actions");
+                        // Inject for BOTH floating and primary action modes —
+                        // many editors use the primary type, which previously
+                        // never received the items.
+                        if (mode.getType() == ActionMode.TYPE_FLOATING
+                                || mode.getType() == ActionMode.TYPE_PRIMARY) {
+                            log("ActionMode started (type=" + mode.getType() + "), adding KGPT actions");
                             addKGPTMenuItems(mode, activity);
                         }
                     })
@@ -119,6 +123,13 @@ public class TextSelectionHook {
             menu.add(Menu.NONE, MENU_ID_CASUAL, 106, "👟 Casual");
             menu.add(Menu.NONE, MENU_ID_TRANSLATE, 107, "🌐 Translate");
 
+            // Force the mode to re-render its menu; without this, items added
+            // after the floating popup was measured may not show up (the
+            // random "first time works, then never" behavior).
+            try {
+                mode.invalidate();
+            } catch (Throwable ignored) {}
+
             log("Added KGPT menu items");
         } catch (Throwable t) {
             log("Failed to add menu items: " + t.getMessage());
@@ -142,12 +153,19 @@ public class TextSelectionHook {
         String selectedText = text.subSequence(Math.min(start, end), Math.max(start, end)).toString();
         if (selectedText.isEmpty()) return;
 
+        capturedSelection[0] = Math.min(start, end);
+        capturedSelection[1] = Math.max(start, end);
+
         TextAction action = menuIdToAction(menuId);
         if (action == null) return;
 
         Context context = textView.getContext();
+        // Target echo: the response carries the requesting package so every
+        // hooked process can ignore responses not meant for it (all hooked
+        // processes receive the implicit broadcast).
+        targetPackage = context.getPackageName();
         registerResultReceiver(context);
-        launchTextAction(context, action, selectedText);
+        launchTextAction(context, action, selectedText, targetPackage);
     }
 
     private static TextAction menuIdToAction(int menuId) {
@@ -164,11 +182,17 @@ public class TextSelectionHook {
         }
     }
 
-    private static void launchTextAction(Context context, TextAction action, String selectedText) {
+    private static volatile String targetPackage = null;
+    // Offsets captured at REQUEST time — re-reading at response time broke
+    // replacement when the caret moved during the AI round trip.
+    private static final int[] capturedSelection = {-1, -1};
+
+    private static void launchTextAction(Context context, TextAction action, String selectedText, String targetPackage) {
         try {
             Intent intent = new Intent("tn.eluea.kgpt.TEXT_ACTION_REQUEST");
             intent.putExtra("action", action.name());
             intent.putExtra("text", selectedText);
+            intent.putExtra("target_package", targetPackage);
             intent.setPackage("tn.eluea.kgpt");
             context.sendBroadcast(intent);
 
@@ -186,6 +210,9 @@ public class TextSelectionHook {
                 @Override
                 public void onReceive(Context ctx, Intent intent) {
                     if ("tn.eluea.kgpt.TEXT_ACTION_RESPONSE".equals(intent.getAction())) {
+                        // Ignore responses addressed to other hooked processes
+                        String tgt = intent.getStringExtra("target_package");
+                        if (tgt != null && !tgt.equals(ctx.getPackageName())) return;
                         String result = intent.getStringExtra("result");
                         if (result != null && currentTextViewRef.get() != null) {
                             replaceSelectedText(result);
@@ -213,8 +240,13 @@ public class TextSelectionHook {
                 TextView currentTv = currentTextViewRef.get();
                 if (currentTv == null) return;
 
-                int start = currentTv.getSelectionStart();
-                int end = currentTv.getSelectionEnd();
+                // Prefer offsets captured when the action was requested
+                int start = capturedSelection[0];
+                int end = capturedSelection[1];
+                if (start < 0 || end < 0) {
+                    start = currentTv.getSelectionStart();
+                    end = currentTv.getSelectionEnd();
+                }
 
                 if (start >= 0 && end >= 0 && start != end) {
                     CharSequence text = currentTv.getText();
@@ -233,7 +265,10 @@ public class TextSelectionHook {
     }
 
     private static boolean isEnabled() {
-        return XposedConfigReader.getBoolean(PREF_TEXT_ACTIONS_ENABLED, false);
+        // Default TRUE to match the in-app default; a false default made the
+        // injected menu items appear only when the prefs key happened to be
+        // readable/seeded — the "works once, then never" report.
+        return XposedConfigReader.getBoolean(PREF_TEXT_ACTIONS_ENABLED, true);
     }
 
     private static void log(String message) {

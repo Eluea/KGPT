@@ -83,7 +83,7 @@ public class MethodHook {
             try {
                 before.accept(param);
             } catch (Throwable t) {
-                // Log or handle
+                tn.eluea.kgpt.util.Logger.log("Hook callback failed: " + t);
             }
         }
     }
@@ -93,7 +93,7 @@ public class MethodHook {
             try {
                 after.accept(param);
             } catch (Throwable t) {
-                // Log or handle
+                tn.eluea.kgpt.util.Logger.log("Hook callback failed: " + t);
             }
         }
     }

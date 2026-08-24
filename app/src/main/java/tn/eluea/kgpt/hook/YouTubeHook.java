@@ -57,6 +57,7 @@ public class YouTubeHook {
 
     private static volatile Context appContext = null;
     private static volatile String currentVideoId = "";
+    private static volatile long lastVideoIdTime = 0L;
     private static final Set<String> hookedBuilderClasses = new HashSet<>();
     private static final Set<String> hookedControllerClasses = new HashSet<>();
     private static volatile boolean layer2Hooked = false;
@@ -79,8 +80,25 @@ public class YouTubeHook {
         // 3. Hook Application & Activity lifecycle to scan ClassLoader dynamically
         hookLifecycleAndScanner(hookManager, classLoader);
 
-        // 4. Initial attempt on base ClassLoader
+        // 4. Initial attempt on base ClassLoader.
+        // Unconditional and does NOT mark the loader scanned: at this point
+        // context is null so DexKit usually can't load yet — the lifecycle
+        // hooks retry later with a real Context (scanOncePerLoader).
         scanAndHookDexKitLayers(hookManager, classLoader, null);
+    }
+
+    /**
+     * Read the per-app hook toggle from the MODULE's prefs (XposedConfigReader
+     * path). The previous implementation used WorldReadablePrefs with
+     * YouTube's own Context — that opened a YouTube-local prefs file and the
+     * toggle had no effect inside the hooked process.
+     */
+    private static boolean readHookToggle(String key) {
+        try {
+            return tn.eluea.kgpt.provider.XposedConfigReader.getBoolean(key, true);
+        } catch (Throwable t) {
+            return true;
+        }
     }
 
     private static void log(String msg) {
@@ -167,14 +185,26 @@ public class YouTubeHook {
     // LAYER 1 & 3 & 4 : DexKit dynamic scanners
     // ============================================================
 
-    private static synchronized void scanAndHookDexKitLayers(HookManager hookManager, ClassLoader classLoader, Context context) {
-        if (classLoader == null) return;
+    /**
+     * DexKit scan with retry-safe result. Returns true ONLY when DexKit was
+     * actually loaded and the bridge scan executed. Callers use this to decide
+     * whether the loader still needs a retry later (e.g. the first attempt has
+     * no Context yet and cannot extract libdexkit.so from the module APK).
+     */
+    private static synchronized boolean scanAndHookDexKitLayers(HookManager hookManager, ClassLoader classLoader, Context context) {
+        if (classLoader == null) return false;
         if (context != null) appContext = context;
 
         ensureDexKitLoaded(context);
 
-        if (isDexKitLoaded) {
-            try (DexKitBridge bridge = DexKitBridge.create(classLoader, false)) {
+        if (!isDexKitLoaded) {
+            // Cannot scan yet (native lib not loadable without a Context).
+            // Report failure so lifecycle hooks may retry on a later stage.
+            log("DexKit not loaded yet — scan deferred");
+            return false;
+        }
+
+        try (DexKitBridge bridge = DexKitBridge.create(classLoader, false)) {
 
                 // ------------------------------------------------------------
                 // LAYER 1 : capture currentVideoId (observation, safe)
@@ -270,17 +300,19 @@ public class YouTubeHook {
                 }
 
             } catch (Throwable e) {
+                // Bridge failed but DexKit itself loaded — still run the
+                // name-based fallbacks below (original behavior).
                 log("DexKitBridge scan error: " + e.getMessage());
             }
-        }
 
         // Additional safety fallback for common un-obfuscated protobuf/descriptor classes
         fallbackHookKnownBuilders(hookManager, classLoader);
 
         // LAYER 4 : Elements CommandHandlerResolver observer
         hookLayer4ElementsResolver(hookManager, classLoader);
-    }
 
+        return true;
+    }
     private static final Set<String> hookedCommandHandlerClasses = new HashSet<>();
 
     private static boolean hookCommandHandlerClass(HookManager hookManager, Class<?> cls, String fingerprint) {
@@ -344,6 +376,8 @@ public class YouTubeHook {
 
                     if (foundId != null) {
                         currentVideoId = foundId;
+                        lastVideoIdTime = System.currentTimeMillis();
+        lastVideoIdTime = System.currentTimeMillis();
                         log("DOWNLOAD_ACTION (LAYER3 terminal) id=" + currentVideoId + " method=" + m.getName() + " on " + name);
 
                         Context ctx = getValidContext(param.getThisObject());
@@ -454,6 +488,8 @@ public class YouTubeHook {
                                 String id = extractCleanVideoId(raw);
                                 if (id != null) {
                                     currentVideoId = id;
+                                    lastVideoIdTime = System.currentTimeMillis();
+        lastVideoIdTime = System.currentTimeMillis();
                                     log("VIDEO_CHANGED (setter " + m.getName() + ") id=" + currentVideoId + " url=https://youtu.be/" + currentVideoId);
                                 }
                             }
@@ -473,6 +509,8 @@ public class YouTubeHook {
                                 String id = extractCleanVideoId(raw);
                                 if (id != null) {
                                     currentVideoId = id;
+                                    lastVideoIdTime = System.currentTimeMillis();
+        lastVideoIdTime = System.currentTimeMillis();
                                     log("VIDEO_CHANGED (getter " + m.getName() + ") id=" + currentVideoId + " url=https://youtu.be/" + currentVideoId);
                                 }
                             }
@@ -928,6 +966,26 @@ public class YouTubeHook {
             }
         }
 
+        // STALE-GUARD: if this invocation fell back to the process-global
+        // currentVideoId and that capture is older than 90s, it almost
+        // certainly belongs to a PREVIOUS video — fail LOUD instead of
+        // downloading the wrong one (the "sheet shows the old video" bug).
+        boolean fromStaleGlobal = videoIdOrQuery.equals(currentVideoId)
+                && (System.currentTimeMillis() - lastVideoIdTime) > 90 * 1000L;
+        if (fromStaleGlobal) {
+            log("Blocked stale videoId (captured " + (System.currentTimeMillis() - lastVideoIdTime) / 1000 + "s ago)");
+            try {
+                android.widget.Toast.makeText(
+                        context != null ? context : appContext,
+                        "KGPT: افتح الفيديو أولاً ثم اضغط تنزيل (المرجع قديم)",
+                        android.widget.Toast.LENGTH_SHORT).show();
+            } catch (Throwable ignored) {}
+            // Consume: a stale id must not serve again silently
+            currentVideoId = "";
+            lastVideoIdTime = 0L;
+            return;
+        }
+
         long now = System.currentTimeMillis();
         // dedupe: avoid reopening the same video twice within 2s
         if (videoIdOrQuery.equals(lastOpenedVideo) && (now - lastOpenedTime) < 2000) return;
@@ -937,11 +995,11 @@ public class YouTubeHook {
         final Context targetContext = (context != null) ? context : appContext;
         if (targetContext == null) return;
 
-        if ("com.google.android.youtube".equals(currentPackageName) && !tn.eluea.kgpt.features.downloader.core.DownloaderPrefs.isYouTubeHookEnabled(targetContext)) {
+        if ("com.google.android.youtube".equals(currentPackageName) && !readHookToggle("hook_youtube_native_download")) {
             log("Download bypassed: YouTube native hook is disabled in settings");
             return;
         }
-        if ("com.google.android.apps.youtube.music".equals(currentPackageName) && !tn.eluea.kgpt.features.downloader.core.DownloaderPrefs.isYTMusicHookEnabled(targetContext)) {
+        if ("com.google.android.apps.youtube.music".equals(currentPackageName) && !readHookToggle("hook_ytmusic_native_download")) {
             log("Download bypassed: YouTube Music native hook is disabled in settings");
             return;
         }
@@ -1000,6 +1058,31 @@ public class YouTubeHook {
     // Application & Activity Lifecycle Scanner Hooks
     // ============================================================
 
+    /**
+     * ClassLoaders whose DexKit scan SUCCEEDED. Weak keys let a genuinely new
+     * dynamic classloader be scanned when it appears.
+     *
+     * REGRESSION NOTE (fix for the native-download-button regression): a failed
+     * scan must NOT mark the loader as done. The very first attempt runs at
+     * module-load time with context==null, where ensureDexKitLoaded cannot
+     * extract libdexkit.so from the module APK — treating that as "scanned"
+     * permanently skipped the later Application.onCreate attempt that actually
+     * succeeds, killing Layers 1/3/4 (native download button interception).
+     */
+    private static final java.util.Set<ClassLoader> SCANNED_LOADERS =
+            java.util.Collections.synchronizedSet(
+                    java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>()));
+
+    /** Scan at most once per loader until it actually succeeds. */
+    private static void scanOncePerLoader(HookManager hookManager, ClassLoader classLoader, Context context) {
+        if (classLoader == null) return;
+        if (!SCANNED_LOADERS.add(classLoader)) return; // already succeeded for this loader
+        boolean ok = scanAndHookDexKitLayers(hookManager, classLoader, context);
+        if (!ok) {
+            SCANNED_LOADERS.remove(classLoader); // allow retry on next stage
+        }
+    }
+
     private static void hookLifecycleAndScanner(HookManager hookManager, ClassLoader classLoader) {
         try {
             hookManager.hook(
@@ -1009,7 +1092,7 @@ public class YouTubeHook {
                         if (app != null) {
                             ClassLoader appCl = app.getClassLoader();
                             hookLayer2DownloadClick(hookManager, appCl);
-                            scanAndHookDexKitLayers(hookManager, appCl, app.getApplicationContext());
+                            scanOncePerLoader(hookManager, appCl, app.getApplicationContext());
                         }
                     })
             );
@@ -1023,7 +1106,7 @@ public class YouTubeHook {
                         if (activity != null) {
                             ClassLoader actCl = activity.getClassLoader();
                             hookLayer2DownloadClick(hookManager, actCl);
-                            scanAndHookDexKitLayers(hookManager, actCl, activity);
+                            scanOncePerLoader(hookManager, actCl, activity);
                         }
                     })
             );

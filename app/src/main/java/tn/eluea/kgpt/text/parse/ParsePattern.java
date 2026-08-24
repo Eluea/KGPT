@@ -53,11 +53,16 @@ public class ParsePattern {
     }
 
     /**
-     * Check if this pattern is enabled
-     * Default is false (disabled) for all patterns
+     * Check if this pattern is enabled.
+     * Backward-compatible default: data written before v3.0.2 has no _enabled
+     * extra, so a missing flag means ENABLED (except MediaDownloader which stays
+     * opt-in until the downloader core is installed).
      */
     public boolean isEnabled() {
         String enabled = getExtra(EXTRA_ENABLED);
+        if (enabled == null) {
+            return mType != PatternType.MediaDownloader;
+        }
         return "true".equals(enabled);
     }
 
@@ -79,6 +84,17 @@ public class ParsePattern {
 
     public PatternType getType() {
         return mType;
+    }
+
+    /**
+     * Create a fresh default pattern for the given type.
+     * Single source of truth used by seeding, migration and UI reset so the
+     * enabled state is always explicit and consistent.
+     */
+    public static ParsePattern createDefault(PatternType type) {
+        ParsePattern pattern = new ParsePattern(type, type.defaultPattern);
+        pattern.setEnabled(type != PatternType.MediaDownloader);
+        return pattern;
     }
 
     public Pattern getPattern() {
@@ -133,6 +149,12 @@ public class ParsePattern {
                 try {
                     PatternType type = PatternType.valueOf(name);
                     ParsePattern parsePattern = new ParsePattern(type, patternStr, extras);
+                    // Backfill a missing _enabled extra (pre-v3.0.2 data) so the
+                    // next encode() persists an explicit state instead of relying
+                    // on the implicit default.
+                    if (extras == null || !extras.containsKey(EXTRA_ENABLED)) {
+                        parsePattern.setEnabled(parsePattern.isEnabled());
+                    }
                     patterns.add(parsePattern);
                     foundTypes.add(type);
                 } catch (IllegalArgumentException e) {
@@ -147,13 +169,7 @@ public class ParsePattern {
         // Add any missing pattern types (for migration when new types are added)
         for (PatternType type : PatternType.values()) {
             if (!foundTypes.contains(type)) {
-                ParsePattern pattern = new ParsePattern(type, type.defaultPattern);
-                if (type == PatternType.MediaDownloader) {
-                    pattern.setEnabled(false);
-                } else {
-                    pattern.setEnabled(true);
-                }
-                patterns.add(pattern);
+                patterns.add(createDefault(type));
                 android.util.Log.i("ParsePattern", "Added missing pattern type: " + type.name());
             }
         }
@@ -164,13 +180,7 @@ public class ParsePattern {
     private static List<ParsePattern> getDefaultList() {
         List<ParsePattern> patterns = new ArrayList<>();
         for (PatternType type : PatternType.values()) {
-            ParsePattern pattern = new ParsePattern(type, type.defaultPattern);
-            if (type == PatternType.MediaDownloader) {
-                pattern.setEnabled(false); // Disabled by default until core package is downloaded
-            } else {
-                pattern.setEnabled(true); // Enable by default
-            }
-            patterns.add(pattern);
+            patterns.add(createDefault(type));
         }
         return patterns;
     }

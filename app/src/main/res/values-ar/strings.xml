@@ -1,51 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-
-    <!-- Navigation -->
-    <string name="nav_home">الرئيسية</string>
-    <string name="nav_models">النماذج</string>
-    <string name="nav_api_keys">مفاتيح API</string>
-    <string name="nav_settings">الإعدادات</string>
-
-    <!-- Home Screen -->
     <string name="module_active">الوحدة نشطة</string>
     <string name="module_inactive">الوحدة غير نشطة</string>
     <string name="module_active_desc">KGPT يعمل</string>
     <string name="module_inactive_desc">يرجى التفعيل من مدير LSPosed</string>
-    <string name="module_restart_required_desc">أعد تشغيل الجهاز لتفعيل الوحدة</string>
     <string name="quick_actions">إجراءات سريعة</string>
-    <string name="current_model">النموذج الحالي</string>
     <string name="ai_invocation">طرق الاستدعاء</string>
-    <string name="ai_invocation_desc">إعداد أوامر وأنماط التفعيل</string>
     <string name="how_to_use">دليل الاستخدام</string>
     <string name="how_to_use_desc">تعلم كيف تستخدم KGPT</string>
-
-    <!-- Models Screen -->
-    <string name="ai_models">نماذج الذكاء الاصطناعي</string>
     <string name="select_model">اختر النموذج المفضل</string>
     <string name="model_config">إعدادات النموذج</string>
     <string name="sub_model">النموذج الفرعي</string>
     <string name="base_url">رابط القاعدة (Base URL)</string>
-    <string name="advanced_settings">إعدادات متقدمة</string>
     <string name="max_tokens">الحد الأقصى للرموز (Tokens)</string>
     <string name="temperature">درجة الإبداع (Temperature)</string>
     <string name="save_config">حفظ الإعدادات</string>
-
-    <!-- API Keys Screen -->
-    <string name="api_keys">مفاتيح API</string>
-    <string name="manage_api_keys">إدارة مفاتيح API للمزودين</string>
     <string name="enter_api_key">أدخل مفتاح API</string>
     <string name="save">حفظ</string>
-    <string name="api_key_info">يتم تخزين المفاتيح بشكل آمن ومشفر على جهازك فقط.</string>
-
-    <!-- Settings Screen -->
-    <string name="settings">الإعدادات</string>
-    <string name="appearance">المظهر</string>
     <string name="dark_mode">الوضع الداكن</string>
     <string name="follow_system">نفس إعدادات النظام</string>
-    <string name="amoled_dark">أسود داكن (AMOLED)</string>
-    <string name="amoled_desc">لون أسود حقيقي لتوفير الطاقة</string>
     <string name="blur_control">الشفافية والضبابية</string>
     <string name="blur_control_desc">التحكم في تأثير الضبابية للخلفية</string>
     <string name="blur_enabled">تفعيل الضبابية</string>
@@ -56,45 +30,19 @@
     <string name="general">عام</string>
     <string name="enable_logging">تفعيل السجلات</string>
     <string name="logging_desc">عطل هذا الخيار لتحسين الأداء</string>
-    <string name="external_internet">خدمة إنترنت خارجية</string>
-    <string name="external_internet_desc">مستحسن لضمان استقرار الاتصال</string>
-    <string name="backup_restore">النسخ الاحتياطي</string>
-    <string name="export_backup">تصدير نسخة احتياطية</string>
-    <string name="export_backup_desc">حفظ إعداداتك في ملف</string>
-    <string name="import_backup">استعادة نسخة احتياطية</string>
-    <string name="import_backup_desc">استرجاع الإعدادات من ملف</string>
-    <string name="about">حول التطبيق</string>
-
-    <!-- Messages -->
-    <string name="config_saved">تم حفظ الإعدادات</string>
-    <string name="api_key_saved">تم حفظ مفتاح API</string>
-    <string name="api_key_removed">تم حذف مفتاح API</string>
     <string name="backup_exported">تم تصدير النسخة بنجاح</string>
-    <string name="backup_imported">تمت الاستعادة بنجاح</string>
     <string name="export_failed">فشل التصدير</string>
     <string name="import_failed">فشل الاستيراد</string>
-
-    <!-- Themed Icon -->
-    <string name="themed_icon_title">أيقونة النظام (Themed Icon)</string>
-    <string name="themed_icon_desc">تفعيل الأيقونة المتكيفة مع ألوان النظام (من إعدادات المشغل)</string>
-
-    <!-- About Home -->
     <string name="about_home_title">حول الشاشة الرئيسية</string>
     <string name="about_home_description">أهلاً بك في KGPT! هذه لوحة التحكم الخاصة بك.\n\n\u2022 حالة الإضافة: تبين ما إذا كانت وحدة Xposed تعمل.\n\n\u2022 النموذج الحالي: يعرض الذكاء الاصطناعي النشط.\n\n\u2022 طرق الاستدعاء: لإعداد الأوامر المختصرة.\n\n\u2022 دليل الاستخدام: نصائح لتحقيق أقصى استفادة.</string>
-
-    <!-- Commands Adapter -->
     <string name="built_in_indicator">  \u2022  مدمج</string>
     <string name="ask_command_description">يحافظ على نصك الأصلي ويضيف رد الذكاء الاصطناعي بعده</string>
     <string name="ask_command_example">مثال: مرحباً /ask كيف حالك؟ \u2192 مرحباً، أنا بخير!</string>
-
-    <!-- AI Response Manager -->
     <string name="generating_content">&lt;جاري التوليد...&gt;</string>
     <string name="choose_model_message">يرجى إعداد نموذج اللغة أولاً</string>
     <string name="missing_api_key_message">مفتاح API مفقود لـ %1$s</string>
     <string name="unknown_error">حدث خطأ غير معروف</string>
     <string name="error_format">[خطأ: %1$s]</string>
-
-    <!-- Text Actions -->
     <string name="action_rephrase">إعادة صياغة</string>
     <string name="action_fix_errors">تصحيح الأخطاء</string>
     <string name="action_improve">تحسين الأسلوب</string>
@@ -104,10 +52,6 @@
     <string name="action_casual">ودي</string>
     <string name="action_translate">ترجمة</string>
     <string name="action_download_media">تنزيل</string>
-    <string name="title_select_media_link">اختر الرابط المطلوب تنزيله</string>
-    <string name="desc_select_media_link">تم العثور على %1$d روابط في النص المحدد</string>
-
-    <!-- UI Messages -->
     <string name="msg_copied">تم النسخ</string>
     <string name="msg_ai_error">خطأ AI: %1$s</string>
     <string name="msg_no_text_selected">لم يتم تحديد نص</string>
@@ -131,8 +75,6 @@
     <string name="dialog_subtitle_edit_custom_action">عدل تفاصيل الإجراء المخصص</string>
     <string name="dialog_title_edit_prompt">تعديل التوجيه</string>
     <string name="dialog_subtitle_edit_prompt">تخصيص تعليمات الذكاء الاصطناعي</string>
-
-    <!-- System Prompts -->
     <string name="prompt_rephrase">أنت مساعد لغوي متخصص. أعد صياغة النص التالي بأسلوب مختلف مع الحفاظ على المعنى الدقيق. حافظ على لغة النص الأصلية. أخرج النص المعاد صياغته فقط.</string>
     <string name="prompt_fix_errors">أنت مدقق لغوي. صحح الأخطاء الإملائية والنحوية في النص التالي. حافظ على المعنى واللغة الأصلية. أخرج النص المصحح فقط.</string>
     <string name="prompt_improve">أنت محرر نصوص محترف. حسن أسلوب، وضوح، وتدفق النص التالي مع الحفاظ على المعنى. حافظ على لغة النص الأصلية. أخرج النص المحسن فقط.</string>
@@ -143,8 +85,6 @@
     <string name="prompt_translate_auto">أنت مترجم محترف. اكتشف لغة النص وترجمه إلى اللغة المقابلة (إذا كان عربياً ترجمه للإنجليزية، وإذا كان إنجليزياً أو لغة أخرى ترجمه للعربية). أخرج الترجمة فقط.</string>
     <string name="prompt_translate_target">أنت مترجم محترف. ترجم النص التالي إلى %1$s. أخرج الترجمة فقط.</string>
     <string name="prompt_default">عالج النص التالي:</string>
-
-    <!-- Update Dialog -->
     <string name="update_available">تحديث جديد</string>
     <string name="update_available_desc">نسخة جديدة من KGPT متاحة للتنزيل.</string>
     <string name="update_available_title">يوجد تحديث!</string>
@@ -161,11 +101,8 @@
     <string name="check_failed_desc">عذراً، تعذر التحقق من التحديثات.\n\n%1$s\n\nتأكد من اتصالك بالإنترنت وحاول مجدداً.</string>
     <string name="no_internet">لا يوجد اتصال</string>
     <string name="no_internet_desc">لا يمكن التحقق من التحديثات بدون إنترنت.</string>
-
-    <!-- Update Actions -->
     <string name="btn_download">تنزيل</string>
     <string name="btn_later">لاحقاً</string>
-    <string name="btn_install">تثبيت</string>
     <string name="btn_try_again">إعادة المحاولة</string>
     <string name="btn_close">إغلاق</string>
     <string name="btn_ok">موافق</string>
@@ -176,8 +113,6 @@
     <string name="btn_proceed">استمرار</string>
     <string name="btn_restart_now">إعادة التشغيل</string>
     <string name="btn_save_color">حفظ اللون</string>
-
-    <!-- How to Use -->
     <string name="how_to_use_title">كيفية استخدام KGPT</string>
     <string name="quick_guide">دليل سريع</string>
     <string name="guide_step_1">فعل الإضافة من مدير LSPosed</string>
@@ -187,8 +122,6 @@
     <string name="guide_step_5">سيظهر رد الذكاء الاصطناعي مباشرة</string>
     <string name="example">مثال</string>
     <string name="guide_example_text">ما هي عاصمة مصر؟$</string>
-
-    <!-- Backup & Restore Dialogs -->
     <string name="backup_settings_title">إعدادات النسخ الاحتياطي</string>
     <string name="restore_settings_title">استعادة الإعدادات</string>
     <string name="backup_settings_desc">حدد ما تريد نسخه</string>
@@ -196,8 +129,6 @@
     <string name="action_backup">نسخ احتياطي</string>
     <string name="action_restore">استعادة</string>
     <string name="select_all">تحديد الكل</string>
-
-    <!-- Backup Options -->
     <string name="option_ai_commands">أوامر AI</string>
     <string name="option_ai_commands_desc">الأوامر والتوجيهات المخصصة</string>
     <string name="option_trigger_patterns">أنماط التفعيل</string>
@@ -216,35 +147,23 @@
     <string name="option_text_actions_desc">قائمة الإجراءات العائمة</string>
     <string name="option_sensitive_data">البيانات الحساسة (API Keys)</string>
     <string name="option_sensitive_data_desc">تحذير: يشمل مفاتيح API الخاصة بك. لا تشارك الملف!</string>
-
-    <!-- Backup Warning Dialog -->
     <string name="backup_warning_title">تحذير أمني</string>
     <string name="backup_warning_keys">تحتوي هذه النسخة على مفاتيح API الخاصة بك.</string>
     <string name="backup_warning_risk">مشاركة هذا الملف قد تعرض رصيدك للاستخدام من قبل الآخرين.\nالمطور غير مسؤول عن أي سوء استخدام.</string>
     <string name="backup_warning_confirm">هل أنت متأكد من المتابعة؟</string>
     <string name="backup_warning_hint">نعم</string>
-
-    <!-- Info Dialog -->
     <string name="info_title">حول الصفحة</string>
     <string name="info_chip">معلومات</string>
     <string name="info_default_desc">تفاصيل حول هذه الوظيفة.</string>
-
-    <!-- Restart Dialog -->
     <string name="restart_required_title">مطلوب إعادة التشغيل</string>
     <string name="restart_required_desc">يجب إعادة تشغيل التطبيق لتطبيق التغييرات.</string>
-
-    <!-- Delete Confirmation -->
     <string name="delete_title">حذف العنصر</string>
     <string name="delete_message">هل أنت متأكد من الحذف؟</string>
     <string name="item_name_placeholder">الاسم</string>
     <string name="btn_cancel">إلغاء</string>
-
-    <!-- Web Search Dialog -->
     <string name="web_search_title">بحث الويب</string>
     <string name="select_search_engine_title">محرك البحث</string>
     <string name="select_search_engine_desc">اختر محرك البحث الافتراضي</string>
-
-    <!-- Log Export Success -->
     <string name="logs_exported_title">تم تصدير السجلات</string>
     <string name="root_access_granted">صلاحيات الروت ممنوحة</string>
     <string name="logs_exported_desc">تم حفظ السجلات التالية:</string>
@@ -256,19 +175,13 @@
     <string name="log_crash">• تقارير الأعطال</string>
     <string name="root_explanation">تم استخدام الروت لجمع سجلات النظام العميقة للمساعدة في حل المشكلة.</string>
     <string name="btn_done">تم</string>
-
-    <!-- Delete Custom Action / Trigger -->
     <string name="delete_action_title">حذف الإجراء</string>
     <string name="delete_action_desc">هل تريد حذف هذا الإجراء المخصص نهائياً؟</string>
     <string name="delete_trigger_title">حذف المشغّل</string>
     <string name="delete_trigger_desc">هل تريد إزالة مشغّل هذا التطبيق؟</string>
     <string name="action_delete">حذف</string>
-
-    <!-- Color Picker -->
     <string name="title_choose_color">اختر اللون</string>
     <string name="label_color_code">كود اللون (HEX)</string>
-
-    <!-- Quick Guide -->
     <string name="quick_guide_title">الدليل السريع</string>
     <string name="quick_guide_subtitle">النص + رمز التفعيل</string>
     <string name="guide_ai_trigger_title">تفعيل AI</string>
@@ -279,129 +192,62 @@
     <string name="guide_commands_example">مرحباً /translate$</string>
     <string name="guide_formatting_title">الرموز</string>
     <string name="guide_formatting_example">نص$ نص@ نص#</string>
-
-    <!-- Changelog -->
     <string name="title_changelog">سجل التغييرات</string>
-
-    <!-- App Selection -->
     <string name="title_select_app">اختر تطبيقاً</string>
     <string name="chip_all">الكل</string>
     <string name="chip_user">المستخدم</string>
     <string name="chip_system">النظام</string>
     <string name="hint_search_apps">بحث...</string>
     <string name="msg_loading_apps">جاري التحميل...</string>
-
-    <!-- API Key Dialog -->
     <string name="title_add_api_key">إضافة مفتاح</string>
     <string name="desc_add_api_key">اختر الخدمة لإضافة مفتاح جديد.</string>
-
-    <!-- Action Picker Dialog -->
-    <string name="title_add_actions">إضافة إجراءات</string>
-    <string name="desc_add_actions">اختر الإجراءات للإضافة</string>
-
-    <!-- Logging Warning Dialog -->
     <string name="title_logging_disabled">السجلات معطلة</string>
     <string name="desc_logging_disabled">يجب تفعيل خيار "السجلات" في الإعدادات أولاً لتتمكن من التصدير.</string>
     <string name="btn_enable_logging">تفعيل السجلات</string>
-
-    <!-- Update Interval Dialog -->
     <string name="title_check_frequency">تكرار التحقق</string>
     <string name="desc_check_frequency">كم مرة نتحقق من التحديثات؟</string>
-
-    <!-- Dialog Titles & Labels -->
     <string name="title_choose_model">اختيار النموذج</string>
-    <string name="label_select_provider_hint">حدد المزود لهذا المفتاح</string>
-    <string name="hint_select_provider">اختر المزود</string>
-
-    <!-- Placeholders -->
     <string name="placeholder_search_engine">محرك البحث</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">الاسم</string>
     <string name="placeholder_changelog_desc">التفاصيل</string>
     <string name="tag_add">جديد</string>
-
-    <!-- Configure Model Strings -->
     <string name="configure_model_title">تهيئة النموذج</string>
-    <string name="advanced_settings_title">متقدم</string>
-
-    <!-- Edit Command Dialog -->
     <string name="edit_command_title">تعديل الأمر</string>
     <string name="hint_command_prefix">البادئة (مثلاً /ask)</string>
     <string name="hint_prompt">التوجيه (Prompt)</string>
-
-    <!-- Edit Trigger Symbol Dialog -->
     <string name="title_edit_trigger_symbol">تعديل الرمز</string>
     <string name="desc_edit_trigger_symbol">الرمز الذي يفعل هذا الإجراء</string>
     <string name="label_enable_trigger">تفعيل المشغّل</string>
     <string name="desc_enable_trigger">تشغيل/إيقاف هذا الرمز</string>
     <string name="hint_trigger_symbol">الرمز</string>
     <string name="label_preview">معاينة</string>
-
-    <!-- App Trigger Dialog -->
     <string name="hint_trigger_word">كلمة التفعيل</string>
     <string name="helper_trigger_word">الكلمة التي تفتح التطبيق</string>
     <string name="example_trigger_word">مثال: "كروم" لفتح المتصفح</string>
-
-    <!-- Dialog List -->
     <string name="msg_no_items">لا يوجد عناصر</string>
-
-    <!-- Dialog Add Trigger -->
-    <string name="title_add_trigger_symbol">إضافة رمز</string>
-    <string name="desc_add_trigger_symbol">أدخل 1-3 أحرف للتفعيل</string>
-    <string name="hint_trigger_example">مثال: @@ أو ##</string>
-    
-    <!-- API Key Items -->
     <string name="status_free">مجاني</string>
     <string name="btn_save_key">حفظ</string>
     <string name="btn_get_key">الحصول على مفتاح</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">اسم الإجراء</string>
     <string name="placeholder_description">الوصف</string>
     <string name="placeholder_action">إجراء</string>
-
-    <!-- Home Fragment -->
     <string name="version_placeholder">v4.0.0</string>
     <string name="tag_stable">مستقر</string>
     <string name="commands_patterns_desc">الأوامر والأنماط</string>
     <string name="section_information">معلومات</string>
-
-    <!-- Fragment Models -->
     <string name="sub_model_desc">اختر من القائمة أو أدخل مخصصاً</string>
     <string name="hint_custom_model">اسم النموذج المخصص</string>
-    
-    <!-- Languages -->
-    <string-array name="languages_list">
-        <item>العربية</item>
-        <item>English</item>
-        <item>Français</item>
-        <item>Español</item>
-        <item>Deutsch</item>
-        <item>Italiano</item>
-        <item>Русский</item>
-        <item>Türkçe</item>
-        <item>简体中文</item>
-        <item>日本語</item>
-        <item>한국어</item>
-        <item>हिन्दी</item>
-        <item>Português</item>
-        <item>Bahasa Indonesia</item>
-    </string-array>
-
-    <!-- New Strings extracted from layouts -->
     <string name="title_app_triggers">مشغلات التطبيقات</string>
-    <string name="lab_badge">مختبر</string>
-    <string name="app_triggers_intro">افتح تطبيقاتك بسرعة بكتابة اسمها</string>
     <string name="btn_enable_app_triggers">تفعيل مشغلات التطبيقات</string>
     <string name="desc_enable_app_triggers">اكتب الكلمة للفتح المباشر</string>
     <string name="msg_no_triggers">لم تضف أي مشغلات بعد.\nاضغط الزر أعلاه للبدء.</string>
     <string name="guide_triggers_usage">• اكتب الكلمة ← يفتح التطبيق\n• اضغط البطاقة للتعديل</string>
-    
     <string name="material_you_blur">تمويه Material You</string>
     <string name="use_dynamic_app_colors">استخدام ألوان التطبيقات الديناميكية</string>
     <string name="reset_settings">إعادة تعيين الإعدادات</string>
     <string name="performance_tip">نصيحة للأداء</string>
     <string name="performance_tip_desc">عطل هذا الخيار على الأجهزة القديمة.</string>
-    
     <string name="kgpt_lab">مختبر KGPT</string>
     <string name="experimental_badge">تجريبي</string>
     <string name="lab_warning">ميزات قيد التطوير. استخدمها بحذر.</string>
@@ -410,7 +256,6 @@
     <string name="desc_text_actions">إجراءات سريعة على أي نص</string>
     <string name="text_actions_intro">إجراءات ذكية على النصوص. حدد النص واختر الإجراء.</string>
     <string name="coming_soon">المزيد قريباً...</string>
-    
     <string name="title_material_you">سمة Material You</string>
     <string name="desc_material_you">تخصيص الألوان الديناميكية</string>
     <string name="use_wallpaper_colors">ألوان الخلفية</string>
@@ -418,7 +263,6 @@
     <string name="seed_color">لون أساسي</string>
     <string name="manual_color_select">اختيار يدوي</string>
     <string name="enable_text_actions">تفعيل إجراءات النص</string>
-    
     <string name="title_show_labels">إظهار الأسماء</string>
     <string name="desc_show_labels">عرض أسماء الإجراءات تحت الأيقونات</string>
     <string name="title_available_actions">الإجراءات المتاحة</string>
@@ -427,8 +271,6 @@
     <string name="msg_enable_text_actions">فعل هذه الميزة لتخصيص القائمة</string>
     <string name="desc_enable_text_actions_sub">قائمة عائمة عند تحديد نص</string>
     <string name="title_ai_text_actions">إجراءات AI للنصوص</string>
-    
-    <!-- Update & Status Strings -->
     <string name="new_update_badge">تحديث</string>
     <string name="update_changelog_placeholder">• إصلاحات عامة...</string>
     <string name="title_downloading_update">جاري التنزيل</string>
@@ -451,29 +293,21 @@
     <string name="title_download_path">مسار التنزيل</string>
     <string name="path_default_downloads">مجلد التنزيلات</string>
     <string name="desc_app_tagline">الذكاء الاصطناعي في لوحة مفاتيحك</string>
-
-    <!-- Command & Pattern Dialogs -->
     <string name="title_add_command">إضافة أمر</string>
     <string name="desc_add_command">أمر جديد لتفعيل AI</string>
     <string name="hint_command_name">الاسم</string>
     <string name="hint_system_message">رسالة النظام</string>
     <string name="help_command_usage">الاستخدام: نص للأمر + الرمز</string>
     <string name="title_edit_pattern">تعديل النمط</string>
-    <string name="desc_edit_pattern">تخصيص نمط Regex</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">الافتراضي: يلتقط كل شيء</string>
     <string name="title_other_settings">أخرى</string>
     <string name="enable_trigger">تفعيل</string>
     <string name="hint_description">وصف</string>
     <string name="reset_default">استعادة الأصلي</string>
     <string name="hint_example">مثال</string>
     <string name="no_commands">لا يوجد أوامر</string>
-
-    <!-- Settings Fragment Extras -->
     <string name="winter_mode">وضع الشتاء</string>
     <string name="winter_mode_desc">تأثير تساقط الثلوج</string>
     <string name="title_settings_backup">نسخ البيانات</string>
-    <string name="desc_settings_backup">نسخ الإعدادات</string>
     <string name="title_settings_restore">استعادة البيانات</string>
     <string name="desc_settings_restore">استعادة الإعدادات</string>
     <string name="title_backup_and_restore">النسخ الاحتياطي والاستعادة</string>
@@ -486,37 +320,22 @@
     <string name="local_export_desc">حفظ ملف نسخة احتياطية .kgpt أو .json على ذاكرة هاتفك</string>
     <string name="local_import_title">استيراد من ملف محلي</string>
     <string name="local_import_desc">استعادة الإعدادات من ملف .kgpt أو .json محلي</string>
-    <string name="btn_export_local">تصدير إلى ملف محلي</string>
-    <string name="desc_export_local">حفظ ملف نسخة احتياطية .kgpt على ذاكرة جهازك</string>
-    <string name="btn_import_local">استيراد من ملف محلي</string>
-    <string name="desc_import_local">استعادة الإعدادات من ملف .kgpt أو .json محلي</string>
     <string name="support_group">مجموعة الدعم</string>
     <string name="title_export_logs">تصدير السجلات</string>
     <string name="desc_export_logs">للمساعدة في الحل</string>
     <string name="title_updates">التحديثات</string>
     <string name="desc_updates_config">إدارة التحديثات</string>
-    
-    <!-- Web Search -->
     <string name="open_in_browser">فتح في المتصفح</string>
     <string name="hint_enter_url">الرابط</string>
-    <string name="duckduckgo">DuckDuckGo</string>
-
-    <!-- Easter Egg -->
     <string name="cat_caught_title">مياو!</string>
     <string name="cat_caught_msg">لقد اكتشفت القطة!\nهل يمكنك دعمنا بنجمة على GitHub؟</string>
     <string name="cat_action_star">نعم، سأدعمكم</string>
     <string name="cat_action_later">لاحقاً</string>
-
-    <!-- Invocation Patterns -->
     <string name="quick_example">مثال</string>
     <string name="example_pattern_usage">اكتب السؤال ثم الرمز</string>
     <string name="active_triggers">المشغلات النشطة</string>
-    
-    <!-- Misc -->
     <string name="action_placeholder">إجراء</string>
     <string name="version_v4_1_0">v4.1.0</string>
-
-    <!-- API Keys Fragment -->
     <string name="api_keys_description">إدارة المفاتيح</string>
     <string name="gemini_api_title">Gemini API</string>
     <string name="free_api_badge">مجاني</string>
@@ -529,8 +348,6 @@
     <string name="add_key_desc">لمزودين آخرين</string>
     <string name="privacy_notice_title">خصوصية</string>
     <string name="privacy_notice_desc">المفاتيح تبقى على جهازك</string>
-
-    <!-- Settings Fragment Misc -->
     <string name="settings_appearance">المظهر</string>
     <string name="material_you_title">أسود داكن</string>
     <string name="material_you_desc">لشاشات OLED</string>
@@ -553,39 +370,14 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">اللغة</string>
-    <string name="language_desc">لغة التطبيق</string>
     <string name="select_language">اختر اللغة</string>
-    
-    <!-- About Settings Info -->
     <string name="about_settings_title">حول الإعدادات</string>
     <string name="about_settings_desc">خصص تجربتك مع KGPT.\n\n• الوضع الداكن: تفعيل السمة الداكنة للراحة ليلاً.\n\n• أسود AMOLED: لون أسود نقي لشاشات OLED لتوفير البطارية.\n\n• تفعيل السجلات: لتشخيص المشاكل. أوقفها لتحسين الأداء.\n\n• الاتصال الخارجي: مُوصى به لإكمال المحادثات مع الذكاء الاصطناعي.</string>
-    
-    <!-- Logging Warning Bottom Sheet -->
-    <string name="logging_warning_title">تفعيل السجلات؟</string>
-    <string name="logging_warning_desc">السجلات معطلة حالياً. يجب تفعيلها لتصدير السجلات.</string>
-    <string name="btn_enable_logging_action">تفعيل السجلات</string>
     <string name="logging_enabled_toast">تم تفعيل السجلات. يمكنك الآن التصدير.</string>
-    
-    <!-- Export Success Bottom Sheet -->
-    <string name="export_success_title">نجاح التصدير</string>
-    <string name="export_success_desc">تم حفظ السجلات في:</string>
-    <string name="root_status_label">حالة الروت</string>
-    <string name="boot_logs_label">سجلات الإقلاع</string>
-    <string name="system_logs_label">سجلات النظام</string>
-    <string name="crash_logs_label">سجلات الأعطال</string>
-    <string name="app_logs_label">سجلات التطبيق</string>
-    <string name="available">متاح</string>
-    <string name="unavailable">غير متاح</string>
-    
-    <!-- Tab Names -->
     <string name="tab_commands">الأوامر</string>
     <string name="tab_triggers">المشغلات</string>
-    
-    <!-- Dock Actions -->
     <string name="dock_add_command">إضافة أمر</string>
     <string name="dock_how_to_use">دليل الاستخدام</string>
-    
-    <!-- Pattern Types (Triggers) -->
     <string name="pattern_settings">الإعدادات</string>
     <string name="pattern_ai_trigger">مشغل AI</string>
     <string name="pattern_custom_command">أمر مخصص</string>
@@ -595,8 +387,6 @@
     <string name="pattern_underline">تحته خط</string>
     <string name="pattern_web_search">بحث الويب</string>
     <string name="pattern_downloader">تنزيل الوسائط</string>
-    
-    <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">مشغل الإعدادات</string>
     <string name="pattern_desc_ai_trigger">اكتب النص ثم أضف $ في النهاية</string>
     <string name="pattern_desc_custom_command" formatted="false">اكتب النص ثم أضف %الأمر%</string>
@@ -606,11 +396,7 @@
     <string name="pattern_desc_underline">اكتب النص ثم أضف _</string>
     <string name="pattern_desc_web_search">اكتب النص ثم أضف ?? للبحث</string>
     <string name="pattern_desc_downloader">اكتب رابط الوسائط ثم أضف %1$s للتنزيل</string>
-    
-    <!-- Pattern Status -->
     <string name="status_disabled">معطل</string>
-    
-    <!-- Update Interval Options -->
     <string name="interval_every_hour">كل ساعة</string>
     <string name="interval_every_6_hours">كل 6 ساعات</string>
     <string name="interval_every_12_hours">كل 12 ساعة</string>
@@ -619,79 +405,23 @@
     <string name="interval_every_week">كل أسبوع</string>
     <string name="interval_disabled">معطل</string>
     <string name="interval_every_n_hours">كل %d ساعات</string>
-    
-    <!-- Download Path Options -->
     <string name="path_default_downloads_option">الافتراضي (التنزيلات)</string>
     <string name="path_choose_custom">اختيار مجلد مخصص</string>
     <string name="path_internal_storage">التخزين الداخلي</string>
-    
-    <!-- Update Check -->
     <string name="check_for_updates">التحقق من التحديثات</string>
     <string name="checking_updates">جاري التحقق...</string>
-    
-    <!-- AI Settings Tabs -->
     <string name="tab_model">النموذج</string>
     <string name="tab_api_keys">مفاتيح API</string>
-    
-    <!-- Dock Actions -->
     <string name="dock_add_app_trigger">إضافة مشغل تطبيق</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">إضافة</string>
     <string name="tag_improved">تحسين</string>
     <string name="tag_fixed">إصلاح</string>
-
-    <string name="changelog_1_0_0_item1">تم إضافة وضع Google AI Mode من ضمن خيارات البحث على الويب</string>
-    <string name="changelog_1_0_0_item2">تم إضافة إمكانية اختيار لغة معينة مع دعم جميع اللغات المتاحة</string>
-    <string name="changelog_1_0_0_item3">تم تحسين بعض الشاشات لتناسب سهولة استخدام اليد الواحدة والأصابع الكبيرة</string>
-    <string name="changelog_1_0_0_item4">تم تصحيح الكثير من الأخطاء المتعلقة بالاستقرار وتحسين الأداء</string>
     <string name="changelog_4_1_4_item1">إصلاح خلل التحقق وتنزيل نواة التنزيل (Core Engine) من داخل التطبيق</string>
     <string name="changelog_4_1_4_item2">تحديث أنيميشن التحميل داخل بوتم شيت تثبيت النواة بحركة لوتي انسيابية</string>
-    <string name="changelog_4_1_3_item1">إضافة خيار النيتيف اب دونلود مع ميزة الهوك السريع لتسهيل التنزيل المباشر</string>
-    <string name="changelog_4_1_3_item2">إضافة نمط التنزيل والفلترة من خلال عمل مجلد لكل تطبيق تقوم بالتنزيل من خلاله</string>
-    <string name="changelog_4_1_3_item3">تحسين وتطوير تصميم قسم إعدادات ميزة الدونلود مانجير</string>
-    <string name="changelog_4_1_2_item1">إضافة إمكانية إضافة مزودين مخصصين والارتباط بنماذج الذكاء الاصطناعي المحلية والسحابية (مثل Ollama و LM Studio و vLLM و DeepInfra و Together AI)</string>
-    <string name="changelog_4_1_2_item2">إضافة دعم مزود Grok (xAI) مع أحدث الموديلات: grok-2 و grok-2-mini و grok-beta و grok-vision-beta</string>
-    <string name="changelog_4_1_2_item3">إضافة دعم مزود DeepSeek مع الموديلات الذكية والتفكيرية: deepseek-chat و deepseek-reasoner و deepseek-v4-pro و deepseek-v4-flash و deepseek-coder و DeepSeek-V3 و DeepSeek-R1</string>
-    <string name="changelog_4_1_2_item4">إضافة دعم مزود Kimi (Moonshot AI) مع موديلات كيمي المتطورة وسلسلة Moonshot: kimi-k3 و kimi-k2.6 و kimi-k2.7-code و kimi-k2.5 و moonshot-v1</string>
-    <string name="changelog_4_1_2_item5">تحسين وتطوير شاشة إضافة مفاتيح API والبوتم شيت العائم مع انميشن سلس وشعارات المتجهات لجميع المزودين</string>
-    <string name="changelog_4_1_1_item1">إصلاح فشل تنزيل فيديوهات يوتيوب بخطأ HTTP 403 Forbidden وقيود بث SABR</string>
-    <string name="changelog_4_1_1_item2">إضافة آلية ذكية لتحديث نواة yt-dlp وإعادة المحاولة التلقائية في الخلفية</string>
-    <string name="changelog_4_1_1_item3">توجيه استخراج الوسائط عبر عميل الأندرويد لضمان سرعة واستقرار التنزيل</string>
-    <string name="changelog_4_0_8_item1">الانتقال من LSPosed API 82 إلى API 102 الحديث</string>
-    <string name="changelog_4_0_8_item2">إصلاحات كبيرة في الأداء وخفض استهلاك البطارية والطاقة</string>
-    <string name="changelog_4_0_8_item3">إصلاح العديد من سيناريوهات التجمد والتعليق</string>
-    <string name="changelog_4_0_8_item4">إضافة تريجر جديد في الكيبورد (تريجر الدونلودر)</string>
-    <string name="changelog_4_0_8_item5">إضافة ميزة تحديد النص الجديدة (تنزيل الوسائط)</string>
-    <string name="changelog_4_0_8_item6">إضافة ميزة جديدة في المعمل KGPT Downloader</string>
-    <string name="changelog_4_0_8_item7">إضافة ميزة البحث المباشر في يوتيوب</string>
-    <string name="changelog_4_0_8_item8">تنزيل الفيديو والصوتيات وتخصيص الجودة والصيغ واقتطاع المقاطع</string>
-    <string name="changelog_4_0_8_item9">إمكانية نسخ أمر التنزيل الشامل (Universal Command) لتنزيله على أي جهاز</string>
-    <string name="changelog_note_4_0_8">برجاء التحلي بالصبر حيث تم إعلام المطور بالمزيد من المشكلات ولكن سيتم حلها على دفعات من التحديثات حيث أنه شخص واحد فقط يقف وراء تطوير كل هذا. شكراً لتفهمكم.</string>
-    
-    <!-- Language Selection -->
     <string name="hint_search_language">بحث عن لغة...</string>
-
     <string name="new_command_title">أمر جديد</string>
     <string name="error_prefix_empty">لا يمكن أن تكون البادئة فارغة</string>
     <string name="error_message_empty">لا يمكن أن تكون الرسالة فارغة</string>
     <string name="error_duplicate_command">يوجد أمر آخر بنفس الاسم</string>
-    <string name="format_edit_pattern_title">تعديل %1$s</string>
-    <string name="error_symbol_empty">لا يمكن أن يكون الرمز فارغاً</string>
-    <string name="error_symbol_not_allowed">هذا الرمز غير مسموح به</string>
-    <string name="error_pattern_creation_failed">تعذر إنشاء نمط لهذا الرمز</string>
-    <string name="error_pattern_invalid">تم إنشاء نمط غير صالح</string>
-    <string name="error_pattern_duplicate">هذا الرمز مستخدم بالفعل في نمط آخر</string>
-    <string name="msg_trigger_enabled">تم تفعيل المشغل "%1$s"</string>
-    <string name="msg_trigger_disabled">تم تعطيل المشغل "%1$s"</string>
-    <string name="example_preview_settings">"%1$s" ← يفتح الإعدادات</string>
-    <string name="example_preview_ai">"مرحبا%1$s" ← يرد الذكاء الاصطناعي</string>
-    <string name="example_preview_custom">"مرحبا%1$sترجم%1$s" ← يترجم</string>
-    <string name="example_preview_italic">"نص%1$s" ← نص مائل</string>
-    <string name="example_preview_bold">"نص%1$s" ← نص عريض</string>
-    <string name="example_preview_crossout">"نص%1$s" ← يتوسطه خط</string>
-    <string name="example_preview_underline">"نص%1$s" ← تحته خط</string>
-    <string name="example_preview_default">اكتب النص، ثم أضف "%1$s" في النهاية</string>
     <string name="msg_theme_updated">تم تحديث السمة</string>
     <string name="msg_settings_restored">تم استعادة الإعدادات</string>
     <string name="msg_requesting_root">جاري طلب صلاحيات الروت...</string>
@@ -713,7 +443,6 @@
     <string name="msg_pattern_create_failed">تعذر إنشاء النمط</string>
     <string name="msg_pattern_invalid">نمط غير صالح</string>
     <string name="msg_trigger_status_format">المشغل "%1$s" %2$s</string>
-
     <string name="msg_command_name_required">اسم الأمر مطلوب</string>
     <string name="msg_command_exists">الأمر موجود بالفعل</string>
     <string name="msg_command_builtin_conflict">لا يمكن استخدام اسم أمر مدمج</string>
@@ -730,14 +459,10 @@
     <string name="msg_pattern_create_symbol_failed">تعذر إنشاء نمط لهذا الرمز</string>
     <string name="msg_pattern_generated_invalid">تم إنشاء نمط غير صالح</string>
     <string name="msg_symbol_already_used">هذا الرمز مستخدم بالفعل بواسطة نمط آخر</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">اختيار وإعداد النموذج</string>
     <string name="dialog_title_commands_list">قائمة الأوامر</string>
     <string name="settings_option_patterns_list">قائمة الأنماط</string>
     <string name="dialog_title_config_model">إعداد %1$s</string>
-    
-    <!-- Other Settings -->
     <string name="setting_enable_logging">تفعيل السجلات</string>
     <string name="setting_desc_enable_logging">عطل هذا الخيار لتحسين الأداء. لن تتمكن من الإبلاغ عن الأخطاء.</string>
     <string name="setting_external_internet">استخدام خدمة إنترنت خارجية</string>
@@ -758,8 +483,6 @@
     <string name="setting_desc_update_interval">كم مرة يتم التحقق من التحديثات (بالساعات).</string>
     <string name="setting_download_path">مسار التنزيل</string>
     <string name="setting_desc_download_path">مسار مخصص لتنزيل التحديثات.</string>
-    
-    <!-- Pattern List & Edit -->
     <string name="dialog_title_trigger_symbols">رموز التفعيل</string>
     <string name="no_patterns">لا توجد أنماط</string>
     <string name="dialog_title_edit_pattern">تعديل %1$s</string>
@@ -770,10 +493,7 @@
     <string name="example_format_bold">\u0022نص%1$s\u0022 \u2192 نص عريض</string>
     <string name="example_format_crossout">\u0022نص%1$s\u0022 \u2192 يتوسطه خط</string>
     <string name="example_format_underline">\u0022نص%1$s\u0022 \u2192 تحته خط</string>
-    <string name="example_default">اكتب النص، ثم أضف \u0022%1$s\u0022 في النهاية</string>
     <string name="pattern_subtitle_trigger">المشغل: %1$s</string>
-    
-    <!-- PatternType Titles -->
     <string name="title_settings_trigger">الإعدادات</string>
     <string name="title_ai_trigger">مشغل AI</string>
     <string name="title_custom_command">أمر مخصص</string>
@@ -787,64 +507,17 @@
     <string name="btn_reset_pattern">إعادة تعيين النمط</string>
     <string name="msg_reset_pattern_confirm">إعادة تعيين \'%1$s\' إلى الرمز الافتراضي \"%2$s\"؟</string>
     <string name="msg_pattern_reset">تم إعادة تعيين النمط إلى الوضع الافتراضي</string>
-
-    <!-- Model Config Fields -->
     <string name="field_api_key">مفتاح API</string>
     <string name="field_top_p">Top P</string>
     <string name="dialog_title_unknown_model">اسم نموذج غير معروف</string>
     <string name="dialog_msg_unknown_model">النموذج "%1$s" غير موجود في قائمتنا المعتمدة.\nقد يكون جديداً أو غير صحيح.\n\nهل تقصد: %2$s؟</string>
     <string name="btn_use_suggestion">استخدام المقترح</string>
     <string name="btn_use_anyway">استخدام على أي حال</string>
-    
-    <!-- Missing Model Config Fields -->
-    <string name="field_sub_model">النموذج الفرعي</string>
-    <string name="field_base_url">رابط القاعدة</string>
-    <string name="field_max_tokens">الحد الأقصى للرموز</string>
-    <string name="field_temperature">درجة الإبداع</string>
-    
-    <!-- Missing Update Interval -->
-    <string name="interval_every_disabled">معطل</string>
-
     <string name="msg_ai_no_response_error">لم يتم استلام أي رد. أعاد الذكاء الاصطناعي محتوى فارغًا.\nتلميح: ربما تستخدم تريجر/أمر غير مسجل.</string>
-
-    <!-- Universal Media Downloader Strings (Arabic) -->
     <string name="title_media_downloader">KGPT دونلودر</string>
     <string name="desc_media_downloader">حمّل الفيديوهات والمقاطع الصوتية بدقات حتى 4K و MP3 من أي تطبيق بمجرد مشاركة الرابط أو لصقه هنا.</string>
     <string name="desc_media_downloader_short">تنزيل الفيديوهات والصوتيات عبر المشاركة</string>
     <string name="title_direct_download">تنزيل مباشر عبر الرابط</string>
-    <string name="hint_media_url">الصق رابط الفيديو أو الأغنية هنا...</string>
-    <string name="btn_paste_clipboard">لصق من الحافظة</string>
-    <string name="btn_analyze_download">تحليل وتنزيل</string>
-    <string name="btn_download_now">تنزيل المقطع الآن</string>
-    <string name="btn_download_video_now">تنزيل ملف الفيديو الآن</string>
-    <string name="btn_download_audio_now">تنزيل ملف الصوت الآن</string>
-    <string name="tab_video">🎬 فيديو (Video)</string>
-    <string name="tab_audio">🎵 صوت فقط (MP3)</string>
-    <string name="label_choose_video_quality">اختر دقة الفيديو:</string>
-    <string name="label_choose_audio_format">اختر صيغة وجودة الصوت:</string>
-    <string name="quality_best">أعلى جودة (Best)</string>
-    <string name="label_download_location">مكان التنزيل والمجلدات</string>
-    <string name="label_current_path">مجلد الحفظ:</string>
-    <string name="btn_change_folder">تغيير المجلد</string>
-    <string name="switch_separate_folders">فصل مجلدات الصوت والفيديو</string>
-    <string name="desc_separate_folders">حفظ الصوتيات في KGPT/Audio والفيديوهات في KGPT/Video</string>
-    <string name="switch_group_by_uploader">تنظيم حسب القناة أو الفنان</string>
-    <string name="desc_group_by_uploader">إنشاء مجلدات فرعية تلقائية لكل صانع محتوى أو قناة</string>
-    <string name="label_default_preferences">إعدادات التنزيل الافتراضية</string>
-    <string name="label_default_quality">جودة الفيديو الافتراضية</string>
-    <string name="label_default_format">صيغة الفيديو الافتراضية</string>
-    <string name="label_default_audio">صيغة الصوت الافتراضية</string>
-    <string name="switch_embed_thumbnail">دمج صورة الغلاف والألبوم</string>
-    <string name="desc_embed_thumbnail">تضمين صورة الغلاف داخل ملف الوسائط مباشرة</string>
-    <string name="switch_embed_metadata">دمج البيانات الوصفية (ID3 Tags)</string>
-    <string name="desc_embed_metadata">إضافة العنوان، الفنان، ومعلومات المقطع للملف</string>
-    <string name="switch_embed_subtitles">تنزيل الترجمة المصاحبة</string>
-    <string name="desc_embed_subtitles">تنزيل ودمج الترجمات المتاحة للفيديو</string>
-    <string name="title_supported_platforms">المنصات المدعومة تلقائياً</string>
-    <string name="desc_supported_platforms">يوتيوب، إنستغرام ريلز، تيك توك بدون علامة مائية، فيسبوك، تويتر/X، سبوتيفاي، ساوند كلاود، بينترست، و1000+ موقع.</string>
-    <string name="title_update_engine">تحديث محرك التنزيل (yt-dlp Core)</string>
-
-    <!-- Native In-App Download Hook Section (Arabic) -->
     <string name="title_native_downloader_hooks">التنزيل المباشر من التطبيقات</string>
     <string name="badge_lsposed">LSPosed</string>
     <string name="desc_native_downloader_hooks">اعتراض زر التنزيل الرسمي داخل التطبيقات وتحويله تلقائياً لـ KGPT Downloader.</string>
@@ -854,14 +527,10 @@
     <string name="app_ytmusic_pkg">com.google.android.apps.youtube.music</string>
     <string name="toast_hook_enabled">تم تفعيل التنزيل المباشر لـ %1$s. أعد تشغيل التطبيق للتطبيق.</string>
     <string name="toast_hook_disabled">تم تعطيل التنزيل المباشر لـ %1$s.</string>
-    <string name="toast_lsposed_scope_prompt">تأكد من تفعيل نطاق %1$s لـ KGPT في تطبيق LSPosed.</string>
     <string name="toast_requesting_lsposed_scope">جاري إرسال طلب تفعيل النطاق إلى LSPosed…</string>
     <string name="toast_lsposed_scope_denied">تم رفض أو إلغاء طلب النطاق في LSPosed</string>
-
     <string name="pref_group_by_app">تنظيم حسب التطبيق / المنصة</string>
     <string name="pref_group_by_app_desc">إنشاء مجلدات فرعية لكل تطبيق (يوتيوب، تيك توك، إنستغرام...)</string>
-
-    <!-- Downloader How-To-Use Guide Strings (Arabic) -->
     <string name="title_downloader_guide">دليل استخدام KGPT Downloader</string>
     <string name="desc_downloader_guide">كل الطرق والوسائل المتاحة لتنزيل الوسائط بسهولة وسرعة:</string>
     <string name="guide_item_share_title">1. المشاركة المباشرة (Share to Download)</string>
@@ -874,51 +543,26 @@
     <string name="guide_item_selection_trigger_desc">حدد أي رابط في أي مكان واضغط \"Media Downloader\" من قائمة التحديد، أو اكتب الرابط متبوعاً بـ .dl مباشرة في الكيبورد.</string>
     <string name="guide_item_search_title">5. البحث المباشر</string>
     <string name="guide_item_search_desc">ابحث باسم أي فيديو أو أغنية بالاسم لتحميل النتيجة مباشرة وبنقرة واحدة.</string>
-    <string name="guide_section_paste_title">1. اللصق المباشر داخل التطبيق</string>
-    <string name="guide_section_paste_desc">الصق رابط أي فيديو أو مقطع صوتي في خانة البحث بالأعلى واضغط تنزيل لاختيار الجودة والصيغة.</string>
-    <string name="guide_section_native_title">2. أزرار التحميل الأصلية</string>
-    <string name="guide_section_native_desc">اضغط مباشرة على زر التنزيل الرسمي في تطبيق YouTube أو YouTube Music ليتم التنزيل مجاناً وبأعلى جودة.</string>
-    <string name="guide_section_share_title">3. قائمة المشاركة من أي تطبيق</string>
-    <string name="guide_section_share_desc">اضغط مشاركة (Share) على أي منشور في إنستغرام، تيك توك، فيسبوك، تويتر/X، بينترست، ثريدز... واختر KGPT Downloader.</string>
-    <string name="guide_section_selection_title">4. قائمة تحديد النص (Text Selection)</string>
-    <string name="guide_section_selection_desc">حدد أي رابط في المتصفح أو أي محادثة، واختر \"Media Downloader\" من شريط الأدوات العائم.</string>
-    <string name="guide_section_trigger_title">5. أوامر وتريجر لوحة المفاتيح</string>
-    <string name="guide_section_trigger_desc">اكتب أي رابط متبوعاً برمز .dl (مثال: https://... .dl) في الكيبورد للتحميل الفوري، أو استخدم الأمر /download.</string>
-    <string name="guide_section_search_title">6. البحث المباشر بدون روابط</string>
-    <string name="guide_section_search_desc">ابحث باسم أي أغنية أو فيديو بالاسم مباشرة وقم بتحميل أي نتيجة تظهر لك بنقرة واحدة.</string>
     <string name="notice_public_media_title">تنزيل المحتوى العام</string>
     <string name="notice_public_media_desc">يمكنك استخدام الميزة لتنزيل أي فيديو عام (بدون حماية DRM) من أي تطبيق كان من خلال مشاركة المحتوى مع KGPT بشكل مباشر.</string>
-    <string name="desc_update_engine">يقوم بتحديث خوارزميات فك تشفير الفيديوهات تلقائياً من الإنترنت إذا طرأ تغيير على منصات الفيديو.</string>
-    <string name="btn_update_engine_now">تحديث خوارزميات التنزيل الآن</string>
     <string name="core_status_checking">جاري فحص حالة محرك التنزيل…</string>
     <string name="core_status_ready">محرك التنزيل محدّث بالكامل وجاهز</string>
-    <string name="core_status_update_available">يتوفر تحديث جديد لخوارزميات التنزيل</string>
     <string name="core_status_downloading">جاري تنزيل وتثبيت التحديث…</string>
     <string name="btn_core_check_updates">فحص التحديثات</string>
     <string name="btn_core_install_update">تنزيل وتثبيت التحديث الآن</string>
-    <string name="toast_download_started">تم بدء التنزيل في الخلفية</string>
     <string name="toast_clipboard_empty">الحافظة فارغة</string>
     <string name="toast_invalid_url">يرجى إدخال أو لصق رابط وسائط صالح</string>
-    <string name="toast_engine_updating">جاري فحص وتحديث محرك التنزيل...</string>
     <string name="toast_engine_updated">تم تحديث محرك التنزيل بنجاح</string>
     <string name="status_analyzing_media">جاري استخراج الجودات وتفاصيل المقطع...</string>
     <string name="error_extract_failed">تعذر تحليل الرابط. يرجى التأكد من صحة الرابط والاتصال.</string>
     <string name="notification_download_complete">تم اكتمال التنزيل بنجاح</string>
     <string name="notification_download_failed">فشل التنزيل</string>
-    <string name="title_downloader_credits">Credits</string>
-    <string name="desc_downloader_credits">نتقدم بخالص الشكر والتقدير للمطور Denis Cerri ولكل المساهمين الرائعين في مشروع ytdlnis على عملهم المتميز.\n\nتم استخدام أجزاء من الكود البرمجي مفتوح المصدر الخاص بهم داخل هذا التطبيق بموجب رخصة البرمجيات الحرة مفتوحة المصدر GNU General Public License v3.0 (GPL-3.0).</string>
-    <string name="btn_visit_ytdlnis_github">زيارة المشروع على GitHub</string>
-
-    <!-- YTDLnis Modern Downloader UI Strings (Arabic) -->
     <string name="nav_media_download">تنزيل</string>
     <string name="desc_adjust_download">تخصيص التنزيل</string>
     <string name="label_title">العنوان</string>
-    <string name="label_author">المؤلف / القناة</string>
     <string name="label_container">الحاوية والصيغة</string>
     <string name="label_video_quality">جودة الفيديو</string>
     <string name="label_audio_quality">جودة الصوت</string>
-    <string name="label_save_dir">مجلد الحفظ</string>
-    <string name="label_free_space">المساحة المتاحة: %1$s</string>
     <string name="label_adjust_video">تخصيص الفيديو</string>
     <string name="label_adjust_audio">تخصيص الصوت</string>
     <string name="chip_thumbnail">الغلاف</string>
@@ -927,10 +571,7 @@
     <string name="chip_recode">إعادة ترميز</string>
     <string name="chip_filename">قالب التسمية</string>
     <string name="chip_extra_command">أوامر إضافية</string>
-    <string name="chip_bitrate">معدل البت</string>
-    <string name="tab_command">الأمر المباشر</string>
     <string name="dialog_title_quality">اختر الجودة والصيغة</string>
-    <string name="dialog_title_container">اختر صيغة الحاوية</string>
     <string name="dialog_title_thumbnail">صورة الغلاف</string>
     <string name="dialog_title_chapters">الفصول</string>
     <string name="dialog_title_subtitles">الترجمة</string>
@@ -948,14 +589,11 @@
     <string name="btn_open">فتح الملف</string>
     <string name="chip_cut">اقتصاص الوقت</string>
     <string name="dialog_title_cut">اقتصاص وتحديد وقت التنزيل</string>
-    <string name="label_start_time">وقت البدء (مثال: 00:00:10)</string>
-    <string name="label_end_time">وقت الانتهاء (مثال: 00:01:30)</string>
     <string name="label_estimated_size">حجم الملف التقريبي</string>
     <string name="label_speed_mode">تسريع التنزيل المتعدد (16x)</string>
     <string name="desc_direct_download">قم بلصق أي رابط لتحميل الفيديو أو الصوت مباشرة.</string>
     <string name="hint_enter_media_url">https://...</string>
     <string name="pref_download_directory">مجلد التنزيلات</string>
-    <string name="btn_choose_folder">تغيير</string>
     <string name="pref_group_by_creator">تنظيم الملفات بحسب القناة أو الناشر</string>
     <string name="pref_group_by_creator_desc">إنشاء مجلد فرعي باسم كل قناة تلقائياً</string>
     <string name="pref_default_mode">خيارات التنزيل الافتراضية</string>
@@ -964,16 +602,12 @@
     <string name="opt_split_chapters">تقسيم الفيديو بحسب الفصول</string>
     <string name="title_core_status">محرك التنزيل</string>
     <string name="desc_core_embedded">اضغط للتحقق من وجود تحديثات للمحرك</string>
-    <string name="btn_update_core">تحديث</string>
     <string name="btn_paste_short">لصق</string>
     <string name="badge_ytdlp">yt-dlp</string>
     <string name="status_core_up_to_date">محرك التنزيل محدث لآخر إصدار</string>
     <string name="status_core_updated">تم تحديث محرك التنزيل بنجاح</string>
     <string name="status_core_updating">جاري فحص وتحديث المحرك...</string>
-    <string name="status_core_ready">جاهز ومثبت</string>
     <string name="status_core_not_installed">غير مثبت (انقر للتنزيل والإعداد)</string>
-    
-    <!-- On-Demand Core Plugin Strings (Arabic) -->
     <string name="title_plugin_required">إضافة KGPT دونلودر</string>
     <string name="desc_plugin_required">تنزيل المحرك عالي السرعة لتفعيل تنزيل الفيديوهات بدقة 4K وصوتيات MP3</string>
     <string name="label_device_arch">معمارية المعالج</string>
@@ -982,43 +616,30 @@
     <string name="btn_install_plugin_now">تنزيل وتثبيت الإضافة الآن</string>
     <string name="status_installing_plugin">جاري تثبيت محرك التنزيل</string>
     <string name="msg_downloading_simple">جاري تنزيل ملفات المحرك...</string>
-
-    <!-- YouTube Search & Multi-link Selection (Arabic) -->
     <string name="title_youtube_search">بحث YouTube</string>
     <string name="desc_youtube_search">نتائج البحث عن: %1$s</string>
-    <string name="hint_search_or_url">ابحث في يوتيوب أو الصق رابطاً...</string>
     <string name="loading_search_results">جاري البحث في YouTube...</string>
     <string name="loading_more_results">جاري جلب المزيد من النتائج...</string>
     <string name="no_search_results">لم يتم العثور على نتائج لـ \"%1$s\"</string>
     <string name="title_select_links">اختر الوسائط للتنزيل</string>
     <string name="desc_select_links">تم العثور على %1$d روابط في النص</string>
     <string name="action_select_all">تحديد الكل</string>
-    <string name="action_deselect_all">إلغاء تحديد الكل</string>
     <string name="btn_download_selected">تنزيل المحددة (%1$d)</string>
     <string name="btn_download_single">تنزيل</string>
     <string name="selected_counter">تم تحديد %1$d من %2$d</string>
     <string name="toast_no_items_selected">يرجى تحديد عنصر واحد على الأقل للتنزيل</string>
     <string name="batch_download_started">تم بدء تنزيل %1$d عناصر</string>
     <string name="btn_load_more_results">عرض 5 نتائج أخرى...</string>
-    <string name="label_search_results">نتائج البحث</string>
     <string name="desc_cut_media">اسحب طرفي الشريط لتحديد مقطع التنزيل المطلوب</string>
-    <string name="label_start_time_val">البداية: %1$s</string>
-    <string name="label_end_time_val">النهاية: %1$s</string>
     <string name="label_clip_duration_val">المدة: %1$s</string>
     <string name="btn_apply_cut">حفظ</string>
     <string name="btn_reset_cut">إلغاء القص (كامل المقطع)</string>
     <string name="preset_first_30s">أول 30 ثانية</string>
     <string name="preset_first_60s">أول دقيقة</string>
     <string name="preset_full_media">الكل</string>
-    <string name="default_video_title">فيديو YouTube</string>
-    <string name="default_media_title">رابط وسائط</string>
-
-    <!-- Custom Providers Strings (Arabic) -->
     <string name="tab_provider_server">السيرفر</string>
     <string name="tab_provider_models_auth">الموديلات والمصادقة</string>
     <string name="tab_provider_advanced">متقدم</string>
-    <string name="tab_provider_advanced_test">متقدم</string>
-    <string name="btn_add">إضافة</string>
     <string name="btn_add_custom_provider">إضافة مزود مخصص</string>
     <string name="badge_custom_provider">مخصص</string>
     <string name="title_add_custom_provider">إضافة مزود ذكاء اصطناعي</string>
@@ -1028,12 +649,10 @@
     <string name="hint_provider_name">اسم المزود (مثلاً: Ollama Local)</string>
     <string name="hint_base_url">الرابط الأساسي (Base URL)</string>
     <string name="hint_chat_endpoint">مسار المحادثة (Chat Endpoint)</string>
-    <string name="label_models_list">قائمة الموديلات المدعومة</string>
     <string name="hint_add_model_name">أدخل اسم الموديل</string>
     <string name="hint_default_model">الموديل الافتراضي للتشغيل</string>
     <string name="label_authentication">نوع المصادقة والمفتاح</string>
     <string name="hint_api_key_optional">مفتاح الـ API (اختياري)</string>
-    <string name="label_advanced_capabilities">الإعدادات المتقدمة والقدرات</string>
     <string name="label_supports_system_message">دعم موجه النظام (System Prompt)</string>
     <string name="desc_supports_system_message">إرسال موجه النظام كدور منفصل بدلاً من دمجه في نص المستخدم</string>
     <string name="hint_custom_headers_json">رؤوس HTTP مخصصة (Custom Headers JSON)</string>
@@ -1046,4 +665,21 @@
     <string name="msg_connection_success">نجح الاتصال بالسيرفر بنجاح!</string>
     <string name="msg_connection_failed">فشل الاتصال: %1$s</string>
     <string name="msg_confirm_delete_provider">هل أنت متأكد من رغبتك في حذف المزود \"%1$s\"؟</string>
+    <string name="quality_best_label">أعلى جودة (تلقائي)</string>
+    <string name="quality_unavailable_title">الجودة المطلوبة غير متاحة</string>
+    <string name="quality_unavailable_msg">هذا الفيديو لا يوفر الجودة المحددة.\nأعلى جودة متاحة هي %1$dp. هل تريد المتابعة بها؟</string>
+    <string name="quality_continue_with_available">متابعة بأعلى جودة متاحة</string>
+    <string name="audio_original_best_label">أفضل صوت أصلي (بدون إعادة ترميز)</string>
+    <string name="audio_converted_suffix"> (محوّل)</string>
+    <string name="audio_lossless_flac_converted">حاوية FLAC بلا فقد (محوّل)</string>
+    <string name="msg_invalid_filename_template">قالب اسم ملف غير صالح: لا يُسمح بفواصل المسارات أو الشرطات البادئة.</string>
+    <string name="label_free_api">مجاني</string>
+    <string name="label_paid_api">مدفوع</string>
+    <string name="msg_api_key_saved_fmt">تم حفظ مفتاح %1$s</string>
+    <string name="msg_api_key_removed_fmt">تم حذف مفتاح %1$s</string>
+    <string name="title_edit_command">تعديل الأمر</string>
+    <string name="title_delete_command">حذف الأمر</string>
+    <string name="title_invalid_model_name">اسم موديل غير صالح</string>
+    <string name="msg_restored_restart_fmt">تمت الاستعادة: %1$s. أعد تشغيل التطبيق لتطبيق تغييرات المظهر.</string>
+    <string name="error_prefix_reserved">هذه البادئة محجوزة للنظام</string>
 </resources>

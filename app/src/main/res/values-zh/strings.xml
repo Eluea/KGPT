@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">首页</string>
-    <string name="nav_models">模型</string>
-    <string name="nav_api_keys">API 密钥</string>
-    <string name="nav_settings">设置</string>
     <string name="module_active">模块已激活</string>
     <string name="module_inactive">模块未激活</string>
     <string name="module_active_desc">KGPT 正在运行</string>
     <string name="module_inactive_desc">请在 LSPosed 管理器中启用</string>
     <string name="quick_actions">快速操作</string>
-    <string name="current_model">当前模型</string>
     <string name="ai_invocation">AI 调用</string>
-    <string name="ai_invocation_desc">配置命令和触发器</string>
     <string name="how_to_use">使用说明</string>
     <string name="how_to_use_desc">了解如何使用 KGPT</string>
-    <string name="ai_models">AI 模型</string>
     <string name="select_model">选择你喜欢的模型</string>
     <string name="model_config">模型配置</string>
     <string name="sub_model">子模型</string>
     <string name="base_url">基础 URL</string>
-    <string name="advanced_settings">高级设置</string>
     <string name="max_tokens">最大 Tokens</string>
     <string name="temperature">温度 (Temperature)</string>
     <string name="save_config">保存配置</string>
-    <string name="api_keys">API 密钥</string>
-    <string name="manage_api_keys">管理 API 密钥</string>
     <string name="enter_api_key">输入 API 密钥</string>
     <string name="save">保存</string>
-    <string name="api_key_info">密钥将安全地存储在您的设备上。</string>
-    <string name="settings">设置</string>
-    <string name="appearance">外观</string>
     <string name="dark_mode">深色模式</string>
     <string name="follow_system">跟随系统</string>
-    <string name="amoled_dark">AMOLED 纯黑</string>
-    <string name="amoled_desc">OLED 屏幕纯黑模式</string>
     <string name="blur_control">模糊控制</string>
     <string name="blur_control_desc">管理背景模糊效果</string>
     <string name="blur_enabled">启用模糊</string>
@@ -45,23 +30,9 @@
     <string name="general">常规</string>
     <string name="enable_logging">启用日志</string>
     <string name="logging_desc">禁用以提高性能</string>
-    <string name="external_internet">外部网络</string>
-    <string name="external_internet_desc">推荐开启以保持稳定</string>
-    <string name="backup_restore">备份与恢复</string>
-    <string name="export_backup">导出备份</string>
-    <string name="export_backup_desc">将设置保存到文件</string>
-    <string name="import_backup">导入备份</string>
-    <string name="import_backup_desc">从文件恢复设置</string>
-    <string name="about">关于</string>
-    <string name="config_saved">配置已保存</string>
-    <string name="api_key_saved">API 密钥已保存</string>
-    <string name="api_key_removed">API 密钥已移除</string>
     <string name="backup_exported">导出成功</string>
-    <string name="backup_imported">导入成功</string>
     <string name="export_failed">导出失败</string>
     <string name="import_failed">导入失败</string>
-    <string name="themed_icon_title">主题图标</string>
-    <string name="themed_icon_desc">自适应图标 (Material You)</string>
     <string name="about_home_title">关于首页</string>
     <string name="about_home_description">欢迎使用 KGPT！\n\n\u2022 状态：显示 Xposed 模块是否激活。\n\n\u2022 模型：显示当前活动的 AI。\n\n\u2022 调用：配置触发器。\n\n\u2022 指南：使用技巧。</string>
     <string name="built_in_indicator">  \u2022  内置</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">检查更新需要网络连接。</string>
     <string name="btn_download">下载</string>
     <string name="btn_later">稍后</string>
-    <string name="btn_install">安装</string>
     <string name="btn_try_again">重试</string>
     <string name="btn_close">关闭</string>
     <string name="btn_ok">确定</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">加载中...</string>
     <string name="title_add_api_key">添加密钥</string>
     <string name="desc_add_api_key">选择提供商。</string>
-    <string name="title_add_actions">添加操作</string>
-    <string name="desc_add_actions">选择操作</string>
     <string name="title_logging_disabled">日志已禁用</string>
     <string name="desc_logging_disabled">在设置中启用日志。</string>
     <string name="btn_enable_logging">启用日志</string>
     <string name="title_check_frequency">频率</string>
     <string name="desc_check_frequency">检查更新频率？</string>
     <string name="title_choose_model">选择模型</string>
-    <string name="label_select_provider_hint">选择提供商</string>
-    <string name="hint_select_provider">提供商</string>
     <string name="placeholder_search_engine">引擎</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">名称</string>
     <string name="placeholder_changelog_desc">说明</string>
     <string name="tag_add">新增</string>
     <string name="configure_model_title">配置</string>
-    <string name="advanced_settings_title">高级</string>
     <string name="edit_command_title">编辑命令</string>
     <string name="hint_command_prefix">前缀</string>
     <string name="hint_prompt">提示词</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">输入此词打开应用</string>
     <string name="example_trigger_word">例如：\'chrome\'</string>
     <string name="msg_no_items">无项目</string>
-    <string name="title_add_trigger_symbol">添加符号</string>
-    <string name="desc_add_trigger_symbol">1-3 个字符</string>
-    <string name="hint_trigger_example">例如：@@</string>
     <string name="status_free">免费</string>
     <string name="btn_save_key">保存</string>
     <string name="btn_get_key">获取密钥</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">名称</string>
     <string name="placeholder_description">描述</string>
     <string name="placeholder_action">操作</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">预设或自定义</string>
     <string name="hint_custom_model">自定义模型</string>
     <string name="title_app_triggers">App 触发器</string>
-    <string name="lab_badge">实验室</string>
-    <string name="app_triggers_intro">输入名称打开应用</string>
     <string name="btn_enable_app_triggers">启用触发器</string>
     <string name="desc_enable_app_triggers">关键字 -> 打开应用</string>
     <string name="msg_no_triggers">无触发器。</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">系统消息 (可选)</string>
     <string name="help_command_usage">用法：文本 /cmd + 符号</string>
     <string name="title_edit_pattern">编辑模式</string>
-    <string name="desc_edit_pattern">自定义正则</string>
-    <string name="hint_regex_pattern">正则表达式 (Regex)</string>
-    <string name="help_regex_default">默认：$prompt$</string>
     <string name="title_other_settings">其他</string>
     <string name="enable_trigger">启用</string>
     <string name="hint_description">描述</string>
@@ -350,7 +306,6 @@
     <string name="winter_mode">冬季模式</string>
     <string name="winter_mode_desc">下雪效果</string>
     <string name="title_settings_backup">备份</string>
-    <string name="desc_settings_backup">保存数据</string>
     <string name="title_settings_restore">恢复</string>
     <string name="desc_settings_restore">加载数据</string>
     <string name="support_group">支持群组</string>
@@ -360,7 +315,6 @@
     <string name="desc_updates_config">检查更新</string>
     <string name="open_in_browser">浏览器打开</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">喵！</string>
     <string name="cat_caught_msg">你找到我了！\n在 GitHub 上给个星标吗？</string>
     <string name="cat_action_star">给星标</string>
@@ -404,25 +358,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6秒</string>
     <string name="language">语言</string>
-    <string name="language_desc">应用语言</string>
     <string name="select_language">选择语言</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">关于设置</string>
     <string name="about_settings_desc">自定义KGPT。\n\n• 深色:深色主题。\n\n• AMOLED:OLED纯黑。\n\n• 日志:用于调试。\n\n• 外部:用于AI。</string>
-    <string name="logging_warning_title">启用日志?</string>
-    <string name="logging_warning_desc">日志已禁用。启用后可导出。</string>
-    <string name="btn_enable_logging_action">启用日志</string>
     <string name="logging_enabled_toast">日志已启用。可以导出。</string>
-    <string name="export_success_title">导出成功</string>
-    <string name="export_success_desc">日志保存在:</string>
-    <string name="root_status_label">Root状态</string>
-    <string name="boot_logs_label">启动日志</string>
-    <string name="system_logs_label">系统日志</string>
-    <string name="crash_logs_label">崩溃日志</string>
-    <string name="app_logs_label">应用日志</string>
-    <string name="available">可用</string>
-    <string name="unavailable">不可用</string>
     <string name="tab_commands">命令</string>
     <string name="tab_triggers">触发器</string>
     <string name="tab_model">模型</string>
@@ -460,42 +399,12 @@
     <string name="path_internal_storage">内部存储</string>
     <string name="check_for_updates">检查更新</string>
     <string name="checking_updates">检查中...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">新增</string>
     <string name="tag_improved">改进</string>
     <string name="tag_fixed">修复</string>
-    <string name="changelog_1_0_0_item1">在网页搜索选项中添加了 Google AI Mode</string>
-    <string name="changelog_1_0_0_item2">添加了语言选择功能，支持所有可用语言</string>
-    <string name="changelog_1_0_0_item3">改进了屏幕布局以适应单手使用和较大的手指</string>
-    <string name="changelog_1_0_0_item4">修复了许多稳定性问题并改进了性能</string>
-    <string name="changelog_1_0_0_item5">测试并添加了对 FUTO 键盘的支持</string>
-    <string name="changelog_1_0_0_item6">修复了与 Chutes API 的连接问题</string>
-    <string name="changelog_1_0_0_item7">添加了新的 Perplexity 模型和 Perplexity API 支持</string>
-    <string name="changelog_1_0_0_item8">移除了使用命令时的 \"/\" 限制</string>
-    <string name="changelog_1_0_0_note">请耐心等待，因为已向开发者报告了更多问题，但由于这是一个人的项目，将分批更新解决。感谢您的理解。</string>
-    <string name="module_restart_required_desc">重启设备以激活模块</string>
-
     <string name="new_command_title">新建命令</string>
     <string name="error_prefix_empty">前缀不能为空</string>
     <string name="error_message_empty">消息不能为空</string>
     <string name="error_duplicate_command">已存在同名命令</string>
-    <string name="format_edit_pattern_title">编辑 %1$s</string>
-    <string name="error_symbol_empty">符号不能为空</string>
-    <string name="error_symbol_not_allowed">不允许使用此符号</string>
-    <string name="error_pattern_creation_failed">无法为此符号创建模式</string>
-    <string name="error_pattern_invalid">生成的模式无效</string>
-    <string name="error_pattern_duplicate">此符号已被另一个模式使用</string>
-    <string name="msg_trigger_enabled">触发器 "%1$s" 已启用</string>
-    <string name="msg_trigger_disabled">触发器 "%1$s" 已禁用</string>
-    <string name="example_preview_settings">"%1$s" ← 打开设置</string>
-    <string name="example_preview_ai">"你好%1$s" ← AI 回复</string>
-    <string name="example_preview_custom">"你好%1$s翻译%1$s" ← 翻译</string>
-    <string name="example_preview_italic">"文本%1$s" ← 斜体</string>
-    <string name="example_preview_bold">"文本%1$s" ← 粗体</string>
-    <string name="example_preview_crossout">"文本%1$s" ← 删除线</string>
-    <string name="example_preview_underline">"文本%1$s" ← 下划线</string>
-    <string name="example_preview_default">输入文本，然后在末尾添加 "%1$s"</string>
     <string name="msg_theme_updated">主题已更新</string>
     <string name="msg_settings_restored">设置已恢复</string>
     <string name="msg_requesting_root">正在请求 Root 权限...</string>
@@ -533,8 +442,6 @@
     <string name="msg_pattern_create_symbol_failed">无法为此符号创建模式</string>
     <string name="msg_pattern_generated_invalid">生成的模式无效</string>
     <string name="msg_symbol_already_used">此符号已被使用</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">选择并配置模型</string>
     <string name="dialog_title_commands_list">命令列表</string>
     <string name="settings_option_patterns_list">模式列表</string>
@@ -569,7 +476,6 @@
     <string name="example_format_bold">\u0022文本%1$s\u0022 \u2192 粗体文本</string>
     <string name="example_format_crossout">\u0022文本%1$s\u0022 \u2192 删除线</string>
     <string name="example_format_underline">\u0022文本%1$s\u0022 \u2192 下划线</string>
-    <string name="example_default">输入文本，然后在末尾添加 \u0022%1$s\u0022</string>
     <string name="pattern_subtitle_trigger">触发器: %1$s</string>
     <string name="title_settings_trigger">设置</string>
     <string name="title_ai_trigger">AI触发器</string>
@@ -583,30 +489,12 @@
     <string name="msg_reset_pattern_confirm">将 \'%1$s\' 重置为默认符号 \"%2$s\"？</string>
     <string name="msg_pattern_reset">模式已重置为默认</string>
     <string name="field_api_key">API密钥</string>
-    <string name="field_sub_model">子模型</string>
-    <string name="field_base_url">基础URL</string>
-    <string name="field_max_tokens">最大令牌数</string>
-    <string name="field_temperature">温度</string>
     <string name="field_top_p">Top P</string>
     <string name="no_commands">无命令</string>
-
-
-    <!-- Auto-added Missing Keys -->
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-        <string name="changelog_4_0_8_item1">从 LSPosed API 82 迁移至现代 API 102</string>
-    <string name="changelog_4_0_8_item2">大幅优化性能并降低电量消耗</string>
-    <string name="changelog_4_0_8_item3">修复了多处系统冻结和卡死场景</string>
-    <string name="changelog_4_0_8_item4">新增键盘触发器：媒体下载触发器</string>
-    <string name="changelog_4_0_8_item5">新增文本选择操作：媒体下载</string>
-    <string name="changelog_4_0_8_item6">新增实验室功能：KGPT 媒体下载器</string>
-    <string name="changelog_4_0_8_item7">新增 YouTube 与视频在线搜索功能</string>
-    <string name="changelog_4_0_8_item8">支持视频与音频下载，自定义画质、格式及片段截取</string>
-    <string name="changelog_4_0_8_item9">支持复制通用独立下载命令，可在任何设备上执行下载</string>
-    <string name="changelog_note_4_0_8">请耐心等待，因为已向开发人员报告了更多问题，但由于这是一个单人项目，这些问题将在批量更新中得到解决。 感谢您的理解。</string>
     <string name="msg_ai_no_response_error">未收到响应。AI 返回了空内容。\n提示：您可能使用的是未注册的触发器/命令。</string>
 </resources>

@@ -28,7 +28,11 @@ public class LocaleHelper {
     }
 
     public static Context setLocale(Context context, String language) {
-        persist(context, language);
+        // E8: only persist on actual change (was writing on every attach)
+        String current = getPersistedData(context, Locale.getDefault().getLanguage());
+        if (!language.equals(current)) {
+            persist(context, language);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return updateResources(context, language);

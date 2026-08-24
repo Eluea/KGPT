@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">ホーム</string>
-    <string name="nav_models">モデル</string>
-    <string name="nav_api_keys">API キー</string>
-    <string name="nav_settings">設定</string>
     <string name="module_active">モジュール有効</string>
     <string name="module_inactive">モジュール無効</string>
     <string name="module_active_desc">KGPTは動作中です</string>
     <string name="module_inactive_desc">LSPosedマネージャーで有効化してください</string>
     <string name="quick_actions">クイックアクション</string>
-    <string name="current_model">現在のモデル</string>
     <string name="ai_invocation">AI 呼び出し</string>
-    <string name="ai_invocation_desc">コマンドとトリガーの設定</string>
     <string name="how_to_use">使い方</string>
     <string name="how_to_use_desc">KGPT の使用方法</string>
-    <string name="ai_models">AI モデル</string>
     <string name="select_model">モデルを選択</string>
     <string name="model_config">モデル設定</string>
     <string name="sub_model">サブモデル</string>
     <string name="base_url">ベース URL</string>
-    <string name="advanced_settings">詳細設定</string>
     <string name="max_tokens">最大トークン</string>
     <string name="temperature">温度 (Temperature)</string>
     <string name="save_config">設定を保存</string>
-    <string name="api_keys">API キー</string>
-    <string name="manage_api_keys">API キーの管理</string>
     <string name="enter_api_key">API キーを入力</string>
     <string name="save">保存</string>
-    <string name="api_key_info">キーはデバイスに安全に保存されます。</string>
-    <string name="settings">設定</string>
-    <string name="appearance">外観</string>
     <string name="dark_mode">ダークモード</string>
     <string name="follow_system">システムに従う</string>
-    <string name="amoled_dark">AMOLED ブラック</string>
-    <string name="amoled_desc">OLED 画面用の真の黒</string>
     <string name="blur_control">ぼかし制御</string>
     <string name="blur_control_desc">背景のぼかしを管理</string>
     <string name="blur_enabled">ぼかしを有効化</string>
@@ -45,23 +30,9 @@
     <string name="general">一般</string>
     <string name="enable_logging">ログを有効化</string>
     <string name="logging_desc">パフォーマンス向上のため無効化推奨</string>
-    <string name="external_internet">外部インターネット access</string>
-    <string name="external_internet_desc">安定性のため推奨</string>
-    <string name="backup_restore">バックアップと復元</string>
-    <string name="export_backup">バックアップのエクスポート</string>
-    <string name="export_backup_desc">設定をファイルに保存</string>
-    <string name="import_backup">バックアップのインポート</string>
-    <string name="import_backup_desc">ファイルから設定を復元</string>
-    <string name="about">アプリについて</string>
-    <string name="config_saved">設定を保存しました</string>
-    <string name="api_key_saved">API キーを保存しました</string>
-    <string name="api_key_removed">API キーを削除しました</string>
     <string name="backup_exported">エクスポート成功</string>
-    <string name="backup_imported">インポート成功</string>
     <string name="export_failed">エクスポート失敗</string>
     <string name="import_failed">インポート失敗</string>
-    <string name="themed_icon_title">テーマアイコン</string>
-    <string name="themed_icon_desc">アダプティブアイコン (Material You)</string>
     <string name="about_home_title">ホームについて</string>
     <string name="about_home_description">KGPT へようこそ！\n\n\u2022 ステータス: Xposed モジュールの有効状態を表示します。\n\n\u2022 モデル: 現在アクティブな AI を表示します。\n\n\u2022 呼び出し: トリガーの設定を行います。\n\n\u2022 ガイド: 使い方のヒント。</string>
     <string name="built_in_indicator">  \u2022  組み込み</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">接続が必要です。</string>
     <string name="btn_download">ダウンロード</string>
     <string name="btn_later">後で</string>
-    <string name="btn_install">インストール</string>
     <string name="btn_try_again">再試行</string>
     <string name="btn_close">閉じる</string>
     <string name="btn_ok">OK</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">読み込み中...</string>
     <string name="title_add_api_key">キーを追加</string>
     <string name="desc_add_api_key">プロバイダーを選択。</string>
-    <string name="title_add_actions">アクションを追加</string>
-    <string name="desc_add_actions">アクションを選択</string>
     <string name="title_logging_disabled">ログ無効</string>
     <string name="desc_logging_disabled">設定でログを有効にしてください。</string>
     <string name="btn_enable_logging">ログを有効化</string>
     <string name="title_check_frequency">頻度</string>
     <string name="desc_check_frequency">更新確認の頻度は？</string>
     <string name="title_choose_model">モデルを選択</string>
-    <string name="label_select_provider_hint">プロバイダーを選択</string>
-    <string name="hint_select_provider">プロバイダー</string>
     <string name="placeholder_search_engine">エンジン</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">名前</string>
     <string name="placeholder_changelog_desc">説明</string>
     <string name="tag_add">新規</string>
     <string name="configure_model_title">設定</string>
-    <string name="advanced_settings_title">詳細</string>
     <string name="edit_command_title">コマンドを編集</string>
     <string name="hint_command_prefix">プレフィックス</string>
     <string name="hint_prompt">プロンプト</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">入力してアプリを開く</string>
     <string name="example_trigger_word">例: \'chrome\'</string>
     <string name="msg_no_items">アイテムなし</string>
-    <string name="title_add_trigger_symbol">記号を追加</string>
-    <string name="desc_add_trigger_symbol">1-3 文字</string>
-    <string name="hint_trigger_example">例: @@</string>
     <string name="status_free">無料</string>
     <string name="btn_save_key">保存</string>
     <string name="btn_get_key">キーを取得</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">名前</string>
     <string name="placeholder_description">説明</string>
     <string name="placeholder_action">アクション</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">プリセットまたはカスタム</string>
     <string name="hint_custom_model">カスタムモデル</string>
     <string name="title_app_triggers">アプリトリガー</string>
-    <string name="lab_badge">ラボ</string>
-    <string name="app_triggers_intro">名前でアプリを開く</string>
     <string name="btn_enable_app_triggers">トリガーを有効化</string>
     <string name="desc_enable_app_triggers">キーワード -> アプリ起動</string>
     <string name="msg_no_triggers">トリガーなし。</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">システムメッセージ (任意)</string>
     <string name="help_command_usage">使用法: テキスト /cmd + 記号</string>
     <string name="title_edit_pattern">パターンを編集</string>
-    <string name="desc_edit_pattern">カスタム正規表現</string>
-    <string name="hint_regex_pattern">正規表現 (Regex)</string>
-    <string name="help_regex_default">デフォルト: $prompt$</string>
     <string name="title_other_settings">その他</string>
     <string name="enable_trigger">有効</string>
     <string name="hint_description">説明</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">ウィンターモード</string>
     <string name="winter_mode_desc">雪のエフェクト</string>
     <string name="title_settings_backup">バックアップ</string>
-    <string name="desc_settings_backup">データを保存</string>
     <string name="title_settings_restore">復元</string>
     <string name="desc_settings_restore">データをロード</string>
     <string name="support_group">サポートグループ</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">更新を確認</string>
     <string name="open_in_browser">ブラウザで開く</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">ニャー！</string>
     <string name="cat_caught_msg">見つかっちゃった！\nGitHub でスターくれる？</string>
     <string name="cat_action_star">スターを付ける</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6秒</string>
     <string name="language">言語</string>
-    <string name="language_desc">アプリの言語</string>
     <string name="select_language">言語を選択</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">設定について</string>
     <string name="about_settings_desc">KGPTをカスタマイズ。\n\n• ダーク: ダークテーマ。\n\n• AMOLED: OLED用の黒。\n\n• ログ: デバッグ用。\n\n• 外部: AI用。</string>
-    <string name="logging_warning_title">ログを有効化?</string>
-    <string name="logging_warning_desc">ログは無効です。エクスポートするには有効化してください。</string>
-    <string name="btn_enable_logging_action">ログを有効化</string>
     <string name="logging_enabled_toast">ログが有効になりました。エクスポートできます。</string>
-    <string name="export_success_title">エクスポート成功</string>
-    <string name="export_success_desc">ログの保存先:</string>
-    <string name="root_status_label">Root状態</string>
-    <string name="boot_logs_label">起動ログ</string>
-    <string name="system_logs_label">システムログ</string>
-    <string name="crash_logs_label">クラッシュログ</string>
-    <string name="app_logs_label">アプリログ</string>
-    <string name="available">利用可能</string>
-    <string name="unavailable">利用不可</string>
     <string name="tab_commands">コマンド</string>
     <string name="tab_triggers">トリガー</string>
     <string name="tab_model">モデル</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">内部ストレージ</string>
     <string name="check_for_updates">アップデートを確認</string>
     <string name="checking_updates">確認中...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">追加</string>
     <string name="tag_improved">改善</string>
     <string name="tag_fixed">修正</string>
-    <string name="changelog_1_0_0_item1">ウェブ検索オプションにGoogle AI Modeを追加</string>
-    <string name="changelog_1_0_0_item2">すべての利用可能な言語をサポートする言語選択機能を追加</string>
-    <string name="changelog_1_0_0_item3">片手操作と大きな指に対応するため画面レイアウトを改善</string>
-    <string name="changelog_1_0_0_item4">多くの安定性の問題を修正し、パフォーマンスを改善</string>
-    <string name="changelog_1_0_0_item5">FUTOキーボードをテストしサポートを追加</string>
-    <string name="changelog_1_0_0_item6">Chutes APIとの接続問題を修正</string>
-    <string name="changelog_1_0_0_item7">新しいPerplexityモデルとPerplexity APIサポートを追加</string>
-    <string name="changelog_1_0_0_item8">コマンド使用時の\"/\"制限を削除</string>
-    <string name="changelog_1_0_0_note">開発者にはさらに多くの問題が報告されていますが、これは一人のプロジェクトであるため、アップデートのバッチで解決されます。ご理解いただきありがとうございます。</string>
-    <string name="module_restart_required_desc">モジュールを有効にするにはデバイスを再起動してください</string>
-
     <string name="new_command_title">新しいコマンド</string>
     <string name="error_prefix_empty">プレフィックスを空にすることはできません</string>
     <string name="error_message_empty">メッセージを空にすることはできません</string>
     <string name="error_duplicate_command">同じ名前の別のコマンドがあります</string>
-    <string name="format_edit_pattern_title">%1$s を編集</string>
-    <string name="error_symbol_empty">記号は空にできません</string>
-    <string name="error_symbol_not_allowed">この記号は使用できません</string>
-    <string name="error_pattern_creation_failed">この記号のパターンを作成できませんでした</string>
-    <string name="error_pattern_invalid">無効なパターンが生成されました</string>
-    <string name="error_pattern_duplicate">この記号はすでに別のパターンで使用されています</string>
-    <string name="msg_trigger_enabled">トリガー "%1$s" が有効</string>
-    <string name="msg_trigger_disabled">トリガー "%1$s" が無効</string>
-    <string name="example_preview_settings">"%1$s" ← 設定を開く</string>
-    <string name="example_preview_ai">"こんにちは%1$s" ← AI が応答</string>
-    <string name="example_preview_custom">"こんにちは%1$s翻訳%1$s" ← 翻訳</string>
-    <string name="example_preview_italic">"テキスト%1$s" ← 斜体</string>
-    <string name="example_preview_bold">"テキスト%1$s" ← 太字</string>
-    <string name="example_preview_crossout">"テキスト%1$s" ← 取り消し線</string>
-    <string name="example_preview_underline">"テキスト%1$s" ← 下線</string>
-    <string name="example_preview_default">テキストを入力し、最後に "%1$s" を追加</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">このシンボルは既に使用されています</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">モデルを選択して設定</string>
     <string name="dialog_title_commands_list">コマンド一覧</string>
     <string name="settings_option_patterns_list">パターン一覧</string>
     <string name="dialog_title_config_model">%1$s を設定</string>
-
     <string name="setting_enable_logging">ログを有効にする</string>
     <string name="setting_desc_enable_logging">パフォーマンスのため無効にしてください。エラー報告ができなくなります。</string>
     <string name="setting_external_internet">外部インターネットサービスを使用</string>
@@ -560,7 +466,6 @@
     <string name="example_format_bold">\u0022テキスト%1$s\u0022 \u2192 太字</string>
     <string name="example_format_crossout">\u0022テキスト%1$s\u0022 \u2192 取り消し線</string>
     <string name="example_format_underline">\u0022テキスト%1$s\u0022 \u2192 下線</string>
-    <string name="example_default">テキストを入力し、最後に \u0022%1$s\u0022 を追加</string>
     <string name="pattern_subtitle_trigger">トリガー: %1$s</string>
     <string name="title_settings_trigger">設定</string>
     <string name="title_ai_trigger">AIトリガー</string>
@@ -573,17 +478,10 @@
     <string name="btn_reset_pattern">パターンをリセット</string>
     <string name="msg_reset_pattern_confirm">\'%1$s\' をデフォルトシンボル \"%2$s\" にリセットしますか？</string>
     <string name="field_api_key">APIキー</string>
-    <string name="field_sub_model">サブモデル</string>
-    <string name="field_base_url">ベースURL</string>
-    <string name="field_max_tokens">最大トークン</string>
-    <string name="field_temperature">温度</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
@@ -598,15 +496,5 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">LSPosed API 82から最新のAPI 102へ移行</string>
-    <string name="changelog_4_0_8_item2">大幅なパフォーマンス最適化とバッテリー消費の低減</string>
-    <string name="changelog_4_0_8_item3">さまざまなフリーズおよび動作停止の問題を修正</string>
-    <string name="changelog_4_0_8_item4">新しいキーボードトリガーを追加：メディアダウンローダートリガー</string>
-    <string name="changelog_4_0_8_item5">新しいテキスト選択アクションを追加：メディアダウンローダー</string>
-    <string name="changelog_4_0_8_item6">新しいラボ機能を追加：KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">YouTubeおよび動画のリアルタイム検索機能を追加</string>
-    <string name="changelog_4_0_8_item8">画質・形式のカスタマイズやトリミングに対応した動画・音声ダウンロード</string>
-    <string name="changelog_4_0_8_item9">他のデバイスでもダウンロード可能なユニバーサル単独コマンド生成機能を追加</string>
-    <string name="changelog_note_4_0_8">開発者には多くの問題が報告されていますが、個人のプロジェクトであるため、更新のバッチで解決されます。ご理解のほどよろしくお願いいたします。</string>
     <string name="msg_ai_no_response_error">応答がありません。AIは空のコンテンツを返しました。\nヒント：未登録のトリガー/コマンドを使用している可能性があります。</string>
 </resources>

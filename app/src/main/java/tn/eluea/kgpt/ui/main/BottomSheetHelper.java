@@ -140,12 +140,7 @@ public class BottomSheetHelper {
      * @param layoutResId The layout resource ID
      * @return The FloatingBottomSheet dialog
      */
-    public static FloatingBottomSheet showFloating(Context context, int layoutResId) {
-        FloatingBottomSheet dialog = new FloatingBottomSheet(context);
-        View sheetView = android.view.LayoutInflater.from(context).inflate(layoutResId, null);
-        dialog.setContentView(sheetView);
-        return dialog;
-    }
+
 
     /**
      * Show a floating bottom sheet dialog with a custom view
@@ -241,14 +236,7 @@ public class BottomSheetHelper {
      * @param sheetView  The content view of the bottom sheet
      * @param isFloating Whether to use floating card style
      */
-    public static void makeFloating(BottomSheetDialog dialog, View sheetView, boolean isFloating) {
-        if (isFloating) {
-            makeEdgeToEdge(dialog, sheetView);
-        } else {
-            // Original edge-to-edge behavior
-            makeEdgeToEdgeOriginal(dialog, sheetView);
-        }
-    }
+
 
     /**
      * Original edge-to-edge implementation (for web search bottom sheet)
@@ -340,18 +328,7 @@ public class BottomSheetHelper {
     /**
      * Get the appropriate background color for the bottom sheet based on theme
      */
-    private static int getBottomSheetBackgroundColor(Context context) {
-        boolean isDarkMode = isDarkMode(context);
-        boolean isAmoled = isAmoledMode(context);
 
-        if (isDarkMode && isAmoled) {
-            return context.getResources().getColor(R.color.surface_amoled, context.getTheme());
-        } else if (isDarkMode) {
-            return context.getResources().getColor(R.color.surface_dark, context.getTheme());
-        } else {
-            return context.getResources().getColor(R.color.surface_color, context.getTheme());
-        }
-    }
 
     /**
      * Check if dark mode is enabled using system configuration
@@ -373,15 +350,33 @@ public class BottomSheetHelper {
      * Apply blur effect to any window based on user preferences.
      */
     public static void applyBlurToWindow(Window window, Context context) {
+        applyBlurToWindow(window, context, true);
+    }
+
+    /**
+     * Apply blur effect to any window based on user preferences.
+     *
+     * @param allowBlurBehind false to skip window-level FLAG_BLUR_BEHIND (dim/tint
+     *                        only). Windows hosting a WebView must disable it:
+     *                        blur-behind breaks the WebView render surface
+     *                        composition on page navigation and produces blank
+     *                        white content on many devices.
+     */
+    public static void applyBlurToWindow(Window window, Context context, boolean allowBlurBehind) {
         if (window == null || context == null) return;
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true);
+        boolean isBlurEnabled = prefs.getBoolean("blur_enabled", true) && allowBlurBehind;
         int blurIntensity = prefs.getInt("blur_intensity", 25);
         boolean materialYouBlur = prefs.getBoolean("material_you_blur", false);
         int blurTintColor = prefs.getInt("blur_tint_color", Color.TRANSPARENT);
 
         android.view.WindowManager.LayoutParams params = window.getAttributes();
+
+        if (!allowBlurBehind && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            params.setBlurBehindRadius(0);
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        }
 
         if (isBlurEnabled && blurIntensity > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

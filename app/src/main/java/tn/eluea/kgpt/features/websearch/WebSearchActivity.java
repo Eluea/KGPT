@@ -54,6 +54,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
+import tn.eluea.kgpt.BuildConfig;
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.ui.UiInteractor;
 
@@ -102,8 +103,10 @@ public class WebSearchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_web_search);
 
-        // Apply Blur if enabled
-        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this);
+        // Apply Blur if enabled — but never window-level blur-behind here:
+        // FLAG_BLUR_BEHIND breaks the WebView render surface composition on
+        // page navigation and produces blank white content. Dim/tint only.
+        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this, false);
 
         // Fix status bar icons visibility (force white icons for dark background)
         WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(),
@@ -572,16 +575,14 @@ public class WebSearchActivity extends AppCompatActivity {
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setBlockNetworkImage(false);
         webSettings.setBlockNetworkLoads(false);
-        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        webSettings.setAllowFileAccess(true);
-        webSettings.setAllowContentAccess(true);
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        webSettings.setAllowFileAccess(false);
+        webSettings.setAllowContentAccess(false);
         webSettings.setMediaPlaybackRequiresUserGesture(false);
         webSettings.setSupportMultipleWindows(false);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            webSettings.setSafeBrowsingEnabled(false);
-        }
+        // SafeBrowsing stays ON (the old code disabled it)
 
         // Default User-Agent is preserved to ensure Sec-CH-UA consistency with Chromium
         // Enable Cookies & Third Party Cookies
@@ -634,9 +635,12 @@ public class WebSearchActivity extends AppCompatActivity {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                // Proceed on SSL errors to avoid white screen on redirects or local proxies
+                // Never bypass certificate errors: proceeding would expose
+                // every navigated page to MITM. The historical "white screen
+                // on redirects" this tried to mask is fixed at the root by
+                // removing window blur-behind (see onCreate).
                 if (handler != null) {
-                    handler.proceed();
+                    handler.cancel();
                 }
             }
 
@@ -647,23 +651,42 @@ public class WebSearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
-                Log.e(TAG, "onRenderProcessGone, recovering WebView...");
-                if (webView != null) {
-                    ViewGroup parent = (ViewGroup) webView.getParent();
-                    if (parent != null) {
-                        parent.removeView(webView);
+                Log.e(TAG, "onRenderProcessGone (crashed=" + (detail != null && detail.didCrash())
+                        + "), recovering WebView...");
+                try {
+                    if (webView != null && view == webView) {
+                        ViewGroup parent = (ViewGroup) webView.getParent();
+                        // Preserve the original layout params and position so the
+                        // recreated WebView occupies exactly the same slot
+                        android.view.ViewGroup.LayoutParams originalParams = webView.getLayoutParams();
+                        int originalIndex = parent != null ? parent.indexOfChild(webView) : -1;
+
+                        webView.stopLoading();
+                        if (parent != null) {
+                            parent.removeView(webView);
+                        }
+                        webView.destroy();
+
+                        webView = new WebView(WebSearchActivity.this);
+                        configureWebView();
+                        if (parent != null) {
+                            ViewGroup.LayoutParams paramsToUse = originalParams != null
+                                    ? originalParams
+                                    : new FrameLayout.LayoutParams(
+                                            FrameLayout.LayoutParams.MATCH_PARENT,
+                                            FrameLayout.LayoutParams.MATCH_PARENT);
+                            if (originalIndex >= 0) {
+                                parent.addView(webView, originalIndex, paramsToUse);
+                            } else {
+                                parent.addView(webView, paramsToUse);
+                            }
+                        }
+                        if (currentUrl != null) {
+                            webView.loadUrl(currentUrl);
+                        }
                     }
-                    webView.destroy();
-                    webView = new WebView(WebSearchActivity.this);
-                    if (parent != null) {
-                        parent.addView(webView, new FrameLayout.LayoutParams(
-                                FrameLayout.LayoutParams.MATCH_PARENT,
-                                FrameLayout.LayoutParams.MATCH_PARENT));
-                    }
-                    configureWebView();
-                    if (currentUrl != null) {
-                        webView.loadUrl(currentUrl);
-                    }
+                } catch (Throwable t) {
+                    Log.e(TAG, "Failed to recover WebView after render process gone", t);
                 }
                 return true;
             }
@@ -695,7 +718,8 @@ public class WebSearchActivity extends AppCompatActivity {
             }
         });
 
-        WebView.setWebContentsDebuggingEnabled(true);
+        // Remote debugging only in debug builds — never in production
+        WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
     }
 
     private boolean handleUrlNavigation(WebView view, String url) {
@@ -707,27 +731,28 @@ public class WebSearchActivity extends AppCompatActivity {
             return false;
         }
 
-        // Custom app schemes (intent://, market://, tel:, mailto:, tg:, etc.)
+        // Custom app schemes — INTENT-REDIRECTION HARDENED:
+        // intent:// URIs are only honored through their browser_fallback_url
+        // (http/https). Arbitrary component/extras launching from web content
+        // is refused. Non-http schemes (tel:, mailto:, ...) open via ACTION_VIEW.
         try {
-            Intent intent;
             if (url.startsWith("intent://")) {
-                intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                if (intent != null) {
-                    if (getPackageManager().resolveActivity(intent, 0) != null) {
-                        startActivity(intent);
-                        return true;
-                    }
-                    String fallbackUrl = intent.getStringExtra("browser_fallback_url");
-                    if (fallbackUrl != null && !fallbackUrl.isEmpty()) {
-                        view.loadUrl(fallbackUrl);
-                        return true;
-                    }
+                Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                String fallbackUrl = intent != null ? intent.getStringExtra("browser_fallback_url") : null;
+                if (fallbackUrl != null && (fallbackUrl.startsWith("http://") || fallbackUrl.startsWith("https://"))) {
+                    view.loadUrl(fallbackUrl);
+                    return true;
                 }
-            } else {
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+                Log.w(TAG, "Blocked intent:// without safe http(s) fallback: " + url);
                 return true;
             }
+            String scheme = Uri.parse(url).getScheme();
+            if ("tel".equals(scheme) || "mailto".equals(scheme) || "sms".equals(scheme) || "geo".equals(scheme)) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
+            Log.w(TAG, "Blocked non-http scheme navigation: " + url);
+            return true;
         } catch (Throwable t) {
             Log.w(TAG, "Failed to handle scheme navigation for URL: " + url, t);
         }

@@ -39,6 +39,7 @@ import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.MainActivity;
 
 public class TextActionsFragment extends Fragment {
+    private android.os.CountDownTimer restartCountDownTimer;
 
     private static final String PREF_TEXT_ACTIONS_ENABLED = "text_actions_enabled";
     private static final String PREF_TEXT_ACTIONS_LIST = "text_actions_list";
@@ -79,6 +80,7 @@ public class TextActionsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        if (restartCountDownTimer != null) restartCountDownTimer.cancel();
         super.onDestroyView();
         // Note: Don't call showDockNavigation() here. When going back to LabFragment,
         // LabFragment.onViewCreated will set its dock action. The dock lifecycle is

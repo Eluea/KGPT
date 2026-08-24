@@ -1,40 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Accueil</string>
-    <string name="nav_models">Modèles</string>
-    <string name="nav_api_keys">Clés API</string>
-    <string name="nav_settings">Paramètres</string>
     <string name="module_active">Module actif</string>
     <string name="module_inactive">Module inactif</string>
     <string name="module_active_desc">KGPT fonctionne</string>
     <string name="module_inactive_desc">Activer dans LSPosed Manager</string>
     <string name="quick_actions">Actions rapides</string>
-    <string name="current_model">Modèle actuel</string>
     <string name="ai_invocation">Invocation IA</string>
-    <string name="ai_invocation_desc">Configurer commandes et motifs</string>
     <string name="how_to_use">Comment utiliser</string>
     <string name="how_to_use_desc">Apprendre à utiliser KGPT</string>
-    <string name="ai_models">Modèles d\'IA</string>
     <string name="select_model">Sélectionnez votre modèle</string>
     <string name="model_config">Configuration du modèle</string>
     <string name="sub_model">Sous-modèle</string>
     <string name="base_url">URL de base</string>
-    <string name="advanced_settings">Paramètres avancés</string>
     <string name="max_tokens">Tokens max</string>
     <string name="temperature">Température</string>
     <string name="save_config">Enregistrer</string>
-    <string name="api_keys">Clés API</string>
-    <string name="manage_api_keys">Gérer les clés API</string>
     <string name="enter_api_key">Entrez la clé API</string>
     <string name="save">Sauvegarder</string>
-    <string name="api_key_info">Les clés sont stockées en toute sécurité sur votre appareil.</string>
-    <string name="settings">Paramètres</string>
-    <string name="appearance">Apparence</string>
     <string name="dark_mode">Mode sombre</string>
     <string name="follow_system">Suivre le système</string>
-    <string name="amoled_dark">Noir AMOLED</string>
-    <string name="amoled_desc">Noir pur pour écrans OLED</string>
     <string name="blur_control">Contrôle du flou</string>
     <string name="blur_control_desc">Gérer le flou d\'arrière-plan</string>
     <string name="blur_enabled">Activer le flou</string>
@@ -45,23 +30,9 @@
     <string name="general">Général</string>
     <string name="enable_logging">Activer les journaux</string>
     <string name="logging_desc">Désactiver pour la performance</string>
-    <string name="external_internet">Internet externe</string>
-    <string name="external_internet_desc">Recommandé pour la stabilité</string>
-    <string name="backup_restore">Sauvegarde et restauration</string>
-    <string name="export_backup">Exporter sauvegarde</string>
-    <string name="export_backup_desc">Enregistrer les paramètres</string>
-    <string name="import_backup">Importer sauvegarde</string>
-    <string name="import_backup_desc">Restaurer les paramètres</string>
-    <string name="about">À propos</string>
-    <string name="config_saved">Configuration enregistrée</string>
-    <string name="api_key_saved">Clé API enregistrée</string>
-    <string name="api_key_removed">Clé API supprimée</string>
     <string name="backup_exported">Exportation réussie</string>
-    <string name="backup_imported">Importation réussie</string>
     <string name="export_failed">Échec de l\'exportation</string>
     <string name="import_failed">Échec de l\'importation</string>
-    <string name="themed_icon_title">Icône thématique</string>
-    <string name="themed_icon_desc">Icône adaptative (Material You)</string>
     <string name="about_home_title">À propos de l\'accueil</string>
     <string name="about_home_description">Bienvenue sur KGPT !\n\n\u2022 État : Indique si le module Xposed est actif.\n\n\u2022 Modèle : Affiche l\'IA active.\n\n\u2022 Invocation : Configurez les déclencheurs.\n\n\u2022 Guide : Conseils d\'utilisation.</string>
     <string name="built_in_indicator">  \u2022  Intégré</string>
@@ -81,8 +52,6 @@
     <string name="action_casual">Décontracté</string>
     <string name="action_translate">Traduire</string>
     <string name="action_download_media">Télécharger</string>
-    <string name="title_select_media_link">Sélectionner le lien</string>
-    <string name="desc_select_media_link">%1$d liens trouvés dans le texte</string>
     <string name="msg_copied">Copié</string>
     <string name="msg_ai_error">Erreur IA : %1$s</string>
     <string name="msg_no_text_selected">Aucun texte sélectionné</string>
@@ -134,7 +103,6 @@
     <string name="no_internet_desc">Connexion requise pour vérifier.</string>
     <string name="btn_download">Télécharger</string>
     <string name="btn_later">Plus tard</string>
-    <string name="btn_install">Installer</string>
     <string name="btn_try_again">Réessayer</string>
     <string name="btn_close">Fermer</string>
     <string name="btn_ok">OK</string>
@@ -233,23 +201,18 @@
     <string name="msg_loading_apps">Chargement...</string>
     <string name="title_add_api_key">Ajouter clé</string>
     <string name="desc_add_api_key">Choisissez le fournisseur.</string>
-    <string name="title_add_actions">Ajouter actions</string>
-    <string name="desc_add_actions">Sélectionner actions</string>
     <string name="title_logging_disabled">Logs désactivés</string>
     <string name="desc_logging_disabled">Activez les logs dans les paramètres.</string>
     <string name="btn_enable_logging">Activer Logs</string>
     <string name="title_check_frequency">Fréquence</string>
     <string name="desc_check_frequency">Vérifier les mises à jour tous les...</string>
     <string name="title_choose_model">Choisir Modèle</string>
-    <string name="label_select_provider_hint">Sélectionner fournisseur</string>
-    <string name="hint_select_provider">Fournisseur</string>
     <string name="placeholder_search_engine">Moteur</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Nom</string>
     <string name="placeholder_changelog_desc">Description</string>
     <string name="tag_add">Nouveau</string>
     <string name="configure_model_title">Configurer</string>
-    <string name="advanced_settings_title">Avancé</string>
     <string name="edit_command_title">Modifier commande</string>
     <string name="hint_command_prefix">Préfixe</string>
     <string name="hint_prompt">Prompt</string>
@@ -263,14 +226,10 @@
     <string name="helper_trigger_word">Tapez ceci pour ouvrir l\'app</string>
     <string name="example_trigger_word">Ex: \'chrome\'</string>
     <string name="msg_no_items">Aucun élément</string>
-    <string name="title_add_trigger_symbol">Ajouter symbole</string>
-    <string name="desc_add_trigger_symbol">1-3 caractères</string>
-    <string name="hint_trigger_example">Ex: @@</string>
     <string name="status_free">Gratuit</string>
     <string name="btn_save_key">Enregistrer</string>
     <string name="btn_get_key">Obtener clé</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Nom</string>
     <string name="placeholder_description">Description</string>
     <string name="placeholder_action">Action</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -280,8 +239,6 @@
     <string name="sub_model_desc">Preset ou personnalisé</string>
     <string name="hint_custom_model">Modèle personnalisé</string>
     <string name="title_app_triggers">Déclencheurs d\'App</string>
-    <string name="lab_badge">Lab</string>
-    <string name="app_triggers_intro">Ouvrez les apps en écrivant leur nom</string>
     <string name="btn_enable_app_triggers">Activer déclencheurs</string>
     <string name="desc_enable_app_triggers">Mot-clé -> Ouvrir App</string>
     <string name="msg_no_triggers">Aucun déclencheur.</string>
@@ -330,7 +287,6 @@
     <string name="status_core_up_to_date">Le moteur de téléchargement est à jour</string>
     <string name="status_core_updated">Moteur mis à jour avec succès</string>
     <string name="status_core_updating">Vérification et mise à jour...</string>
-    <string name="status_core_ready">Prêt / Installé</string>
     <string name="status_core_not_installed">Non installé (Cliquer pour configurer)</string>
     <string name="title_update_settings">Paramètres MàJ</string>
     <string name="title_auto_updates">Mise à jour auto</string>
@@ -347,9 +303,6 @@
     <string name="hint_system_message">Message système (optionnel)</string>
     <string name="help_command_usage">Usage : texte /cmd + symbole</string>
     <string name="title_edit_pattern">Modifier motif</string>
-    <string name="desc_edit_pattern">Personnaliser Regex</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">Défaut : $prompt$</string>
     <string name="title_other_settings">Autres</string>
     <string name="enable_trigger">Activer</string>
     <string name="hint_description">Description</string>
@@ -359,7 +312,6 @@
     <string name="winter_mode">Mode Hiver</string>
     <string name="winter_mode_desc">Effet neige</string>
     <string name="title_settings_backup">Sauvegarde</string>
-    <string name="desc_settings_backup">Sauvegarder données</string>
     <string name="title_settings_restore">Restaurer</string>
     <string name="desc_settings_restore">Charger données</string>
     <string name="support_group">Groupe support</string>
@@ -369,7 +321,6 @@
     <string name="desc_updates_config">Vérifier MàJ</string>
     <string name="open_in_browser">Ouvrir navigateur</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Miaou !</string>
     <string name="cat_caught_msg">Vous m\'avez trouvé !\nUne étoile sur GitHub ?</string>
     <string name="cat_action_star">Étoile</string>
@@ -413,42 +364,17 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">Langue</string>
-    <string name="language_desc">Langue de l\'app</string>
     <string name="select_language">Choisir langue</string>
-    
-    <!-- About Settings Info -->
     <string name="about_settings_title">À propos des Paramètres</string>
     <string name="about_settings_desc">Personnalisez votre expérience KGPT.\n\n• Mode sombre: Thème sombre.\n\n• Noir AMOLED: Noir pur pour OLED.\n\n• Activer les logs: Pour le dépannage.\n\n• Connexion externe: Recommandé pour l\'IA.</string>
-    
-    <!-- Logging -->
-    <string name="logging_warning_title">Activer les Logs?</string>
-    <string name="logging_warning_desc">Les logs sont désactivés. Activez-les pour exporter.</string>
-    <string name="btn_enable_logging_action">Activer les Logs</string>
     <string name="logging_enabled_toast">Logs activés. Vous pouvez exporter.</string>
-    
-    <!-- Export -->
-    <string name="export_success_title">Exportation Réussie</string>
-    <string name="export_success_desc">Logs enregistrés dans:</string>
-    <string name="root_status_label">État Root</string>
-    <string name="boot_logs_label">Logs de Démarrage</string>
-    <string name="system_logs_label">Logs Système</string>
-    <string name="crash_logs_label">Logs de Crash</string>
-    <string name="app_logs_label">Logs App</string>
-    <string name="available">Disponible</string>
-    <string name="unavailable">Non disponible</string>
-    
-    <!-- Tab Names -->
     <string name="tab_commands">Commandes</string>
     <string name="tab_triggers">Déclencheurs</string>
     <string name="tab_model">Modèle</string>
     <string name="tab_api_keys">Clés API</string>
-    
-    <!-- Dock Actions -->
     <string name="dock_add_command">Ajouter Commande</string>
     <string name="dock_how_to_use">Comment Utiliser</string>
     <string name="dock_add_app_trigger">Ajouter Déclencheur</string>
-    
-    <!-- Pattern Types -->
     <string name="pattern_settings">Paramètres</string>
     <string name="pattern_ai_trigger">Déclencheur IA</string>
     <string name="pattern_custom_command">Commande personnalisée</string>
@@ -458,8 +384,6 @@
     <string name="pattern_underline">Souligné</string>
     <string name="pattern_web_search">Recherche Web</string>
     <string name="pattern_downloader">Téléchargeur de médias</string>
-    
-    <!-- Pattern Descriptions -->
     <string name="pattern_desc_settings">Déclencheur de paramètres</string>
     <string name="pattern_desc_ai_trigger">Tapez du texte puis ajoutez $ à la fin</string>
     <string name="pattern_desc_custom_command" formatted="false">Tapez du texte puis ajoutez %commande%</string>
@@ -470,8 +394,6 @@
     <string name="pattern_desc_web_search">Tapez du texte puis ajoutez ?? pour chercher</string>
     <string name="pattern_desc_downloader">Tapez le lien puis ajoutez %1$s pour télécharger</string>
     <string name="status_disabled">Désactivé</string>
-    
-    <!-- Update Intervals -->
     <string name="interval_every_hour">Chaque heure</string>
     <string name="interval_every_6_hours">Toutes les 6 heures</string>
     <string name="interval_every_12_hours">Toutes les 12 heures</string>
@@ -480,52 +402,17 @@
     <string name="interval_every_week">Chaque semaine</string>
     <string name="interval_disabled">Désactivé</string>
     <string name="interval_every_n_hours">Toutes les %d heures</string>
-    
-    <!-- Download Path -->
     <string name="path_default_downloads_option">Par défaut (Téléchargements)</string>
     <string name="path_choose_custom">Choisir Dossier</string>
     <string name="path_internal_storage">Stockage Interne</string>
-    
-    <!-- Update Check -->
     <string name="check_for_updates">Vérifier Mises à jour</string>
     <string name="checking_updates">Vérification...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">AJOUT</string>
     <string name="tag_improved">AMÉLIORÉ</string>
     <string name="tag_fixed">CORRECTION</string>
-    <string name="changelog_1_0_0_item1">Ajout du mode Google AI Mode aux options de recherche web</string>
-    <string name="changelog_1_0_0_item2">Ajout de la fonction de sélection de langue avec support pour toutes les langues disponibles</string>
-    <string name="changelog_1_0_0_item3">Amélioration des mises en page d\'écran pour une utilisation à une main et des doigts plus grands</string>
-    <string name="changelog_1_0_0_item4">Correction de nombreux problèmes de stabilité et amélioration des performances</string>
-    <string name="changelog_1_0_0_item5">Testé et ajouté le support du clavier FUTO</string>
-    <string name="changelog_1_0_0_item6">Correction du problème de connexion avec Chutes API</string>
-    <string name="changelog_1_0_0_item7">Ajout du nouveau modèle Perplexity et support de l\'API Perplexity</string>
-    <string name="changelog_1_0_0_item8">Suppression de la restriction d\'utilisation de \"/\" pour les commandes</string>
-    <string name="changelog_1_0_0_note">Veuillez être patient car d\'autres problèmes ont été signalés au développeur, mais ils seront résolus par lots de mises à jour car il s\'agit d\'un projet d\'une seule personne. Merci de votre compréhension.</string>
-    <string name="module_restart_required_desc">Redémarrez l\'appareil pour activer le module</string>
-
-
     <string name="new_command_title">Nouvelle commande</string>
     <string name="error_prefix_empty">Le préfixe ne peut pas être vide</string>
     <string name="error_message_empty">Le message ne peut pas être vide</string>
     <string name="error_duplicate_command">Une autre commande porte le même nom</string>
-    <string name="format_edit_pattern_title">Modifier %1$s</string>
-    <string name="error_symbol_empty">Le symbole ne peut pas être vide</string>
-    <string name="error_symbol_not_allowed">Ce symbole n\'est pas autorisé</string>
-    <string name="error_pattern_creation_failed">Impossible de créer un motif pour ce symbole</string>
-    <string name="error_pattern_invalid">Motif généré invalide</string>
-    <string name="error_pattern_duplicate">Ce symbole est déjà utilisé par un autre motif</string>
-    <string name="msg_trigger_enabled">Déclencheur "%1$s" activé</string>
-    <string name="msg_trigger_disabled">Déclencheur "%1$s" désactivé</string>
-    <string name="example_preview_settings">"%1$s" ← Ouvre les paramètres</string>
-    <string name="example_preview_ai">"Bonjour%1$s" ← L\'IA répond</string>
-    <string name="example_preview_custom">"Bonjour%1$straduire%1$s" ← Traduit</string>
-    <string name="example_preview_italic">"texte%1$s" ← texte italique</string>
-    <string name="example_preview_bold">"texte%1$s" ← texte gras</string>
-    <string name="example_preview_crossout">"texte%1$s" ← barré</string>
-    <string name="example_preview_underline">"texte%1$s" ← souligné</string>
-    <string name="example_preview_default">Tapez le texte, puis ajoutez "%1$s" à la fin</string>
     <string name="msg_theme_updated">Thème mis à jour</string>
     <string name="msg_settings_restored">Paramètres restaurés</string>
     <string name="msg_requesting_root">Demande d\'accès root...</string>
@@ -564,15 +451,10 @@
     <string name="msg_pattern_create_symbol_failed">Impossible de créer un modèle pour ce symbole</string>
     <string name="msg_pattern_generated_invalid">Modèle généré invalide</string>
     <string name="msg_symbol_already_used">Ce symbole est déjà utilisé</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">Choisir et configurer le modèle</string>
     <string name="dialog_title_commands_list">Liste des commandes</string>
     <string name="settings_option_patterns_list">Liste des motifs</string>
     <string name="dialog_title_config_model">Configuration de %1$s</string>
-
-    
-    <!-- Other Settings -->
     <string name="setting_enable_logging">Activer la journalisation</string>
     <string name="setting_desc_enable_logging">Désactiver pour les performances. Vous ne pourrez pas signaler les erreurs.</string>
     <string name="setting_external_internet">Utiliser un service Internet externe</string>
@@ -593,8 +475,6 @@
     <string name="setting_desc_update_interval">Fréquence de vérification (en heures).</string>
     <string name="setting_download_path">Chemin de téléchargement</string>
     <string name="setting_desc_download_path">Chemin personnalisé pour les téléchargements.</string>
-    
-    <!-- Pattern List & Edit -->
     <string name="dialog_title_trigger_symbols">Symboles déclencheurs</string>
     <string name="no_patterns">Aucun motif</string>
     <string name="dialog_title_edit_pattern">Modifier %1$s</string>
@@ -605,10 +485,7 @@
     <string name="example_format_bold">\u0022texte%1$s\u0022 \u2192 texte gras</string>
     <string name="example_format_crossout">\u0022texte%1$s\u0022 \u2192 barré</string>
     <string name="example_format_underline">\u0022texte%1$s\u0022 \u2192 souligné</string>
-    <string name="example_default">Tapez le texte, puis ajoutez \u0022%1$s\u0022 à la fin</string>
     <string name="pattern_subtitle_trigger">Déclencheur: %1$s</string>
-    
-    <!-- PatternType Titles -->
     <string name="title_settings_trigger">Paramètres</string>
     <string name="title_ai_trigger">Déclencheur IA</string>
     <string name="title_custom_command">Commande personnalisée</string>
@@ -622,59 +499,33 @@
     <string name="btn_reset_pattern">Réinitialiser le motif</string>
     <string name="msg_reset_pattern_confirm">Réinitialiser \'%1$s\' au symbole par défaut \"%2$s\"?</string>
     <string name="field_api_key">Clé API</string>
-    <string name="field_sub_model">Sous-modèle</string>
-    <string name="field_base_url">URL de base</string>
-    <string name="field_max_tokens">Tokens maximum</string>
-    <string name="field_temperature">Température</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-        <string name="changelog_4_0_8_item1">Migration de LSPosed API 82 vers l\'API 102 moderne</string>
-    <string name="changelog_4_0_8_item2">Optimisations majeures des performances et réduction de la consommation de batterie</string>
-    <string name="changelog_4_0_8_item3">Correction de divers scénarios de gel et de blocage</string>
-    <string name="changelog_4_0_8_item4">Nouveau déclencheur clavier ajouté : Déclencheur Téléchargeur Média</string>
-    <string name="changelog_4_0_8_item5">Nouvelle action de sélection de texte ajoutée : Téléchargeur Média</string>
-    <string name="changelog_4_0_8_item6">Nouvelle fonctionnalité du Lab ajoutée : KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Recherche en direct de vidéos et YouTube ajoutée</string>
-    <string name="changelog_4_0_8_item8">Téléchargement vidéo et audio avec personnalisation des formats, de la qualité et découpage</string>
-    <string name="changelog_4_0_8_item9">Génération de commande autonome universelle pour télécharger sur n\'importe quel appareil</string>
-    <string name="changelog_note_4_0_8">Veuillez faire preuve de patience car davantage de problèmes ont été signalés au développeur, mais ils seront résolus par lots mises à jour car il s\'agit d\'un projet d\'une seule personne. Merci de votre compréhension.</string>
     <string name="msg_ai_no_response_error">Aucune réponse reçue. L\'IA a renvoyé un contenu vide.\nIndice : Vous utilisez peut-être un déclencheur/commande non enregistré.</string>
-
-    <!-- YouTube Search & Multi-link Selection (French) -->
     <string name="title_youtube_search">Recherche YouTube</string>
     <string name="desc_youtube_search">Résultats pour : %1$s</string>
-    <string name="hint_search_or_url">Rechercher sur YouTube ou coller le lien...</string>
     <string name="loading_search_results">Recherche sur YouTube...</string>
     <string name="loading_more_results">Chargement d\'autres résultats...</string>
     <string name="no_search_results">Aucun résultat trouvé pour \"%1$s\"</string>
     <string name="title_select_links">Sélectionner les médias à télécharger</string>
     <string name="desc_select_links">%1$d liens trouvés dans le texte</string>
     <string name="action_select_all">Tout sélectionner</string>
-    <string name="action_deselect_all">Tout désélectionner</string>
     <string name="btn_download_selected">Télécharger sélectionnés (%1$d)</string>
     <string name="btn_download_single">Télécharger</string>
     <string name="selected_counter">%1$d sur %2$d sélectionnés</string>
     <string name="toast_no_items_selected">Veuillez sélectionner au moins un élément à télécharger</string>
     <string name="batch_download_started">Téléchargement de %1$d éléments commencé</string>
     <string name="btn_load_more_results">Afficher 5 autres résultats...</string>
-    <string name="label_search_results">Résultats de recherche</string>
     <string name="dialog_title_cut">Couper et rogner le média</string>
     <string name="desc_cut_media">Faites glisser les curseurs pour définir le début et la fin</string>
-    <string name="label_start_time_val">Début : %1$s</string>
-    <string name="label_end_time_val">Fin : %1$s</string>
     <string name="label_clip_duration_val">Durée : %1$s</string>
     <string name="btn_apply_cut">Enregistrer</string>
     <string name="btn_reset_cut">Réinitialiser (Complet)</string>
     <string name="preset_first_30s">Premières 30s</string>
     <string name="preset_first_60s">Première 1 min</string>
     <string name="preset_full_media">Tout</string>
-    <string name="default_video_title">Vidéo YouTube</string>
-    <string name="default_media_title">Lien média</string>
 </resources>

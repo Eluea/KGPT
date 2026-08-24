@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Ana Sayfa</string>
-    <string name="nav_models">Modeller</string>
-    <string name="nav_api_keys">API Anahtarları</string>
-    <string name="nav_settings">Ayarlar</string>
     <string name="module_active">Modül Aktif</string>
     <string name="module_inactive">Modül Devre Dışı</string>
     <string name="module_active_desc">KGPT çalışıyor</string>
     <string name="module_inactive_desc">LSPosed Yöneticisinde Etkinleştir</string>
     <string name="quick_actions">Hızlı işlemler</string>
-    <string name="current_model">Mevcut model</string>
     <string name="ai_invocation">Yapay Zeka Çağırma</string>
-    <string name="ai_invocation_desc">Komutları ve tetikleyicileri yapılandırın</string>
     <string name="how_to_use">Nasıl Kullanılır</string>
     <string name="how_to_use_desc">KGPT kullanımını öğrenin</string>
-    <string name="ai_models">Yapay Zeka Modelleri</string>
     <string name="select_model">Modelini seç</string>
     <string name="model_config">Model Yapılandırması</string>
     <string name="sub_model">Alt Model</string>
     <string name="base_url">Temel URL</string>
-    <string name="advanced_settings">Gelişmiş ayarlar</string>
     <string name="max_tokens">Maks Jeton</string>
     <string name="temperature">Sıcaklık (Temperature)</string>
     <string name="save_config">Yapılandırmayı Kaydet</string>
-    <string name="api_keys">API Anahtarları</string>
-    <string name="manage_api_keys">Anahtarları Yönet</string>
     <string name="enter_api_key">API Anahtarı Girin</string>
     <string name="save">Kaydet</string>
-    <string name="api_key_info">Anahtarlar cihazınızda güvenle saklanır.</string>
-    <string name="settings">Ayarlar</string>
-    <string name="appearance">Görünüm</string>
     <string name="dark_mode">Karanlık Mod</string>
     <string name="follow_system">Sistemi takip et</string>
-    <string name="amoled_dark">AMOLED Siyahı</string>
-    <string name="amoled_desc">OLED ekranlar için saf siyah</string>
     <string name="blur_control">Bulanıklık Kontrolü</string>
     <string name="blur_control_desc">Arka plan bulanıklığını yönet</string>
     <string name="blur_enabled">Bulanıklığı Etkinleştir</string>
@@ -45,23 +30,9 @@
     <string name="general">Genel</string>
     <string name="enable_logging">Günlüklemeyi Etkinleştir</string>
     <string name="logging_desc">Daha iyi performans için devre dışı bırakın</string>
-    <string name="external_internet">Harici İnternet</string>
-    <string name="external_internet_desc">Stabilite için önerilir</string>
-    <string name="backup_restore">Yedekle ve Geri Yükle</string>
-    <string name="export_backup">Yedeği Dışa Aktar</string>
-    <string name="export_backup_desc">Ayarları dosyaya kaydet</string>
-    <string name="import_backup">Yedeği İçe Aktar</string>
-    <string name="import_backup_desc">Dosyadan ayarları geri yükle</string>
-    <string name="about">Hakkında</string>
-    <string name="config_saved">Yapılandırma kaydedildi</string>
-    <string name="api_key_saved">API anahtarı kaydedildi</string>
-    <string name="api_key_removed">API anahtarı silindi</string>
     <string name="backup_exported">Dışa aktarma başarılı</string>
-    <string name="backup_imported">İçe aktarma başarılı</string>
     <string name="export_failed">Dışa aktarma başarısız</string>
     <string name="import_failed">İçe aktarma başarısız</string>
-    <string name="themed_icon_title">Temalı Simge</string>
-    <string name="themed_icon_desc">Uyarlanabilir simge (Material You)</string>
     <string name="about_home_title">Ana Sayfa Hakkında</string>
     <string name="about_home_description">KGPT\'ye Hoş Geldiniz!\n\n\u2022 Durum: Xposed modülünün etkin olup olmadığını gösterir.\n\n\u2022 Model: Aktif yapay zekayı gösterir.\n\n\u2022 Çağırma: Tetikleyicileri yapılandırın.\n\n\u2022 Rehber: Kullanım ipuçları.</string>
     <string name="built_in_indicator">  \u2022  Yerleşik</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">Bağlantı gerekli.</string>
     <string name="btn_download">İndir</string>
     <string name="btn_later">Sonra</string>
-    <string name="btn_install">Kur</string>
     <string name="btn_try_again">Tekrar dene</string>
     <string name="btn_close">Kapat</string>
     <string name="btn_ok">Tamam</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">Yükleniyor...</string>
     <string name="title_add_api_key">Anahtar Ekle</string>
     <string name="desc_add_api_key">Sağlayıcı seç.</string>
-    <string name="title_add_actions">Eylemler Ekle</string>
-    <string name="desc_add_actions">Eylemleri seç</string>
     <string name="title_logging_disabled">Günlükler Devre Dışı</string>
     <string name="desc_logging_disabled">Ayarlardan günlükleri etkinleştirin.</string>
     <string name="btn_enable_logging">Günlükleri Aç</string>
     <string name="title_check_frequency">Sıklık</string>
     <string name="desc_check_frequency">Ne sıklıkla kontrol edilsin?</string>
     <string name="title_choose_model">Model Seç</string>
-    <string name="label_select_provider_hint">Sağlayıcı Seç</string>
-    <string name="hint_select_provider">Sağlayıcı</string>
     <string name="placeholder_search_engine">Motor</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">İsim</string>
     <string name="placeholder_changelog_desc">Açıklama</string>
     <string name="tag_add">Yeni</string>
     <string name="configure_model_title">Yapılandır</string>
-    <string name="advanced_settings_title">Gelişmiş</string>
     <string name="edit_command_title">Komutu Düzenle</string>
     <string name="hint_command_prefix">Önek</string>
     <string name="hint_prompt">İstem</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">Uygulamayı açmak için yaz</string>
     <string name="example_trigger_word">Ör: \'chrome\'</string>
     <string name="msg_no_items">Öğe yok</string>
-    <string name="title_add_trigger_symbol">Sembol Ekle</string>
-    <string name="desc_add_trigger_symbol">1-3 karakter</string>
-    <string name="hint_trigger_example">Ör: @@</string>
     <string name="status_free">Ücretsiz</string>
     <string name="btn_save_key">Kaydet</string>
     <string name="btn_get_key">Anahtar Al</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">İsim</string>
     <string name="placeholder_description">Açıklama</string>
     <string name="placeholder_action">Eylem</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">Hazır veya Özel</string>
     <string name="hint_custom_model">Özel Model</string>
     <string name="title_app_triggers">Uygulama Tetikleyicileri</string>
-    <string name="lab_badge">Lab</string>
-    <string name="app_triggers_intro">Yazarak uygulama aç</string>
     <string name="btn_enable_app_triggers">Tetikleyicileri Aç</string>
     <string name="desc_enable_app_triggers">Kelime -> Uygulamayı Aç</string>
     <string name="msg_no_triggers">Tetikleyici yok.</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">Sistem mesajı (Opsiyonel)</string>
     <string name="help_command_usage">Kullanım: metin /komut + sembol</string>
     <string name="title_edit_pattern">Deseni Düzenle</string>
-    <string name="desc_edit_pattern">Özel Regex</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">Varsayılan: $prompt$</string>
     <string name="title_other_settings">Diğer</string>
     <string name="enable_trigger">Etkinleştir</string>
     <string name="hint_description">Açıklama</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">Kış Modu</string>
     <string name="winter_mode_desc">Kar efekti</string>
     <string name="title_settings_backup">Yedekleme</string>
-    <string name="desc_settings_backup">Verileri kaydet</string>
     <string name="title_settings_restore">Geri Yükle</string>
     <string name="desc_settings_restore">Verileri yükle</string>
     <string name="support_group">Destek Grubu</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">Güncellemeleri kontrol et</string>
     <string name="open_in_browser">Tarayıcıda Aç</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Miyav!</string>
     <string name="cat_caught_msg">Beni buldun!\nGitHub\'da bir yıldız?</string>
     <string name="cat_action_star">Yıldız Ver</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6sn</string>
     <string name="language">Dil</string>
-    <string name="language_desc">Uygulama dili</string>
     <string name="select_language">Dil Seç</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">Ayarlar Hakkında</string>
     <string name="about_settings_desc">KGPT deneyiminizi özelleştirin.\n\n• Karanlık Mod: Koyu tema.\n\n• AMOLED: OLED için saf siyah.\n\n• Günlükler: Hata ayıklama için.\n\n• Harici: YZ için önerilir.</string>
-    <string name="logging_warning_title">Günlükleri Aç?</string>
-    <string name="logging_warning_desc">Günlükler kapalı. Dışa aktarmak için açın.</string>
-    <string name="btn_enable_logging_action">Günlükleri Aç</string>
     <string name="logging_enabled_toast">Günlükler açıldı. Dışa aktarabilirsiniz.</string>
-    <string name="export_success_title">Dışa Aktarma Başarılı</string>
-    <string name="export_success_desc">Günlükler kaydedildi:</string>
-    <string name="root_status_label">Root Durumu</string>
-    <string name="boot_logs_label">Önyükleme Günlükleri</string>
-    <string name="system_logs_label">Sistem Günlükleri</string>
-    <string name="crash_logs_label">Çökme Günlükleri</string>
-    <string name="app_logs_label">Uygulama Günlükleri</string>
-    <string name="available">Mevcut</string>
-    <string name="unavailable">Mevcut Değil</string>
     <string name="tab_commands">Komutlar</string>
     <string name="tab_triggers">Tetikleyiciler</string>
     <string name="tab_model">Model</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">Dahili Depolama</string>
     <string name="check_for_updates">Güncellemeleri Kontrol Et</string>
     <string name="checking_updates">Kontrol ediliyor...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">EKLENDİ</string>
     <string name="tag_improved">GELİŞTİRİLDİ</string>
     <string name="tag_fixed">DÜZELTİLDİ</string>
-    <string name="changelog_1_0_0_item1">Web arama seçeneklerine Google AI Mode eklendi</string>
-    <string name="changelog_1_0_0_item2">Tüm mevcut dilleri destekleyen dil seçim özelliği eklendi</string>
-    <string name="changelog_1_0_0_item3">Tek elle kullanım ve büyük parmaklar için ekran düzenleri iyileştirildi</string>
-    <string name="changelog_1_0_0_item4">Birçok kararlılık sorunu düzeltildi ve performans iyileştirildi</string>
-    <string name="changelog_1_0_0_item5">FUTO klavyesi test edildi ve desteği eklendi</string>
-    <string name="changelog_1_0_0_item6">Chutes API bağlantı sorunu düzeltildi</string>
-    <string name="changelog_1_0_0_item7">Yeni Perplexity modeli ve Perplexity API desteği eklendi</string>
-    <string name="changelog_1_0_0_item8">Komutlar için \"/\" kısıtlaması kaldırıldı</string>
-    <string name="changelog_1_0_0_note">Lütfen sabırlı olun, geliştirici daha fazla sorun bildirildi ancak bu tek kişilik bir proje olduğu için güncellemeler toplu olarak çözülecektir. Anlayışınız için teşekkürler.</string>
-    <string name="module_restart_required_desc">Modülü etkinleştirmek için cihazı yeniden başlatın</string>
-
     <string name="new_command_title">Yeni Komut</string>
     <string name="error_prefix_empty">Önek boş olamaz</string>
     <string name="error_message_empty">Mesaj boş olamaz</string>
     <string name="error_duplicate_command">Aynı isme sahip başka bir komut var</string>
-    <string name="format_edit_pattern_title">%1$s Düzenle</string>
-    <string name="error_symbol_empty">Sembol boş olamaz</string>
-    <string name="error_symbol_not_allowed">Bu sembole izin verilmiyor</string>
-    <string name="error_pattern_creation_failed">Bu sembol için desen oluşturulamadı</string>
-    <string name="error_pattern_invalid">Geçersiz desen oluşturuldu</string>
-    <string name="error_pattern_duplicate">Bu sembol zaten başka bir desen tarafından kullanılıyor</string>
-    <string name="msg_trigger_enabled">Tetikleyici "%1$s" etkin</string>
-    <string name="msg_trigger_disabled">Tetikleyici "%1$s" devre dışı</string>
-    <string name="example_preview_settings">"%1$s" ← Ayarları açar</string>
-    <string name="example_preview_ai">"Merhaba%1$s" ← YZ yanıtlar</string>
-    <string name="example_preview_custom">"Merhaba%1$sçevir%1$s" ← Çevirir</string>
-    <string name="example_preview_italic">"metin%1$s" ← italik</string>
-    <string name="example_preview_bold">"metin%1$s" ← kalın</string>
-    <string name="example_preview_crossout">"metin%1$s" ← üstü çizili</string>
-    <string name="example_preview_underline">"metin%1$s" ← altı çizili</string>
-    <string name="example_preview_default">Metni yazın, ardından sonuna "%1$s" ekleyin</string>
     <string name="msg_theme_updated">Tema güncellendi</string>
     <string name="msg_settings_restored">Ayarlar geri yüklendi</string>
     <string name="msg_requesting_root">Root erişimi isteniyor...</string>
@@ -535,8 +444,6 @@
     <string name="msg_pattern_create_symbol_failed">Bu sembol için desen oluşturulamadı</string>
     <string name="msg_pattern_generated_invalid">Geçersiz desen oluşturuldu</string>
     <string name="msg_symbol_already_used">Bu sembol zaten kullanılıyor</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">Model seç ve yapılandır</string>
     <string name="dialog_title_commands_list">Komut listesi</string>
     <string name="settings_option_patterns_list">Desen listesi</string>
@@ -571,7 +478,6 @@
     <string name="example_format_bold">\u0022metin%1$s\u0022 \u2192 kalın metin</string>
     <string name="example_format_crossout">\u0022metin%1$s\u0022 \u2192 üstü çizili</string>
     <string name="example_format_underline">\u0022metin%1$s\u0022 \u2192 altı çizili</string>
-    <string name="example_default">Metni yazın, sonra \u0022%1$s\u0022 ekleyin</string>
     <string name="pattern_subtitle_trigger">Tetikleyici: %1$s</string>
     <string name="title_settings_trigger">Ayarlar</string>
     <string name="title_ai_trigger">AI tetikleyici</string>
@@ -584,28 +490,11 @@
     <string name="btn_reset_pattern">Deseni sıfırla</string>
     <string name="msg_reset_pattern_confirm">\'%1$s\' varsayılan sembole \"%2$s\" sıfırlansın mı?</string>
     <string name="field_api_key">API Anahtarı</string>
-    <string name="field_sub_model">Alt model</string>
-    <string name="field_base_url">Temel URL</string>
-    <string name="field_max_tokens">Maks. token</string>
-    <string name="field_temperature">Sıcaklık</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-        <string name="changelog_4_0_8_item1">LSPosed API 82\'den modern API 102\'ye geçildi</string>
-    <string name="changelog_4_0_8_item2">Büyük performans optimizasyonları ve azaltılmış pil tüketimi</string>
-    <string name="changelog_4_0_8_item3">Çeşitli donma ve kilitlenme senaryoları düzeltildi</string>
-    <string name="changelog_4_0_8_item4">Yeni klavye tetikleyicisi eklendi: Medya İndirici Tetikleyici</string>
-    <string name="changelog_4_0_8_item5">Yeni metin seçimi eylemi eklendi: Medya İndirici</string>
-    <string name="changelog_4_0_8_item6">Yeni Laboratuvar özelliği eklendi: KGPT Medya İndirici</string>
-    <string name="changelog_4_0_8_item7">Canlı YouTube ve video arama özelliği eklendi</string>
-    <string name="changelog_4_0_8_item8">Özel formatlar, kalite ve kırpma ile Video ve Ses indirme desteği</string>
-    <string name="changelog_4_0_8_item9">Herhangi bir cihazda indirmek için Evrensel Bağımsız Komut kopyalama özelliği</string>
-    <string name="changelog_note_4_0_8">Geliştiriciye daha fazla sorun bildirildiğinden lütfen sabırlı olun, bu tek kişilik bir proje olduğu için güncellemeler gruplar halinde gelecektir. Anlayışınız için teşekkürler.</string>
     <string name="msg_ai_no_response_error">Yanıt alınamadı. Yapay zeka boş içerik döndürdü.\nİpucu: Kayıtsız bir tetikleyici/komut kullanıyor olabilirsiniz.</string>
 </resources>

@@ -167,7 +167,7 @@ public class InvocationCommandsFragment extends Fragment {
 
         android.widget.TextView tvTitle = dialogView.findViewById(R.id.tv_dialog_title);
         if (tvTitle != null)
-            tvTitle.setText("Edit Command");
+            tvTitle.setText(R.string.title_edit_command);
 
         EditText etCommandName = dialogView.findViewById(R.id.et_command_name);
         EditText etSystemMessage = dialogView.findViewById(R.id.et_system_message);
@@ -295,7 +295,7 @@ public class InvocationCommandsFragment extends Fragment {
         MaterialButton btnCancel = sheetView.findViewById(R.id.btn_cancel);
         MaterialButton btnDelete = sheetView.findViewById(R.id.btn_delete);
 
-        tvTitle.setText("Delete Command");
+        tvTitle.setText(R.string.title_delete_command);
         tvMessage.setText("Are you sure you want to delete '/" + command.getCommandPrefix() + "'?");
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -330,4 +330,10 @@ public class InvocationCommandsFragment extends Fragment {
         intent.putExtra("tn.eluea.kgpt.pattern.LIST", patternsRaw);
         requireContext().sendBroadcast(intent);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (commandsAdapter != null) commandsAdapter.notifyDataSetChanged(); // refresh trigger-symbol examples
+    }
+
 }

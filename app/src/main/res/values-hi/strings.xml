@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">केजीपीटी</string>
-    <string name="nav_home">होम</string>
-    <string name="nav_models">मॉडल</string>
-    <string name="nav_api_keys">एपीआई कुंजी</string>
-    <string name="nav_settings">सेटिंग्स</string>
     <string name="module_active">मॉड्यूल सक्रिय</string>
     <string name="module_inactive">मॉड्यूल निष्क्रिय</string>
     <string name="module_active_desc">KGPT काम कर रहा है</string>
     <string name="module_inactive_desc">LSPosed प्रबंधक में सक्षम करें</string>
     <string name="quick_actions">त्वरित क्रियाएँ</string>
-    <string name="current_model">वर्तमान मॉडल</string>
     <string name="ai_invocation">हवा आह्वान</string>
-    <string name="ai_invocation_desc">कमांड और ट्रिगर कॉन्फ़िगर करें</string>
     <string name="how_to_use">कैसे उपयोग करें</string>
     <string name="how_to_use_desc">जानें केजीपीटी कैसे उपयोग करें</string>
-    <string name="ai_models">एआई मॉडल</string>
     <string name="select_model">अपना मॉडल चुनें</string>
     <string name="model_config">मॉडल कॉन्फ़िगरेशन</string>
     <string name="sub_model">उप मॉडल</string>
     <string name="base_url">बेस यूआरएल</string>
-    <string name="advanced_settings">उन्नत सेटिंग्स</string>
     <string name="max_tokens">अधिकतम टोकन</string>
     <string name="temperature">तापमान (Temperature)</string>
     <string name="save_config">कॉन्फ़िगरेशन सहेजें</string>
-    <string name="api_keys">एपीआई कुंजी</string>
-    <string name="manage_api_keys">एपीआई कुंजी प्रबंधित करें</string>
     <string name="enter_api_key">एपीआई कुंजी दर्ज करें</string>
     <string name="save">सहेजें</string>
-    <string name="api_key_info">कुंजी आपके डिवाइस पर सुरक्षित रूप से संग्रहीत हैं।</string>
-    <string name="settings">सेटिंग्स</string>
-    <string name="appearance">दिखावट</string>
     <string name="dark_mode">डार्क मोड</string>
     <string name="follow_system">सिस्टम का पालन करें</string>
-    <string name="amoled_dark">एमोलेड ब्लैक</string>
-    <string name="amoled_desc">ओएलईडी स्क्रीन के लिए शुद्ध काला</string>
     <string name="blur_control">ब्लर नियंत्रण</string>
     <string name="blur_control_desc">पृष्ठभूमि ब्लर प्रबंधित करें</string>
     <string name="blur_enabled">ब्लर सक्षम करें</string>
@@ -45,23 +30,9 @@
     <string name="general">सामान्य</string>
     <string name="enable_logging">लॉगिंग सक्षम करें</string>
     <string name="logging_desc">बेहतर प्रदर्शन के लिए अक्षम करें</string>
-    <string name="external_internet">बाहरी इंटरनेट</string>
-    <string name="external_internet_desc">स्थिरता के लिए अनुशंसित</string>
-    <string name="backup_restore">बैकअप और रिस्टोर</string>
-    <string name="export_backup">बैकअप निर्यात करें</string>
-    <string name="export_backup_desc">सेटिंग्स को फ़ाइल में सहेजें</string>
-    <string name="import_backup">बैकअप आयात करें</string>
-    <string name="import_backup_desc">फ़ाइल से सेटिंग्स पुनर्स्थापित करें</string>
-    <string name="about">के बारे में</string>
-    <string name="config_saved">कॉन्फ़िगरेशन सहेजा गया</string>
-    <string name="api_key_saved">एपीआई कुंजी सहेजी गई</string>
-    <string name="api_key_removed">एपीआई कुंजी हटाई गई</string>
     <string name="backup_exported">निर्यात सफल</string>
-    <string name="backup_imported">आयात सफल</string>
     <string name="export_failed">निर्यात विफल</string>
     <string name="import_failed">आयात विफल</string>
-    <string name="themed_icon_title">थीम वाला आइकन</string>
-    <string name="themed_icon_desc">अनुकूली आइकन (मैटेरियल यू)</string>
     <string name="about_home_title">होम के बारे में</string>
     <string name="about_home_description">KGPT में आपका स्वागत है!\n\n\u2022 स्थिति: क्या एक्सपोज़्ड मॉड्यूल सक्रिय है।\n\n\u2022 मॉडल: वर्तमान में सक्रिय एआई दिखाता है।\n\n\u2022 आह्वान: ट्रिगर कॉन्फ़िगर करें।\n\n\u2022 गाइड: उपयोग युक्तियाँ।</string>
     <string name="built_in_indicator">  \u2022  इनबिल्ट</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">कनेक्शन आवश्यक है।</string>
     <string name="btn_download">डाउनलोड</string>
     <string name="btn_later">बाद में</string>
-    <string name="btn_install">इंस्टॉल</string>
     <string name="btn_try_again">पुनः प्रयास करें</string>
     <string name="btn_close">बंद करें</string>
     <string name="btn_ok">ठीक है</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">लोड हो रहा है...</string>
     <string name="title_add_api_key">कुंजी जोड़ें</string>
     <string name="desc_add_api_key">प्रदाता चुनें।</string>
-    <string name="title_add_actions">क्रियाएं जोड़ें</string>
-    <string name="desc_add_actions">क्रियाएं चुनें</string>
     <string name="title_logging_disabled">लॉग अक्षम</string>
     <string name="desc_logging_disabled">सेटिंग्स में लॉग सक्षम करें।</string>
     <string name="btn_enable_logging">लॉग सक्षम करें</string>
     <string name="title_check_frequency">आवृत्ति</string>
     <string name="desc_check_frequency">कितनी बार जांचें?</string>
     <string name="title_choose_model">मॉडल चुनें</string>
-    <string name="label_select_provider_hint">प्रदाता चुनें</string>
-    <string name="hint_select_provider">प्रदाता</string>
     <string name="placeholder_search_engine">इंजन</string>
     <string name="placeholder_model_name">जेमिनी</string>
     <string name="placeholder_item_name">नाम</string>
     <string name="placeholder_changelog_desc">विवरण</string>
     <string name="tag_add">नया</string>
     <string name="configure_model_title">कॉन्फ़िगर करें</string>
-    <string name="advanced_settings_title">उन्नत</string>
     <string name="edit_command_title">कमांड संपादित करें</string>
     <string name="hint_command_prefix">उपसर्ग</string>
     <string name="hint_prompt">प्रॉम्प्ट</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">ऐप खोलने के लिए टाइप करें</string>
     <string name="example_trigger_word">उदा: \'chrome\'</string>
     <string name="msg_no_items">कोई आइटम नहीं</string>
-    <string name="title_add_trigger_symbol">प्रतीक जोड़ें</string>
-    <string name="desc_add_trigger_symbol">1-3 अक्षर</string>
-    <string name="hint_trigger_example">उदा: @@</string>
     <string name="status_free">निःशुल्क</string>
     <string name="btn_save_key">सहेजें</string>
     <string name="btn_get_key">कुंजी प्राप्त करें</string>
     <string name="placeholder_provider_chatgpt">चैटजीपीटी</string>
-    <string name="placeholder_action_name">नाम</string>
     <string name="placeholder_description">विवरण</string>
     <string name="placeholder_action">क्रिया</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">प्रीसेट या कस्टम</string>
     <string name="hint_custom_model">कस्टम मॉडल</string>
     <string name="title_app_triggers">ऐप ट्रिगर</string>
-    <string name="lab_badge">लैब</string>
-    <string name="app_triggers_intro">नाम से ऐप खोलें</string>
     <string name="btn_enable_app_triggers">ट्रिगर सक्षम करें</string>
     <string name="desc_enable_app_triggers">कीवर्ड -> ऐप खोलें</string>
     <string name="msg_no_triggers">कोई ट्रिगर नहीं।</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">सिस्टम संदेश (वैकल्पिक)</string>
     <string name="help_command_usage">उपयोग: पाठ /cmd + प्रतीक</string>
     <string name="title_edit_pattern">पैटर्न संपादित करें</string>
-    <string name="desc_edit_pattern">कस्टम रेगेक्स</string>
-    <string name="hint_regex_pattern">रेगेक्स</string>
-    <string name="help_regex_default">डिफ़ॉल्ट: $prompt$</string>
     <string name="title_other_settings">अन्य</string>
     <string name="enable_trigger">सक्षम</string>
     <string name="hint_description">विवरण</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">विंटर मोड</string>
     <string name="winter_mode_desc">बर्फ प्रभाव</string>
     <string name="title_settings_backup">बैकअप</string>
-    <string name="desc_settings_backup">डेटा सहेजें</string>
     <string name="title_settings_restore">रिस्टोर</string>
     <string name="desc_settings_restore">डेटा लोड करें</string>
     <string name="support_group">समर्थन समूह</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">अपडेट की जांच करें</string>
     <string name="open_in_browser">ब्राउज़र में खोलें</string>
     <string name="hint_enter_url">यूआरएल</string>
-    <string name="duckduckgo">डकडकगो</string>
     <string name="cat_caught_title">म्याऊ!</string>
     <string name="cat_caught_msg">तुमने मुझे ढूंढ लिया!\nगिटहब पर स्टार दें?</string>
     <string name="cat_action_star">स्टार दें</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">भाषा</string>
-    <string name="language_desc">ऐप भाषा</string>
     <string name="select_language">भाषा चुनें</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">सेटिंग्स के बारे में</string>
     <string name="about_settings_desc">KGPT को कस्टमाइज़ करें।\n\n• डार्क: डार्क थीम।\n\n• AMOLED: OLED के लिए काला।\n\n• लॉगिंग: डिबग के लिए।\n\n• बाहरी: AI के लिए।</string>
-    <string name="logging_warning_title">लॉगिंग सक्षम करें?</string>
-    <string name="logging_warning_desc">लॉगिंग अक्षम है। निर्यात करने के लिए सक्षम करें।</string>
-    <string name="btn_enable_logging_action">लॉगिंग सक्षम करें</string>
     <string name="logging_enabled_toast">लॉगिंग सक्षम है। आप निर्यात कर सकते हैं।</string>
-    <string name="export_success_title">निर्यात सफल</string>
-    <string name="export_success_desc">लॉग यहाँ सहेजे गए:</string>
-    <string name="root_status_label">रूट स्थिति</string>
-    <string name="boot_logs_label">बूट लॉग</string>
-    <string name="system_logs_label">सिस्टम लॉग</string>
-    <string name="crash_logs_label">क्रैश लॉग</string>
-    <string name="app_logs_label">ऐप लॉग</string>
-    <string name="available">उपलब्ध</string>
-    <string name="unavailable">अनुपलब्ध</string>
     <string name="tab_commands">कमांड</string>
     <string name="tab_triggers">ट्रिगर</string>
     <string name="tab_model">मॉडल</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">आंतरिक संग्रहण</string>
     <string name="check_for_updates">अपडेट देखें</string>
     <string name="checking_updates">जाँच हो रही है...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">जोड़ा</string>
     <string name="tag_improved">सुधार</string>
     <string name="tag_fixed">ठीक किया</string>
-    <string name="changelog_1_0_0_item1">वेब सर्च विकल्पों में Google AI Mode जोड़ा गया</string>
-    <string name="changelog_1_0_0_item2">सभी उपलब्ध भाषाओं के समर्थन के साथ भाषा चयन सुविधा जोड़ी गई</string>
-    <string name="changelog_1_0_0_item3">एक हाथ के उपयोग और बड़ी उंगलियों के लिए स्क्रीन लेआउट में सुधार किया गया</string>
-    <string name="changelog_1_0_0_item4">कई स्थिरता समस्याओं को ठीक किया और प्रदर्शन में सुधार किया</string>
-    <string name="changelog_1_0_0_item5">FUTO कीबोर्ड का परीक्षण किया और समर्थन जोड़ा</string>
-    <string name="changelog_1_0_0_item6">Chutes API के साथ कनेक्शन समस्या को ठीक किया</string>
-    <string name="changelog_1_0_0_item7">नया Perplexity मॉडल और Perplexity API समर्थन जोड़ा</string>
-    <string name="changelog_1_0_0_item8">कमांड के लिए \"/\" प्रतिबंध हटाया गया</string>
-    <string name="changelog_1_0_0_note">कृपया धैर्य रखें क्योंकि डेवलपर को अधिक समस्याओं की रिपोर्ट की गई है, लेकिन यह एक व्यक्ति की परियोजना होने के कारण अपडेट के बैच में हल की जाएगी। आपकी समझ के लिए धन्यवाद।</string>
-    <string name="module_restart_required_desc">मॉड्यूल को सक्रिय करने के लिए डिवाइस को रिबूट करें</string>
-
     <string name="new_command_title">नई कमांड</string>
     <string name="error_prefix_empty">उपसर्ग खाली नहीं हो सकता</string>
     <string name="error_message_empty">संदेश खाली नहीं हो सकता</string>
     <string name="error_duplicate_command">समान नाम वाला एक और कमांड मौजूद है</string>
-    <string name="format_edit_pattern_title">%1$s संपादित करें</string>
-    <string name="error_symbol_empty">प्रतीक खाली नहीं हो सकता</string>
-    <string name="error_symbol_not_allowed">यह प्रतीक अनुमत नहीं है</string>
-    <string name="error_pattern_creation_failed">इस प्रतीक के लिए पैटर्न नहीं बनाया जा सका</string>
-    <string name="error_pattern_invalid">अमान्य पैटर्न उत्पन्न हुआ</string>
-    <string name="error_pattern_duplicate">यह प्रतीक पहले से ही किसी अन्य पैटर्न द्वारा उपयोग किया जा रहा है</string>
-    <string name="msg_trigger_enabled">ट्रिगर "%1$s" सक्षम है</string>
-    <string name="msg_trigger_disabled">ट्रिगर "%1$s" अक्षम है</string>
-    <string name="example_preview_settings">"%1$s" ← सेटिंग्स खोलें</string>
-    <string name="example_preview_ai">"नमस्ते%1$s" ← AI जवाब देता है</string>
-    <string name="example_preview_custom">"नमस्ते%1$sअनुवाद%1$s" ← अनुवाद करता है</string>
-    <string name="example_preview_italic">"पाठ%1$s" ← इटैलिक</string>
-    <string name="example_preview_bold">"पाठ%1$s" ← बोल्ड</string>
-    <string name="example_preview_crossout">"पाठ%1$s" ← कटा हुआ</string>
-    <string name="example_preview_underline">"पाठ%1$s" ← रेखांकित</string>
-    <string name="example_preview_default">पाठ टाइप करें, फिर अंत में "%1$s" जोड़ें</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">यह प्रतीक पहले से उपयोग में है</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">मॉडल चुनें और कॉन्फ़िगर करें</string>
     <string name="dialog_title_commands_list">कमांड सूची</string>
     <string name="settings_option_patterns_list">पैटर्न सूची</string>
     <string name="dialog_title_config_model">%1$s कॉन्फ़िगर करें</string>
-
     <string name="setting_enable_logging">लॉगिंग सक्षम करें</string>
     <string name="setting_desc_enable_logging">प्रदर्शन के लिए अक्षम करें। आप त्रुटियां रिपोर्ट नहीं कर पाएंगे।</string>
     <string name="setting_external_internet">बाहरी इंटरनेट सेवा उपयोग करें</string>
@@ -560,7 +466,6 @@
     <string name="example_format_bold">\u0022टेक्स्ट%1$s\u0022 \u2192 बोल्ड टेक्स्ट</string>
     <string name="example_format_crossout">\u0022टेक्स्ट%1$s\u0022 \u2192 स्ट्राइकथ्रू</string>
     <string name="example_format_underline">\u0022टेक्स्ट%1$s\u0022 \u2192 अंडरलाइन</string>
-    <string name="example_default">टेक्स्ट टाइप करें, फिर अंत में \u0022%1$s\u0022 जोड़ें</string>
     <string name="pattern_subtitle_trigger">ट्रिगर: %1$s</string>
     <string name="title_settings_trigger">सेटिंग्स</string>
     <string name="title_ai_trigger">AI ट्रिगर</string>
@@ -573,17 +478,10 @@
     <string name="btn_reset_pattern">पैटर्न रीसेट करें</string>
     <string name="msg_reset_pattern_confirm">\'%1$s\' को डिफ़ॉल्ट प्रतीक \"%2$s\" पर रीसेट करें?</string>
     <string name="field_api_key">API कुंजी</string>
-    <string name="field_sub_model">उप-मॉडल</string>
-    <string name="field_base_url">बेस URL</string>
-    <string name="field_max_tokens">अधिकतम टोकन</string>
-    <string name="field_temperature">तापमान</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
@@ -598,15 +496,5 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">LSPosed API 82 से आधुनिक API 102 में अपग्रेड किया गया</string>
-    <string name="changelog_4_0_8_item2">प्रदर्शन में भारी सुधार और बैटरी की खपत में कमी</string>
-    <string name="changelog_4_0_8_item3">ऐप फ्रीज और हैंग होने की विभिन्न समस्याओं का समाधान</string>
-    <string name="changelog_4_0_8_item4">नया कीबोर्ड ट्रिगर जोड़ा गया: मीडिया डाउनलोडर ट्रिगर</string>
-    <string name="changelog_4_0_8_item5">नया टेक्स्ट चयन एक्शन जोड़ा गया: मीडिया डाउनलोडर</string>
-    <string name="changelog_4_0_8_item6">नया लैब फीचर जोड़ा गया: KGPT मीडिया डाउनलोडर</string>
-    <string name="changelog_4_0_8_item7">लाइव YouTube और वीडियो खोज फीचर जोड़ा गया</string>
-    <string name="changelog_4_0_8_item8">कस्टम फॉर्मेट, गुणवत्ता और ट्रिमिंग के साथ वीडियो और ऑडियो डाउनलोडिंग</string>
-    <string name="changelog_4_0_8_item9">किसी भी डिवाइस पर डाउनलोड करने के लिए यूनिवर्सल कमांड कॉपी करने की सुविधा</string>
-    <string name="changelog_note_4_0_8">कृपया धैर्य रखें क्योंकि डेवलपर को अधिक समस्याओं की सूचना दी गई है, लेकिन उन्हें अपडेट के बैचों में हल किया जाएगा क्योंकि यह एक-व्यक्ति परियोजना है। आपकी समझ के लिए धन्यवाद।</string>
     <string name="msg_ai_no_response_error">कोई प्रतिक्रिया प्राप्त नहीं हुई। AI ने खाली सामग्री लौटाई।\nसंकेत: आप एक अनрегистриड ट्रिगर/कमांड का उपयोग कर रहे होंगे।</string>
 </resources>

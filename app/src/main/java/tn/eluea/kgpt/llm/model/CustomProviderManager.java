@@ -43,6 +43,10 @@ public class CustomProviderManager {
     /**
      * Get all saved custom providers
      */
+    // E2: parse cache — getCustomProviders() ran on the main thread per call
+    private String cachedRaw = null;
+    private List<CustomProvider> cachedList = null;
+
     public List<CustomProvider> getCustomProviders() {
         List<CustomProvider> list = new ArrayList<>();
         if (!SPManager.isReady()) {
@@ -50,6 +54,11 @@ public class CustomProviderManager {
         }
 
         String jsonStr = SPManager.getInstance().getClient().getString(PREF_CUSTOM_PROVIDERS, "[]");
+        synchronized (this) {
+            if (jsonStr != null && jsonStr.equals(cachedRaw) && cachedList != null) {
+                return new ArrayList<>(cachedList);
+            }
+        }
         if (jsonStr == null || jsonStr.trim().isEmpty()) {
             return list;
         }
@@ -65,6 +74,11 @@ public class CustomProviderManager {
             }
         } catch (JSONException e) {
             tn.eluea.kgpt.util.Logger.error("Failed to parse custom providers JSON: " + e.getMessage());
+        }
+
+        synchronized (this) {
+            cachedRaw = jsonStr;
+            cachedList = new ArrayList<>(list);
         }
 
         return list;

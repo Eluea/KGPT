@@ -238,8 +238,7 @@ public class UpdateDownloader {
         // Verify security
         UpdateSecurityVerifier verifier = new UpdateSecurityVerifier(context);
         UpdateSecurityVerifier.VerificationResult result = verifier.verifyApk(
-                apkFile,
-                updateInfo.getChecksum());
+                    apkFile, updateInfo.getChecksum(), updateInfo.getVersionCode());
 
         if (result.success) {
             Log.i(TAG, "APK verification successful");

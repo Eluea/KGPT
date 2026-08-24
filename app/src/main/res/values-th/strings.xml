@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">หน้าแรก</string>
-    <string name="nav_models">โมเดล</string>
-    <string name="nav_api_keys">คีย์ API</string>
-    <string name="nav_settings">การตั้งค่า</string>
     <string name="module_active">โมดูลทำงาน</string>
     <string name="module_inactive">โมดูลไม่ทำงาน</string>
     <string name="module_active_desc">KGPT กำลังทำงาน</string>
     <string name="module_inactive_desc">เปิดใช้งานใน LSPosed Manager</string>
     <string name="quick_actions">การกระทำด่วน</string>
-    <string name="current_model">โมเดลปัจจุบัน</string>
     <string name="ai_invocation">เรียกใช้งาน AI</string>
-    <string name="ai_invocation_desc">กำหนดค่าคำสั่งและการเรียกใช้</string>
     <string name="how_to_use">วิธีใช้งาน</string>
     <string name="how_to_use_desc">เรียนรู้วิธีใช้ KGPT</string>
-    <string name="ai_models">โมเดล AI</string>
     <string name="select_model">เลือกโมเดลของคุณ</string>
     <string name="model_config">การกำหนดค่าโมเดล</string>
     <string name="sub_model">โมเดลย่อย</string>
     <string name="base_url">Base URL</string>
-    <string name="advanced_settings">การตั้งค่าขั้นสูง</string>
     <string name="max_tokens">จำนวนโทเค็นสูงสุด</string>
     <string name="temperature">อุณหภูมิ (Temperature)</string>
     <string name="save_config">บันทึกการกำหนดค่า</string>
-    <string name="api_keys">คีย์ API</string>
-    <string name="manage_api_keys">จัดการคีย์ API</string>
     <string name="enter_api_key">ป้อนคีย์ API</string>
     <string name="save">บันทึก</string>
-    <string name="api_key_info">คีย์จะถูกเก็บไว้ในอุปกรณ์ของคุณอย่างปลอดภัย</string>
-    <string name="settings">การตั้งค่า</string>
-    <string name="appearance">รูปลักษณ์</string>
     <string name="dark_mode">โหมดมืด</string>
     <string name="follow_system">ตามระบบ</string>
-    <string name="amoled_dark">AMOLED Black</string>
-    <string name="amoled_desc">สีดำสนิทสำหรับหน้าจอ OLED</string>
     <string name="blur_control">ควบคุมความเบลอ</string>
     <string name="blur_control_desc">จัดการความเบลอพื้นหลัง</string>
     <string name="blur_enabled">เปิดใช้งานความเบลอ</string>
@@ -45,23 +30,9 @@
     <string name="general">ทั่วไป</string>
     <string name="enable_logging">เปิดใช้งานการบันทึก (Log)</string>
     <string name="logging_desc">ปิดเพื่อประสิทธิภาพที่ดีขึ้น</string>
-    <string name="external_internet">อินเทอร์เน็ตภายนอก</string>
-    <string name="external_internet_desc">แนะนำเพื่อความเสถียร</string>
-    <string name="backup_restore">สำรองและกู้คืน</string>
-    <string name="export_backup">ส่งออกข้อมูลสำรอง</string>
-    <string name="export_backup_desc">บันทึกการตั้งค่าลงไฟล์</string>
-    <string name="import_backup">นำเข้าข้อมูลสำรอง</string>
-    <string name="import_backup_desc">กู้คืนการตั้งค่าจากไฟล์</string>
-    <string name="about">เกี่ยวกับ</string>
-    <string name="config_saved">บันทึกการกำหนดค่าแล้ว</string>
-    <string name="api_key_saved">บันทึกคีย์ API แล้ว</string>
-    <string name="api_key_removed">ลบคีย์ API แล้ว</string>
     <string name="backup_exported">ส่งออกสำเร็จ</string>
-    <string name="backup_imported">นำเข้าสำเร็จ</string>
     <string name="export_failed">ส่งออกล้มเหลว</string>
     <string name="import_failed">นำเข้าล้มเหลว</string>
-    <string name="themed_icon_title">ไอคอนตามธีม</string>
-    <string name="themed_icon_desc">ไอคอนแบบปรับตัว (Material You)</string>
     <string name="about_home_title">เกี่ยวกับหน้าแรก</string>
     <string name="about_home_description">ยินดีต้อนรับสู่ KGPT!\n\n\u2022 สถานะ: แสดงว่าโมดูล Xposed ทำงานอยู่หรือไม่\n\n\u2022 โมเดล: แสดง AI ที่ใช้งานอยู่ปัจจุบัน\n\n\u2022 การเรียกใช้: กำหนดค่าตัวกระตุ้น\n\n\u2022 คู่มือ: เคล็ดลับการใช้งาน</string>
     <string name="built_in_indicator">  \u2022  ในตัว</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">ต้องการการเชื่อมต่อ</string>
     <string name="btn_download">ดาวน์โหลด</string>
     <string name="btn_later">ภายหลัง</string>
-    <string name="btn_install">ติดตั้ง</string>
     <string name="btn_try_again">ลองอีกครั้ง</string>
     <string name="btn_close">ปิด</string>
     <string name="btn_ok">ตกลง</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">กำลังโหลด...</string>
     <string name="title_add_api_key">เพิ่มคีย์</string>
     <string name="desc_add_api_key">เลือกผู้ให้บริการ</string>
-    <string name="title_add_actions">เพิ่มการกระทำ</string>
-    <string name="desc_add_actions">เลือกการกระทำ</string>
     <string name="title_logging_disabled">Log ถูกปิด</string>
     <string name="desc_logging_disabled">เปิดการบันทึกในการตั้งค่า</string>
     <string name="btn_enable_logging">เปิดใช้งาน Log</string>
     <string name="title_check_frequency">ความถี่</string>
     <string name="desc_check_frequency">ตรวจสอบบ่อยแค่ไหน?</string>
     <string name="title_choose_model">เลือกโมเดล</string>
-    <string name="label_select_provider_hint">เลือกผู้ให้บริการ</string>
-    <string name="hint_select_provider">ผู้ให้บริการ</string>
     <string name="placeholder_search_engine">เครื่องมือ</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">ชื่อ</string>
     <string name="placeholder_changelog_desc">คำอธิบาย</string>
     <string name="tag_add">ใหม่</string>
     <string name="configure_model_title">กำหนดค่า</string>
-    <string name="advanced_settings_title">ขั้นสูง</string>
     <string name="edit_command_title">แก้ไขคำสั่ง</string>
     <string name="hint_command_prefix">คำนำหน้า</string>
     <string name="hint_prompt">พรอมต์</string>
@@ -254,20 +219,15 @@
     <string name="desc_edit_trigger_symbol">เปลี่ยนสัญลักษณ์เรียกใช้</string>
     <string name="label_enable_trigger">เปิดใช้งาน</string>
     <string name="desc_enable_trigger">ใช้สัญลักษณ์นี้</string>
-
     <string name="label_preview">ตัวอย่าง</string>
     <string name="hint_trigger_word">คำหลัก</string>
     <string name="helper_trigger_word">พิมพ์เพื่อเปิดแอป</string>
     <string name="example_trigger_word">เช่น: \'chrome\'</string>
     <string name="msg_no_items">ไม่มีรายการ</string>
-    <string name="title_add_trigger_symbol">เพิ่มสัญลักษณ์</string>
-    <string name="desc_add_trigger_symbol">1-3 ตัวอักษร</string>
-    <string name="hint_trigger_example">เช่น: @@</string>
     <string name="status_free">ฟรี</string>
     <string name="btn_save_key">บันทึก</string>
     <string name="btn_get_key">รับคีย์</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">ชื่อ</string>
     <string name="placeholder_description">คำอธิบาย</string>
     <string name="placeholder_action">การกระทำ</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +237,6 @@
     <string name="sub_model_desc">Preset หรือ Custom</string>
     <string name="hint_custom_model">Custom Model</string>
     <string name="title_app_triggers">ทริกเกอร์แอป</string>
-    <string name="lab_badge">Lab</string>
-    <string name="app_triggers_intro">เปิดแอปด้วยชื่อ</string>
     <string name="btn_enable_app_triggers">เปิดใช้งานทริกเกอร์</string>
     <string name="desc_enable_app_triggers">คำหลัก -> เปิดแอป</string>
     <string name="msg_no_triggers">ไม่มีทริกเกอร์</string>
@@ -339,9 +297,6 @@
     <string name="hint_system_message">ข้อความระบบ (ไม่บังคับ)</string>
     <string name="help_command_usage">การใช้: ข้อความ /cmd + สัญลักษณ์</string>
     <string name="title_edit_pattern">แก้ไขรูปแบบ</string>
-    <string name="desc_edit_pattern">Custom Regex</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">ค่าเริ่มต้น: $prompt$</string>
     <string name="title_other_settings">อื่นๆ</string>
     <string name="enable_trigger">เปิดใช้งาน</string>
     <string name="hint_description">คำอธิบาย</string>
@@ -350,7 +305,6 @@
     <string name="winter_mode">โหมดฤดูหนาว</string>
     <string name="winter_mode_desc">เอฟเฟกต์หิมะ</string>
     <string name="title_settings_backup">สำรองข้อมูล</string>
-    <string name="desc_settings_backup">บันทึกข้อมูล</string>
     <string name="title_settings_restore">กู้คืน</string>
     <string name="desc_settings_restore">โหลดข้อมูล</string>
     <string name="support_group">กลุ่มสนับสนุน</string>
@@ -360,7 +314,6 @@
     <string name="desc_updates_config">ตรวจสอบการอัปเดต</string>
     <string name="open_in_browser">เปิดในเบราว์เซอร์</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">เมี๊ยว!</string>
     <string name="cat_caught_msg">คุณเจอฉันแล้ว!\nให้ดาวบน GitHub ไหม?</string>
     <string name="cat_action_star">ให้ดาว</string>
@@ -404,25 +357,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">ภาษา</string>
-    <string name="language_desc">ภาษาแอป</string>
     <string name="select_language">เลือกภาษา</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">เกี่ยวกับการตั้งค่า</string>
     <string name="about_settings_desc">ปรับแต่ง KGPT\n\n• มืด: ธีมมืด\n\n• AMOLED: สีดำสำหรับ OLED\n\n• บันทึก: สำหรับแก้ไขจุดบกพร่อง\n\n• ภายนอก: สำหรับ AI</string>
-    <string name="logging_warning_title">เปิดใช้งานการบันทึก?</string>
-    <string name="logging_warning_desc">การบันทึกปิดอยู่ เปิดเพื่อส่งออก</string>
-    <string name="btn_enable_logging_action">เปิดใช้งานการบันทึก</string>
     <string name="logging_enabled_toast">เปิดใช้งานการบันทึกแล้ว คุณสามารถส่งออกได้</string>
-    <string name="export_success_title">ส่งออกสำเร็จ</string>
-    <string name="export_success_desc">บันทึกถูกเก็บไว้ที่:</string>
-    <string name="root_status_label">สถานะ Root</string>
-    <string name="boot_logs_label">บันทึก Boot</string>
-    <string name="system_logs_label">บันทึกระบบ</string>
-    <string name="crash_logs_label">บันทึกข้อขัดข้อง</string>
-    <string name="app_logs_label">บันทึกแอป</string>
-    <string name="available">พร้อมใช้งาน</string>
-    <string name="unavailable">ไม่พร้อมใช้งาน</string>
     <string name="tab_commands">คำสั่ง</string>
     <string name="tab_triggers">ทริกเกอร์</string>
     <string name="tab_model">โมเดล</string>
@@ -460,42 +398,12 @@
     <string name="path_internal_storage">พื้นที่จัดเก็บภายใน</string>
     <string name="check_for_updates">ตรวจสอบการอัปเดต</string>
     <string name="checking_updates">กำลังตรวจสอบ...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">เพิ่ม</string>
     <string name="tag_improved">ปรับปรุง</string>
     <string name="tag_fixed">แก้ไข</string>
-    <string name="changelog_1_0_0_item1">เพิ่ม Google AI Mode ในตัวเลือกการค้นหาเว็บ</string>
-    <string name="changelog_1_0_0_item2">เพิ่มฟีเจอร์เลือกภาษาพร้อมรองรับทุกภาษาที่มี</string>
-    <string name="changelog_1_0_0_item3">ปรับปรุงเลย์เอาต์หน้าจอสำหรับการใช้งานมือเดียวและนิ้วที่ใหญ่ขึ้น</string>
-    <string name="changelog_1_0_0_item4">แก้ไขปัญหาเสถียรภาพหลายอย่างและปรับปรุงประสิทธิภาพ</string>
-    <string name="changelog_1_0_0_item5">ทดสอบและเพิ่มการรองรับคีย์บอร์ด FUTO</string>
-    <string name="changelog_1_0_0_item6">แก้ไขปัญหาการเชื่อมต่อกับ Chutes API</string>
-    <string name="changelog_1_0_0_item7">เพิ่มโมเดล Perplexity ใหม่และการรองรับ Perplexity API</string>
-    <string name="changelog_1_0_0_item8">ลบข้อจำกัดการใช้ \"/\" สำหรับคำสั่ง</string>
-    <string name="changelog_1_0_0_note">โปรดอดทนรอ เนื่องจากมีปัญหาเพิ่มเติมที่รายงานให้นักพัฒนาทราบ แต่จะได้รับการแก้ไขเป็นชุดๆ เนื่องจากเป็นโปรเจกต์ของคนเดียว ขอบคุณสำหรับความเข้าใจ</string>
-    <string name="module_restart_required_desc">รีบูตอุปกรณ์เพื่อเปิดใช้งานโมดูล</string>
-
     <string name="new_command_title">คำสั่งใหม่</string>
     <string name="error_prefix_empty">คำนำหน้าต้องไม่ว่างเปล่า</string>
     <string name="error_message_empty">ข้อความต้องไม่ว่างเปล่า</string>
     <string name="error_duplicate_command">มีคำสั่งอื่นที่ใช้ชื่อเดียวกัน</string>
-    <string name="format_edit_pattern_title">แก้ไข %1$s</string>
-    <string name="error_symbol_empty">สัญลักษณ์ต้องไม่ว่างเปล่า</string>
-    <string name="error_symbol_not_allowed">ไม่อนุญาตให้ใช้สัญลักษณ์นี้</string>
-    <string name="error_pattern_creation_failed">ไม่สามารถสร้างรูปแบบสำหรับสัญลักษณ์นี้</string>
-    <string name="error_pattern_invalid">รูปแบบที่สร้างไม่ถูกต้อง</string>
-    <string name="error_pattern_duplicate">สัญลักษณ์นี้ถูกใช้แล้ว</string>
-    <string name="msg_trigger_enabled">เปิดใช้งาน "%1$s" แล้ว</string>
-    <string name="msg_trigger_disabled">ปิดใช้งาน "%1$s" แล้ว</string>
-    <string name="example_preview_settings">"%1$s" ← เปิดการตั้งค่า</string>
-    <string name="example_preview_ai">"สวัสดี%1$s" ← AI ตอบกลับ</string>
-    <string name="example_preview_custom">"สวัสดี%1$sแปล%1$s" ← แปล</string>
-    <string name="example_preview_italic">"ข้อความ%1$s" ← ตัวเอียง</string>
-    <string name="example_preview_bold">"ข้อความ%1$s" ← ตัวหนา</string>
-    <string name="example_preview_crossout">"ข้อความ%1$s" ← ขีดฆ่า</string>
-    <string name="example_preview_underline">"ข้อความ%1$s" ← ขีดเส้นใต้</string>
-    <string name="example_preview_default">พิมพ์ข้อความ แล้วเติม "%1$s" ต่อท้าย</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -533,30 +441,18 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">สัญลักษณ์นี้ถูกใช้โดยรูปแบบอื่นแล้ว</string>
-    
-    <!-- Dialog strings -->
     <string name="dialog_title_edit_pattern">แก้ไข %1$s</string>
     <string name="hint_trigger_symbol">ป้อนสัญลักษณ์</string>
     <string name="btn_reset_pattern">รีเซ็ตรูปแบบ</string>
     <string name="msg_reset_pattern_confirm">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต \'%1$s\' เป็นสัญลักษณ์เริ่มต้น \"%2$s\"?</string>
     <string name="msg_pattern_reset">รีเซ็ตรูปแบบเป็นค่าเริ่มต้นแล้ว</string>
     <string name="no_commands">ยังไม่มีคำสั่ง</string>
-
-    <!-- Model Config Fields (Added to prevent crash) -->
     <string name="field_api_key">API Key</string>
     <string name="field_top_p">Top P</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="btn_use_anyway">Use Anyway</string>
-    <string name="field_sub_model">Sub-model</string>
-    <string name="field_base_url">Base URL</string>
-    <string name="field_max_tokens">Max tokens</string>
-    <string name="field_temperature">Temperature</string>
-    <string name="interval_every_disabled">Disabled</string>
-
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
@@ -568,7 +464,6 @@
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
     <string name="dialog_title_trigger_symbols">Trigger Symbols</string>
     <string name="setting_download_path">Download Path</string>
-    <string name="example_default">Type text, then add \u0022%1$s\u0022 at the end</string>
     <string name="title_custom_command">Custom command</string>
     <string name="setting_wallpaper_colors">Use Wallpaper Colors</string>
     <string name="title_settings_trigger">Settings</string>
@@ -601,15 +496,5 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">เปลี่ยนจาก LSPosed API 82 เป็น API 102 ที่ทันสมัย</string>
-    <string name="changelog_4_0_8_item2">ปรับปรุงประสิทธิภาพครั้งใหญ่และลดการใช้พลังงานแบตเตอรี่</string>
-    <string name="changelog_4_0_8_item3">แก้ไขปัญหาแอปค้างและหยุดทำงานในหลายสถานการณ์</string>
-    <string name="changelog_4_0_8_item4">เพิ่มทริกเกอร์แป้นพิมพ์ใหม่: ทริกเกอร์ดาวน์โหลดสื่อ</string>
-    <string name="changelog_4_0_8_item5">เพิ่มการดำเนินการเลือกข้อความใหม่: ดาวน์โหลดสื่อ</string>
-    <string name="changelog_4_0_8_item6">เพิ่มฟีเจอร์ทดลองใหม่: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">เพิ่มฟีเจอร์ค้นหาวิดีโอและ YouTube โดยตรง</string>
-    <string name="changelog_4_0_8_item8">รองรับการดาวน์โหลดวิดีโอและเสียง พร้อมปรับแต่งคุณภาพ รูปแบบ และตัดช่วงคลิป</string>
-    <string name="changelog_4_0_8_item9">เพิ่มตัวสร้างคำสั่งสแตนด์อโลนสากลเพื่อดาวน์โหลดบนอุปกรณ์อื่นได้ทุกเครื่อง</string>
-    <string name="changelog_note_4_0_8">โปรดอดใจรอเนื่องจากมีการรายงานปัญหาเพิ่มเติมไปยังนักพัฒนา แต่ปัญหาเหล่านั้นจะได้รับการแก้ไขในการอัปเดตเป็นชุดเนื่องจากเป็นโครงการที่ทำเพียงคนเดียว ขอบคุณที่เข้าใจ</string>
     <string name="msg_ai_no_response_error">ไม่ได้รับการตอบกลับ AI ส่งคืนเนื้อหาว่างเปล่า\nคำแนะนำ: คุณอาจกำลังใช้ทริกเกอร์/คำสั่งที่ไม่ได้ลงทะเบียน</string>
 </resources>

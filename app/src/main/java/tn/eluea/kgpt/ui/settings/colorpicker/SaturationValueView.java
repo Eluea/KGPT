@@ -87,6 +87,12 @@ public class SaturationValueView extends View {
         this.listener = listener;
     }
 
+    // E3: cached shaders — were rebuilt (and one discarded) on EVERY onDraw
+    private Shader cachedSatShader = null;
+    private Shader cachedValShader = null;
+    private float cachedHue = -1f;
+    private int cachedW = -1, cachedH = -1;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -94,22 +100,18 @@ public class SaturationValueView extends View {
         int width = getWidth();
         int height = getHeight();
 
-        // 1. Draw Saturation Gradient (Left: White -> Right: HueColor)
-        Shader satShader = new LinearGradient(0, 0, width, 0,
-                Color.WHITE, Color.HSVToColor(new float[] { hue, 1f, 1f }),
-                Shader.TileMode.CLAMP);
-
-        // 2. Draw Value Gradient (Top: Transparent -> Bottom: Black)
-        Shader valShader = new LinearGradient(0, 0, 0, height,
-                Color.TRANSPARENT, Color.BLACK,
-                Shader.TileMode.CLAMP);
-
-        // Combine
-        ComposeShader shader = new ComposeShader(satShader, valShader, PorterDuff.Mode.SRC_OVER); // Actually we need
-                                                                                                  // both applied.
-        // A better way for SV Box:
-        // Layer 1: Saturation (White to Hue)
-        // Layer 2: Value (Transparent to Black) over it.
+        if (cachedSatShader == null || cachedValShader == null
+                || cachedHue != hue || cachedW != width || cachedH != height) {
+            cachedSatShader = new LinearGradient(0, 0, width, 0,
+                    Color.WHITE, Color.HSVToColor(new float[] { hue, 1f, 1f }),
+                    Shader.TileMode.CLAMP);
+            cachedValShader = new LinearGradient(0, 0, 0, height,
+                    Color.TRANSPARENT, Color.BLACK,
+                    Shader.TileMode.CLAMP);
+            cachedHue = hue; cachedW = width; cachedH = height;
+        }
+        Shader satShader = cachedSatShader;
+        Shader valShader = cachedValShader;
 
         paint.setShader(satShader);
         canvas.drawRect(0, 0, width, height, paint);

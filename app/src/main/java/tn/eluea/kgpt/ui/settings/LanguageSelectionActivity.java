@@ -39,7 +39,6 @@ public class LanguageSelectionActivity extends AppCompatActivity implements Lang
         super.onCreate(savedInstanceState);
 
         // Apply theme using MaterialYouManager as used in other activities
-        MaterialYouManager.getInstance(this).applyTheme(this);
 
         setContentView(R.layout.activity_language_selection);
 

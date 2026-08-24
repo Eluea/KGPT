@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">홈</string>
-    <string name="nav_models">모델</string>
-    <string name="nav_api_keys">API 키</string>
-    <string name="nav_settings">설정</string>
     <string name="module_active">모듈 활성</string>
     <string name="module_inactive">모듈 비활성</string>
     <string name="module_active_desc">KGPT 작동 중</string>
     <string name="module_inactive_desc">LSPosed 관리자에서 활성화하세요</string>
     <string name="quick_actions">빠른 작업</string>
-    <string name="current_model">현재 모델</string>
     <string name="ai_invocation">AI 호출</string>
-    <string name="ai_invocation_desc">명령어 및 트리거 설정</string>
     <string name="how_to_use">사용법</string>
     <string name="how_to_use_desc">KGPT 사용 방법</string>
-    <string name="ai_models">AI 모델</string>
     <string name="select_model">모델 선택</string>
     <string name="model_config">모델 설정</string>
     <string name="sub_model">서브 모델</string>
     <string name="base_url">기본 URL</string>
-    <string name="advanced_settings">고급 설정</string>
     <string name="max_tokens">최대 토큰</string>
     <string name="temperature">온도 (Temperature)</string>
     <string name="save_config">설정 저장</string>
-    <string name="api_keys">API 키</string>
-    <string name="manage_api_keys">API 키 관리</string>
     <string name="enter_api_key">API 키 입력</string>
     <string name="save">저장</string>
-    <string name="api_key_info">키는 기기에 안전하게 저장됩니다.</string>
-    <string name="settings">설정</string>
-    <string name="appearance">화면</string>
     <string name="dark_mode">다크 모드</string>
     <string name="follow_system">시스템 설정 따르기</string>
-    <string name="amoled_dark">AMOLED 블랙</string>
-    <string name="amoled_desc">OLED 화면을 위한 완전한 검정</string>
     <string name="blur_control">블러 제어</string>
     <string name="blur_control_desc">배경 블러 관리</string>
     <string name="blur_enabled">블러 활성화</string>
@@ -45,23 +30,9 @@
     <string name="general">일반</string>
     <string name="enable_logging">로깅 활성화</string>
     <string name="logging_desc">성능 향상을 위해 비활성화 권장</string>
-    <string name="external_internet">외부 인터넷</string>
-    <string name="external_internet_desc">안정성을 위해 권장</string>
-    <string name="backup_restore">백업 및 복원</string>
-    <string name="export_backup">백업 내보내기</string>
-    <string name="export_backup_desc">설정을 파일로 저장</string>
-    <string name="import_backup">백업 가져오기</string>
-    <string name="import_backup_desc">파일에서 설정 복원</string>
-    <string name="about">정보</string>
-    <string name="config_saved">설정이 저장되었습니다</string>
-    <string name="api_key_saved">API 키가 저장되었습니다</string>
-    <string name="api_key_removed">API 키가 삭제되었습니다</string>
     <string name="backup_exported">내보내기 성공</string>
-    <string name="backup_imported">가져오기 성공</string>
     <string name="export_failed">내보내기 실패</string>
     <string name="import_failed">가져오기 실패</string>
-    <string name="themed_icon_title">테마 아이콘</string>
-    <string name="themed_icon_desc">적응형 아이콘 (Material You)</string>
     <string name="about_home_title">홈 정보</string>
     <string name="about_home_description">KGPT 사용을 환영합니다!\n\n\u2022 상태: Xposed 모듈 활성화 여부.\n\n\u2022 모델: 현재 활성화된 AI.\n\n\u2022 호출: 트리거 설정.\n\n\u2022 가이드: 사용 팁.</string>
     <string name="built_in_indicator">  \u2022  내장됨</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">연결이 필요합니다.</string>
     <string name="btn_download">다운로드</string>
     <string name="btn_later">나중에</string>
-    <string name="btn_install">설치</string>
     <string name="btn_try_again">재시도</string>
     <string name="btn_close">닫기</string>
     <string name="btn_ok">확인</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">로딩 중...</string>
     <string name="title_add_api_key">키 추가</string>
     <string name="desc_add_api_key">제공자 선택.</string>
-    <string name="title_add_actions">액션 추가</string>
-    <string name="desc_add_actions">액션 선택</string>
     <string name="title_logging_disabled">로그 비활성</string>
     <string name="desc_logging_disabled">설정에서 로그를 켜세요.</string>
     <string name="btn_enable_logging">로그 켜기</string>
     <string name="title_check_frequency">빈도</string>
     <string name="desc_check_frequency">업데이트 확인 주기?</string>
     <string name="title_choose_model">모델 선택</string>
-    <string name="label_select_provider_hint">제공자 선택</string>
-    <string name="hint_select_provider">제공자</string>
     <string name="placeholder_search_engine">엔진</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">이름</string>
     <string name="placeholder_changelog_desc">설명</string>
     <string name="tag_add">신규</string>
     <string name="configure_model_title">설정</string>
-    <string name="advanced_settings_title">고급</string>
     <string name="edit_command_title">명령어 편집</string>
     <string name="hint_command_prefix">접두사</string>
     <string name="hint_prompt">프롬프트</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">입력하여 앱 열기</string>
     <string name="example_trigger_word">예: \'chrome\'</string>
     <string name="msg_no_items">항목 없음</string>
-    <string name="title_add_trigger_symbol">기호 추가</string>
-    <string name="desc_add_trigger_symbol">1-3 글자</string>
-    <string name="hint_trigger_example">예: @@</string>
     <string name="status_free">무료</string>
     <string name="btn_save_key">저장</string>
     <string name="btn_get_key">키 받기</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">이름</string>
     <string name="placeholder_description">설명</string>
     <string name="placeholder_action">액션</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">프리셋 또는 커스텀</string>
     <string name="hint_custom_model">커스텀 모델</string>
     <string name="title_app_triggers">앱 트리거</string>
-    <string name="lab_badge">연구소</string>
-    <string name="app_triggers_intro">이름으로 앱 열기</string>
     <string name="btn_enable_app_triggers">트리거 켜기</string>
     <string name="desc_enable_app_triggers">키워드 -> 앱 열기</string>
     <string name="msg_no_triggers">트리거 없음.</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">시스템 메시지 (선택)</string>
     <string name="help_command_usage">사용법: 텍스트 /cmd + 기호</string>
     <string name="title_edit_pattern">패턴 편집</string>
-    <string name="desc_edit_pattern">커스텀 정규식</string>
-    <string name="hint_regex_pattern">정규식 (Regex)</string>
-    <string name="help_regex_default">기본: $prompt$</string>
     <string name="title_other_settings">기타</string>
     <string name="enable_trigger">켜기</string>
     <string name="hint_description">설명</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">겨울 모드</string>
     <string name="winter_mode_desc">눈 효과</string>
     <string name="title_settings_backup">백업</string>
-    <string name="desc_settings_backup">데이터 저장</string>
     <string name="title_settings_restore">복원</string>
     <string name="desc_settings_restore">데이터 불러오기</string>
     <string name="support_group">지원 그룹</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">업데이트 확인</string>
     <string name="open_in_browser">브라우저에서 열기</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">야옹!</string>
     <string name="cat_caught_msg">날 찾았구나!\nGitHub 스타 줄래?</string>
     <string name="cat_action_star">스타 주기</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6초</string>
     <string name="language">언어</string>
-    <string name="language_desc">앱 언어</string>
     <string name="select_language">언어 선택</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">설정 정보</string>
     <string name="about_settings_desc">KGPT를 맞춤 설정하세요.\n\n• 다크: 다크 테마.\n\n• AMOLED: OLED용 블랙.\n\n• 로그: 디버그용.\n\n• 외부: AI용.</string>
-    <string name="logging_warning_title">로그 활성화?</string>
-    <string name="logging_warning_desc">로그가 비활성화됨. 내보내려면 활성화하세요.</string>
-    <string name="btn_enable_logging_action">로그 활성화</string>
     <string name="logging_enabled_toast">로그가 활성화됨. 내보낼 수 있습니다.</string>
-    <string name="export_success_title">내보내기 성공</string>
-    <string name="export_success_desc">로그 저장 위치:</string>
-    <string name="root_status_label">Root 상태</string>
-    <string name="boot_logs_label">부팅 로그</string>
-    <string name="system_logs_label">시스템 로그</string>
-    <string name="crash_logs_label">크래시 로그</string>
-    <string name="app_logs_label">앱 로그</string>
-    <string name="available">사용 가능</string>
-    <string name="unavailable">사용 불가</string>
     <string name="tab_commands">명령어</string>
     <string name="tab_triggers">트리거</string>
     <string name="tab_model">모델</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">내부 저장소</string>
     <string name="check_for_updates">업데이트 확인</string>
     <string name="checking_updates">확인 중...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">추가</string>
     <string name="tag_improved">개선</string>
     <string name="tag_fixed">수정</string>
-    <string name="changelog_1_0_0_item1">웹 검색 옵션에 Google AI Mode 추가</string>
-    <string name="changelog_1_0_0_item2">사용 가능한 모든 언어를 지원하는 언어 선택 기능 추가</string>
-    <string name="changelog_1_0_0_item3">한 손 사용 및 큰 손가락에 맞게 화면 레이아웃 개선</string>
-    <string name="changelog_1_0_0_item4">많은 안정성 문제 수정 및 성능 개선</string>
-    <string name="changelog_1_0_0_item5">FUTO 키보드 테스트 및 지원 추가</string>
-    <string name="changelog_1_0_0_item6">Chutes API 연결 문제 수정</string>
-    <string name="changelog_1_0_0_item7">새로운 Perplexity 모델 및 Perplexity API 지원 추가</string>
-    <string name="changelog_1_0_0_item8">명령 사용 시 \"/\" 제한 제거</string>
-    <string name="changelog_1_0_0_note">개발자에게 더 많은 문제가 보고되었지만 한 사람의 프로젝트이므로 업데이트 배치로 해결될 예정입니다. 이해해 주셔서 감사합니다.</string>
-    <string name="module_restart_required_desc">모듈을 활성화하려면 장치를 재부팅하세요</string>
-
     <string name="new_command_title">새 명령</string>
     <string name="error_prefix_empty">접두사는 비어 있을 수 없습니다</string>
     <string name="error_message_empty">메시지는 비어 있을 수 없습니다</string>
     <string name="error_duplicate_command">같은 이름의 다른 명령이 있습니다</string>
-    <string name="format_edit_pattern_title">%1$s 편집</string>
-    <string name="error_symbol_empty">기호는 비어 있을 수 없습니다</string>
-    <string name="error_symbol_not_allowed">이 기호는 허용되지 않습니다</string>
-    <string name="error_pattern_creation_failed">이 기호에 대한 패턴을 생성할 수 없습니다</string>
-    <string name="error_pattern_invalid">유효하지 않은 패턴이 생성되었습니다</string>
-    <string name="error_pattern_duplicate">이 기호는 이미 다른 패턴에서 사용 중입니다</string>
-    <string name="msg_trigger_enabled">트리거 "%1$s" 활성화됨</string>
-    <string name="msg_trigger_disabled">트리거 "%1$s" 비활성화됨</string>
-    <string name="example_preview_settings">"%1$s" ← 설정 열기</string>
-    <string name="example_preview_ai">"안녕%1$s" ← AI 응답</string>
-    <string name="example_preview_custom">"안녕%1$s번역%1$s" ← 번역 실행</string>
-    <string name="example_preview_italic">"텍스트%1$s" ← 기울임 꼴</string>
-    <string name="example_preview_bold">"텍스트%1$s" ← 굵게</string>
-    <string name="example_preview_crossout">"텍스트%1$s" ← 취소선</string>
-    <string name="example_preview_underline">"텍스트%1$s" ← 밑줄</string>
-    <string name="example_preview_default">텍스트 입력 후 끝에 "%1$s" 추가</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">이 기호는 이미 사용 중입니다</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">모델 선택 및 구성</string>
     <string name="dialog_title_commands_list">명령어 목록</string>
     <string name="settings_option_patterns_list">패턴 목록</string>
     <string name="dialog_title_config_model">%1$s 구성</string>
-
     <string name="setting_enable_logging">로그 활성화</string>
     <string name="setting_desc_enable_logging">성능을 위해 비활성화하세요. 오류를 보고할 수 없습니다.</string>
     <string name="setting_external_internet">외부 인터넷 서비스 사용</string>
@@ -560,7 +466,6 @@
     <string name="example_format_bold">\u0022텍스트%1$s\u0022 \u2192 굵게</string>
     <string name="example_format_crossout">\u0022텍스트%1$s\u0022 \u2192 취소선</string>
     <string name="example_format_underline">\u0022텍스트%1$s\u0022 \u2192 밑줄</string>
-    <string name="example_default">텍스트를 입력하고 끝에 \u0022%1$s\u0022 추가</string>
     <string name="pattern_subtitle_trigger">트리거: %1$s</string>
     <string name="title_settings_trigger">설정</string>
     <string name="title_ai_trigger">AI 트리거</string>
@@ -573,17 +478,10 @@
     <string name="btn_reset_pattern">패턴 재설정</string>
     <string name="msg_reset_pattern_confirm">\'%1$s\'을(를) 기본 기호 \"%2$s\"(으)로 재설정하시겠습니까?</string>
     <string name="field_api_key">API 키</string>
-    <string name="field_sub_model">하위 모델</string>
-    <string name="field_base_url">기본 URL</string>
-    <string name="field_max_tokens">최대 토큰</string>
-    <string name="field_temperature">온도</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
@@ -598,15 +496,5 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">LSPosed API 82에서 최신 API 102로 마이그레이션</string>
-    <string name="changelog_4_0_8_item2">대대적인 성능 최적화 및 배터리 소모 감소</string>
-    <string name="changelog_4_0_8_item3">다양한 앱 멈춤 및 프리징 현상 해결</string>
-    <string name="changelog_4_0_8_item4">새로운 키보드 트리거 추가: 미디어 다운로더 트리거</string>
-    <string name="changelog_4_0_8_item5">새로운 텍스트 선택 작업 추가: 미디어 다운로더</string>
-    <string name="changelog_4_0_8_item6">새로운 실험실 기능 추가: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">실시간 YouTube 및 동영상 검색 기능 추가</string>
-    <string name="changelog_4_0_8_item8">화질, 포맷 맞춤 설정 및 구간 자르기를 지원하는 비디오/오디오 다운로드</string>
-    <string name="changelog_4_0_8_item9">모든 기기에서 동일하게 다운로드할 수 있는 범용 단독 명령어 생성 기능 추가</string>
-    <string name="changelog_note_4_0_8">더 많은 문제가 개발자에게 보고되었지만, 1인 프로젝트이므로 업데이트 배치로 해결될 예정이니 인내심을 갖고 기다려 주십시오. 이해해 주셔서 감사합니다.</string>
     <string name="msg_ai_no_response_error">응답을 받지 못했습니다. AI가 빈 콘텐츠를 반환했습니다。\n힌트: 등록되지 않은 트리거/명령을 사용하고 있을 수 있습니다.</string>
 </resources>

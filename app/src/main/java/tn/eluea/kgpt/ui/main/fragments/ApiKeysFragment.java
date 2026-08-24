@@ -310,13 +310,13 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
             }
 
             if (model.isFree) {
-                tvStatus.setText("Free API");
+                tvStatus.setText(R.string.label_free_api);
                 cvStatus.setCardBackgroundColor(
                         resolveAttrColor(requireContext(), com.google.android.material.R.attr.colorPrimaryContainer));
                 tvStatus.setTextColor(
                         resolveAttrColor(requireContext(), com.google.android.material.R.attr.colorOnPrimaryContainer));
             } else {
-                tvStatus.setText("Paid API");
+                tvStatus.setText(R.string.label_paid_api);
                 cvStatus.setCardBackgroundColor(
                         resolveAttrColor(requireContext(), com.google.android.material.R.attr.colorTertiaryContainer));
                 tvStatus.setTextColor(
@@ -349,7 +349,7 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         if (SPManager.isReady()) {
             SPManager.getInstance().setApiKey(model, key);
             sendConfigBroadcast();
-            Toast.makeText(requireContext(), model.label + " API key saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.msg_api_key_saved_fmt, model.label), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -361,7 +361,7 @@ public class ApiKeysFragment extends Fragment implements AdditionalApiKeysAdapte
         }
         additionalModels.remove(position);
         adapter.notifyItemRemoved(position);
-        Toast.makeText(requireContext(), model.label + " key removed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), getString(R.string.msg_api_key_removed_fmt, model.label), Toast.LENGTH_SHORT).show();
     }
 
     @Override

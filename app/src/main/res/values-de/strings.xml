@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Startseite</string>
-    <string name="nav_models">Modelle</string>
-    <string name="nav_api_keys">API-Schlüssel</string>
-    <string name="nav_settings">Einstellungen</string>
     <string name="module_active">Modul aktiv</string>
     <string name="module_inactive">Modul inaktiv</string>
     <string name="module_active_desc">KGPT funktioniert</string>
     <string name="module_inactive_desc">In LSPosed Manager aktivieren</string>
     <string name="quick_actions">Schnellaktionen</string>
-    <string name="current_model">Aktuelles Modell</string>
     <string name="ai_invocation">KI-Aufruf</string>
-    <string name="ai_invocation_desc">Befehle und Auslöser konfigurieren</string>
     <string name="how_to_use">Anleitung</string>
     <string name="how_to_use_desc">Lerne KGPT zu nutzen</string>
-    <string name="ai_models">KI-Modelle</string>
     <string name="select_model">Wähle dein bevorzugtes Modell</string>
     <string name="model_config">Modellkonfiguration</string>
     <string name="sub_model">Untermodell</string>
     <string name="base_url">Basis-URL</string>
-    <string name="advanced_settings">Erweiterte Einstellungen</string>
     <string name="max_tokens">Max Tokens</string>
     <string name="temperature">Temperatur</string>
     <string name="save_config">Konfiguration speichern</string>
-    <string name="api_keys">API-Schlüssel</string>
-    <string name="manage_api_keys">API-Schlüssel verwalten</string>
     <string name="enter_api_key">API-Schlüssel eingeben</string>
     <string name="save">Speichern</string>
-    <string name="api_key_info">Schlüssel werden sicher auf deinem Gerät gespeichert.</string>
-    <string name="settings">Einstellungen</string>
-    <string name="appearance">Erscheinungsbild</string>
     <string name="dark_mode">Dunkelmodus</string>
     <string name="follow_system">System folgen</string>
-    <string name="amoled_dark">AMOLED Schwarz</string>
-    <string name="amoled_desc">Echtes Schwarz für OLED-Displays</string>
     <string name="blur_control">Unschärfe-Steuerung</string>
     <string name="blur_control_desc">Hintergrundunschärfe verwalten</string>
     <string name="blur_enabled">Unschärfe aktivieren</string>
@@ -45,23 +30,9 @@
     <string name="general">Allgemein</string>
     <string name="enable_logging">Protokollierung aktivieren</string>
     <string name="logging_desc">Für bessere Leistung deaktivieren</string>
-    <string name="external_internet">Externes Internet</string>
-    <string name="external_internet_desc">Empfohlen für Stabilität</string>
-    <string name="backup_restore">Sichern &amp; Wiederherstellen</string>
-    <string name="export_backup">Sicherung exportieren</string>
-    <string name="export_backup_desc">Einstellungen in Datei speichern</string>
-    <string name="import_backup">Sicherung importieren</string>
-    <string name="import_backup_desc">Einstellungen wiederherstellen</string>
-    <string name="about">Über</string>
-    <string name="config_saved">Konfiguration gespeichert</string>
-    <string name="api_key_saved">API-Schlüssel gespeichert</string>
-    <string name="api_key_removed">API-Schlüssel entfernt</string>
     <string name="backup_exported">Export erfolgreich</string>
-    <string name="backup_imported">Import erfolgreich</string>
     <string name="export_failed">Export fehlgeschlagen</string>
     <string name="import_failed">Import fehlgeschlagen</string>
-    <string name="themed_icon_title">Themen-Icon</string>
-    <string name="themed_icon_desc">Adaptives Icon (Material You)</string>
     <string name="about_home_title">Über Startseite</string>
     <string name="about_home_description">Willkommen bei KGPT!\n\n\u2022 Status: Zeigt, ob das Xposed-Modul aktiv ist.\n\n\u2022 Modell: Zeigt die aktive KI.\n\n\u2022 Aufruf: Konfiguriere Auslöser.\n\n\u2022 Anleitung: Tipps und Tricks.</string>
     <string name="built_in_indicator">  \u2022  Integriert</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">Verbindung erforderlich.</string>
     <string name="btn_download">Herunterladen</string>
     <string name="btn_later">Später</string>
-    <string name="btn_install">Installieren</string>
     <string name="btn_try_again">Erneut versuchen</string>
     <string name="btn_close">Schließen</string>
     <string name="btn_ok">OK</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">Laden...</string>
     <string name="title_add_api_key">Schlüssel hinzufügen</string>
     <string name="desc_add_api_key">Anbieter wählen.</string>
-    <string name="title_add_actions">Aktionen hinzufügen</string>
-    <string name="desc_add_actions">Aktionen wählen</string>
     <string name="title_logging_disabled">Logs deaktiviert</string>
     <string name="desc_logging_disabled">Aktiviere Logs in Einstellungen.</string>
     <string name="btn_enable_logging">Logs Aktivieren</string>
     <string name="title_check_frequency">Häufigkeit</string>
     <string name="desc_check_frequency">Wie oft nach Updates suchen?</string>
     <string name="title_choose_model">Modell wählen</string>
-    <string name="label_select_provider_hint">Anbieter wählen</string>
-    <string name="hint_select_provider">Anbieter</string>
     <string name="placeholder_search_engine">Maschine</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Name</string>
     <string name="placeholder_changelog_desc">Beschreibung</string>
     <string name="tag_add">Neu</string>
     <string name="configure_model_title">Konfigurieren</string>
-    <string name="advanced_settings_title">Erweitert</string>
     <string name="edit_command_title">Befehl bearbeiten</string>
     <string name="hint_command_prefix">Präfix</string>
     <string name="hint_prompt">Prompt</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">Tippe dies zum Öffnen</string>
     <string name="example_trigger_word">Z.B.: \'chrome\'</string>
     <string name="msg_no_items">Keine Elemente</string>
-    <string name="title_add_trigger_symbol">Symbol hinzufügen</string>
-    <string name="desc_add_trigger_symbol">1-3 Zeichen</string>
-    <string name="hint_trigger_example">Z.B.: @@</string>
     <string name="status_free">Kostenlos</string>
     <string name="btn_save_key">Speichern</string>
     <string name="btn_get_key">Schlüssel holen</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Name</string>
     <string name="placeholder_description">Beschreibung</string>
     <string name="placeholder_action">Aktion</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">Preset oder Benutzer</string>
     <string name="hint_custom_model">Eigenes Modell</string>
     <string name="title_app_triggers">App-Trigger</string>
-    <string name="lab_badge">Labor</string>
-    <string name="app_triggers_intro">Apps durch Tippen öffnen</string>
     <string name="btn_enable_app_triggers">Trigger aktivieren</string>
     <string name="desc_enable_app_triggers">Stichwort -> App öffnen</string>
     <string name="msg_no_triggers">Keine Trigger.</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">Systemnachricht (Optional)</string>
     <string name="help_command_usage">Nutzung: Text /cmd + Symbol</string>
     <string name="title_edit_pattern">Muster bearbeiten</string>
-    <string name="desc_edit_pattern">Benutzerdefiniertes Regex</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">Standard: $prompt$</string>
     <string name="title_other_settings">Sonstiges</string>
     <string name="enable_trigger">Aktivieren</string>
     <string name="hint_description">Beschreibung</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">Wintermodus</string>
     <string name="winter_mode_desc">Schnee-Effekt</string>
     <string name="title_settings_backup">Sicherung</string>
-    <string name="desc_settings_backup">Daten sichern</string>
     <string name="title_settings_restore">Wiederherstellen</string>
     <string name="desc_settings_restore">Daten laden</string>
     <string name="support_group">Support-Gruppe</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">Updates prüfen</string>
     <string name="open_in_browser">Im Browser öffnen</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Miau!</string>
     <string name="cat_caught_msg">Du hast mich gefunden!\nGibst du uns einen Stern auf GitHub?</string>
     <string name="cat_action_star">Stern geben</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">Sprache</string>
-    <string name="language_desc">App-Sprache</string>
     <string name="select_language">Sprache wählen</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">Über Einstellungen</string>
     <string name="about_settings_desc">KGPT anpassen.\n\n• Dunkelmodus: Dunkles Theme.\n\n• AMOLED: Schwarz für OLED.\n\n• Logs: Zur Fehlerbehebung.\n\n• Extern: Empfohlen für KI.</string>
-    <string name="logging_warning_title">Logs aktivieren?</string>
-    <string name="logging_warning_desc">Logs sind deaktiviert. Aktivieren zum Exportieren.</string>
-    <string name="btn_enable_logging_action">Logs Aktivieren</string>
     <string name="logging_enabled_toast">Logs aktiviert. Export möglich.</string>
-    <string name="export_success_title">Export Erfolgreich</string>
-    <string name="export_success_desc">Logs gespeichert in:</string>
-    <string name="root_status_label">Root-Status</string>
-    <string name="boot_logs_label">Boot-Logs</string>
-    <string name="system_logs_label">System-Logs</string>
-    <string name="crash_logs_label">Crash-Logs</string>
-    <string name="app_logs_label">App-Logs</string>
-    <string name="available">Verfügbar</string>
-    <string name="unavailable">Nicht verfügbar</string>
     <string name="tab_commands">Befehle</string>
     <string name="tab_triggers">Auslöser</string>
     <string name="tab_model">Modell</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">Interner Speicher</string>
     <string name="check_for_updates">Nach Updates Suchen</string>
     <string name="checking_updates">Suche...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">NEU</string>
     <string name="tag_improved">VERBESSERT</string>
     <string name="tag_fixed">FIX</string>
-    <string name="changelog_1_0_0_item1">Google AI Mode zu Websuchoptionen hinzugefügt</string>
-    <string name="changelog_1_0_0_item2">Sprachauswahlfunktion mit Unterstützung für alle verfügbaren Sprachen hinzugefügt</string>
-    <string name="changelog_1_0_0_item3">Bildschirmlayouts für einhändige Bedienung und größere Finger verbessert</string>
-    <string name="changelog_1_0_0_item4">Viele Stabilitätsprobleme behoben und Leistung verbessert</string>
-    <string name="changelog_1_0_0_item5">FUTO-Tastatur getestet und Unterstützung hinzugefügt</string>
-    <string name="changelog_1_0_0_item6">Verbindungsproblem mit Chutes API behoben</string>
-    <string name="changelog_1_0_0_item7">Neues Perplexity-Modell und Perplexity API-Unterstützung hinzugefügt</string>
-    <string name="changelog_1_0_0_item8">\"/\"-Einschränkung für Befehle entfernt</string>
-    <string name="changelog_1_0_0_note">Bitte haben Sie Geduld, da dem Entwickler weitere Probleme gemeldet wurden, die jedoch in Update-Chargen behoben werden, da dies ein Ein-Personen-Projekt ist. Vielen Dank für Ihr Verständnis.</string>
-    <string name="module_restart_required_desc">Gerät neu starten, um Modul zu aktivieren</string>
-
     <string name="new_command_title">Neuer Befehl</string>
     <string name="error_prefix_empty">Präfix darf nicht leer sein</string>
     <string name="error_message_empty">Nachricht darf nicht leer sein</string>
     <string name="error_duplicate_command">Es gibt bereits einen Befehl mit diesem Namen</string>
-    <string name="format_edit_pattern_title">%1$s bearbeiten</string>
-    <string name="error_symbol_empty">Symbol darf nicht leer sein</string>
-    <string name="error_symbol_not_allowed">Dieses Symbol ist nicht erlaubt</string>
-    <string name="error_pattern_creation_failed">Muster konnte für dieses Symbol nicht erstellt werden</string>
-    <string name="error_pattern_invalid">Ungültiges Muster generiert</string>
-    <string name="error_pattern_duplicate">Dieses Symbol wird bereits von einem anderen Muster verwendet</string>
-    <string name="msg_trigger_enabled">Auslöser "%1$s" aktiviert</string>
-    <string name="msg_trigger_disabled">Auslöser "%1$s" deaktiviert</string>
-    <string name="example_preview_settings">"%1$s" ← Öffnet Einstellungen</string>
-    <string name="example_preview_ai">"Hallo%1$s" ← KI antwortet</string>
-    <string name="example_preview_custom">"Hallo%1$sübersetzen%1$s" ← Übersetzt</string>
-    <string name="example_preview_italic">"Text%1$s" ← kursiv</string>
-    <string name="example_preview_bold">"Text%1$s" ← fett</string>
-    <string name="example_preview_crossout">"Text%1$s" ← durchgestrichen</string>
-    <string name="example_preview_underline">"Text%1$s" ← unterstrichen</string>
-    <string name="example_preview_default">Text eingeben, dann "%1$s" am Ende hinzufügen</string>
     <string name="msg_theme_updated">Thema aktualisiert</string>
     <string name="msg_settings_restored">Einstellungen wiederhergestellt</string>
     <string name="msg_requesting_root">Root-Zugriff wird angefordert...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Muster für dieses Symbol konnte nicht erstellt werden</string>
     <string name="msg_pattern_generated_invalid">Ungültiges Muster generiert</string>
     <string name="msg_symbol_already_used">Dieses Symbol wird bereits verwendet</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">Modell wählen und konfigurieren</string>
     <string name="dialog_title_commands_list">Befehlsliste</string>
     <string name="settings_option_patterns_list">Musterliste</string>
     <string name="dialog_title_config_model">%1$s konfigurieren</string>
-
     <string name="setting_enable_logging">Protokollierung aktivieren</string>
     <string name="setting_desc_enable_logging">Für Leistung deaktivieren. Fehler können nicht gemeldet werden.</string>
     <string name="setting_external_internet">Externen Internetdienst verwenden</string>
@@ -572,7 +478,6 @@
     <string name="example_format_bold">\u0022Text%1$s\u0022 \u2192 fetter Text</string>
     <string name="example_format_crossout">\u0022Text%1$s\u0022 \u2192 durchgestrichen</string>
     <string name="example_format_underline">\u0022Text%1$s\u0022 \u2192 unterstrichen</string>
-    <string name="example_default">Text eingeben, dann \u0022%1$s\u0022 am Ende hinzufügen</string>
     <string name="pattern_subtitle_trigger">Auslöser: %1$s</string>
     <string name="title_settings_trigger">Einstellungen</string>
     <string name="title_ai_trigger">KI-Auslöser</string>
@@ -585,28 +490,11 @@
     <string name="btn_reset_pattern">Muster zurücksetzen</string>
     <string name="msg_reset_pattern_confirm">\'%1$s\' auf Standardsymbol \"%2$s\" zurücksetzen?</string>
     <string name="field_api_key">API-Schlüssel</string>
-    <string name="field_sub_model">Untermodell</string>
-    <string name="field_base_url">Basis-URL</string>
-    <string name="field_max_tokens">Max. Tokens</string>
-    <string name="field_temperature">Temperatur</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="btn_use_anyway">Use Anyway</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
-        <string name="changelog_4_0_8_item1">Migration von LSPosed API 82 auf moderne API 102</string>
-    <string name="changelog_4_0_8_item2">Große Leistungsoptimierungen und reduzierter Akkuverbrauch</string>
-    <string name="changelog_4_0_8_item3">Behebung verschiedener Einfrier- und Hängeprobleme</string>
-    <string name="changelog_4_0_8_item4">Neuer Tastatur-Trigger hinzugefügt: Medien-Downloader-Trigger</string>
-    <string name="changelog_4_0_8_item5">Neue Textauswahl-Aktion hinzugefügt: Medien-Downloader</string>
-    <string name="changelog_4_0_8_item6">Neues Lab-Feature hinzugefügt: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Direkte YouTube- und Videosuche hinzugefügt</string>
-    <string name="changelog_4_0_8_item8">Video- und Audio-Download mit benutzerdefinierten Formaten, Qualität und Zuschnitt</string>
-    <string name="changelog_4_0_8_item9">Erstellung universeller Standalone-Befehle zum Herunterladen auf jedem Gerät</string>
-    <string name="changelog_note_4_0_8">Bitte haben Sie Geduld, da weitere Probleme gemeldet wurden. Diese werden in Update-Chargen behoben, da es sich um ein Ein-Personen-Projekt handelt. Danke für Ihr Verständnis.</string>
     <string name="msg_ai_no_response_error">Keine Antwort erhalten. Die KI hat leeren Inhalt zurückgegeben.\nHinweis: Sie verwenden möglicherweise einen nicht registrierten Auslöser/Befehl.</string>
 </resources>

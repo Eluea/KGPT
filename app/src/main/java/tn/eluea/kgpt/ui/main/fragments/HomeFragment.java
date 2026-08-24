@@ -50,7 +50,6 @@ import tn.eluea.kgpt.ui.cat.CatPeekManager;
 import tn.eluea.kgpt.ui.main.BottomSheetHelper;
 import tn.eluea.kgpt.ui.main.FloatingBottomSheet;
 import tn.eluea.kgpt.ui.main.MainActivity;
-import tn.eluea.kgpt.ui.lab.LabActivity;
 
 import io.github.libxposed.service.XposedService;
 import io.github.libxposed.service.XposedServiceHelper;
@@ -59,48 +58,33 @@ public class HomeFragment extends Fragment {
 
     private static final String PREF_AMOLED = "amoled_mode";
     private static final String PREF_THEME = "theme_mode";
-    private static final String PREF_MODULE_ENABLED_TIME = "module_enabled_time";
-    private static final String PREF_LAST_BOOT_TIME = "last_boot_time";
 
+    // P6/I2: service state is owned by LSPosedHelper (single listener);
+    // this fragment just mirrors it for the status card.
     private static volatile boolean isServiceBoundActive = false;
     private static XposedService sXposedService = null;
     private static java.lang.ref.WeakReference<HomeFragment> sCurrentInstance = new java.lang.ref.WeakReference<>(null);
 
-    static {
-        try {
-            XposedServiceHelper.registerListener(new XposedServiceHelper.OnServiceListener() {
-                @Override
-                public void onServiceBind(XposedService service) {
-                    sXposedService = service;
-                    isServiceBoundActive = true;
-                    HomeFragment instance = sCurrentInstance.get();
-                    if (instance != null && instance.isAdded() && instance.getActivity() != null) {
-                        instance.getActivity().runOnUiThread(instance::updateUI);
-                    }
-                }
-
-                @Override
-                public void onServiceDied(XposedService service) {
-                    sXposedService = null;
-                    isServiceBoundActive = false;
-                    HomeFragment instance = sCurrentInstance.get();
-                    if (instance != null && instance.isAdded() && instance.getActivity() != null) {
-                        instance.getActivity().runOnUiThread(instance::updateUI);
-                    }
-                }
-            });
-        } catch (Throwable t) {
-            // Service not available
+    private final Runnable onBind = () -> {
+        isServiceBoundActive = true;
+        HomeFragment inst = sCurrentInstance.get();
+        if (inst != null && inst.isAdded() && inst.getActivity() != null) {
+            inst.getActivity().runOnUiThread(inst::updateUI);
         }
-    }
+    };
+    private final Runnable onDeath = () -> {
+        isServiceBoundActive = false;
+        sXposedService = null;
+        HomeFragment inst = sCurrentInstance.get();
+        if (inst != null && inst.isAdded() && inst.getActivity() != null) {
+            inst.getActivity().runOnUiThread(inst::updateUI);
+        }
+    };
 
-    public static XposedService getXposedService() {
-        return sXposedService != null ? sXposedService : tn.eluea.kgpt.util.LSPosedHelper.getService();
-    }
+
 
     // Module status states
     private static final int STATUS_NOT_ACTIVE = 0;
-    private static final int STATUS_RESTART_REQUIRED = 1;
     private static final int STATUS_ACTIVE = 2;
 
     private LinearLayout statusContainer;
@@ -359,6 +343,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateUI() {
+        // CRASH GUARD: this runs from postDelayed callbacks and the static
+        // XposedService bind listener — both can fire after the fragment is
+        // detached (fast app close), where requireContext()/getResources()
+        // throw IllegalStateException and kill the process.
+        if (!isAdded()) return;
+
         // Update version
         tvVersion.setText("v" + BuildConfig.VERSION_NAME);
 
@@ -371,76 +361,72 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateSearchEngineInfo() {
+        if (!isAdded()) return;
         if (SPManager.isReady()) {
             String currentEngine = SPManager.getInstance().getSearchEngine();
             tvSearchEngine.setText(getSearchEngineName(currentEngine));
         }
     }
 
+    // A heartbeat written by MainHook from inside a hooked keyboard process is
+    // direct proof LSPosed loaded the module. It goes stale after this window
+    // so a disabled module eventually reports NOT_ACTIVE again.
+    private static final long HEARTBEAT_FRESH_MS = 24L * 60 * 60 * 1000; // 24h
+
     private int checkModuleStatus() {
-        // Modern Xposed API 101/102 Service check
+        // Signal 1 (live): Modern Xposed API (100+) — LSPosed delivers the
+        // XposedService binder to this module app ONLY when the module is
+        // enabled in the manager.
         if (isServiceBoundActive || (sXposedService != null && sXposedService.getApiVersion() > 0)
                 || tn.eluea.kgpt.util.LSPosedHelper.isLSPosedActive()) {
             return STATUS_ACTIVE;
         }
 
-        // Check if module is hooked (active)
-        boolean isHooked = isModuleActiveInternal();
-        if (isHooked) {
+        // Signal 2 (ground truth, near-real-time): MainHook only writes this
+        // heartbeat from inside processes where the framework ACTUALLY loaded
+        // the module (e.g. an active keyboard). Covers cases where the
+        // XposedService binder was never delivered to this app instance
+        // (enable-after-launch, daemon restarts, delivery races).
+        if (isActivationHeartbeatFresh()) {
             return STATUS_ACTIVE;
-        }
-
-        if (getContext() != null && tn.eluea.kgpt.provider.WorldReadablePrefs.isWorldReadableAvailable(getContext())) {
-            return STATUS_ACTIVE;
-        }
-
-        // Check if module was recently enabled in LSPosed (needs restart)
-        // We detect this by checking if the module is enabled in LSPosed but not yet
-        // hooked
-        // This is done by checking a shared preference that LSPosed sets
-        SharedPreferences prefs = requireContext().getSharedPreferences("keyboard_gpt_ui", Context.MODE_PRIVATE);
-        long moduleEnabledTime = prefs.getLong(PREF_MODULE_ENABLED_TIME, 0);
-        long lastBootTime = getLastBootTime();
-
-        // If module was enabled after last boot, it needs a restart
-        if (moduleEnabledTime > lastBootTime && moduleEnabledTime > 0) {
-            return STATUS_RESTART_REQUIRED;
-        }
-
-        // Check if LSPosed has the module enabled by trying to read from a known
-        // location
-        // For now, we'll use a simple heuristic: if SPManager is ready but module is
-        // not hooked
-        if (SPManager.isReady() && isLSPosedModuleEnabled()) {
-            return STATUS_RESTART_REQUIRED;
         }
 
         return STATUS_NOT_ACTIVE;
     }
 
-    private long getLastBootTime() {
-        return System.currentTimeMillis() - android.os.SystemClock.elapsedRealtime();
-    }
-
-    private boolean isLSPosedModuleEnabled() {
-        // Try to detect if module is enabled in LSPosed
-        // This is a heuristic - we check if the xposed_init file exists and is readable
+    private boolean isActivationHeartbeatFresh() {
+        // P1: prefer the Remote Preferences copy (written by MainHook via the
+        // framework) — works even if the provider path is unavailable.
         try {
-            java.io.File xposedInit = new java.io.File(requireContext().getApplicationInfo().sourceDir);
-            // If we can read the APK, check for xposed markers
-            // For now, return false as we can't reliably detect this without LSPosed API
-            return false;
+            XposedService svc = tn.eluea.kgpt.util.LSPosedHelper.getService();
+            if (svc != null) {
+                android.content.SharedPreferences remote =
+                        svc.getRemotePreferences("kgpt_heartbeat");
+                long ts = remote.getLong("ts", 0L);
+                long age = System.currentTimeMillis() - ts;
+                if (ts > 0 && age >= 0 && age < HEARTBEAT_FRESH_MS) return true;
+            }
+        } catch (Throwable ignored) {}
+
+        try {
+            if (!SPManager.isReady()) {
+                return false;
+            }
+            String raw = SPManager.getInstance().getConfigClient()
+                    .getString("module_activation_heartbeat", null);
+            if (raw == null || raw.isEmpty()) {
+                return false;
+            }
+            long heartbeat = Long.parseLong(raw.trim());
+            long age = System.currentTimeMillis() - heartbeat;
+            return heartbeat > 0 && age >= 0 && age < HEARTBEAT_FRESH_MS;
         } catch (Exception e) {
             return false;
         }
     }
 
-    // This method is hooked by the Xposed module to return true when active
-    private static boolean isModuleActiveInternal() {
-        return false;
-    }
-
     private void updateStatusCard() {
+        if (!isAdded()) return; // delayed callbacks may outlive the fragment
         switch (moduleStatus) {
             case STATUS_ACTIVE:
                 statusContainer.setBackgroundResource(R.drawable.bg_status_active);
@@ -450,16 +436,6 @@ public class HomeFragment extends Fragment {
                 tvStatusTitle.setTextColor(getResources().getColor(R.color.success, requireContext().getTheme()));
                 tvStatusDesc.setText(R.string.module_active_desc);
                 tvStatusDesc.setTextColor(getResources().getColor(R.color.success, requireContext().getTheme()));
-                break;
-
-            case STATUS_RESTART_REQUIRED:
-                statusContainer.setBackgroundResource(R.drawable.bg_status_warning);
-                ivStatusIcon.setImageResource(R.drawable.ic_refresh_filled);
-                ivStatusIcon.setColorFilter(getResources().getColor(R.color.warning, requireContext().getTheme()));
-                tvStatusTitle.setText(R.string.restart_required_title);
-                tvStatusTitle.setTextColor(getResources().getColor(R.color.warning, requireContext().getTheme()));
-                tvStatusDesc.setText(R.string.module_restart_required_desc);
-                tvStatusDesc.setTextColor(getResources().getColor(R.color.warning, requireContext().getTheme()));
                 break;
 
             case STATUS_NOT_ACTIVE:

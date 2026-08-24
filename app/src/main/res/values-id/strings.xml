@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Beranda</string>
-    <string name="nav_models">Model</string>
-    <string name="nav_api_keys">Kunci API</string>
-    <string name="nav_settings">Pengaturan</string>
     <string name="module_active">Modul Aktif</string>
     <string name="module_inactive">Modul Tidak Aktif</string>
     <string name="module_active_desc">KGPT berfungsi</string>
     <string name="module_inactive_desc">Aktifkan di Manajer LSPosed</string>
     <string name="quick_actions">Aksi Cepat</string>
-    <string name="current_model">Model Saat Ini</string>
     <string name="ai_invocation">Pemanggilan AI</string>
-    <string name="ai_invocation_desc">Konfigurasi perintah dan pemicu</string>
     <string name="how_to_use">Cara Menggunakan</string>
     <string name="how_to_use_desc">Pelajari cara menggunakan KGPT</string>
-    <string name="ai_models">Model AI</string>
     <string name="select_model">Pilih Model Anda</string>
     <string name="model_config">Konfigurasi Model</string>
     <string name="sub_model">Sub Model</string>
     <string name="base_url">URL Dasar</string>
-    <string name="advanced_settings">Pengaturan Lanjutan</string>
     <string name="max_tokens">Maks Token</string>
     <string name="temperature">Suhu (Temperature)</string>
     <string name="save_config">Simpan Konfigurasi</string>
-    <string name="api_keys">Kunci API</string>
-    <string name="manage_api_keys">Kelola Kunci API</string>
     <string name="enter_api_key">Masukkan Kunci API</string>
     <string name="save">Simpan</string>
-    <string name="api_key_info">Kunci disimpan dengan aman di perangkat Anda.</string>
-    <string name="settings">Pengaturan</string>
-    <string name="appearance">Tampilan</string>
     <string name="dark_mode">Mode Gelap</string>
     <string name="follow_system">Ikuti Sistem</string>
-    <string name="amoled_dark">Hitam AMOLED</string>
-    <string name="amoled_desc">Hitam pekat untuk layar OLED</string>
     <string name="blur_control">Kontrol Blur</string>
     <string name="blur_control_desc">Kelola blur latar belakang</string>
     <string name="blur_enabled">Aktifkan Blur</string>
@@ -45,23 +30,9 @@
     <string name="general">Umum</string>
     <string name="enable_logging">Aktifkan Logging</string>
     <string name="logging_desc">Nonaktifkan untuk performa lebih baik</string>
-    <string name="external_internet">Internet Eksternal</string>
-    <string name="external_internet_desc">Disarankan untuk stabilitas</string>
-    <string name="backup_restore">Cadangkan &amp; Pulihkan</string>
-    <string name="export_backup">Ekspor Cadangan</string>
-    <string name="export_backup_desc">Simpan pengaturan ke file</string>
-    <string name="import_backup">Impor Cadangan</string>
-    <string name="import_backup_desc">Pulihkan pengaturan dari file</string>
-    <string name="about">Tentang</string>
-    <string name="config_saved">Konfigurasi disimpan</string>
-    <string name="api_key_saved">Kunci API disimpan</string>
-    <string name="api_key_removed">Kunci API dihapus</string>
     <string name="backup_exported">Ekspor berhasil</string>
-    <string name="backup_imported">Impor berhasil</string>
     <string name="export_failed">Ekspor gagal</string>
     <string name="import_failed">Impor gagal</string>
-    <string name="themed_icon_title">Ikon Bertema</string>
-    <string name="themed_icon_desc">Ikon adaptif (Material You)</string>
     <string name="about_home_title">Tentang Beranda</string>
     <string name="about_home_description">Selamat datang di KGPT!\n\n\u2022 Status: Menunjukkan apakah modul Xposed aktif.\n\n\u2022 Model: Menampilkan AI yang sedang aktif.\n\n\u2022 Pemanggilan: Konfigurasi pemicu.\n\n\u2022 Panduan: Tips penggunaan.</string>
     <string name="built_in_indicator">  \u2022  Bawaan</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">Koneksi diperlukan.</string>
     <string name="btn_download">Unduh</string>
     <string name="btn_later">Nanti</string>
-    <string name="btn_install">Pasang</string>
     <string name="btn_try_again">Coba lagi</string>
     <string name="btn_close">Tutup</string>
     <string name="btn_ok">OK</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">Memuat...</string>
     <string name="title_add_api_key">Tambah Kunci</string>
     <string name="desc_add_api_key">Pilih penyedia.</string>
-    <string name="title_add_actions">Tambah Aksi</string>
-    <string name="desc_add_actions">Pilih aksi</string>
     <string name="title_logging_disabled">Log Nonaktif</string>
     <string name="desc_logging_disabled">Aktifkan log di pengaturan.</string>
     <string name="btn_enable_logging">Aktifkan Log</string>
     <string name="title_check_frequency">Frekuensi</string>
     <string name="desc_check_frequency">Seberapa sering memeriksa?</string>
     <string name="title_choose_model">Pilih Model</string>
-    <string name="label_select_provider_hint">Pilih Penyedia</string>
-    <string name="hint_select_provider">Penyedia</string>
     <string name="placeholder_search_engine">Mesin</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Nama</string>
     <string name="placeholder_changelog_desc">Deskripsi</string>
     <string name="tag_add">Baru</string>
     <string name="configure_model_title">Konfigurasi</string>
-    <string name="advanced_settings_title">Lanjutan</string>
     <string name="edit_command_title">Edit Perintah</string>
     <string name="hint_command_prefix">Awalan</string>
     <string name="hint_prompt">Prompt</string>
@@ -260,14 +225,10 @@
     <string name="helper_trigger_word">Ketik untuk buka aplikasi</string>
     <string name="example_trigger_word">Contoh: \'chrome\'</string>
     <string name="msg_no_items">Tidak ada item</string>
-    <string name="title_add_trigger_symbol">Tambah Simbol</string>
-    <string name="desc_add_trigger_symbol">1-3 karakter</string>
-    <string name="hint_trigger_example">Contoh: @@</string>
     <string name="status_free">Gratis</string>
     <string name="btn_save_key">Simpan</string>
     <string name="btn_get_key">Dapatkan Kunci</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Nama</string>
     <string name="placeholder_description">Deskripsi</string>
     <string name="placeholder_action">Aksi</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -277,8 +238,6 @@
     <string name="sub_model_desc">Preset atau Kustom</string>
     <string name="hint_custom_model">Model Kustom</string>
     <string name="title_app_triggers">Pemicu App</string>
-    <string name="lab_badge">Lab</string>
-    <string name="app_triggers_intro">Buka app dengan nama</string>
     <string name="btn_enable_app_triggers">Aktifkan Pemicu</string>
     <string name="desc_enable_app_triggers">Kata -> Buka App</string>
     <string name="msg_no_triggers">Tidak ada pemicu.</string>
@@ -339,9 +298,6 @@
     <string name="hint_system_message">Pesan sistem (Opsional)</string>
     <string name="help_command_usage">Penggunaan: teks /cmd + simbol</string>
     <string name="title_edit_pattern">Edit Pola</string>
-    <string name="desc_edit_pattern">Regex kustom</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">Default: $prompt$</string>
     <string name="title_other_settings">Lainnya</string>
     <string name="enable_trigger">Aktif</string>
     <string name="hint_description">Deskripsi</string>
@@ -351,7 +307,6 @@
     <string name="winter_mode">Mode Musim Dingin</string>
     <string name="winter_mode_desc">Efek salju</string>
     <string name="title_settings_backup">Cadangan</string>
-    <string name="desc_settings_backup">Simpan data</string>
     <string name="title_settings_restore">Pulihkan</string>
     <string name="desc_settings_restore">Muat data</string>
     <string name="support_group">Grup Dukungan</string>
@@ -361,7 +316,6 @@
     <string name="desc_updates_config">Periksa pembaruan</string>
     <string name="open_in_browser">Buka di Browser</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Meong!</string>
     <string name="cat_caught_msg">Kamu menemukanku!\nBeri bintang di GitHub?</string>
     <string name="cat_action_star">Beri Bintang</string>
@@ -405,25 +359,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6d</string>
     <string name="language">Bahasa</string>
-    <string name="language_desc">Bahasa aplikasi</string>
     <string name="select_language">Pilih Bahasa</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">Tentang Pengaturan</string>
     <string name="about_settings_desc">Sesuaikan KGPT.\n\n• Gelap: Tema gelap.\n\n• AMOLED: Hitam untuk OLED.\n\n• Logging: Untuk debug.\n\n• Eksternal: Untuk AI.</string>
-    <string name="logging_warning_title">Aktifkan Logging?</string>
-    <string name="logging_warning_desc">Logging tidak aktif. Aktifkan untuk mengekspor.</string>
-    <string name="btn_enable_logging_action">Aktifkan Logging</string>
     <string name="logging_enabled_toast">Logging aktif. Anda dapat mengekspor.</string>
-    <string name="export_success_title">Ekspor Berhasil</string>
-    <string name="export_success_desc">Log disimpan di:</string>
-    <string name="root_status_label">Status Root</string>
-    <string name="boot_logs_label">Log Boot</string>
-    <string name="system_logs_label">Log Sistem</string>
-    <string name="crash_logs_label">Log Crash</string>
-    <string name="app_logs_label">Log Aplikasi</string>
-    <string name="available">Tersedia</string>
-    <string name="unavailable">Tidak Tersedia</string>
     <string name="tab_commands">Perintah</string>
     <string name="tab_triggers">Pemicu</string>
     <string name="tab_model">Model</string>
@@ -461,42 +400,12 @@
     <string name="path_internal_storage">Penyimpanan Internal</string>
     <string name="check_for_updates">Periksa Pembaruan</string>
     <string name="checking_updates">Memeriksa...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">TAMBAH</string>
     <string name="tag_improved">INCREASE</string>
     <string name="tag_fixed">PERBAIKAN</string>
-    <string name="changelog_1_0_0_item1">Menambahkan Google AI Mode ke opsi pencarian web</string>
-    <string name="changelog_1_0_0_item2">Menambahkan fitur pemilihan bahasa dengan dukungan untuk semua bahasa yang tersedia</string>
-    <string name="changelog_1_0_0_item3">Meningkatkan tata letak layar untuk penggunaan satu tangan dan jari yang lebih besar</string>
-    <string name="changelog_1_0_0_item4">Memperbaiki banyak masalah stabilitas dan meningkatkan kinerja</string>
-    <string name="changelog_1_0_0_item5">Menguji dan menambahkan dukungan untuk keyboard FUTO</string>
-    <string name="changelog_1_0_0_item6">Memperbaiki masalah koneksi dengan Chutes API</string>
-    <string name="changelog_1_0_0_item7">Menambahkan model Perplexity baru dan dukungan API Perplexity</string>
-    <string name="changelog_1_0_0_item8">Menghapus pembatasan penggunaan \"/\" untuk perintah</string>
-    <string name="changelog_1_0_0_note">Harap bersabar karena lebih banyak masalah telah dilaporkan kepada pengembang, tetapi akan diselesaikan dalam batch pembaruan karena ini adalah proyek satu orang. Terima kasih atas pengertian Anda.</string>
-    <string name="module_restart_required_desc">Reboot perangkat untuk mengaktifkan modul</string>
-
     <string name="new_command_title">Perintah Baru</string>
     <string name="error_prefix_empty">Awalan tidak boleh kosong</string>
     <string name="error_message_empty">Pesan tidak boleh kosong</string>
     <string name="error_duplicate_command">Ada perintah lain dengan nama yang sama</string>
-    <string name="format_edit_pattern_title">Ubah %1$s</string>
-    <string name="error_symbol_empty">Simbol tidak boleh kosong</string>
-    <string name="error_symbol_not_allowed">Simbol ini tidak diizinkan</string>
-    <string name="error_pattern_creation_failed">Gagal membuat pola untuk simbol ini</string>
-    <string name="error_pattern_invalid">Pola yang dibuat tidak valid</string>
-    <string name="error_pattern_duplicate">Simbol ini sudah digunakan</string>
-    <string name="msg_trigger_enabled">Pemicu "%1$s" aktif</string>
-    <string name="msg_trigger_disabled">Pemicu "%1$s" nonaktif</string>
-    <string name="example_preview_settings">"%1$s" ← Buka pengaturan</string>
-    <string name="example_preview_ai">"Halo%1$s" ← AI menjawab</string>
-    <string name="example_preview_custom">"Halo%1$sterjemahkan%1$s" ← Menerjemahkan</string>
-    <string name="example_preview_italic">"teks%1$s" ← miring</string>
-    <string name="example_preview_bold">"teks%1$s" ← tebal</string>
-    <string name="example_preview_crossout">"teks%1$s" ← coret</string>
-    <string name="example_preview_underline">"teks%1$s" ← garis bawah</string>
-    <string name="example_preview_default">Ketik teks, lalu tambahkan "%1$s" di akhir</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -535,13 +444,10 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">Simbol ini sudah digunakan</string>
-    
-    <!-- New Settings Dialog Strings -->
     <string name="settings_option_choose_model">Pilih dan konfigurasi model</string>
     <string name="dialog_title_commands_list">Daftar perintah</string>
     <string name="settings_option_patterns_list">Daftar pola</string>
     <string name="dialog_title_config_model">Konfigurasi %1$s</string>
-
     <string name="setting_enable_logging">Aktifkan log</string>
     <string name="setting_desc_enable_logging">Nonaktifkan untuk performa. Anda tidak dapat melaporkan error.</string>
     <string name="setting_external_internet">Gunakan layanan internet eksternal</string>
@@ -560,7 +466,6 @@
     <string name="example_format_bold">\u0022teks%1$s\u0022 \u2192 teks tebal</string>
     <string name="example_format_crossout">\u0022teks%1$s\u0022 \u2192 dicoret</string>
     <string name="example_format_underline">\u0022teks%1$s\u0022 \u2192 garis bawah</string>
-    <string name="example_default">Ketik teks, lalu tambahkan \u0022%1$s\u0022 di akhir</string>
     <string name="pattern_subtitle_trigger">Pemicu: %1$s</string>
     <string name="title_settings_trigger">Pengaturan</string>
     <string name="title_ai_trigger">Pemicu AI</string>
@@ -573,17 +478,10 @@
     <string name="btn_reset_pattern">Reset pola</string>
     <string name="msg_reset_pattern_confirm">Reset \'%1$s\' ke simbol default \"%2$s\"?</string>
     <string name="field_api_key">Kunci API</string>
-    <string name="field_sub_model">Sub-model</string>
-    <string name="field_base_url">URL dasar</string>
-    <string name="field_max_tokens">Token maksimum</string>
-    <string name="field_temperature">Suhu</string>
     <string name="field_top_p">Top P</string>
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
-    <string name="interval_every_disabled">Disabled</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
@@ -598,15 +496,5 @@
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s?</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">Migrasi dari LSPosed API 82 ke API 102 modern</string>
-    <string name="changelog_4_0_8_item2">Optimalisasi kinerja besar dan pengurangan konsumsi daya baterai</string>
-    <string name="changelog_4_0_8_item3">Memperbaiki berbagai masalah aplikasi macet dan freeze</string>
-    <string name="changelog_4_0_8_item4">Menambahkan pemicu keyboard baru: Pemicu Pengunduh Media</string>
-    <string name="changelog_4_0_8_item5">Menambahkan tindakan pilihan teks baru: Pengunduh Media</string>
-    <string name="changelog_4_0_8_item6">Menambahkan fitur Lab baru: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Menambahkan fitur pencarian video dan YouTube langsung</string>
-    <string name="changelog_4_0_8_item8">Pengunduhan Video &amp; Audio dengan format, kualitas, dan pemotongan kustom</string>
-    <string name="changelog_4_0_8_item9">Menambahkan pembuatan perintah standalone universal untuk mengunduh di perangkat lain</string>
-    <string name="changelog_note_4_0_8">Harap bersabar karena lebih banyak masalah telah dilaporkan ke pengembang, tetapi masalah tersebut akan diselesaikan dalam kumpulan pembaruan karena ini adalah proyek satu orang. Terima kasih atas pengertian Anda.</string>
     <string name="msg_ai_no_response_error">Tidak ada respons diterima. AI mengembalikan konten kosong.\nPetunjuk: Anda mungkin menggunakan pemicu/perintah yang tidak terdaftar.</string>
 </resources>

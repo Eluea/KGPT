@@ -32,13 +32,6 @@ import tn.eluea.kgpt.util.MaterialYouManager;
 
 public class SettingsDialogBox extends DialogBox {
 
-    // Icons for each dialog type
-    private static final int[] DIALOG_ICONS = {
-            R.drawable.ic_cpu_filled, // ChoseModel
-            R.drawable.ic_document_text_filled, // EditCommandsList
-            R.drawable.ic_document_text_filled, // EditPatternList
-            R.drawable.ic_setting_filled // OtherSettings
-    };
 
     public SettingsDialogBox(DialogBoxManager dialogManager, Activity parent,
             Bundle inputBundle, ConfigContainer configContainer) {

@@ -79,7 +79,7 @@ public class PatternListDialogBox extends DialogBox {
                 // Show enabled/disabled status in title
                 String title = themedContext.getString(pattern.getType().titleResId);
                 if (!pattern.isEnabled()) {
-                    title += " (Disabled)"; // TODO: Localize this too?
+                    title += " (" + getContext().getString(R.string.status_disabled) + ")";
                 }
                 tvName.setText(title);
 

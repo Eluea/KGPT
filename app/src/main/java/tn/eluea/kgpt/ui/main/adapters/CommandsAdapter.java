@@ -34,6 +34,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import tn.eluea.kgpt.R;
+import tn.eluea.kgpt.SPManager;
+import tn.eluea.kgpt.text.parse.ParsePattern;
+import tn.eluea.kgpt.text.parse.PatternType;
 import tn.eluea.kgpt.instruction.command.GenerativeAICommand;
 import tn.eluea.kgpt.instruction.command.InlineAskCommand;
 
@@ -56,9 +59,6 @@ public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.Comman
         this.listener = listener;
     }
 
-    public void setAmoledMode(boolean isAmoled) {
-        this.isAmoledMode = isAmoled;
-    }
 
     @NonNull
     @Override
@@ -141,7 +141,12 @@ public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.Comman
 
                 // Show special example for /ask
                 if (tvCommandExample != null) {
-                    tvCommandExample.setText(ctx.getString(R.string.ask_command_example));
+                    String askEx = ctx.getString(R.string.ask_command_example);
+                    String sym = getCurrentTriggerSymbol();
+                    if (!"$".equals(sym) && askEx.endsWith("$")) {
+                        askEx = askEx.substring(0, askEx.length() - 1) + sym;
+                    }
+                    tvCommandExample.setText(askEx);
                     tvCommandExample.setVisibility(View.VISIBLE);
                     // Apply AMOLED background if needed
                     if (isAmoledMode) {
@@ -193,20 +198,45 @@ public class CommandsAdapter extends RecyclerView.Adapter<CommandsAdapter.Comman
             // Generate contextual examples based on command name - using command$ format
             // The $ at the end is the AI trigger symbol (default)
             if (prefix.contains("translate")) {
-                return "Hello world " + command.getCommandPrefix() + "$";
+                return "Hello world " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else if (prefix.contains("fix") || prefix.contains("grammar")) {
-                return "I has a apple " + command.getCommandPrefix() + "$";
+                return "I has a apple " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else if (prefix.contains("summar") || prefix.contains("short")) {
-                return "[long text] " + command.getCommandPrefix() + "$";
+                return "[long text] " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else if (prefix.contains("explain")) {
-                return "Quantum physics " + command.getCommandPrefix() + "$";
+                return "Quantum physics " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else if (prefix.contains("code") || prefix.contains("program")) {
-                return "sort array " + command.getCommandPrefix() + "$";
+                return "sort array " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else if (prefix.contains("email") || prefix.contains("formal")) {
-                return "meeting tomorrow " + command.getCommandPrefix() + "$";
+                return "meeting tomorrow " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             } else {
-                return "your text " + command.getCommandPrefix() + "$";
+                return "your text " + command.getCommandPrefix() + getCurrentTriggerSymbol();
             }
         }
+    }
+    // Cached current AI trigger symbol (from CommandAI pattern). Invalidated
+    // automatically when the stored patterns JSON changes.
+    private static volatile String sCachedRaw = null;
+    private static volatile String sCachedSymbol = null;
+
+    private String getCurrentTriggerSymbol() {
+        try {
+            if (SPManager.isReady()) {
+                String raw = SPManager.getInstance().getParsePatternsRaw();
+                if (raw != null && raw.equals(sCachedRaw) && sCachedSymbol != null) {
+                    return sCachedSymbol;
+                }
+                for (ParsePattern pp : ParsePattern.decode(raw)) {
+                    if (pp.getType() == PatternType.CommandAI) {
+                        String sym = PatternType.regexToSymbol(pp.getPattern().pattern());
+                        if (sym == null || sym.isEmpty()) sym = "$";
+                        sCachedRaw = raw;
+                        sCachedSymbol = sym;
+                        return sym;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return "$";
     }
 }

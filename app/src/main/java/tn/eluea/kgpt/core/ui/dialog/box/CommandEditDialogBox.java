@@ -113,12 +113,22 @@ public class CommandEditDialogBox extends DialogBox {
                 return;
             }
 
+            // H2: parity with the in-app editor — case-insensitive duplicates
+            // and built-in prefix protection (inline-ask + static "s").
             final String finalPrefix = prefix;
-            long similarCount = getConfig().commands.stream().filter((c) -> finalPrefix.equals(c.getCommandPrefix()))
+            String lowerPrefix = finalPrefix.toLowerCase(java.util.Locale.ROOT);
+            long similarCount = getConfig().commands.stream()
+                    .filter((c) -> lowerPrefix.equalsIgnoreCase(c.getCommandPrefix()))
                     .count();
             if ((commandPos == -1 && similarCount >= 1)
                     || (commandPos >= 0 && similarCount >= 2)) {
                 Toast.makeText(getContext(), R.string.error_duplicate_command, Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (tn.eluea.kgpt.instruction.command.CommandManager.isBuiltInCommand(lowerPrefix)
+                    && (commandPos == -1 || !lowerPrefix.equalsIgnoreCase(
+                            getConfig().commands.get(commandPos).getCommandPrefix()))) {
+                prefixEditText.setError(getContext().getString(R.string.error_prefix_reserved));
                 return;
             }
 

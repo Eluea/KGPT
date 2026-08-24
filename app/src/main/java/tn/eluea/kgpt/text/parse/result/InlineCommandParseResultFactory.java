@@ -36,17 +36,20 @@ import tn.eluea.kgpt.instruction.command.InlineAskCommand;
  */
 public class InlineCommandParseResultFactory {
 
-    /**
-     * Parse text for inline command
-     * 
-     * @param text              The full text to parse
-     * @param triggerSymbol     The trigger symbol (default $)
-     * @param availableCommands Set of available command prefixes
-     * @return InlineCommandParseResult if matched, null otherwise
-     */
-    public static InlineCommandParseResult parse(String text, String triggerSymbol, Set<String> availableCommands) {
-        if (text == null || text.isEmpty() || availableCommands == null || availableCommands.isEmpty()) {
-            return null;
+    // Single-entry compiled-pattern cache. parse() runs on every keystroke on
+    // the keyboard's main thread; inputs (symbol + command set) change only on
+    // config changes, so memoizing by that key removes per-keystroke
+    // Pattern.compile cost entirely.
+    private static final Object CACHE_LOCK = new Object();
+    private static String cachedKey = null;
+    private static Pattern cachedPattern = null;
+
+    private static Pattern getPattern(String triggerSymbol, Set<String> availableCommands) {
+        String key = triggerSymbol + "|" + String.join(",", availableCommands);
+        synchronized (CACHE_LOCK) {
+            if (cachedPattern != null && key.equals(cachedKey)) {
+                return cachedPattern;
+            }
         }
 
         String escapedSymbol = Pattern.quote(triggerSymbol);
@@ -63,22 +66,31 @@ public class InlineCommandParseResultFactory {
             cmdPattern.append(Pattern.quote(cmd));
         }
 
-        // Regex Explanation:
-        // (?si) : Dot matches newline, Case insensitive
-        // (.*) : Group 1 - Preserved text (Greedy, so it finds the last command match)
-        // (?:\\s+/|\\s+|(?<=^)/|(?<=^)) : Separator (Space+slash, Space, Start+slash,
-        // Start)
-        // (" + cmdPattern + ") : Group 2 - The Command
-        // \\s+ : Required whitespace after command
-        // (.+) : Group 3 - The Prompt
-        // escapedSymbol + "$" : End identifier
-
         String separatorPattern = "(?:\\s+/|\\s+|(?<=^)/|(?<=^))";
-
         String regex = "(?si)(.*)" + separatorPattern + "(" + cmdPattern.toString() + ")\\s+(.+)" + escapedSymbol + "$";
 
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
+        synchronized (CACHE_LOCK) {
+            cachedKey = key;
+            cachedPattern = pattern;
+        }
+        return pattern;
+    }
+
+    /**
+     * Parse text for inline command
+     *
+     * @param text              The full text to parse
+     * @param triggerSymbol     The trigger symbol (default $)
+     * @param availableCommands Set of available command prefixes
+     * @return InlineCommandParseResult if matched, null otherwise
+     */
+    public static InlineCommandParseResult parse(String text, String triggerSymbol, Set<String> availableCommands) {
+        if (text == null || text.isEmpty() || availableCommands == null || availableCommands.isEmpty()) {
+            return null;
+        }
+
+        Matcher matcher = getPattern(triggerSymbol, availableCommands).matcher(text);
 
         if (matcher.find()) {
             String preservedText = matcher.group(1);

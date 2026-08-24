@@ -1,40 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KGPT</string>
-    <string name="nav_home">Trang chủ</string>
-    <string name="nav_models">Mô hình</string>
-    <string name="nav_api_keys">Khóa API</string>
-    <string name="nav_settings">Cài đặt</string>
     <string name="module_active">Mô-đun đang hoạt động</string>
     <string name="module_inactive">Mô-đun không hoạt động</string>
     <string name="module_active_desc">KGPT đang hoạt động</string>
     <string name="module_inactive_desc">Kích hoạt trong Trình quản lý LSPosed</string>
     <string name="quick_actions">Hành động nhanh</string>
-    <string name="current_model">Mô hình hiện tại</string>
     <string name="ai_invocation">Triệu hồi AI</string>
-    <string name="ai_invocation_desc">Cấu hình lệnh và kích hoạt</string>
     <string name="how_to_use">Cách sử dụng</string>
     <string name="how_to_use_desc">Tìm hiểu cách dùng KGPT</string>
-    <string name="ai_models">Mô hình AI</string>
     <string name="select_model">Chọn mô hình</string>
     <string name="model_config">Cấu hình Mô hình</string>
     <string name="sub_model">Mô hình phụ</string>
     <string name="base_url">URL cơ sở</string>
-    <string name="advanced_settings">Cài đặt nâng cao</string>
     <string name="max_tokens">Tokens tối đa</string>
     <string name="temperature">Nhiệt độ (Temperature)</string>
     <string name="save_config">Lưu cấu hình</string>
-    <string name="api_keys">Khóa API</string>
-    <string name="manage_api_keys">Quản lý Khóa API</string>
     <string name="enter_api_key">Nhập Khóa API</string>
     <string name="save">Lưu</string>
-    <string name="api_key_info">Khóa được lưu trữ an toàn trên thiết bị của bạn.</string>
-    <string name="settings">Cài đặt</string>
-    <string name="appearance">Giao diện</string>
     <string name="dark_mode">Chế độ tối</string>
     <string name="follow_system">Theo hệ thống</string>
-    <string name="amoled_dark">AMOLED Đen</string>
-    <string name="amoled_desc">Màu đen thuần cho màn hình OLED</string>
     <string name="blur_control">Điều khiển làm mờ</string>
     <string name="blur_control_desc">Quản lý làm mờ nền</string>
     <string name="blur_enabled">Bật làm mờ</string>
@@ -45,23 +30,9 @@
     <string name="general">Chung</string>
     <string name="enable_logging">Bật ghi log</string>
     <string name="logging_desc">Tắt để hiệu suất tốt hơn</string>
-    <string name="external_internet">Internet ngoài</string>
-    <string name="external_internet_desc">Khuyên dùng để ổn định</string>
-    <string name="backup_restore">Sao lưu &amp; Khôi phục</string>
-    <string name="export_backup">Xuất sao lưu</string>
-    <string name="export_backup_desc">Lưu cài đặt vào tệp</string>
-    <string name="import_backup">Nhập sao lưu</string>
-    <string name="import_backup_desc">Khôi phục cài đặt từ tệp</string>
-    <string name="about">Giới thiệu</string>
-    <string name="config_saved">Cấu hình đã lưu</string>
-    <string name="api_key_saved">Khóa API đã lưu</string>
-    <string name="api_key_removed">Khóa API đã xóa</string>
     <string name="backup_exported">Xuất thành công</string>
-    <string name="backup_imported">Nhập thành công</string>
     <string name="export_failed">Xuất thất bại</string>
     <string name="import_failed">Nhập thất bại</string>
-    <string name="themed_icon_title">Biểu tượng theo chủ đề</string>
-    <string name="themed_icon_desc">Biểu tượng thích ứng (Material You)</string>
     <string name="about_home_title">Về Trang chủ</string>
     <string name="about_home_description">Chào mừng đến với KGPT!\n\n\u2022 Trạng thái: Hiển thị mô-đun Xposed có hoạt động không.\n\n\u2022 Mô hình: Hiển thị AI đang kích hoạt.\n\n\u2022 Triệu hồi: Cấu hình kích hoạt.\n\n\u2022 Hướng dẫn: Mẹo sử dụng.</string>
     <string name="built_in_indicator">  \u2022  Tích hợp sẵn</string>
@@ -131,7 +102,6 @@
     <string name="no_internet_desc">Yêu cầu kết nối internet.</string>
     <string name="btn_download">Tải xuống</string>
     <string name="btn_later">Để sau</string>
-    <string name="btn_install">Cài đặt</string>
     <string name="btn_try_again">Thử lại</string>
     <string name="btn_close">Đóng</string>
     <string name="btn_ok">OK</string>
@@ -230,23 +200,18 @@
     <string name="msg_loading_apps">Đang tải...</string>
     <string name="title_add_api_key">Thêm Khóa</string>
     <string name="desc_add_api_key">Chọn nhà cung cấp.</string>
-    <string name="title_add_actions">Thêm Hành động</string>
-    <string name="desc_add_actions">Chọn hành động</string>
     <string name="title_logging_disabled">Nhật ký Tắt</string>
     <string name="desc_logging_disabled">Bật nhật ký trong cài đặt.</string>
     <string name="btn_enable_logging">Bật Nhật ký</string>
     <string name="title_check_frequency">Tần suất</string>
     <string name="desc_check_frequency">Kiểm tra thường xuyên không?</string>
     <string name="title_choose_model">Chọn Mô hình</string>
-    <string name="label_select_provider_hint">Chọn Nhà cung cấp</string>
-    <string name="hint_select_provider">Nhà cung cấp</string>
     <string name="placeholder_search_engine">Công cụ</string>
     <string name="placeholder_model_name">Gemini</string>
     <string name="placeholder_item_name">Tên</string>
     <string name="placeholder_changelog_desc">Mô tả</string>
     <string name="tag_add">Mới</string>
     <string name="configure_model_title">Cấu hình</string>
-    <string name="advanced_settings_title">Nâng cao</string>
     <string name="edit_command_title">Sửa Lệnh</string>
     <string name="hint_command_prefix">Tiền tố</string>
     <string name="hint_prompt">Prompt</string>
@@ -259,14 +224,10 @@
     <string name="helper_trigger_word">Gõ để mở ứng dụng</string>
     <string name="example_trigger_word">Vd: \'chrome\'</string>
     <string name="msg_no_items">Không có mục</string>
-    <string name="title_add_trigger_symbol">Thêm Ký hiệu</string>
-    <string name="desc_add_trigger_symbol">1-3 ký tự</string>
-    <string name="hint_trigger_example">Vd: @@</string>
     <string name="status_free">Miễn phí</string>
     <string name="btn_save_key">Lưu</string>
     <string name="btn_get_key">Lấy Khóa</string>
     <string name="placeholder_provider_chatgpt">ChatGPT</string>
-    <string name="placeholder_action_name">Tên</string>
     <string name="placeholder_description">Mô tả</string>
     <string name="placeholder_action">Hành động</string>
     <string name="version_placeholder">v4.0.0</string>
@@ -276,8 +237,6 @@
     <string name="sub_model_desc">Có sẵn hoặc Tùy chỉnh</string>
     <string name="hint_custom_model">Mô hình Tùy chỉnh</string>
     <string name="title_app_triggers">Kích hoạt Ứng dụng</string>
-    <string name="lab_badge">Lab</string>
-    <string name="app_triggers_intro">Mở ứng dụng bằng tên</string>
     <string name="btn_enable_app_triggers">Bật Kích hoạt</string>
     <string name="desc_enable_app_triggers">Từ khóa -> Mở App</string>
     <string name="msg_no_triggers">Không có kích hoạt.</string>
@@ -338,9 +297,6 @@
     <string name="hint_system_message">Tin nhắn hệ thống (Tùy chọn)</string>
     <string name="help_command_usage">Sử dụng: văn bản /cmd + ký hiệu</string>
     <string name="title_edit_pattern">Sửa Mẫu</string>
-    <string name="desc_edit_pattern">Regex tùy chỉnh</string>
-    <string name="hint_regex_pattern">Regex</string>
-    <string name="help_regex_default">Mặc định: $prompt$</string>
     <string name="title_other_settings">Khác</string>
     <string name="enable_trigger">Bật</string>
     <string name="hint_description">Mô tả</string>
@@ -350,7 +306,6 @@
     <string name="winter_mode">Chế độ Mùa đông</string>
     <string name="winter_mode_desc">Hiệu ứng tuyết</string>
     <string name="title_settings_backup">Sao lưu</string>
-    <string name="desc_settings_backup">Lưu dữ liệu</string>
     <string name="title_settings_restore">Khôi phục</string>
     <string name="desc_settings_restore">Tải dữ liệu</string>
     <string name="support_group">Nhóm hỗ trợ</string>
@@ -360,7 +315,6 @@
     <string name="desc_updates_config">Kiểm tra cập nhật</string>
     <string name="open_in_browser">Mở trong Trình duyệt</string>
     <string name="hint_enter_url">URL</string>
-    <string name="duckduckgo">DuckDuckGo</string>
     <string name="cat_caught_title">Meow!</string>
     <string name="cat_caught_msg">Bạn tìm thấy tôi rồi!\nTặng sao trên GitHub nhé?</string>
     <string name="cat_action_star">Tặng sao</string>
@@ -404,25 +358,10 @@
     <string name="default_hex_code">FF5733</string>
     <string name="duration_6s">6s</string>
     <string name="language">Ngôn ngữ</string>
-    <string name="language_desc">Ngôn ngữ ứng dụng</string>
     <string name="select_language">Chọn Ngôn ngữ</string>
-    
-    <!-- New Strings -->
     <string name="about_settings_title">Về Cài đặt</string>
     <string name="about_settings_desc">Tùy chỉnh KGPT.\n\n• Tối: Giao diện tối.\n\n• AMOLED: Đen cho OLED.\n\n• Ghi log: Để gỡ lỗi.\n\n• Ngoài: Cho AI.</string>
-    <string name="logging_warning_title">Bật ghi log?</string>
-    <string name="logging_warning_desc">Ghi log đang tắt. Bật để xuất.</string>
-    <string name="btn_enable_logging_action">Bật Ghi log</string>
     <string name="logging_enabled_toast">Đã bật ghi log. Bạn có thể xuất.</string>
-    <string name="export_success_title">Xuất thành công</string>
-    <string name="export_success_desc">Log đã lưu tại:</string>
-    <string name="root_status_label">Trạng thái Root</string>
-    <string name="boot_logs_label">Log Khởi động</string>
-    <string name="system_logs_label">Log Hệ thống</string>
-    <string name="crash_logs_label">Log Sự cố</string>
-    <string name="app_logs_label">Log Ứng dụng</string>
-    <string name="available">Khả dụng</string>
-    <string name="unavailable">Không khả dụng</string>
     <string name="tab_commands">Lệnh</string>
     <string name="tab_triggers">Kích hoạt</string>
     <string name="tab_model">Mô hình</string>
@@ -460,42 +399,12 @@
     <string name="path_internal_storage">Bộ nhớ trong</string>
     <string name="check_for_updates">Kiểm tra Cập nhật</string>
     <string name="checking_updates">Đang kiểm tra...</string>
-
-    <!-- Changelog Items -->
-    <string name="tag_added">THÊM</string>
     <string name="tag_improved">CẢI THIỆN</string>
     <string name="tag_fixed">SỬA LỖI</string>
-    <string name="changelog_1_0_0_item1">Đã thêm Google AI Mode vào các tùy chọn tìm kiếm web</string>
-    <string name="changelog_1_0_0_item2">Đã thêm tính năng chọn ngôn ngữ với hỗ trợ cho tất cả các ngôn ngữ có sẵn</string>
-    <string name="changelog_1_0_0_item3">Cải thiện bố cục màn hình cho việc sử dụng một tay và ngón tay lớn hơn</string>
-    <string name="changelog_1_0_0_item4">Đã sửa nhiều vấn đề về tính ổn định và cải thiện hiệu suất</string>
-    <string name="changelog_1_0_0_item5">Đã kiểm tra và thêm hỗ trợ cho bàn phím FUTO</string>
-    <string name="changelog_1_0_0_item6">Đã sửa vấn đề kết nối với Chutes API</string>
-    <string name="changelog_1_0_0_item7">Đã thêm mô hình Perplexity mới và hỗ trợ API Perplexity</string>
-    <string name="changelog_1_0_0_item8">Đã xóa hạn chế sử dụng \"/\" cho các lệnh</string>
-    <string name="changelog_1_0_0_note">Vui lòng kiên nhẫn vì nhiều vấn đề hơn đã được báo cáo cho nhà phát triển, nhưng chúng sẽ được giải quyết theo từng đợt cập nhật vì đây là dự án của một người. Cảm ơn sự thông cảm của bạn.</string>
-    <string name="module_restart_required_desc">Khởi động lại thiết bị để kích hoạt mô-đun</string>
-
     <string name="new_command_title">Lệnh mới</string>
     <string name="error_prefix_empty">Tiền tố không được để trống</string>
     <string name="error_message_empty">Tin nhắn không được để trống</string>
     <string name="error_duplicate_command">Có một lệnh khác cùng tên</string>
-    <string name="format_edit_pattern_title">Chỉnh sửa %1$s</string>
-    <string name="error_symbol_empty">Biểu tượng không được để trống</string>
-    <string name="error_symbol_not_allowed">Biểu tượng này không được phép</string>
-    <string name="error_pattern_creation_failed">Không thể tạo mẫu cho biểu tượng này</string>
-    <string name="error_pattern_invalid">Mẫu đã tạo không hợp lệ</string>
-    <string name="error_pattern_duplicate">Biểu tượng này đã được sử dụng</string>
-    <string name="msg_trigger_enabled">Kích hoạt "%1$s" đã bật</string>
-    <string name="msg_trigger_disabled">Kích hoạt "%1$s" đã tắt</string>
-    <string name="example_preview_settings">"%1$s" ← Mở cài đặt</string>
-    <string name="example_preview_ai">"Xin chào%1$s" ← AI trả lời</string>
-    <string name="example_preview_custom">"Xin chào%1$sdịch%1$s" ← Dịch</string>
-    <string name="example_preview_italic">"văn bản%1$s" ← in nghiêng</string>
-    <string name="example_preview_bold">"văn bản%1$s" ← in đậm</string>
-    <string name="example_preview_crossout">"văn bản%1$s" ← gạch ngang</string>
-    <string name="example_preview_underline">"văn bản%1$s" ← gạch chân</string>
-    <string name="example_preview_default">Nhập văn bản, thêm "%1$s" vào cuối</string>
     <string name="msg_theme_updated">Theme updated</string>
     <string name="msg_settings_restored">Settings restored</string>
     <string name="msg_requesting_root">Requesting root access...</string>
@@ -533,28 +442,16 @@
     <string name="msg_pattern_create_symbol_failed">Could not create pattern for this symbol</string>
     <string name="msg_pattern_generated_invalid">Invalid pattern generated</string>
     <string name="msg_symbol_already_used">Ký hiệu này đã được sử dụng bởi mẫu khác</string>
-    
-    <!-- Dialog strings -->
     <string name="dialog_title_edit_pattern">Chỉnh sửa %1$s</string>
     <string name="hint_trigger_symbol">Nhập ký hiệu</string>
     <string name="btn_reset_pattern">Đặt lại Mẫu</string>
     <string name="msg_reset_pattern_confirm">Bạn có chắc muốn đặt lại \'%1$s\' về ký hiệu mặc định \"%2$s\"?</string>
-
-    <!-- Model Config Fields (Added to prevent crash) -->
     <string name="field_api_key">API Key</string>
     <string name="field_top_p">Top P</string>
     <string name="dialog_title_unknown_model">Unknown Model Name</string>
     <string name="dialog_msg_unknown_model">The model "%1$s" is not in our verified list.\nIt might be new or incorrect.\n\nDid you mean: %2$s</string>
     <string name="btn_use_suggestion">Use Suggestion</string>
     <string name="btn_use_anyway">Use Anyway</string>
-    <string name="field_sub_model">Sub-model</string>
-    <string name="field_base_url">Base URL</string>
-    <string name="field_max_tokens">Max tokens</string>
-    <string name="field_temperature">Temperature</string>
-    <string name="interval_every_disabled">Disabled</string>
-
-
-    <!-- Auto-added Missing Keys -->
     <string name="setting_update_interval">Update Check Interval</string>
     <string name="setting_desc_download_path">Custom path for downloading updates.</string>
     <string name="setting_desc_check_updates">Automatically check for new versions.</string>
@@ -567,7 +464,6 @@
     <string name="setting_desc_wallpaper_colors">Extract colors from device wallpaper (Android 12+).</string>
     <string name="dialog_title_trigger_symbols">Trigger Symbols</string>
     <string name="setting_download_path">Download Path</string>
-    <string name="example_default">Type text, then add \u0022%1$s\u0022 at the end</string>
     <string name="title_custom_command">Custom command</string>
     <string name="setting_wallpaper_colors">Use Wallpaper Colors</string>
     <string name="title_settings_trigger">Settings</string>
@@ -600,15 +496,5 @@
     <string name="no_patterns">No patterns</string>
     <string name="setting_desc_single_tone">Use a single color tone for the theme.</string>
     <string name="setting_single_tone">Use Single Tone</string>
-        <string name="changelog_4_0_8_item1">Đã chuyển từ LSPosed API 82 sang API 102 hiện đại</string>
-    <string name="changelog_4_0_8_item2">Tối ưu hóa hiệu suất lớn và giảm mức tiêu thụ pin</string>
-    <string name="changelog_4_0_8_item3">Đã sửa nhiều tình huống ứng dụng bị treo và đóng băng</string>
-    <string name="changelog_4_0_8_item4">Đã thêm trình kích hoạt bàn phím mới: Trình tải xuống phương tiện</string>
-    <string name="changelog_4_0_8_item5">Đã thêm tác vụ chọn văn bản mới: Trình tải xuống phương tiện</string>
-    <string name="changelog_4_0_8_item6">Đã thêm tính năng Lab mới: KGPT Media Downloader</string>
-    <string name="changelog_4_0_8_item7">Đã thêm tính năng tìm kiếm video và YouTube trực tiếp</string>
-    <string name="changelog_4_0_8_item8">Hỗ trợ tải xuống Video &amp; Âm thanh với tùy chỉnh chất lượng, định dạng và cắt đoạn</string>
-    <string name="changelog_4_0_8_item9">Đã thêm trình tạo lệnh độc lập đa nền tảng để tải xuống trên bất kỳ thiết bị nào</string>
-    <string name="changelog_note_4_0_8">Xin hãy kiên nhẫn vì nhiều vấn đề hơn đã được báo cáo cho nhà phát triển, nhưng chúng sẽ được giải quyết theo từng đợt cập nhật vì đây là dự án của một người. Cảm ơn sự thông cảm của bạn.</string>
     <string name="msg_ai_no_response_error">Không nhận được phản hồi. AI trả về nội dung trống.\nGợi ý: Bạn có thể đang sử dụng trình kích hoạt/lệnh chưa đăng ký.</string>
 </resources>

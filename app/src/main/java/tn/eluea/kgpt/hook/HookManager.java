@@ -16,11 +16,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+
 import io.github.libxposed.api.XposedInterface;
 import tn.eluea.kgpt.MainHook;
 
 public class HookManager {
     private static final Map<Member, MethodHook> hooksMap = new ConcurrentHashMap<>();
+    // Live libxposed handles: re-hooking replaces (unhook old first) instead of
+    // stacking interceptors, and unhook() actually detaches the native hook.
+    private static final Map<Member, Object> hookHandles = new ConcurrentHashMap<>();
 
     public void hook(Class<?> clazz, String methodName, Class<?>[] paramTypes, MethodHook callback) {
         Method method = findMethod(clazz, methodName, paramTypes);
@@ -29,6 +33,7 @@ public class HookManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void hook(Method method, MethodHook callback) {
         if (method == null) return;
 
@@ -36,7 +41,15 @@ public class HookManager {
         MainHook mainHook = MainHook.getInstance();
         if (mainHook != null) {
             try {
-                mainHook.hook(method).intercept(chain -> {
+                // Replace any previously installed intercept for this method:
+                // stacking interceptors made every callback fire N times.
+                Object existing = hookHandles.get(method);
+                if (existing instanceof io.github.libxposed.api.XposedInterface.HookHandle) {
+                    ((io.github.libxposed.api.XposedInterface.HookHandle) existing).unhook();
+                    hookHandles.remove(method);
+                }
+
+                Object handle = mainHook.hook(method).intercept(chain -> {
                     List<Object> originalArgs = chain.getArgs();
                     Object[] argsArray = originalArgs != null ? originalArgs.toArray() : new Object[0];
 
@@ -76,14 +89,30 @@ public class HookManager {
                     }
                     return param.getResult();
                 });
+                hookHandles.put(method, handle);
             } catch (Throwable t) {
                 MainHook.log("Failed to hook method " + method.getName() + ": " + t.getMessage());
             }
         }
     }
 
+    public java.util.Set<Member> getHookedMembers() {
+        return hooksMap.keySet();
+    }
+
     public void unhook(Predicate<Member> clearPredicate) {
-        hooksMap.keySet().removeIf(clearPredicate);
+        for (Member m : hooksMap.keySet().toArray(new Member[0])) {
+            if (!clearPredicate.test(m)) continue;
+            hooksMap.remove(m);
+            Object handle = hookHandles.remove(m);
+            if (handle instanceof io.github.libxposed.api.XposedInterface.HookHandle) {
+                try {
+                    ((io.github.libxposed.api.XposedInterface.HookHandle) handle).unhook();
+                } catch (Throwable t) {
+                    MainHook.log("unhook failed for " + m.getName() + ": " + t.getMessage());
+                }
+            }
+        }
     }
 
     public static Method findMethod(Class<?> clazz, String methodName, Class<?>[] paramTypes) {

@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 
+import tn.eluea.kgpt.BuildConfig;
 import tn.eluea.kgpt.R;
 import tn.eluea.kgpt.features.downloader.core.DownloadOptions;
 import tn.eluea.kgpt.features.downloader.core.DownloaderEngine;
@@ -36,6 +37,7 @@ public class MediaDownloadService extends Service {
     public static final String EXTRA_MEDIA_TITLE = "extra_media_title";
 
     private NotificationManager notificationManager;
+    private DownloadOptions currentOptions;
     private String currentProcessId = null;
     private File currentOutputDir = null;
 
@@ -141,6 +143,7 @@ public class MediaDownloadService extends Service {
     }
 
     private void executeDownloadTask(DownloadOptions options, String mediaTitle) {
+        this.currentOptions = options;
         DownloaderEngine.getInstance().executeDownload(
                 this,
                 options,
@@ -171,7 +174,8 @@ public class MediaDownloadService extends Service {
 
                     @Override
                     public void onComplete(File downloadedFile) {
-                        showCompleteNotification(mediaTitle, downloadedFile);
+                        File finalFile = maybeCopyToSafTree(downloadedFile);
+                        showCompleteNotification(mediaTitle, finalFile);
                         if (activeEventListener != null) {
                             new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
                                 if (activeEventListener != null) {
@@ -179,13 +183,15 @@ public class MediaDownloadService extends Service {
                                 }
                             });
                         }
-                        stopForeground(false);
+                        stopForeground(true); // remove stuck progress notification
+                        notificationManager.cancel(NOTIFICATION_ID);
                         stopSelf();
                     }
 
                     @Override
                     public void onError(Exception e) {
                         Log.e(TAG, "Download error in service", e);
+                        notificationManager.cancel(NOTIFICATION_ID);
                         showErrorNotification(mediaTitle, e.getMessage());
                         if (activeEventListener != null) {
                             new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
@@ -194,11 +200,73 @@ public class MediaDownloadService extends Service {
                                 }
                             });
                         }
-                        stopForeground(false);
+                        stopForeground(true);
+                        notificationManager.cancel(NOTIFICATION_ID);
                         stopSelf();
                     }
                 }
         );
+    }
+
+    /**
+     * D4: a custom download folder chosen through SAF is a content:// tree that
+     * yt-dlp cannot write to directly. Download lands in the normal dir, then
+     * this moves it into the tree via ContentResolver (copy + delete local).
+     */
+    private File maybeCopyToSafTree(File downloadedFile) {
+        try {
+            if (currentOptions == null || downloadedFile == null || !downloadedFile.exists()) {
+                return downloadedFile;
+            }
+            String treeUriStr = currentOptions.getCustomTreeUri();
+            if (treeUriStr == null || treeUriStr.isEmpty()) return downloadedFile;
+
+            android.net.Uri treeUri = android.net.Uri.parse(treeUriStr);
+            android.content.Context ctx = getApplicationContext();
+
+            android.net.Uri docTree = android.provider.DocumentsContract.buildDocumentUriUsingTree(
+                    treeUri, android.provider.DocumentsContract.getTreeDocumentId(treeUri));
+
+            String mime = guessMime(downloadedFile.getName());
+            android.net.Uri target = android.provider.DocumentsContract.createDocument(
+                    ctx.getContentResolver(), docTree, mime, downloadedFile.getName());
+            if (target == null) {
+                Log.e(TAG, "SAF createDocument returned null");
+                return downloadedFile;
+            }
+
+            try (java.io.InputStream in = new java.io.FileInputStream(downloadedFile);
+                 java.io.OutputStream out = ctx.getContentResolver().openOutputStream(target)) {
+                if (out == null) throw new Exception("openOutputStream null");
+                byte[] buf = new byte[65536];
+                int n;
+                while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                out.flush();
+            }
+
+            // Move semantics: remove the local copy only after a verified copy
+            if (downloadedFile.delete()) {
+                Log.i(TAG, "Moved download into SAF tree: " + target);
+                return downloadedFile; // path gone; callers already notified with file handle
+            }
+            return downloadedFile;
+        } catch (Throwable t) {
+            Log.e(TAG, "SAF copy failed, keeping local file", t);
+            Toast.makeText(this, "SAF copy failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            return downloadedFile;
+        }
+    }
+
+    private String guessMime(String name) {
+        String n = name.toLowerCase();
+        if (n.endsWith(".mp4")) return "video/mp4";
+        if (n.endsWith(".mkv")) return "video/x-matroska";
+        if (n.endsWith(".webm")) return "video/webm";
+        if (n.endsWith(".mp3")) return "audio/mpeg";
+        if (n.endsWith(".m4a")) return "audio/mp4";
+        if (n.endsWith(".opus")) return "audio/ogg";
+        if (n.endsWith(".flac")) return "audio/flac";
+        return "application/octet-stream";
     }
 
     private String getShortTitle(String title) {
@@ -239,7 +307,7 @@ public class MediaDownloadService extends Service {
             try {
                 Uri fileUri = FileProvider.getUriForFile(
                         this,
-                        getPackageName() + ".provider",
+                        BuildConfig.APPLICATION_ID + ".fileprovider",
                         file
                 );
                 Intent viewIntent = new Intent(Intent.ACTION_VIEW);

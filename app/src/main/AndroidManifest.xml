@@ -38,7 +38,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KGPT"
-        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:hardwareAccelerated="true"
         android:requestLegacyExternalStorage="true"
         android:extractNativeLibs="true"
@@ -246,9 +246,6 @@
         <meta-data
             android:name="xposedentry"
             android:value="tn.eluea.kgpt.MainHook" />
-        <meta-data
-            android:name="xposedscope"
-            android:resource="@array/xposedscope" />
     </application>
 
 </manifest>

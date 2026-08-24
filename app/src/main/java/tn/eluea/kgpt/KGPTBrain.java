@@ -30,6 +30,10 @@ public class KGPTBrain implements InputEventListener, DialogDismissListener {
     private long lastConfigReload = 0;
     private static final long CONFIG_RELOAD_INTERVAL = 5000; // Reload config every 5 seconds
 
+    // Track raw config payloads so periodic refresh only rebuilds on real changes
+    private String lastCommandsRaw = null;
+    private String lastPatternsRaw = null;
+
     private final GenerativeAIController mAIController; // Kept for reference if needed
     private final CommandManager mCommandManager;
     private final TextParser mTextParser;
@@ -52,6 +56,25 @@ public class KGPTBrain implements InputEventListener, DialogDismissListener {
         mConfigHandlerThread = new android.os.HandlerThread("KGPT_ConfigLoader");
         mConfigHandlerThread.start();
         mConfigHandler = new android.os.Handler(mConfigHandlerThread.getLooper());
+
+        // Schedule the config refresh on a fixed cadence instead of posting a
+        // check from every single keystroke (onTextUpdate).
+        mConfigHandler.post(() -> {
+            android.os.Looper looper = android.os.Looper.myLooper();
+            Runnable periodic = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        reloadConfigIfNeeded();
+                    } finally {
+                        if (looper != null && !mConfigHandlerThread.isInterrupted()) {
+                            mConfigHandler.postDelayed(this, CONFIG_RELOAD_INTERVAL);
+                        }
+                    }
+                }
+            };
+            mConfigHandler.postDelayed(periodic, CONFIG_RELOAD_INTERVAL);
+        });
 
         // Initialize Dependency Injection
         tn.eluea.kgpt.core.di.ServiceLocator locator = tn.eluea.kgpt.core.di.ServiceLocator.getInstance();
@@ -104,13 +127,40 @@ public class KGPTBrain implements InputEventListener, DialogDismissListener {
             }
             // Reload inline ask prefix
             loadInlineAskPrefix();
+
+            // Rebuild parser/command state when the stored payloads change.
+            // Without this, a hooked process that started with a stale or
+            // legacy-format config stays dead until the user manually edits
+            // and saves an item.
+            try {
+                tn.eluea.kgpt.SPManager spManager = tn.eluea.kgpt.SPManager.getInstance();
+                String commandsRaw = spManager.getGenerativeAICommandsRaw();
+                if (lastCommandsRaw == null || !lastCommandsRaw.equals(commandsRaw)) {
+                    lastCommandsRaw = commandsRaw;
+                    mCommandManager.reloadCommands();
+                    tn.eluea.kgpt.util.Logger.log("Commands reloaded from periodic refresh");
+                }
+
+                String patternsRaw = spManager.getParsePatternsRaw();
+                if (patternsRaw == null) {
+                    patternsRaw = "";
+                }
+                String normalizedPatternsRaw = patternsRaw;
+                if (lastPatternsRaw == null || !lastPatternsRaw.equals(normalizedPatternsRaw)) {
+                    lastPatternsRaw = normalizedPatternsRaw;
+                    mTextParser.reloadPatterns();
+                    tn.eluea.kgpt.util.Logger.log("Patterns reloaded from periodic refresh");
+                }
+            } catch (Exception e) {
+                tn.eluea.kgpt.util.Logger.log(e);
+            }
         }
     }
 
     @Override
     public void onTextUpdate(String text, int cursor) {
-        // SOLVED: Offload config check to background thread
-        mConfigHandler.post(this::reloadConfigIfNeeded);
+        // Config refresh runs on its own periodic schedule (see constructor);
+        // the per-keystroke hot path stays allocation-light.
 
         IMSController imsController = UiInteractor.getInstance().getIMSController();
         ParseResult result = mTextParser.parse(text, cursor);

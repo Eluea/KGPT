@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!--
+﻿<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2025 Amr Aldeeb @Eluea
   ~ GitHub: https://github.com/Eluea
   ~ Telegram: https://t.me/Eluea
@@ -7,15 +6,11 @@
   ~ Licensed under the GPLv3.
   -->
 <!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older that API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+   Android 11 and below auto-backup rules.
+   The "keyboard_gpt" prefs hold AI provider API keys — they must never leave
+   the device via cloud/device-to-device backup. In-app backups are handled by
+   BackupManager (Google Drive) which encrypts/handles credentials separately.
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <exclude domain="sharedpref" path="keyboard_gpt.xml" />
 </full-backup-content>

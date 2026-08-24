@@ -7,7 +7,6 @@
  */
 package tn.eluea.kgpt.llm;
 
-import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
@@ -48,12 +47,13 @@ public enum LanguageModel {
                 this.isFree = isFree;
                 this.getKeyUrl = getKeyUrl;
 
-                defaults = ImmutableMap.of(
-                                LanguageModelField.SubModel, defaultSubModel,
-                                LanguageModelField.BaseUrl, defaultBaseUrl,
-                                LanguageModelField.MaxTokens, "4096",
-                                LanguageModelField.Temperature, "1.0",
-                                LanguageModelField.TopP, "1.0");
+                java.util.Map<LanguageModelField, String> defaultsMap = new java.util.LinkedHashMap<>();
+                defaultsMap.put(LanguageModelField.SubModel, defaultSubModel);
+                defaultsMap.put(LanguageModelField.BaseUrl, defaultBaseUrl);
+                defaultsMap.put(LanguageModelField.MaxTokens, "4096");
+                defaultsMap.put(LanguageModelField.Temperature, "1.0");
+                defaultsMap.put(LanguageModelField.TopP, "1.0");
+                defaults = java.util.Collections.unmodifiableMap(defaultsMap);
         }
 
         public String getDefault(LanguageModelField field) {

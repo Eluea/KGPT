@@ -99,6 +99,11 @@ public class SelectionHandler {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (ACTION_COMMIT_TEXT.equals(intent.getAction())) {
+                    // Drop responses addressed to other hooked processes
+                    String tgt = intent.getStringExtra("target_package");
+                    String myPkg = context != null ? context.getPackageName() : null;
+                    if (tgt != null && myPkg != null && !tgt.equals(myPkg)) return;
+
                     String text = intent.getStringExtra(EXTRA_TEXT_TO_COMMIT);
                     int start = intent.getIntExtra("selection_start", -1);
                     int end = intent.getIntExtra("selection_end", -1);
@@ -296,6 +301,8 @@ public class SelectionHandler {
             intent.putExtra("selection_start", start);
             intent.putExtra("selection_end", end);
             intent.putExtra(TextActionsMenuActivity.EXTRA_READONLY, false);
+            // Echo target so the commit broadcast only affects this IME
+            intent.putExtra("target_package", context.getPackageName());
 
             context.startActivity(intent);
 

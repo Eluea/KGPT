@@ -40,7 +40,7 @@ public class YouTubeSearchEngine {
     private static final String TAG = "KGPT_YouTubeSearch";
     private static YouTubeSearchEngine instance;
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public static class SearchResult {

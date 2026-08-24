@@ -91,6 +91,9 @@ public class DialogBoxManager {
             case WebSearch:
                 box = new WebSearchDialogBox(this, mParent, mInputBundle, mConfig);
                 break;
+            case AddCustomProvider:
+                box = new tn.eluea.kgpt.core.ui.dialog.box.AddCustomProviderDialogBox(this, mParent, mInputBundle, mConfig);
+                break;
             case OtherSettings:
                 box = new OtherSettingsDialogBox(this, mParent, mInputBundle, mConfig);
                 break;

@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -37,6 +38,7 @@ import tn.eluea.kgpt.core.data.ConfigContainer;
 import tn.eluea.kgpt.core.ui.dialog.DialogBoxManager;
 import tn.eluea.kgpt.core.ui.dialog.DialogType;
 import tn.eluea.kgpt.llm.LanguageModel;
+import tn.eluea.kgpt.util.ModelCatalog;
 import tn.eluea.kgpt.llm.LanguageModelField;
 import android.view.ContextThemeWrapper;
 import tn.eluea.kgpt.util.MaterialYouManager;
@@ -49,150 +51,10 @@ import android.content.Context;
 public class ConfigureModelDialogBox extends DialogBox {
 
         // Valid model names for validation
-        private static final Map<LanguageModel, Set<String>> VALID_MODELS = new HashMap<>();
-        private static final Map<LanguageModel, String[]> MODEL_PRESETS = new HashMap<>();
+        // H1: single source of truth shared with the in-app editor
+        private static final Map<LanguageModel, String[]> MODEL_PRESETS = tn.eluea.kgpt.util.ModelCatalog.PRESETS;
+        private static final Map<LanguageModel, Set<String>> VALID_MODELS = tn.eluea.kgpt.util.ModelCatalog.VALID;
 
-        static {
-                // Gemini models
-                VALID_MODELS.put(LanguageModel.Gemini, new HashSet<>(Arrays.asList(
-                                "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite",
-                                "gemini-3-flash-preview", "gemini-3-pro-preview", "gemini-3-pro-image-preview",
-                                "gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-2.0-flash-001",
-                                "gemini-2.0-flash-exp", "gemini-2.0-flash-lite-001",
-                                "gemini-2.5-flash-preview-09-2025", "gemini-2.5-flash-lite-preview-09-2025",
-                                "gemini-flash-latest", "gemini-flash-lite-latest", "gemini-pro-latest")));
-                MODEL_PRESETS.put(LanguageModel.Gemini,
-                                new String[] { "gemini-2.5-flash", "gemini-2.5-pro", "gemini-3-flash-preview" });
-
-                // ChatGPT/OpenAI models (December 2025)
-                VALID_MODELS.put(LanguageModel.ChatGPT, new HashSet<>(Arrays.asList(
-                                // GPT-5 series (Latest)
-                                "gpt-5.2", "gpt-5.1", "gpt-5", "gpt-5-mini", "gpt-5-nano",
-                                "gpt-5.2-pro", "gpt-5-pro",
-                                // GPT-4.1 series
-                                "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
-                                // GPT-4o series
-                                "gpt-4o", "gpt-4o-mini",
-                                // Reasoning models
-                                "o3", "o3-mini", "o3-pro", "o4-mini",
-                                // Legacy
-                                "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo")));
-                MODEL_PRESETS.put(LanguageModel.ChatGPT,
-                                new String[] { "gpt-5", "gpt-4o", "gpt-4.1", "o3-mini", "o4-mini" });
-
-                // Groq models (December 2025)
-                VALID_MODELS.put(LanguageModel.Groq, new HashSet<>(Arrays.asList(
-                                // Production models
-                                "llama-3.3-70b-versatile", "llama-3.1-8b-instant",
-                                // OpenAI open-weight models
-                                "openai/gpt-oss-120b", "openai/gpt-oss-20b",
-                                // Llama 4 Preview
-                                "meta-llama/llama-4-maverick-17b-128e-instruct",
-                                "meta-llama/llama-4-scout-17b-16e-instruct",
-                                // Compound systems
-                                "groq/compound", "groq/compound-mini",
-                                // Qwen
-                                "qwen/qwen3-32b",
-                                // Kimi
-                                "moonshotai/kimi-k2-instruct-0905",
-                                // Whisper
-                                "whisper-large-v3", "whisper-large-v3-turbo")));
-                MODEL_PRESETS.put(LanguageModel.Groq, new String[] { "llama-3.3-70b-versatile",
-                                "meta-llama/llama-4-maverick-17b-128e-instruct", "groq/compound" });
-
-                // OpenRouter - allow any model (supports 400+ models including free ones)
-                VALID_MODELS.put(LanguageModel.OpenRouter, null);
-                MODEL_PRESETS.put(LanguageModel.OpenRouter, new String[] {
-                                "google/gemini-2.0-flash-exp:free",
-                                "meta-llama/llama-3.3-70b-instruct:free",
-                                "qwen/qwen-2.5-72b-instruct:free",
-                                "deepseek/deepseek-chat-v3-0324:free",
-                                "microsoft/phi-4:free"
-                });
-
-                // Claude/Anthropic models (December 2025)
-                VALID_MODELS.put(LanguageModel.Claude, new HashSet<>(Arrays.asList(
-                                // Claude 4.5 series (Latest)
-                                "claude-opus-4-5-20250630", "claude-sonnet-4-5-20250630", "claude-haiku-4-5-20250630",
-                                // Claude 4 series
-                                "claude-opus-4-20250514", "claude-sonnet-4-20250514", "claude-opus-4-1-20250414",
-                                // Claude 3.5 series
-                                "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022",
-                                // Claude 3 series (Legacy)
-                                "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307")));
-                MODEL_PRESETS.put(LanguageModel.Claude,
-                                new String[] { "claude-opus-4-5-20250630", "claude-sonnet-4-5-20250630",
-                                                "claude-haiku-4-5-20250630" });
-
-                // Mistral models (December 2025)
-                VALID_MODELS.put(LanguageModel.Mistral, new HashSet<>(Arrays.asList(
-                                // Magistral series (Latest - Reasoning)
-                                "magistral-medium-2507", "magistral-small-2507",
-                                // Devstral (Coding)
-                                "devstral-small-2505",
-                                // Mistral Small 3.x
-                                "mistral-small-2503", "mistral-small-2501", "mistral-small-latest",
-                                // Codestral
-                                "codestral-2501", "codestral-latest",
-                                // Ministral
-                                "ministral-3b-2410", "ministral-8b-2410",
-                                // Pixtral (Vision)
-                                "pixtral-12b-2409",
-                                // OCR
-                                "mistral-ocr-2503",
-                                // Legacy
-                                "mistral-large-latest", "open-mistral-7b", "open-mixtral-8x7b")));
-                MODEL_PRESETS.put(LanguageModel.Mistral, new String[] { "magistral-medium-2507", "mistral-small-latest",
-                                "devstral-small-2505", "codestral-latest" });
-
-                // Chutes models
-                VALID_MODELS.put(LanguageModel.Chutes, null); // Allow any model
-                MODEL_PRESETS.put(LanguageModel.Chutes, new String[] {
-                                "deepseek-ai/DeepSeek-R1",
-                                "deepseek-ai/DeepSeek-V3",
-                                "meta-llama/Llama-3.3-70B-Instruct",
-                                "Qwen/Qwen2.5-72B-Instruct",
-                                "nous-research/hermes-3-llama-3.1-405b",
-                                "gryphe/mythomax-l2-13b",
-                                "mistralai/Mistral-7B-Instruct-v0.3",
-                                "mistralai/Mistral-Small-24B-Instruct-2501",
-                                "deepseek-ai/DeepSeek-R1-Distill-Llama-70B"
-                });
-
-                // GLM (ZhipuAI) models
-                VALID_MODELS.put(LanguageModel.GLM, new HashSet<>(Arrays.asList(
-                                "glm-4", "glm-4-plus", "glm-4-air", "glm-4-airx", "glm-4-long",
-                                "glm-4-flashx", "glm-4-flash", "glm-4-9b",
-                                "glm-4-0520", "glm-3-turbo")));
-                MODEL_PRESETS.put(LanguageModel.GLM, new String[] {
-                                "glm-4", "glm-4-plus", "glm-4-flash", "glm-4-air", "glm-3-turbo"
-                });
-
-                // Grok (xAI) models
-                VALID_MODELS.put(LanguageModel.Grok, new HashSet<>(Arrays.asList(
-                                "grok-4.6", "grok-4.5", "grok-4.3", "grok-4", "grok-3",
-                                "grok-2-latest", "grok-2", "grok-2-vision-1212", "grok-beta")));
-                MODEL_PRESETS.put(LanguageModel.Grok, new String[] {
-                                "grok-4.6", "grok-4.5", "grok-4", "grok-2-latest", "grok-beta"
-                });
-
-                // DeepSeek models
-                VALID_MODELS.put(LanguageModel.DeepSeek, new HashSet<>(Arrays.asList(
-                                "deepseek-chat", "deepseek-reasoner", "deepseek-v4-pro",
-                                "deepseek-v4-flash", "deepseek-coder",
-                                "deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-R1")));
-                MODEL_PRESETS.put(LanguageModel.DeepSeek, new String[] {
-                                "deepseek-chat", "deepseek-reasoner", "deepseek-v4-pro", "deepseek-v4-flash"
-                });
-
-                // Kimi (Moonshot AI) models
-                VALID_MODELS.put(LanguageModel.Kimi, new HashSet<>(Arrays.asList(
-                                "kimi-k3", "kimi-k2.6", "kimi-k2.7-code", "kimi-k2.5", "kimi-k2-instruct",
-                                "moonshot-v1-auto", "moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k")));
-                MODEL_PRESETS.put(LanguageModel.Kimi, new String[] {
-                                "kimi-k3", "kimi-k2.6", "moonshot-v1-auto", "moonshot-v1-128k"
-                });
-        }
 
         public ConfigureModelDialogBox(DialogBoxManager dialogManager, Activity parent,
                         Bundle inputBundle, ConfigContainer configContainer) {
@@ -261,7 +123,7 @@ public class ConfigureModelDialogBox extends DialogBox {
 
                 Bundle modelConfig = getConfig().languageModelsConfig.getBundle(getConfig().selectedModel.name());
                 if (modelConfig == null) {
-                        throw new RuntimeException("No model " + getConfig().selectedModel.name());
+                        Log.w("KGPT_ConfigModel", "No model bundle for " + getConfig().selectedModel.name() + " — using defaults");
                 }
 
                 View layout = android.view.LayoutInflater.from(themedContext).inflate(R.layout.dialog_configue_model,

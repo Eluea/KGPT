@@ -49,7 +49,7 @@ import tn.eluea.kgpt.ui.view.SparkleView;
 public class CatPeekManager {
 
     private static final String GITHUB_REPO_URL = "https://github.com/Eluea/KGPT/";
-    private static final long PEEK_INTERVAL_MS = 8 * 1000; // 8 seconds (for testing, change to 3 * 60 * 1000 for
+    private static final long PEEK_INTERVAL_MS = 3 * 60 * 1000; // 8 seconds (for testing, change to 3 * 60 * 1000 for
                                                            // production)
     private static final long INITIAL_DELAY_MS = 3000; // 3 seconds initial delay
     private static final long PEEK_DURATION_MS = 3000; // 3 seconds visible
@@ -102,6 +102,7 @@ public class CatPeekManager {
      * Stop the cat peek timer
      */
     public void stop() {
+            handler.removeCallbacks(hideCatRunnable);
         isRunning = false;
         handler.removeCallbacks(peekRunnable);
         if (catView != null) {
@@ -142,12 +143,14 @@ public class CatPeekManager {
         animIn.start();
 
         // Auto-hide after duration
-        handler.postDelayed(this::hideCat, PEEK_DURATION_MS);
+        handler.postDelayed(hideCatRunnable, PEEK_DURATION_MS);
     }
 
     /**
      * Hide the cat with animation (slide down behind card)
      */
+    private final Runnable hideCatRunnable = this::hideCat;
+
     private void hideCat() {
         if (catView == null || !isCatVisible)
             return;
@@ -265,7 +268,5 @@ public class CatPeekManager {
     /**
      * Force show the cat (for testing)
      */
-    public void forceShow() {
-        showCat();
-    }
+
 }

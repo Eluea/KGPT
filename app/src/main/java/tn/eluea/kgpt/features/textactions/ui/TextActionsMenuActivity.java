@@ -106,7 +106,9 @@ public class TextActionsMenuActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
 
         // Apply blur behind the floating window
-        tn.eluea.kgpt.ui.main.BottomSheetHelper.applyBlurToWindow(getWindow(), this);
+        // Deliberately NO window blur/dim here: this menu floats over the
+        // user's selection — any blur/dim layer would hide the text being
+        // acted on. The window stays fully transparent behind the menu pill.
 
         Intent intent = getIntent();
         selectedText = intent.getStringExtra(EXTRA_SELECTED_TEXT);
@@ -330,6 +332,9 @@ public class TextActionsMenuActivity extends AppCompatActivity
             intent.putExtra(SelectionHandler.EXTRA_TEXT_TO_COMMIT, text);
             intent.putExtra("selection_start", selectionStart);
             intent.putExtra("selection_end", selectionEnd);
+            // Echo the keyboard package so only the requesting IME acts on it
+            String target = getIntent() != null ? getIntent().getStringExtra("target_package") : null;
+            if (target != null) intent.putExtra("target_package", target);
             sendBroadcast(intent);
             finish();
         }
