@@ -756,13 +756,29 @@ public class SettingsFragment extends Fragment {
         // Add changelog entries
         LinearLayout changelogContent = sheetView.findViewById(R.id.changelog_content);
 
-        // Version 4.1.4 Changes
+        // Version 4.1.5 Changes
         addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
-                getString(R.string.changelog_4_1_4_item1),
+                getString(R.string.changelog_4_1_5_item1),
                 colorPrimary, colorOnPrimary);
 
         addChangelogEntry(changelogContent, getString(R.string.tag_improved),
-                getString(R.string.changelog_4_1_4_item2),
+                getString(R.string.changelog_4_1_5_item2),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+                getString(R.string.changelog_4_1_5_item3),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
+                getString(R.string.changelog_4_1_5_item4),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_improved),
+                getString(R.string.changelog_4_1_5_item5),
+                colorPrimary, colorOnPrimary);
+
+        addChangelogEntry(changelogContent, getString(R.string.tag_fixed),
+                getString(R.string.changelog_4_1_5_item6),
                 colorPrimary, colorOnPrimary);
 
         MaterialButton btnClose = sheetView.findViewById(R.id.btn_close);

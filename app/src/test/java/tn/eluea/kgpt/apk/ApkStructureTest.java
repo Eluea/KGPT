@@ -17,7 +17,7 @@ public class ApkStructureTest {
     @Test
     public void testReleaseApkContainsModernXposedMetaInf() throws Exception {
         // Must match outputFileName in app/build.gradle ("${appName}-${buildType}-v${versionName}.apk")
-        File apkFile = new File("build/outputs/apk/release/KGPT-release-v4.1.4.apk");
+        File apkFile = new File("build/outputs/apk/release/KGPT-release-v4.1.5.apk");
         // The release APK only exists after an assembled+signed release build;
         // skip silently on machines where it hasn't been produced instead of
         // hard-failing every unit test run.

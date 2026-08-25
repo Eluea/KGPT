@@ -425,8 +425,12 @@
     <string name="dock_add_app_trigger">Add App Trigger</string>
     <string name="tag_improved">IMPROVE</string>
     <string name="tag_fixed">FIX</string>
-    <string name="changelog_4_1_4_item1">Hotfix: Fixed core engine installation detection and in-app download launcher</string>
-    <string name="changelog_4_1_4_item2">Updated core installer bottom sheet with smooth Lottie animation lifecycle</string>
+    <string name="changelog_4_1_5_item1">Accurate module activation detection and full LSPosed Modern API 102 adoption</string>
+    <string name="changelog_4_1_5_item2">Keyboard typing speed optimization and enhanced privacy by stopping text logging</string>
+    <string name="changelog_4_1_5_item3">Automatic trigger/command reloading and fixed in-place AI Text Selection</string>
+    <string name="changelog_4_1_5_item4">Downloader overhaul: real formats, true file sizes, original lossless audio, and stale video guard</string>
+    <string name="changelog_4_1_5_item5">Custom AI models direct integration and dynamic command trigger examples</string>
+    <string name="changelog_4_1_5_item6">Resolved app startup crashes, improved navigation bar, and reduced app size by 8.5MB+</string>
     <string name="msg_ai_no_response_error">No response received. The AI returned empty content.\nHint: You might be using an unregistered trigger/command.</string>
     <string name="hint_search_language">Search languages...</string>
     <string name="msg_theme_updated">Theme updated</string>

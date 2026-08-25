@@ -114,7 +114,6 @@ public class ConfigureModelDialogBox extends DialogBox {
                                         .makeText(context, "Config Dialog Opened: " + getConfig().selectedModel.name(),
                                                         android.widget.Toast.LENGTH_SHORT)
                                         .show();
-                        android.util.Log.e("KGPT_DEBUG", "Dialog OPENED for " + getConfig().selectedModel.name());
                 }
 
                 tn.eluea.kgpt.ui.main.FloatingBottomSheet sheet = new tn.eluea.kgpt.ui.main.FloatingBottomSheet(
@@ -190,7 +189,6 @@ public class ConfigureModelDialogBox extends DialogBox {
                                 // FORCE DEBUG
                                 String msg = "Model: " + getConfig().selectedModel + ", Presets: "
                                                 + (presets != null ? presets.length : "null");
-                                android.util.Log.e("KGPT_DEBUG", msg);
                                 // Toast.makeText(themedContext, msg, Toast.LENGTH_LONG).show();
 
                                 if (presets != null && presets.length > 0) {

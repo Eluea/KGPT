@@ -31,8 +31,8 @@ android {
         applicationId = "tn.eluea.kgpt"
         minSdk = 26
         targetSdk = 36
-        versionCode = 414
-        versionName = "4.1.4"
+        versionCode = 415
+        versionName = "4.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -42,11 +42,13 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile = file("$ksStoreFile")
-            storePassword = "$ksStorePassword"
-            keyAlias = "$ksKeyAlias"
-            keyPassword = "$ksKeyPassword"
+        if (file("$ksStoreFile").exists() && ksStorePassword) {
+            release {
+                storeFile = file("$ksStoreFile")
+                storePassword = "$ksStorePassword"
+                keyAlias = "$ksKeyAlias"
+                keyPassword = "$ksKeyPassword"
+            }
         }
         debug {
             // Debug builds fall back to the default debug keystore when no
@@ -65,7 +67,11 @@ android {
             debuggable false
             minifyEnabled = false
             proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
-            signingConfig = signingConfigs.release
+            if (file("$ksStoreFile").exists() && ksStorePassword) {
+                signingConfig = signingConfigs.release
+            } else {
+                signingConfig = signingConfigs.debug
+            }
         }
         debug {
             debuggable true
@@ -73,8 +79,7 @@ android {
             // release key (historical behavior). Without credentials, leave
             // signingConfig unset so AGP applies its auto-managed default debug
             // keystore and fresh machines can still build & install.
-            def hasReleaseCreds = file("$ksStoreFile").exists() && ksStorePassword?.trim()
-            if (hasReleaseCreds) {
+            if (file("$ksStoreFile").exists() && ksStorePassword) {
                 signingConfig = signingConfigs.debug
             }
         }

@@ -415,8 +415,12 @@
     <string name="dock_add_app_trigger">إضافة مشغل تطبيق</string>
     <string name="tag_improved">تحسين</string>
     <string name="tag_fixed">إصلاح</string>
-    <string name="changelog_4_1_4_item1">إصلاح خلل التحقق وتنزيل نواة التنزيل (Core Engine) من داخل التطبيق</string>
-    <string name="changelog_4_1_4_item2">تحديث أنيميشن التحميل داخل بوتم شيت تثبيت النواة بحركة لوتي انسيابية</string>
+    <string name="changelog_4_1_5_item1">كشف دقيق وموثوق لحالة تفعيل الموديل والتوافق الكامل مع LSPosed Modern API 102</string>
+    <string name="changelog_4_1_5_item2">تسريع استجابة الكيبورد أثناء الكتابة وتعزيز الخصوصية بإيقاف تسجيل النصوص</string>
+    <string name="changelog_4_1_5_item3">تشغيل الأوامر السريعة تلقائياً وإصلاح ميزة معالجة النصوص المحددة في مكانها</string>
+    <string name="changelog_4_1_5_item4">محرك تنزيل حقيقي: جودات وأحجام دقيقة، حفظ الصوت الأصلي، ومنع تنزيل الفيديوهات السابقة</string>
+    <string name="changelog_4_1_5_item5">دعم إضافة النماذج المخصصة مباشرة وتحديث أمثلة الأوامر حسب الرمز المختار</string>
+    <string name="changelog_4_1_5_item6">معالجة الإغلاق المفاجئ للتطبيق وتحسين استقرار الواجهة وتقليص الحجم بأكثر من 8.5MB</string>
     <string name="hint_search_language">بحث عن لغة...</string>
     <string name="new_command_title">أمر جديد</string>
     <string name="error_prefix_empty">لا يمكن أن تكون البادئة فارغة</string>

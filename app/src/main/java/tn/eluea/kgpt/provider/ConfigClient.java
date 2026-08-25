@@ -55,11 +55,18 @@ public class ConfigClient {
     // Caveat (documented): direct provider writes that bypass ConfigClient
     // (e.g. `adb shell content insert`) will not refresh the remote store.
     private android.content.SharedPreferences remotePrefs = null;
-    private boolean remoteAttempted = false;
+    private long lastRemoteAttempt = 0L;
+    private static final long REMOTE_RETRY_MS = 5_000L;
 
     private android.content.SharedPreferences getRemote() {
-        if (remoteAttempted) return remotePrefs;
-        remoteAttempted = true;
+        // Retry with throttle: the service may bind (or the module instance
+        // may appear) AFTER this ConfigClient was created — a one-shot latch
+        // left remote writes silently skipped for the whole session.
+        long now = android.os.SystemClock.elapsedRealtime();
+        if (remotePrefs == null && (now - lastRemoteAttempt) < REMOTE_RETRY_MS) {
+            return null;
+        }
+        lastRemoteAttempt = now;
         try {
             if (IS_XPOSED_CONTEXT) {
                 tn.eluea.kgpt.MainHook hook = tn.eluea.kgpt.MainHook.getInstance();
@@ -234,6 +241,9 @@ public class ConfigClient {
             android.content.SharedPreferences rp = getRemote();
             if (rp != null) rp.edit().putString(key, value).apply();
         } catch (Exception e) {
+            // F-B: drop the stale remote copy so reads fall through to the
+            // fresh provider value instead of being masked by it forever.
+            try { getRemote().edit().remove(key).apply(); } catch (Exception ignored) {}
             Log.d(TAG, "remote putString failed for: " + key);
         }
     }
@@ -319,6 +329,7 @@ public class ConfigClient {
             android.content.SharedPreferences rp = getRemote();
             if (rp != null) rp.edit().putBoolean(key, value).apply();
         } catch (Exception e) {
+            try { getRemote().edit().remove(key).apply(); } catch (Exception ignored) {}
             Log.d(TAG, "remote putBoolean failed for: " + key);
         }
     }
@@ -411,6 +422,7 @@ public class ConfigClient {
             android.content.SharedPreferences rp = getRemote();
             if (rp != null) rp.edit().putInt(key, value).apply();
         } catch (Exception e) {
+            try { getRemote().edit().remove(key).apply(); } catch (Exception ignored) {}
             Log.d(TAG, "remote putInt failed for: " + key);
         }
     }
